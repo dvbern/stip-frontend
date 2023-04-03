@@ -112,10 +112,10 @@ export class FallService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFall(requestParameters: FallServiceGetFallRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<Fall>;
-    public getFall(requestParameters: FallServiceGetFallRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<Fall>>;
-    public getFall(requestParameters: FallServiceGetFallRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<Fall>>;
-    public getFall(requestParameters: FallServiceGetFallRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
+     public getFall$(requestParameters: FallServiceGetFallRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<Fall>;
+     public getFall$(requestParameters: FallServiceGetFallRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<Fall>>;
+     public getFall$(requestParameters: FallServiceGetFallRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<Fall>>;
+     public getFall$(requestParameters: FallServiceGetFallRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
         const fallId = requestParameters.fallId;
         if (fallId === null || fallId === undefined) {
             throw new Error('Required parameter fallId was null or undefined when calling getFall$.');
@@ -173,10 +173,10 @@ export class FallService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFallDTO(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<FallDTO>;
-    public getFallDTO(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<FallDTO>>;
-    public getFallDTO(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<FallDTO>>;
-    public getFallDTO(requestParameters: FallServiceGetFallDTORequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
+     public getFallDTO$(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<FallDTO>;
+     public getFallDTO$(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<FallDTO>>;
+     public getFallDTO$(requestParameters: FallServiceGetFallDTORequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<FallDTO>>;
+     public getFallDTO$(requestParameters: FallServiceGetFallDTORequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
         const fallId = requestParameters.fallId;
         if (fallId === null || fallId === undefined) {
             throw new Error('Required parameter fallId was null or undefined when calling getFallDTO$.');
@@ -232,10 +232,10 @@ export class FallService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveFall(requestParameters: FallServiceSaveFallRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<Fall>;
-    public saveFall(requestParameters: FallServiceSaveFallRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<Fall>>;
-    public saveFall(requestParameters: FallServiceSaveFallRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<Fall>>;
-    public saveFall(requestParameters: FallServiceSaveFallRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
+     public saveFall$(requestParameters: FallServiceSaveFallRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<Fall>;
+     public saveFall$(requestParameters: FallServiceSaveFallRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<Fall>>;
+     public saveFall$(requestParameters: FallServiceSaveFallRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<Fall>>;
+     public saveFall$(requestParameters: FallServiceSaveFallRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
         const fall = requestParameters.fall;
 
         let localVarHeaders = this.defaultHeaders;

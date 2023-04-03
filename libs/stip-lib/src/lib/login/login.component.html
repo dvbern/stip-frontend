@@ -1,1 +1,16 @@
-<p>login works!</p>
+<form [formGroup]="form.group">
+
+  <div class="row">
+    <stip-web-form-control>
+      <input stipTextInput id="username" type="text" formControlName="username"
+             label="username"
+             [autofocus]="true">
+    </stip-web-form-control>
+    <stip-web-form-control>
+      <input stipTextInput id="password" label="password" type="password" formControlName="password">
+    </stip-web-form-control>
+  </div>
+  <button type="submit">
+    Anmelden
+  </button>
+</form>

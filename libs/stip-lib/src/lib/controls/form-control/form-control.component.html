@@ -1,0 +1,9 @@
+<div>
+  <label *ngIf="!!label" [for]="id">
+    {{label}}
+  </label>
+  <ng-content></ng-content>
+  <div *ngIf="control?.errors?.['required']">
+    required
+  </div>
+</div>

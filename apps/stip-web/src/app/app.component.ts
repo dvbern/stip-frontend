@@ -1,10 +1,11 @@
 import { RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
 import {StipLibModule} from "@stip-web/stip-lib";
+import {StipModelsModule} from "@stip-web/stip-models";
 
 @Component({
   standalone: true,
-    imports: [RouterModule, StipLibModule],
+    imports: [RouterModule, StipLibModule, StipModelsModule],
   selector: 'stip-web-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
