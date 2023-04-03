@@ -11,11 +11,13 @@
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2017", "dom"],
+    "noImplicitAny": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@stip-web/stip-lib": ["libs/stip-lib/src/index.ts"]
+      "@stip-web/stip-lib": ["libs/stip-lib/src/index.ts"],
+      "@stip-web/stip-models": ["libs/stip-models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
