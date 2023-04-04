@@ -11,6 +11,7 @@
  */
 
 export interface FallDTO { 
+    uuid: string;
     fallNummer: number;
     mandant: string;
 }

@@ -1,2 +1,2 @@
-export * from './fall';
+export * from './benutzerLoginDTO';
 export * from './fallDTO';

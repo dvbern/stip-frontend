@@ -122,6 +122,7 @@ async function sleep(msec: number) {
   // Names are CamelCase versions from OpenAPIConst Tags
   const generatedApis = [
     'Fall',
+    'Auth'
   ];
 
   await generateOpenApi(generatorPath, generatedApis);

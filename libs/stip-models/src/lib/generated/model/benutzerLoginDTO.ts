@@ -10,14 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface Fall { 
-    id?: string;
-    version: number;
-    timestampErstellt?: Date;
-    timestampMutiert?: Date;
-    userErstellt?: string;
-    userMutiert?: string;
-    fallNummer: number;
-    mandant: string;
+export interface BenutzerLoginDTO { 
+    username: string;
+    password: string;
 }
 
