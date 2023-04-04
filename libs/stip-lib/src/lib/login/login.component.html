@@ -1,5 +1,9 @@
 <form [formGroup]="form.group">
 
+  <div *ngIf="benutzer$ | async as benutzer">
+    Hello {{benutzer.username}}
+  </div>
+
   <div class="row">
     <stip-web-form-control>
       <input stipTextInput id="username" type="text" formControlName="username"
