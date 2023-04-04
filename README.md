@@ -37,6 +37,13 @@ Show how application are linked together:
 npx nx dep-graph
 ```
 
+Generate Entities and Rest Services:
+```
+npx run openapi
+```
+
+
+
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev) to learn more.
