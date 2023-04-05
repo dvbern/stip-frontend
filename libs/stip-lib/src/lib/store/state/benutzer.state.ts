@@ -19,6 +19,7 @@
 import {AuthService, BenutzerLoginDTO} from "../../../../../stip-models/src/lib/generated";
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {BenutzerActions} from "../actions/benutzer.actions";
+import {Injectable} from "@angular/core";
 
 interface BenutzerStateModel {
   currentBenutzer: BenutzerLoginDTO | undefined;
@@ -29,6 +30,9 @@ interface BenutzerStateModel {
   defaults: {
     currentBenutzer: undefined,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class BenutzerState {
 
@@ -49,6 +53,16 @@ export class BenutzerState {
         password: '',
         username: username
       }))
+    );
+  }
+
+  @Action(BenutzerActions.LoginSuccess)
+  onLoginSuccess(ctx: StateContext<BenutzerStateModel>, action: BenutzerActions.LoginSuccess) {
+    const state = ctx.getState();
+    ctx.setState({
+        ...state,
+        currentBenutzer: action.benutzerLogin,
+      }
     );
   }
 }

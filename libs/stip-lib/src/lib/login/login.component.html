@@ -4,17 +4,17 @@
     Hello {{benutzer.username}}
   </div>
 
-  <div class="row">
+  <div class="row" class="col-6 mr-1">
     <stip-web-form-control>
       <input stipTextInput id="username" type="text" formControlName="username"
              label="username"
              [autofocus]="true">
     </stip-web-form-control>
-    <stip-web-form-control>
+    <stip-web-form-control class="col-6 mr-1">
       <input stipTextInput id="password" label="password" type="password" formControlName="password">
     </stip-web-form-control>
   </div>
-  <button type="submit">
+  <button type="submit" (click)="login()">
     Anmelden
   </button>
 </form>
