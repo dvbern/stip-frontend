@@ -8,6 +8,9 @@ tmp
 # dependencies
 node_modules
 
+# Maven installs its own node
+/node
+
 # IDEs and editors
 /.idea
 .project
@@ -41,4 +44,4 @@ Thumbs.db
 .angular
 
 # frontend generated
-/frontend/libs/backend-models/src/lib/generated/.openapi-generator/FILES
+/libs/stip-models/src/lib/generated/.openapi-generator/FILES
