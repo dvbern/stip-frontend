@@ -1,9 +1,10 @@
-<div>
+<div class="form-group">
   <label *ngIf="!!label" [for]="id">
-    {{label}}
+    {{label}}:
   </label>
+  <br>
   <ng-content></ng-content>
-  <div *ngIf="control?.errors?.['required']">
+  <div *ngIf="control?.errors?.['required']" class="stip-error">
     required
   </div>
 </div>
