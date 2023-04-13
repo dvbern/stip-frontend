@@ -42,7 +42,7 @@ npx nx dep-graph
 
 Generate Entities and Rest Services:
 ```
-npx run openapi
+npm run openapi
 ```
 
 
