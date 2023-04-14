@@ -8,6 +8,8 @@
     "nx": "nx",
     "build": "npx nx run-many --target=build",
     "test": "jest --coverage",
+    "start": "npx nx serve stip-web --proxy-config proxy.conf.json",
+    "start:prod": "npx nx serve stip-web",
     "clean": "run-s clean:*",
     "clean:artifacts": "rimraf coverage/ dist/ build/ apps/**/test-results/ libs/**/test-results/",
     "clean:cache": "rimraf jest-cache/ apps/**/jest-cache/ libs/**/jest-cache node_modules/.cache",

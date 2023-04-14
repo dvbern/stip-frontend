@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FallDTOId } from './fallDTOId';
 
-export interface FallDTO { 
-    id: FallDTOId;
-    fallNummer: number;
-    mandant: string;
+export interface IDFall { 
+    id?: string;
+    entityClass?: object;
 }
 

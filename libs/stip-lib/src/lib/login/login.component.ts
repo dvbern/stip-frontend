@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {LoginForm} from "./login.form";
 import {Observable} from "rxjs";
 import {BenutzerState} from "../store/state/benutzer.state";
-import {BenutzerLoginDTO} from "../../../../stip-models/src/lib/generated";
+import {BenutzerLoginDTO, DeploymentConfigDTO} from "../../../../stip-models/src/lib/generated";
 import {Select, Store} from "@ngxs/store";
 import {BenutzerActions} from "../store/actions/benutzer.actions";
 

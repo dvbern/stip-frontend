@@ -20,6 +20,8 @@ import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
 import { FallDTO } from '../model/fallDTO';
+// @ts-ignore
+import { IDFall } from '../model/iDFall';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -27,7 +29,7 @@ import { Configuration }                                     from '../configurat
 
 
 export interface FallServiceGetFallDTORequestParams {
-    fallId: string;
+    fallId: IDFall;
 }
 
 export interface FallServiceSaveFallRequestParams {
@@ -147,7 +149,7 @@ export class FallService {
             }
         }
 
-        let localVarPath = `/api/v1/fall/id/${this.configuration.encodeParam({name: "fallId", value: fallId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/v1/fall/id/${this.configuration.encodeParam({name: "fallId", value: fallId, in: "path", style: "simple", explode: false, dataType: "IDFall", dataFormat: undefined})}`;
         return this.httpClient.request<FallDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

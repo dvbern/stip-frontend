@@ -24,11 +24,7 @@ npx nx g @nrwl/angular:component login --project=stip-lib --export
 ```
 Run server:
 ```
-npx nx serve stip-web
-npx nx serve stip-antrag // not used yet, maybe never to discuss
-
--- local starten to check were to bind in the new standalone app --
-npx nx serve stip-web --proxy-config proxy.conf.json
+npm run start
 ```
 Compile:
 ```
@@ -45,6 +41,10 @@ Generate Entities and Rest Services:
 npm run openapi
 ```
 
+Lint:
+```
+npx nx lint stip-web | stip-lib
+```
 
 
 ## Further help

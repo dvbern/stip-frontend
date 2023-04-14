@@ -38,7 +38,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
 
   const apisString = apis.join(':');
 
-  //const typesPath = '../../types';
+  const typesPath = '../../types';
   const typeMap = [
     // [OpenApi-Name/Format, Typescript-Name, Import-Path]
     ['AnyType', 'object', undefined],
@@ -52,10 +52,10 @@ async function generateOpenApi(directory: string, apis: string[]) {
     // ['zoned-date-time', 'BackendZonedDateTime', typesPath],
   //  ['email', 'BackendEmail', typesPath],
     // ['rest-includes', 'RestIncludes', typesPath],
-   // ['entity-id', 'EntityID', typesPath],
+    ['entity-id', 'EntityID', typesPath],
   ];
   const typeMappingsArg = typeMap.map(e => `${e[0]}=${e[1]}`).join(',');
-  //const importMappingsArg = typeMap.filter(e => !!e[2]).map(e => `${e[1]}=${e[2]}`).join(',');
+  const importMappingsArg = typeMap.filter(e => !!e[2]).map(e => `${e[1]}=${e[2]}`).join(',');
 
   const cmd = 'npx openapi-generator-cli generate'
     + ' -i http://localhost:8080/openapi.yml'
@@ -78,7 +78,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
     + ' -p removeEnumValuePrefix=false'
     + ' -p useSingleRequestParameter=true'
     + ` --type-mappings ${typeMappingsArg}`
-   // + ` --import-mappings ${importMappingsArg}`
+    + ` --import-mappings ${importMappingsArg}`
     + ' -o ' + directory;
 
   console.log('executing command: ', cmd);
@@ -122,7 +122,8 @@ async function sleep(msec: number) {
   // Names are CamelCase versions from OpenAPIConst Tags
   const generatedApis = [
     'Fall',
-    'Auth'
+    'Auth',
+    'Configuration'
   ];
 
   await generateOpenApi(generatorPath, generatedApis);

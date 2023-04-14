@@ -1,4 +1,7 @@
 <div class="stip-app">
+  <div *ngIf="config$ | async as config">
+    Hello {{config.environment}}
+  </div>
   <h1>Welcome to {{title}}</h1>
   <div class="content">
     <stip-web-login></stip-web-login>
