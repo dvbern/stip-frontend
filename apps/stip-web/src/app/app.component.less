@@ -16,10 +16,28 @@
  */
 
 .stip-app {
+  max-height: 100vh;
+  height: 100%;
   margin-left: 1rem;
   font-family: Open Sans, Arial, Helvetica, sans-serif;
+  max-width: 100%;
 
   .content {
+    flex: 1;
     margin-left: 1rem;
+  }
+}
+
+.dv-footer {
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2.5rem;
+  padding-top: 3rem;
+  width: 100%;
+  min-height: 5vh;
+
+  .version {
+    text-align: right;
   }
 }
