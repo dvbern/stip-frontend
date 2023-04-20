@@ -23,7 +23,7 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>dist/apps/sip-web/</directory>
+            <directory>dist/apps/stip-web</directory>
             <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
