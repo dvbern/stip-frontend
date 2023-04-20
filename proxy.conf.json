@@ -1,6 +1,6 @@
 {
   "/api/v1/": {
-    "target": "http://local-stip.kibon.ch:8080/stip",
+    "target": "http://local-stip.kibon.ch:8080",
     "secure": false,
     "changeOrigin": true
   }
