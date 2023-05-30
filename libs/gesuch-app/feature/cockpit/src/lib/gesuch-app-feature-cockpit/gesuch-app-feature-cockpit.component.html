@@ -1,0 +1,56 @@
+<h1>Welcome to gesuch app cockpit</h1>
+
+<button type="button" class="btn btn-primary mb-4" (click)="handleCreate()">
+  {{ 'gesuch-app.cockpit.gesuch.new' | translate }}
+</button>
+
+<div
+  *ngIf="view().loading"
+  class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+>
+  <div class="dv-progress-bar-indeterminate">
+    <div></div>
+  </div>
+</div>
+
+<div
+  class="my-2 p-2 d-flex align-items-center justify-content-between rounded shadow-sm border"
+  *ngFor="let gesuch of view().gesuchs; trackBy: trackByIndex"
+>
+  <h4 class="m-0" data-test-id="cockpit-gesuch-description">
+    <span
+      *ngIf="gesuch?.personInAusbildungContainer?.personInAusbildungSB?.vorname"
+    >
+      {{ gesuch?.personInAusbildungContainer?.personInAusbildungSB?.vorname }}
+      {{
+        gesuch?.personInAusbildungContainer?.personInAusbildungSB?.name
+      }}</span
+    >
+    <span
+      *ngIf="
+        !gesuch?.personInAusbildungContainer?.personInAusbildungSB?.vorname
+      "
+    >
+      {{ gesuch.id }}
+    </span>
+  </h4>
+  <div class="d-flex gap-2 align-items-center">
+    <a
+      class="btn btn-primary"
+      data-test-id="cockpit-gesuch-edit"
+      [routerLink]="['/gesuch-app-feature-gesuch-form-person', gesuch.id]"
+      [class.disabled]="view().loading"
+    >
+      {{ 'gesuch-app.cockpit.gesuch.edit' | translate }}
+    </a>
+    <button
+      type="button"
+      class="btn btn-primary d-block h-4"
+      data-test-id="cockpit-gesuch-remove"
+      [disabled]="view().loading"
+      (click)="handleRemove(gesuch.id)"
+    >
+      {{ 'gesuch-app.cockpit.gesuch.remove' | translate }}
+    </button>
+  </div>
+</div>

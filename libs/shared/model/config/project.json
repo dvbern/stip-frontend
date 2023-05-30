@@ -1,0 +1,26 @@
+{
+  "name": "shared-model-config",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/model/config/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/model/config",
+        "main": "libs/shared/model/config/src/index.ts",
+        "tsConfig": "libs/shared/model/config/tsconfig.lib.json",
+        "assets": ["libs/shared/model/config/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/model/config/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["type:model", "scope:shared"]
+}

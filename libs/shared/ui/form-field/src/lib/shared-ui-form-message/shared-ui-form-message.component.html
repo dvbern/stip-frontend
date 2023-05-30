@@ -1,0 +1,17 @@
+<div
+  class="d-flex flex-wrap align-items-center gap-2 mt-2 px-2 py-3 rounded bg-light"
+>
+  <span class="material-symbols-rounded text-info" *ngIf="level === 'info'">
+    info
+  </span>
+  <span class="material-symbols-rounded text-danger" *ngIf="level === 'error'">
+    warning
+  </span>
+  <div
+    class="overflow-hidden mw-100"
+    [class.info]="level === 'info'"
+    [attr.role]="level === 'info' ? 'status' : 'alert'"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

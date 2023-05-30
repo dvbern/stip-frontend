@@ -1,0 +1,67 @@
+<header class="position-sticky top-0 bg-body" [class.shadow-sm]="isScroll">
+  <div class="container-md">
+    <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+      <div class="d-flex gap-2 align-items-center">
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.search' | translate"
+        >
+          <span class="material-symbols-rounded">search</span>
+        </button>
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.menu' | translate"
+          (click)="openMenu()"
+        >
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #menu let-offcanvas>
+    <div class="offcanvas-header">
+      <h4 class="offcanvas-title">
+        {{ 'gesuch-app.header.menu.title' | translate }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        [attr.aria-label]="'shared.close' | translate"
+        (click)="offcanvas.dismiss()"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <dv-shared-ui-language-selector
+        [language]="language()"
+        (languageChange)="handleLanguageChangeHeader($event)"
+      />
+    </div>
+  </ng-template>
+</header>
+
+<main class="mt-5">
+  <div class="container-md">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+
+<footer class="py-2 py-md-4 bg-light mt-5">
+  <div class="container-md">
+    <div class="d-flex justify-content-end">
+      <dv-shared-ui-language-selector
+        [language]="language()"
+        (languageChange)="handleLanguageChangeFooter($event)"
+      />
+    </div>
+  </div>
+</footer>

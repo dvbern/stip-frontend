@@ -1,0 +1,143 @@
+{
+  "config": {
+    "environment": "dev",
+    "version": "0.1"
+  },
+  "gesuch": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "fall": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "fallNummer": 0,
+        "mandant": "string"
+      },
+      "gesuchsperiode": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "gueltigkeit": {
+          "gueltigAb": "2023-05-24",
+          "gueltigBis": "2023-05-24"
+        },
+        "gesuchsperiodeStatus": "string"
+      },
+      "personInAusbildungContainer": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "personInAusbildungGS": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "adresse": {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "version": 0,
+            "timestampErstellt": "2023-05-24T07:45:26.573Z",
+            "timestampMutiert": "2023-05-24T07:45:26.573Z",
+            "userErstellt": "string",
+            "userMutiert": "string",
+            "vorgaengerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "land": "CH",
+            "coAdresse": "string",
+            "strasse": "string",
+            "nummer": "string",
+            "plz": "string",
+            "ort": "string"
+          },
+          "sozialversicherungsnummer": "string",
+          "name": "string",
+          "vorname": "string",
+          "anrede": "HERR",
+          "identischerZivilrechtlicherWohnsitz": true,
+          "izvOrt": "string",
+          "izvPLZ": "string",
+          "email": "string",
+          "telefonnummer": "string",
+          "geburtsdatum": "2023-05-24",
+          "nationalitaet": "CH",
+          "heimatort": "string",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
+          "zivilstand": "LEDIG",
+          "wohnsitz": "ELTERN",
+          "sozialhilfebeitraege": true,
+          "quellenbesteuerung": true,
+          "kinder": true,
+          "digitaleKommunikation": true
+        },
+        "personInAusbildungSB": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "adresse": {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "version": 0,
+            "timestampErstellt": "2023-05-24T07:45:26.573Z",
+            "timestampMutiert": "2023-05-24T07:45:26.573Z",
+            "userErstellt": "string",
+            "userMutiert": "string",
+            "vorgaengerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "land": "CH",
+            "coAdresse": "string",
+            "strasse": "string",
+            "nummer": "string",
+            "plz": "string",
+            "ort": "string"
+          },
+          "sozialversicherungsnummer": "756.5936.9071.73",
+          "name": "Trajan",
+          "vorname": "Tomas",
+          "anrede": "HERR",
+          "identischerZivilrechtlicherWohnsitz": true,
+          "izvOrt": "string",
+          "izvPLZ": "string",
+          "email": "string",
+          "telefonnummer": "string",
+          "geburtsdatum": "2023-05-24",
+          "nationalitaet": "CH",
+          "heimatort": "string",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
+          "zivilstand": "LEDIG",
+          "wohnsitz": "ELTERN",
+          "sozialhilfebeitraege": true,
+          "quellenbesteuerung": true,
+          "kinder": true,
+          "digitaleKommunikation": true,
+          "addresse": {
+            "coAdresse": "",
+            "strasse": "Hohlstrasse 511",
+            "nummer": "",
+            "plz": "8048",
+            "ort": "Zurich",
+            "land": "CH"
+          },
+          "vormundschaft": false
+        }
+      },
+      "gesuchStatus": "OFFEN",
+      "gesuchNummer": 0
+    },
+    {
+      "id": "rx_ZMda",
+      "personInAusbildungContainer": {
+        "personInAusbildungSB": {
+          "sozialversicherungsnummer": "756.5936.9071.73",
+          "anrede": "FRAU",
+          "name": "Herich",
+          "vorname": "Tomas",
+          "addresse": {
+            "coAdresse": "",
+            "strasse": "Hohlstrasse",
+            "nummer": "511",
+            "plz": "8048",
+            "ort": "Zurich",
+            "land": "CH"
+          },
+          "identischerZivilrechtlicherWohnsitz": false,
+          "email": "tomas.trajan@gmail.com",
+          "telefonnummer": "+41787342091",
+          "geburtsdatum": "1987-09-17",
+          "nationalitaet": "SK",
+          "heimatort": "Kosice",
+          "vormundschaft": false,
+          "zivilstand": "LEDIG",
+          "sozialhilfebeitraege": false,
+          "quellenbesteuerung": false,
+          "kinder": false,
+          "digitaleKommunikation": true
+        }
+      }
+    }
+  ]
+}

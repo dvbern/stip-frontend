@@ -1,0 +1,13 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--dv-size-unit) * 16);
+  height: calc(var(--dv-size-unit) * 16);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, white 84%, transparent 85%),
+    conic-gradient(
+      var(--dv-primary) calc(var(--progress) * 1%),
+      var(--dv-light) 0
+    );
+}

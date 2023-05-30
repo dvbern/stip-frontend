@@ -1,0 +1,45 @@
+@use '../../theme/src/theme' as t;
+
+/**
+
+Indeterminate progress bar
+
+<div class="dv-progress-bar-indeterminate">
+    <div></div> (or override color using bg-<color> class <div class="bg-primary"></div>
+</div>
+
+ */
+
+.#{t.$prefix}progress-bar-indeterminate {
+  background-color: var(--dv-light);
+
+  border-radius: 9999px;
+
+  height: calc(var(--dv-size-unit) * 2);
+  width: 100%;
+
+  position: relative;
+  overflow: hidden;
+
+  div {
+    background-color: var(--dv-gray-300);
+    border-radius: 9999px;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 50%;
+
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-name: indeterminate-progress-bar;
+  }
+}
+
+@keyframes indeterminate-progress-bar {
+  from {
+    left: -50%;
+  }
+  to {
+    left: 100%;
+  }
+}

@@ -1,0 +1,25 @@
+// bootstrap variable overrides
+// list of all supported variables can be found at
+// node_modules/bootstrap/scss/_variables.scss
+
+// colors
+$primary: #ea161f;
+$secondary: #b9b9b9;
+$info: #3c96e9;
+
+// input
+$input-placeholder-color: $secondary;
+$input-focus-border-color: $info;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($input-focus-border-color, 0.25);
+
+// select
+$form-select-focus-border-color: $info;
+$form-select-focus-box-shadow: 0 0 0 0.2rem
+  rgba($form-select-focus-border-color, 0.25);
+
+// checkbox
+$form-check-input-focus-border: $info;
+$form-check-input-focus-box-shadow: 0 0 0 0.2rem
+  rgba($form-check-input-focus-border, 0.25);
+$form-check-input-checked-bg-color: $info;
+$form-check-input-checked-border-color: $form-check-input-checked-bg-color;

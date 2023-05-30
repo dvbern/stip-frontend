@@ -1,0 +1,11 @@
+// override boostrap variables + add custom
+@import 'theme';
+@import 'components';
+
+@import 'bootstrap/scss/bootstrap';
+
+// add your global styles here
+
+* {
+  outline: none;
+}

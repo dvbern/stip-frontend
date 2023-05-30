@@ -1,0 +1,39 @@
+@use '../../theme/src/theme' as t;
+
+.#{t.$prefix}button-icon {
+  background: none;
+  border: none;
+  width: calc(var(--dv-size-unit) * 10);
+  height: calc(var(--dv-size-unit) * 10);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  span {
+    overflow: hidden;
+    font-size: calc(var(--dv-size-unit) * 8);
+  }
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+
+  &:focus {
+    outline: var(--dv-size-unit) solid var(--dv-light);
+  }
+
+  &.#{t.$prefix}button-icon-sm {
+    span {
+      font-size: calc(var(--dv-size-unit) * 4);
+    }
+  }
+
+  &.#{t.$prefix}button-icon-md {
+    span {
+      font-size: calc(var(--dv-size-unit) * 6);
+    }
+  }
+}

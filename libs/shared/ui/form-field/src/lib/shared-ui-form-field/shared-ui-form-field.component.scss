@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.is-invalid {
+  ::ng-deep .control-wrapper * {
+    border-width: 2px;
+    border-color: var(--dv-danger) !important;
+  }
+}

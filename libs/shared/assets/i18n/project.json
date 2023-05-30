@@ -1,0 +1,6 @@
+{
+  "name": "shared-assets-i18n",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/assets/i18n/src",
+  "tags": ["scope:shared", "type:assets"]
+}

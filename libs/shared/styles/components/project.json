@@ -1,0 +1,6 @@
+{
+  "name": "shared-styles-components",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/styles/components/src",
+  "tags": ["scope:shared", "type:styles"]
+}

@@ -1,0 +1,123 @@
+{
+  "name": "gesuch-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "dv",
+  "sourceRoot": "apps/gesuch-app/src",
+  "tags": ["type:app", "scope:gesuch-app"],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/gesuch-app",
+        "index": "apps/gesuch-app/src/index.html",
+        "main": "apps/gesuch-app/src/main.ts",
+        "polyfills": ["zone.js", "apps/gesuch-app/src/polyfills.ts"],
+        "tsConfig": "apps/gesuch-app/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/i18n/src",
+            "output": "assets/i18n"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/images/src",
+            "output": "assets/images"
+          },
+          "apps/gesuch-app/src/favicon.ico",
+          "apps/gesuch-app/src/assets"
+        ],
+        "styles": ["apps/gesuch-app/src/styles.scss"],
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/shared/styles/theme/src",
+            "libs/shared/styles/components/src"
+          ]
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "750kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "gesuch-app:build:production"
+        },
+        "development": {
+          "browserTarget": "gesuch-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "gesuch-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/gesuch-app/**/*.ts",
+          "apps/gesuch-app/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/gesuch-app/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "gesuch-app:build"
+      }
+    }
+  },
+  "implicitDependencies": [
+    "libs/shared/assets/i18n",
+    "libs/shared/assets/images",
+    "libs/shared/styles/theme",
+    "libs/shared/styles/components"
+  ]
+}
