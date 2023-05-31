@@ -2,9 +2,6 @@ stages:
   - test
   - build
 
-before_script:
-  - cd stip-web
-
 .distributed:
   image: node:18
   tags: ['os:linux', 'zone:tz', 'type:docker'] 
@@ -19,6 +16,7 @@ before_script:
     paths:
       - .npm/
   before_script:
+    - cd stip-web
     - npm ci --cache .npm --prefer-offline
     - NX_HEAD=$CI_COMMIT_SHA
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
