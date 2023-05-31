@@ -1,3 +1,7 @@
+stages:
+  - test
+  - build
+
 .distributed:
   image: node:18
   tags: ['os:linux', 'zone:tz', 'type:docker'] 
