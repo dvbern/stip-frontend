@@ -6,9 +6,6 @@ stages:
   image: node:18
   tags: ['os:linux', 'zone:tz', 'type:docker'] 
   interruptible: true
-  only:
-    - main
-    - merge_requests
   cache:
     key:
       files:
