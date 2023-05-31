@@ -78,8 +78,27 @@ export const syncLanguageToNgxTranslate = createEffect(
   { functional: true, dispatch: false }
 );
 
+export const persistLanguageIntoLocalStorage = createEffect(
+  (
+    actions$ = inject(Actions),
+    languageService = inject(SharedDataAccessLanguageService)
+  ) => {
+    return actions$.pipe(
+      ofType(
+        SharedDataAccessLanguageActions.headerMenuSelectorChange,
+        SharedDataAccessLanguageActions.footerSelectorChange
+      ),
+      tap(({ language }) => {
+        languageService.setLanguageIntoLocalStorage(language);
+      })
+    );
+  },
+  { functional: true, dispatch: false }
+);
+
 // add effects here
 export const sharedDataAccessLanguageEffects = {
   resolveLanguageOnInit,
   syncLanguageToNgxTranslate,
+  persistLanguageIntoLocalStorage,
 };

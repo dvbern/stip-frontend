@@ -13,12 +13,15 @@ it('loads actors effect - success', (done) => {
 
   const actionsMock$ = of(SharedDataAccessConfigActions.appInit());
 
-  loadDeploymentConfig(actionsMock$, sharedDataAccessConfigServiceMock).subscribe(
-    (action) => {
-      expect(action).toEqual(
-        SharedDataAccessConfigApiActions.deploymentConfigLoadedSuccess({ deploymentConfig: {} })
-      );
-      done();
-    }
-  );
+  loadDeploymentConfig(
+    actionsMock$,
+    sharedDataAccessConfigServiceMock
+  ).subscribe((action) => {
+    expect(action).toEqual(
+      SharedDataAccessConfigApiActions.deploymentConfigLoadedSuccess({
+        deploymentConfig: {},
+      })
+    );
+    done();
+  });
 });
