@@ -1,6 +1,6 @@
 @use '../../theme/src/theme' as t;
 
-.#{t.$prefix}button-icon {
+.dv-button-icon {
   background: none;
   border: none;
   width: calc(var(--dv-size-unit) * 10);
