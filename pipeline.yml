@@ -46,5 +46,4 @@ build:
   stage: build
   extends: .distributed
   script:
-    - npx nx a
-    ffected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=3
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=3
