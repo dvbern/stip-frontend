@@ -45,7 +45,7 @@ function normalizeOptions(
   const projectDirectory = path.join(options.scope, options.type);
   const nameDasherized = dasherize(options.name);
   const projectName = `${options.scope}-${options.type}-${nameDasherized}`;
-  const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
+  const projectRoot = path.join(getWorkspaceLayout(tree).libsDir, projectDirectory);
   const parsedTags = [`type:${options.type}`, `scope:${options.scope}`];
 
   return {
