@@ -4,10 +4,13 @@ export * from './lib/<%= projectName %>.actions';
 export * from './lib/<%= projectName %>.effects';
 
 /**
- * Register only once in core (global state) OR lazy loaded feature (state of feature)
+ * Register only once in:
+ * 1. lazy loaded feature (state of feature)
+ * 2. app.config.ts (global state of a single app)
+ * 3. core (global state re-used in every app)
  *
  * providers: [
- *   provideState(<%= camelize(projectName) %>sFeature)
+ *   provideState(<%= camelize(projectName) %>sFeature),
  *   provideEffects(<%= camelize(projectName) %>Effects)
  * ]
  *
