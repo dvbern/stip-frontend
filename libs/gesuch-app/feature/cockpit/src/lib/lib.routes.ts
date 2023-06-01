@@ -1,4 +1,12 @@
 import { Route } from '@angular/router';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+
+import {
+  gesuchAppDataAccessGesuchsperiodeEffects,
+  gesuchAppDataAccessGesuchsperiodesFeature,
+} from '@dv/gesuch-app/data-access/gesuchsperiode';
+
 import { GesuchAppFeatureCockpitComponent } from './gesuch-app-feature-cockpit/gesuch-app-feature-cockpit.component';
 
 export const gesuchAppFeatureCockpitRoutes: Route[] = [
@@ -6,8 +14,8 @@ export const gesuchAppFeatureCockpitRoutes: Route[] = [
     path: '',
     pathMatch: 'prefix',
     providers: [
-      // feature specific services and other providers
-      // always remove { providedIn: 'root' } from the feature specific services
+      provideState(gesuchAppDataAccessGesuchsperiodesFeature),
+      provideEffects(gesuchAppDataAccessGesuchsperiodeEffects),
     ],
     children: [
       { path: '', component: GesuchAppFeatureCockpitComponent },

@@ -13,6 +13,7 @@ import {
   GesuchAppDataAccessGesuchCockpitActions,
   selectGesuchAppDataAccessGesuchsView,
 } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppDataAccessGesuchsperiodeCockpitActions } from '@dv/gesuch-app/data-access/gesuchsperiode';
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
@@ -29,6 +30,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppDataAccessGesuchCockpitActions.init());
+    this.store.dispatch(GesuchAppDataAccessGesuchsperiodeCockpitActions.init());
   }
 
   handleCreate() {

@@ -3,6 +3,16 @@
     "environment": "dev",
     "version": "0.1"
   },
+  "gesuchsperiode": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "gueltigkeit": {
+        "gueltigAb": "2023-05-24",
+        "gueltigBis": "2023-05-24"
+      },
+      "gesuchsperiodeStatus": "string"
+    }
+  ],
   "gesuch": [
     {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",

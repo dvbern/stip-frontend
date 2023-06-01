@@ -10,6 +10,7 @@ export interface SharedModelGesuch extends GesuchDTO {
 
 // TODO extract to env or generate with OpenAPI?
 export const SHARED_MODEL_GESUCH_RESOURCE = `/gesuch`;
+export const SHARED_MODEL_GESUCHSPERIODE_RESOURCE = `/gesuchsperiode`;
 
 export const MASK_SOZIALVERSICHERUNGSNUMMER: MaskitoOptions = {
   mask: [
