@@ -1,6 +1,5 @@
 export * from './lib/<%= projectName %>.feature';
 export * from './lib/<%= projectName %>.selectors';
-export * from './lib/<%= projectName %>.actions';
 export * from './lib/<%= projectName %>.effects';
 
 /**

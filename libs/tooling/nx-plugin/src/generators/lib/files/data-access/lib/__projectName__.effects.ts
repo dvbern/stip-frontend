@@ -3,18 +3,18 @@ import { catchError, switchMap, map, of } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { <%= classify(projectName) %>Service } from './<%= dasherize(projectName) %>.service';
-import { <%= classify(projectName) %>Actions } from './<%= dasherize(projectName) %>.actions';
-import { <%= classify(projectName) %>ApiActions } from './<%= dasherize(projectName) %>-api.actions';
+import { <%= classify(projectName) %>ApiEvents } from './<%= dasherize(projectName) %>.events';
 
 export const load<%= classify(name) %>s = createEffect(
-  (actions$ = inject(Actions), <%= camelize(projectName) %>Service = inject(<%= classify(projectName) %>Service)) => {
-    return actions$.pipe(
-      ofType(<%= classify(projectName) %>Actions.init),
+  (events$ = inject(Actions), <%= camelize(projectName) %>Service = inject(<%= classify(projectName) %>Service)) => {
+    return events$.pipe(
+      // TODO replace with a trigger event (eg some page init)
+      ofType(<%= classify(projectName) %>ApiEvents.dummy),
       switchMap(() =>
         <%= camelize(projectName) %>Service.getAll().pipe(
-          map((<%= camelize(name) %>s) => <%= classify(projectName) %>ApiActions.<%= camelize(name) %>sLoadedSuccess({ <%= camelize(name) %>s })),
+          map((<%= camelize(name) %>s) => <%= classify(projectName) %>ApiEvents.<%= camelize(name) %>sLoadedSuccess({ <%= camelize(name) %>s })),
           catchError((error: { message: string }) =>
-            of(<%= classify(projectName) %>ApiActions.<%= camelize(name) %>sLoadedFailure({ error: error.message }))
+            of(<%= classify(projectName) %>ApiEvents.<%= camelize(name) %>sLoadedFailure({ error: error.message }))
           )
         )
       )

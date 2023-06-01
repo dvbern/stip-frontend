@@ -166,6 +166,11 @@ describe('lib generator', () => {
       expect(
         tree.exists('libs/shared/data-access/example/README.md')
       ).toBeFalsy();
+      expect(
+        tree.exists(
+          'libs/shared/data-access/example/src/lib/shared-data-access-example.actions.ts'
+        )
+      ).toBeFalsy();
     });
   });
 

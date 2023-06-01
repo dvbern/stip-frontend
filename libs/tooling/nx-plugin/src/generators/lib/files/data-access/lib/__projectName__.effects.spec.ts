@@ -3,8 +3,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { load<%= classify(name) %>s } from './<%= dasherize(projectName) %>.effects';
 
 import { <%= classify(projectName) %>Service } from './<%= dasherize(projectName) %>.service';
-import { <%= classify(projectName) %>Actions } from './<%= dasherize(projectName) %>.actions';
-import { <%= classify(projectName) %>ApiActions } from './<%= dasherize(projectName) %>-api.actions';
+import { <%= classify(projectName) %>ApiEvents } from './<%= dasherize(projectName) %>.events';
 
 describe('<%= classify(projectName) %> Effects', () => {
   let scheduler: TestScheduler;
@@ -22,17 +21,18 @@ describe('<%= classify(projectName) %> Effects', () => {
         getAll: () => cold('150ms a', {a: []}),
       } as unknown as <%= classify(projectName) %>Service;
 
-      const actionsMock$ = hot('10ms a', {
-        a: <%= classify(projectName) %>Actions.init(),
+      const eventsMock$ = hot('10ms a', {
+        // TODO replace with a trigger event (eg some page init)
+        a: <%= classify(projectName) %>ApiEvents.dummy()
       });
 
       const effectStream$ =  load<%= classify(name) %>s(
-        actionsMock$,
+        eventsMock$,
         <%= camelize(projectName) %>ServiceMock
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: <%= classify(projectName) %>ApiActions.<%= camelize(name)  %>sLoadedSuccess({ <%= camelize(name)  %>s: [] })
+        a: <%= classify(projectName) %>ApiEvents.<%= camelize(name)  %>sLoadedSuccess({ <%= camelize(name)  %>s: [] })
       });
     });
   });

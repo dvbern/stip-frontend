@@ -43,6 +43,7 @@
                   "type:feature",
                   "type:pattern",
                   "type:data-access",
+                  "type:event",
                   "type:ui",
                   "type:util",
                   "type:util-fn",
@@ -54,6 +55,7 @@
                 "onlyDependOnLibsWithTags": [
                   "type:pattern",
                   "type:data-access",
+                  "type:event",
                   "type:ui",
                   "type:util",
                   "type:util-fn",
@@ -64,10 +66,15 @@
                 "sourceTag": "type:data-access",
                 "onlyDependOnLibsWithTags": [
                   "type:data-access",
+                  "type:event",
                   "type:util",
                   "type:util-fn",
                   "type:model"
                 ]
+              },
+              {
+                "sourceTag": "type:event",
+                "onlyDependOnLibsWithTags": []
               },
               {
                 "sourceTag": "type:ui",
