@@ -17,6 +17,7 @@ export function featureTypeFactory(
       routing: true,
       standalone: true,
       style: 'scss',
+      skipTests: true,
       changeDetection: 'OnPush',
       ...(scope !== 'shared'
         ? {
