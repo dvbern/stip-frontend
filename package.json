@@ -11,6 +11,7 @@
     "validate:fix": "nx generate @dv/tooling/nx-plugin:validate --fix",
     "graph": "nx dep-graph --groupByFolder",
     "readme:toc": "markdown-toc -i README.md",
+    "beforecommit": "npm run validate && npm run lint && npm t && npm run format:write",
     "prepare": "husky install",
     "reset": "nx reset",
     "start": "npm run serve:gesuch-app & npm run serve:gesuch-app:mock",
