@@ -21,6 +21,7 @@ import { NormalizedSchema, LibTypeGeneratorMap } from './generator.interface';
 import { featureTypeFactory } from './types/feature';
 import { patternTypeFactory } from './types/pattern';
 import { dataAccessTypeFactory } from './types/data-access';
+import { eventTypeFactory } from './types/event';
 import { uiTypeFactory } from './types/ui';
 import { utilTypeFactory } from './types/util';
 import { utilFnTypeFactory } from './types/util-fn';
@@ -30,6 +31,7 @@ const LIB_TYPE_GENERATOR_MAP: LibTypeGeneratorMap = {
   feature: featureTypeFactory,
   pattern: patternTypeFactory,
   'data-access': dataAccessTypeFactory,
+  event: eventTypeFactory,
   ui: uiTypeFactory,
   util: utilTypeFactory,
   'util-fn': utilFnTypeFactory,

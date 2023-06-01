@@ -1,0 +1,26 @@
+{
+  "name": "gesuch-app-event-gesuch-form-person",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gesuch-app/event/gesuch-form-person/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gesuch-app/event/gesuch-form-person",
+        "main": "libs/gesuch-app/event/gesuch-form-person/src/index.ts",
+        "tsConfig": "libs/gesuch-app/event/gesuch-form-person/tsconfig.lib.json",
+        "assets": ["libs/gesuch-app/event/gesuch-form-person/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gesuch-app/event/gesuch-form-person/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["type:event", "scope:gesuch-app"]
+}

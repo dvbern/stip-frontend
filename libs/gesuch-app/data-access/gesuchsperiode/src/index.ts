@@ -1,6 +1,5 @@
 export * from './lib/gesuch-app-data-access-gesuchsperiode.feature';
 export * from './lib/gesuch-app-data-access-gesuchsperiode.selectors';
-export * from './lib/gesuch-app-data-access-gesuchsperiode.actions';
 export * from './lib/gesuch-app-data-access-gesuchsperiode.effects';
 
 /**

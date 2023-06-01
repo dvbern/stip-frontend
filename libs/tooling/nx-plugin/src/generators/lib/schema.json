@@ -26,6 +26,10 @@
             "label": "Data Access - NgRx based data access (headless)"
           },
           {
+            "value": "event",
+            "label": "Event - events dispatched by features / patterns (and consumed by data-access)"
+          },
+          {
             "value": "ui",
             "label": "UI - standalone (simple / view / presentational) UI component, eg calendar or toggle"
           },

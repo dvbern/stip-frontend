@@ -74,7 +74,7 @@
               },
               {
                 "sourceTag": "type:event",
-                "onlyDependOnLibsWithTags": []
+                "onlyDependOnLibsWithTags": ["type:model"]
               },
               {
                 "sourceTag": "type:ui",

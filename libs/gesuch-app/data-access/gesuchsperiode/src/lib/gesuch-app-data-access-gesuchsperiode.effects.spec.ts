@@ -1,9 +1,10 @@
 import { TestScheduler } from 'rxjs/testing';
 
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+
 import { loadGesuchsperiodes } from './gesuch-app-data-access-gesuchsperiode.effects';
 import { GesuchAppDataAccessGesuchsperiodeService } from './gesuch-app-data-access-gesuchsperiode.service';
-import { GesuchAppDataAccessGesuchsperiodeApiActions } from './gesuch-app-data-access-gesuchsperiode-api.actions';
-import { GesuchAppDataAccessGesuchsperiodeCockpitActions } from './gesuch-app-data-access-gesuchsperiode.actions';
+import { GesuchAppDataAccessGesuchsperiodeEvents } from './gesuch-app-data-access-gesuchsperiode.events';
 
 describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
   let scheduler: TestScheduler;
@@ -21,7 +22,7 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
       } as unknown as GesuchAppDataAccessGesuchsperiodeService;
 
       const actionsMock$ = hot('10ms a', {
-        a: GesuchAppDataAccessGesuchsperiodeCockpitActions.init(),
+        a: GesuchAppEventCockpit.init(),
       });
 
       const effectStream$ = loadGesuchsperiodes(
@@ -30,7 +31,7 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: GesuchAppDataAccessGesuchsperiodeApiActions.gesuchsperiodesLoadedSuccess(
+        a: GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess(
           { gesuchsperiodes: [] }
         ),
       });

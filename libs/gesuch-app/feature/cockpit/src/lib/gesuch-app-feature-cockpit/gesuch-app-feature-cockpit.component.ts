@@ -9,11 +9,8 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 
-import {
-  GesuchAppDataAccessGesuchCockpitActions,
-  selectGesuchAppDataAccessGesuchsView,
-} from '@dv/gesuch-app/data-access/gesuch';
-import { GesuchAppDataAccessGesuchsperiodeCockpitActions } from '@dv/gesuch-app/data-access/gesuchsperiode';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
@@ -29,18 +26,15 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
   ngOnInit() {
-    this.store.dispatch(GesuchAppDataAccessGesuchCockpitActions.init());
-    this.store.dispatch(GesuchAppDataAccessGesuchsperiodeCockpitActions.init());
+    this.store.dispatch(GesuchAppEventCockpit.init());
   }
 
   handleCreate() {
-    this.store.dispatch(GesuchAppDataAccessGesuchCockpitActions.newTriggered());
+    this.store.dispatch(GesuchAppEventCockpit.newTriggered());
   }
 
   handleRemove(id: string) {
-    this.store.dispatch(
-      GesuchAppDataAccessGesuchCockpitActions.removeTriggered({ id })
-    );
+    this.store.dispatch(GesuchAppEventCockpit.removeTriggered({ id }));
   }
 
   trackByIndex(index: number) {

@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 
-export const GesuchAppDataAccessGesuchApiActions = createActionGroup({
+export const GesuchAppDataAccessGesuchEvents = createActionGroup({
   source: 'Gesuch API',
   events: {
     gesuchLoadedSuccess: props<{ gesuch: SharedModelGesuch }>(),

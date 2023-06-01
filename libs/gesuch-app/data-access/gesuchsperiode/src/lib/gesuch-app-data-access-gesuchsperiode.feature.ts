@@ -2,8 +2,8 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
 
-import { GesuchAppDataAccessGesuchsperiodeCockpitActions } from './gesuch-app-data-access-gesuchsperiode.actions';
-import { GesuchAppDataAccessGesuchsperiodeApiActions } from './gesuch-app-data-access-gesuchsperiode-api.actions';
+import { GesuchAppDataAccessGesuchsperiodeEvents } from './gesuch-app-data-access-gesuchsperiode.events';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
 export interface State {
   gesuchsperiodes: GesuchsperiodeDTO[];
@@ -22,7 +22,7 @@ export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(
-      GesuchAppDataAccessGesuchsperiodeCockpitActions.init,
+      GesuchAppEventCockpit.init,
       (state): State => ({
         ...state,
         loading: true,
@@ -31,7 +31,7 @@ export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchsperiodeApiActions.gesuchsperiodesLoadedSuccess,
+      GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess,
       (state, { gesuchsperiodes }): State => ({
         ...state,
         gesuchsperiodes,
@@ -40,7 +40,7 @@ export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
       })
     ),
     on(
-      GesuchAppDataAccessGesuchsperiodeApiActions.gesuchsperiodesLoadedFailure,
+      GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,

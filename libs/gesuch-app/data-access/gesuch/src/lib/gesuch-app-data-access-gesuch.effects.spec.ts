@@ -1,10 +1,10 @@
 import { TestScheduler } from 'rxjs/testing';
 
-import { loadGesuchs } from './gesuch-app-data-access-gesuch.effects';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
+import { loadGesuchs } from './gesuch-app-data-access-gesuch.effects';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
-import { GesuchAppDataAccessGesuchCockpitActions } from './gesuch-app-data-access-gesuch.actions';
-import { GesuchAppDataAccessGesuchApiActions } from './gesuch-app-data-access-gesuch-api.actions';
+import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 
 describe('GesuchAppDataAccessGesuch Effects', () => {
   let scheduler: TestScheduler;
@@ -22,7 +22,7 @@ describe('GesuchAppDataAccessGesuch Effects', () => {
       } as unknown as GesuchAppDataAccessGesuchService;
 
       const actionsMock$ = hot('10ms a', {
-        a: GesuchAppDataAccessGesuchCockpitActions.init(),
+        a: GesuchAppEventCockpit.init(),
       });
 
       const effectStream$ = loadGesuchs(
@@ -31,7 +31,7 @@ describe('GesuchAppDataAccessGesuch Effects', () => {
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: GesuchAppDataAccessGesuchApiActions.gesuchsLoadedSuccess({
+        a: GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
           gesuchs: [],
         }),
       });
