@@ -203,8 +203,15 @@ describe('lib generator', () => {
       const config = readProjectConfiguration(tree, 'shared-feature-example');
       expect(config).toBeDefined();
       expect(
-        tree.exists('libs/shared/feature/example/src/lib/lib.routes.ts')
+        tree.exists(
+          'libs/shared/feature/example/src/lib/shared-feature-example.routes.ts'
+        )
       ).toBeTruthy();
+      expect(
+        tree.exists(
+          'libs/shared/feature/example/src/lib/gesuch-app-feature-cockpit.routes.ts'
+        )
+      ).toBeFalsy();
       expect(
         tree.exists('libs/shared/feature/example/package.json')
       ).toBeFalsy();

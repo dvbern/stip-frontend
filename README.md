@@ -35,6 +35,9 @@ Welcome to DV Stip Workspace!
 ## Getting Started
 
 Install global `nx` CLI with `npm i -g nx` as it will make running of some commands easier.
+Install the dependencies with `npm ci --force`
+
+> The `--force` flag is used because the dependencies available at the time of the creation of the workspace did not fulfill their peerDependencies ranges perfectly. This might change in the future as newer versions of the libraries are released and the `--force` flag might not be needed anymore.
 
 ## Workspace generators & Executors
 
