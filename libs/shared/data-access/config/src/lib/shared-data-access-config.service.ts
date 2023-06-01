@@ -14,7 +14,6 @@ export class SharedDataAccessConfigService {
   private http = inject(HttpClient);
 
   getDeploymentConfig() {
-    // TODO extract API URL to environment / service
     return this.http.get<SharedModelDeploymentConfig>(RESOURCE_URL);
   }
 }

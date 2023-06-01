@@ -6,7 +6,7 @@ import { catchError, EMPTY, map, switchMap, tap } from 'rxjs';
 import { DEFAULT_LANGUAGE } from '@dv/shared/model/language';
 
 import { SharedDataAccessLanguageService } from './shared-data-access-language.service';
-import { SharedDataAccessLanguageActions } from './shared-data-access-language.actions';
+import { SharedDataAccessLanguageEvents } from './shared-data-access-language.events';
 
 export const resolveLanguageOnInit = createEffect(
   (
@@ -14,22 +14,22 @@ export const resolveLanguageOnInit = createEffect(
     languageService = inject(SharedDataAccessLanguageService)
   ) => {
     return actions$.pipe(
-      ofType(SharedDataAccessLanguageActions.appInit),
+      ofType(SharedDataAccessLanguageEvents.appInit),
       map(() => {
         const languageFromLocalStorage =
           languageService.getLanguageFromLocalStorage();
         if (languageFromLocalStorage) {
-          return SharedDataAccessLanguageActions.resolvedFromLocalStorage({
+          return SharedDataAccessLanguageEvents.resolvedFromLocalStorage({
             language: languageFromLocalStorage,
           });
         }
         const languageFromBrowser = languageService.getLanguageFromBrowser();
         if (languageFromBrowser) {
-          return SharedDataAccessLanguageActions.resolvedFromBrowser({
+          return SharedDataAccessLanguageEvents.resolvedFromBrowser({
             language: languageFromBrowser,
           });
         }
-        return SharedDataAccessLanguageActions.resolvedDefault({
+        return SharedDataAccessLanguageEvents.resolvedDefault({
           language: DEFAULT_LANGUAGE,
         });
       })
@@ -45,11 +45,11 @@ export const syncLanguageToNgxTranslate = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        SharedDataAccessLanguageActions.resolvedDefault,
-        SharedDataAccessLanguageActions.resolvedFromBrowser,
-        SharedDataAccessLanguageActions.resolvedFromLocalStorage,
-        SharedDataAccessLanguageActions.headerMenuSelectorChange,
-        SharedDataAccessLanguageActions.footerSelectorChange
+        SharedDataAccessLanguageEvents.resolvedDefault,
+        SharedDataAccessLanguageEvents.resolvedFromBrowser,
+        SharedDataAccessLanguageEvents.resolvedFromLocalStorage,
+        SharedDataAccessLanguageEvents.headerMenuSelectorChange,
+        SharedDataAccessLanguageEvents.footerSelectorChange
       ),
       tap(({ language }) => {
         ngxTranslateService.use(language);
@@ -85,8 +85,8 @@ export const persistLanguageIntoLocalStorage = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        SharedDataAccessLanguageActions.headerMenuSelectorChange,
-        SharedDataAccessLanguageActions.footerSelectorChange
+        SharedDataAccessLanguageEvents.headerMenuSelectorChange,
+        SharedDataAccessLanguageEvents.footerSelectorChange
       ),
       tap(({ language }) => {
         languageService.setLanguageIntoLocalStorage(language);

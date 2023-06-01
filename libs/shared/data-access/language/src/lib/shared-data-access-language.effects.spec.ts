@@ -2,7 +2,7 @@ import { TestScheduler } from 'rxjs/testing';
 
 import { resolveLanguageOnInit } from './shared-data-access-language.effects';
 import { SharedDataAccessLanguageService } from './shared-data-access-language.service';
-import { SharedDataAccessLanguageActions } from './shared-data-access-language.actions';
+import { SharedDataAccessLanguageEvents } from './shared-data-access-language.events';
 
 describe('SharedDataAccessLanguage Effects', () => {
   let scheduler: TestScheduler;
@@ -21,7 +21,7 @@ describe('SharedDataAccessLanguage Effects', () => {
 
     scheduler.run(({ expectObservable, hot }) => {
       const actionsMock$ = hot('a', {
-        a: SharedDataAccessLanguageActions.appInit(),
+        a: SharedDataAccessLanguageEvents.appInit(),
       });
 
       const effectStream$ = resolveLanguageOnInit(
@@ -29,7 +29,7 @@ describe('SharedDataAccessLanguage Effects', () => {
         sharedDataAccessTranslationServiceMock
       );
       expectObservable(effectStream$).toBe('a', {
-        a: SharedDataAccessLanguageActions.resolvedDefault({
+        a: SharedDataAccessLanguageEvents.resolvedDefault({
           language: 'de',
         }),
       });
@@ -44,7 +44,7 @@ describe('SharedDataAccessLanguage Effects', () => {
 
     scheduler.run(({ expectObservable, hot }) => {
       const actionsMock$ = hot('a', {
-        a: SharedDataAccessLanguageActions.appInit(),
+        a: SharedDataAccessLanguageEvents.appInit(),
       });
 
       const effectStream$ = resolveLanguageOnInit(
@@ -52,7 +52,7 @@ describe('SharedDataAccessLanguage Effects', () => {
         sharedDataAccessTranslationServiceMock
       );
       expectObservable(effectStream$).toBe('a', {
-        a: SharedDataAccessLanguageActions.resolvedFromBrowser({
+        a: SharedDataAccessLanguageEvents.resolvedFromBrowser({
           language: 'fr',
         }),
       });
@@ -67,7 +67,7 @@ describe('SharedDataAccessLanguage Effects', () => {
 
     scheduler.run(({ expectObservable, hot }) => {
       const actionsMock$ = hot('a', {
-        a: SharedDataAccessLanguageActions.appInit(),
+        a: SharedDataAccessLanguageEvents.appInit(),
       });
 
       const effectStream$ = resolveLanguageOnInit(
@@ -75,7 +75,7 @@ describe('SharedDataAccessLanguage Effects', () => {
         sharedDataAccessTranslationServiceMock
       );
       expectObservable(effectStream$).toBe('a', {
-        a: SharedDataAccessLanguageActions.resolvedFromLocalStorage({
+        a: SharedDataAccessLanguageEvents.resolvedFromLocalStorage({
           language: 'it',
         }),
       });

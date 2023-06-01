@@ -3,8 +3,7 @@ import { catchError, switchMap, map, of } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { SharedDataAccessConfigService } from './shared-data-access-config.service';
-import { SharedDataAccessConfigActions } from './shared-data-access-config.actions';
-import { SharedDataAccessConfigApiActions } from './shared-data-access-config-api.actions';
+import { SharedDataAccessConfigEvents } from './shared-data-access-config.events';
 
 export const loadDeploymentConfig = createEffect(
   (
@@ -12,17 +11,17 @@ export const loadDeploymentConfig = createEffect(
     sharedDataAccessConfigService = inject(SharedDataAccessConfigService)
   ) => {
     return actions$.pipe(
-      ofType(SharedDataAccessConfigActions.appInit),
+      ofType(SharedDataAccessConfigEvents.appInit),
       switchMap(() =>
         sharedDataAccessConfigService.getDeploymentConfig().pipe(
           map((deploymentConfig) =>
-            SharedDataAccessConfigApiActions.deploymentConfigLoadedSuccess({
+            SharedDataAccessConfigEvents.deploymentConfigLoadedSuccess({
               deploymentConfig,
             })
           ),
           catchError((error: { message: string }) =>
             of(
-              SharedDataAccessConfigApiActions.deploymentConfigLoadedFailure({
+              SharedDataAccessConfigEvents.deploymentConfigLoadedFailure({
                 error: error.message,
               })
             )
