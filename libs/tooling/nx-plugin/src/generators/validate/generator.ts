@@ -69,9 +69,9 @@ async function validateProjectTagsMatchProjectLocation(
   const violations = [];
   const fixes = [];
 
-  const { name, path } = project;
-  const [appsOrLibs, scopeOrName, type] = path.split('/');
-  const projectJson: any = await readJson(tree, path);
+  const { name, path :projectPath } = project;
+  const [appsOrLibs, scopeOrName, type] = projectPath.split(path.sep);
+  const projectJson: any = await readJson(tree, projectPath);
   const tags: string[] = projectJson?.tags ?? [];
   const expectedTags = [];
   if (appsOrLibs === 'apps') {
@@ -92,7 +92,7 @@ async function validateProjectTagsMatchProjectLocation(
       )} Project ${name} (${appsOrLibs}) and its project.json was updated with
 new tags:      ${chalk.inverse(expectedTags.join(','))}
 original tags: ${tags.join(',')}`);
-      updateJson(tree, `${path}`, (json) => {
+      updateJson(tree, `${projectPath}`, (json) => {
         json.tags = expectedTags;
         return json;
       });
