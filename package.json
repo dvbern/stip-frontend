@@ -16,7 +16,7 @@
     "reset": "nx reset",
     "start": "run-p serve:gesuch-app serve:gesuch-app:mock",
     "serve:gesuch-app": "nx serve gesuch-app --open",
-    "serve:gesuch-app:mock": "json-server --watch mock/db.json --delay 500 --port 4300 --routes mock/db-routes.json",
+    "serve:gesuch-app:mock": "json-server --watch mock/db.json --delay 1500 --port 4300 --routes mock/db-routes.json",
     "lint:gesuch-app": "nx lint gesuch-app",
     "test:gesuch-app": "nx test gesuch-app",
     "e2e:gesuch-app": "nx e2e gesuch-app-e2e",
@@ -55,6 +55,7 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.11.7",
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.30.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

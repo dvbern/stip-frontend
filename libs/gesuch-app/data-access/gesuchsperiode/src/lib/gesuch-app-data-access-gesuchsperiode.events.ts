@@ -1,10 +1,10 @@
+import {GesuchsperiodeDTO} from '@dv/shared/model/gesuch';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const GesuchAppDataAccessGesuchsperiodeEvents = createActionGroup({
   source: 'Gesuchsperiode API',
   events: {
-    // TODO interface should come from a model lib
-    gesuchsperiodesLoadedSuccess: props<{ gesuchsperiodes: any[] }>(),
+    gesuchsperiodesLoadedSuccess: props<{ gesuchsperiodes: GesuchsperiodeDTO[] }>(),
     gesuchsperiodesLoadedFailure: props<{ error: string }>(),
   },
 });
