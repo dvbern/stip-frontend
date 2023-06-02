@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
@@ -132,7 +133,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.nextStepTriggered({
-          target: 'gesuch-app-feature-gesuch-form-education',
+          target: GesuchFormSteps.EDUCATION,
           gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );
@@ -144,7 +145,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.prevStepTriggered({
-          target: 'gesuch-app-feature-cockpit',
+          target: GesuchFormSteps.COCKPIT,
           gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );

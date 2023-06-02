@@ -1,5 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -83,7 +85,7 @@ export const createGesuch = createEffect(
           map(({ id }) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
-              target: 'gesuch-app-feature-gesuch-form-person',
+              origin: GesuchFormSteps.PERSON,
             })
           ),
           catchError(({ error }) => [
@@ -108,12 +110,12 @@ export const updateGesuch = createEffect(
         GesuchAppEventGesuchFormPerson.nextStepTriggered,
         GesuchAppEventGesuchFormPerson.prevStepTriggered
       ),
-      concatMap(({ gesuch, target }) =>
+      concatMap(({ gesuch, target: origin }) =>
         gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
             GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
               id: gesuch.id!,
-              target,
+              origin,
             })
           ),
           catchError(({ error }) => [
@@ -151,14 +153,19 @@ export const removeGesuch = createEffect(
 );
 
 export const redirectToGesuchForm = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
+  (
+    actions$ = inject(Actions),
+    router = inject(Router),
+    stepManager = inject(GesuchAppUtilGesuchFormStepManagerService)
+  ) => {
     return actions$.pipe(
       ofType(
         GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess,
         GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess
       ),
-      tap(({ id, target }) => {
-        router.navigate([target, id]);
+      tap(({ id, origin }) => {
+        const target = stepManager.getNext(origin);
+        router.navigate([target.name, id]);
       })
     );
   },
