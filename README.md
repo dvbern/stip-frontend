@@ -7,27 +7,30 @@ Welcome to DV Stip Workspace!
 - [Getting Started](#getting-started)
 - [Workspace generators & Executors](#workspace-generators--executors)
 - [Architecture](#architecture)
-  - [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
-  - [Library types](#library-types)
-    - [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
-  - [Architecture overview](#architecture-overview)
-  - [Implicit dependencies](#implicit-dependencies)
-    - [Assets](#assets)
-    - [Styles](#styles)
-  - [Project naming](#project-naming)
-  - [Moving and removing of libraries](#moving-and-removing-of-libraries)
+  * [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
+  * [Library types](#library-types)
+    + [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
+  * [Architecture overview](#architecture-overview)
+  * [Implicit dependencies](#implicit-dependencies)
+    + [Assets](#assets)
+    + [Styles](#styles)
+  * [Project naming](#project-naming)
+  * [Moving and removing of libraries](#moving-and-removing-of-libraries)
 - [Customization](#customization)
-  - [Generator default options](#generator-default-options)
+  * [Generator default options](#generator-default-options)
+- [NgRx Tips](#ngrx-tips)
+  * [Events (actions)](#events-actions)
+  * [Local selectors](#local-selectors)
 - [Linting](#linting)
-  - [Architecture](#architecture-1)
-  - [Bundle size](#bundle-size)
-  - [Angular](#angular)
-    - [Typescript](#typescript)
-    - [Template](#template)
-  - [NgRx](#ngrx)
+  * [Architecture](#architecture-1)
+  * [Bundle size](#bundle-size)
+  * [Angular](#angular)
+    + [Typescript](#typescript)
+    + [Template](#template)
+  * [NgRx](#ngrx)
 - [Testing](#testing)
-  - [Unit testing](#unit-testing)
-  - [E2e](#e2e)
+  * [Unit testing](#unit-testing)
+  * [E2e](#e2e)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -226,6 +229,25 @@ This can be useful if you add additional Angular libraries which bring their own
 Additionally, default options can be evolved also for custom `@dv/tooling/nx-plugin` generators
 by adjusting `libDefaultOptions` in the `libs/tooling/nx-plugin/src/generators/lib/types/<type>.ts` files
 per library type.
+
+
+## NgRx Tips
+
+### Events (actions)
+
+### Local selectors
+
+When using NgRx, it makes sense to introduce selectors which are local to a given `feature` (or `pattern`)
+instead of creating a selector which delivers perfect view for that feature as a part of the `data-access` library.
+
+In general, there are 4 different scenarios:
+
+1. The `feature` consumes plain state as provided by a single `data-access` library -> **`data-access` selector**
+2. The `feature` consumes plain state as provided by multiple `data-access` libraries -> **`data-access` selector**
+3. The `feature` consumes state as provided by a single `data-access` library, but it needs also `feature` specific derived state based on that original state which is unlikely to be useful for other features -> **local selector**
+4. The `feature` consumes state as provided by a multiple `data-access` library, and it needs to combine that state in order to create derived state in a way which is unlikely to be useful for other features -> **local selector**
+
+![Architecture overview](docs/selectors.png)
 
 ## Linting
 
