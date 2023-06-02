@@ -1,5 +1,5 @@
 {
-  "name": "gesuch-app\\model-gesuch-form",
+  "name": "gesuch-app-model-gesuch-form",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gesuch-app/model/gesuch-form/src",
   "projectType": "library",

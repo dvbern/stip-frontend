@@ -1,47 +1,125 @@
-<h1>Welcome to gesuch app cockpit</h1>
-
-<div
-  *ngIf="cockpitView().loading"
-  class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
->
-  <div class="dv-progress-bar-indeterminate">
-    <div></div>
-  </div>
+<div class="bg-image">
+  <div class="gray-bg"></div>
 </div>
-<div
-  class="my-2 p-2 d-flex align-items-center justify-content-between rounded shadow-sm border"
-  *ngFor="let periode of cockpitView().gesuchsperiodes; trackBy: trackByIndex"
->
-  <pre>{{ periode | json }}</pre>
 
-  <div class="spinner-border" role="status" *ngIf="periode.gesuchLoading">
-    <span class="visually-hidden">Loading...</span>
+<div class="container mt-5 mb-5">
+  <h1 class="text-white mb-4">Guten Morgen, Anja Muster</h1>
+
+  <div class="row">
+    <!-- main column -->
+    <div class="col-lg-8 mb-lg-5">
+      <!-- progress -->
+      <div *ngIf="cockpitView().loading" class="my-4">
+        <div class="dv-progress-bar-indeterminate bg-dark">
+          <div class="bg-light"></div>
+        </div>
+      </div>
+
+      <!-- period 1-2 -->
+      <div>
+        <div
+          class="card mb-5 shadow-lg"
+          *ngFor="
+            let periode of cockpitView().gesuchsperiodes;
+            trackBy: trackByIndex
+          "
+          [class.col-md-6]="!periode.gesuchId"
+          [class.col-md-12]="periode.gesuchId"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md">
+                <!-- Periode titel -->
+                <h3 class="card-title">
+                  <span>{{
+                    'gesuch-app.cockpit.gesuch.semester.' +
+                      periode.semester.toLowerCase() | translate
+                  }}</span>
+                  <span>&nbsp;</span>
+                  <span>{{ periode.yearsLabel }}</span>
+                </h3>
+                <h6 class="card-subtitle mb-2 text-body-secondary">
+                  <span>{{ periode.gueltigAb | date }}</span>
+                  <span> - </span>
+                  <span>{{ periode.gueltigBis | date }}</span>
+                </h6>
+
+                <!-- loading Gesuch -->
+                <div
+                  class="spinner-border text-primary my-4"
+                  role="status"
+                  *ngIf="periode.gesuchLoading"
+                >
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+
+                <!-- existing Gesuch (left) -->
+                <div
+                  class="d-flex flex-column align-items-start"
+                  *ngIf="periode.gesuchId"
+                >
+                  <span>Status des Antrags</span>
+                  <span>Nicht komplett eingereicht</span>
+                </div>
+              </div>
+
+              <!-- existing Gesuch (right pic) -->
+              <div *ngIf="periode.gesuchId" class="col-md p-4">
+                <img
+                  src="/assets/images/undraw_exams_re_4ios.svg"
+                  class="w-100"
+                  style="max-width: 300px"
+                />
+              </div>
+            </div>
+
+            <!-- existing Gesuch buttons -->
+            <div class="row" *ngIf="periode.gesuchId">
+              <div class="col-md">
+                <a
+                  class="btn btn-primary mt-3 w-100"
+                  data-test-id="cockpit-gesuch-edit"
+                  [routerLink]="[
+                    '/gesuch-app-feature-gesuch-form-person',
+                    periode.gesuchId
+                  ]"
+                >
+                  {{ 'gesuch-app.cockpit.gesuch.edit' | translate }}
+                </a>
+              </div>
+
+              <div class="col-md">
+                <a
+                  class="btn btn-light mt-3 w-100"
+                  data-test-id="cockpit-gesuch-nachfrist"
+                >
+                  {{ 'gesuch-app.cockpit.gesuch.nachfrist' | translate }}
+                </a>
+              </div>
+            </div>
+
+            <!-- no Gesuch yet -->
+            <div
+              *ngIf="!periode.gesuchId && !periode.gesuchLoading"
+              class="d-flex flex-column align-items-start"
+            >
+              <span>Einreichefrist</span>
+              <span>Bis spätestens {{ periode.einreichfrist | date }}</span>
+
+              <button
+                type="button"
+                class="btn btn-primary mt-3 w-100"
+                (click)="handleCreate(periode.id)"
+              >
+                {{ 'gesuch-app.cockpit.gesuch.new' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- side column -->
+    <div class="col-lg-4 mb-lg-5"></div>
   </div>
-
-  <div *ngIf="periode.gesuchId">
-    <span>Status des Antrags</span>
-    <h4 class="m-0" data-test-id="cockpit-gesuch-description">
-      {{ periode.gesuchId }}
-    </h4>
-
-    <a
-      class="btn btn-primary"
-      data-test-id="cockpit-gesuch-edit"
-      [routerLink]="[
-        '/gesuch-app-feature-gesuch-form-person',
-        periode.gesuchId
-      ]"
-    >
-      {{ 'gesuch-app.cockpit.gesuch.edit' | translate }}
-    </a>
-  </div>
-
-  <button
-    *ngIf="!periode.gesuchId && !periode.gesuchLoading"
-    type="button"
-    class="btn btn-primary mb-4"
-    (click)="handleCreate(periode.id)"
-  >
-    {{ 'gesuch-app.cockpit.gesuch.new' | translate }}
-  </button>
 </div>
