@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import {GesuchAppModelGesuchFormStep, GesuchFormSteps} from '@dv/gesuch-app/model/gesuch-form';
+import {
+  GesuchAppModelGesuchFormStep,
+  GesuchFormSteps,
+} from '@dv/gesuch-app/model/gesuch-form';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GesuchAppUtilGesuchFormStepManagerService {
-
-  public getNext(origin: GesuchAppModelGesuchFormStep): GesuchAppModelGesuchFormStep {
+  public getNext(
+    origin: GesuchAppModelGesuchFormStep
+  ): GesuchAppModelGesuchFormStep {
     switch (origin) {
       case GesuchFormSteps.COCKPIT:
         return GesuchFormSteps.PERSON;
@@ -18,7 +22,9 @@ export class GesuchAppUtilGesuchFormStepManagerService {
         throw new Error('Step not defined');
     }
   }
-  public getPrevious(origin: GesuchAppModelGesuchFormStep): GesuchAppModelGesuchFormStep {
+  public getPrevious(
+    origin: GesuchAppModelGesuchFormStep
+  ): GesuchAppModelGesuchFormStep {
     switch (origin) {
       case GesuchFormSteps.COCKPIT:
         return GesuchFormSteps.COCKPIT;

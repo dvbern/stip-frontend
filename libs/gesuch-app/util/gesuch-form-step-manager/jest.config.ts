@@ -3,7 +3,8 @@ export default {
   displayName: 'gesuch-app-util-gesuch-form-step-manager',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/gesuch-app/util/gesuch-form-step-manager',
+  coverageDirectory:
+    '../../../../coverage/libs/gesuch-app/util/gesuch-form-step-manager',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
@@ -18,5 +19,5 @@ export default {
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
-  ]
+  ],
 };

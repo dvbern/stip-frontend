@@ -1,6 +1,5 @@
 <h1>Welcome to gesuch app cockpit</h1>
 
-
 <div
   *ngIf="cockpitView().loading"
   class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
@@ -13,36 +12,36 @@
   class="my-2 p-2 d-flex align-items-center justify-content-between rounded shadow-sm border"
   *ngFor="let periode of cockpitView().gesuchsperiodes; trackBy: trackByIndex"
 >
-
-
   <pre>{{ periode | json }}</pre>
 
-  <div class="spinner-border" role="status"
-       *ngIf="periode.gesuchLoading">
+  <div class="spinner-border" role="status" *ngIf="periode.gesuchLoading">
     <span class="visually-hidden">Loading...</span>
   </div>
 
   <div *ngIf="periode.gesuchId">
     <span>Status des Antrags</span>
-    <h4 class="m-0" data-test-id="cockpit-gesuch-description">{{ periode.gesuchId }}</h4>
+    <h4 class="m-0" data-test-id="cockpit-gesuch-description">
+      {{ periode.gesuchId }}
+    </h4>
 
     <a
       class="btn btn-primary"
       data-test-id="cockpit-gesuch-edit"
-      [routerLink]="['/gesuch-app-feature-gesuch-form-person', periode.gesuchId]"
+      [routerLink]="[
+        '/gesuch-app-feature-gesuch-form-person',
+        periode.gesuchId
+      ]"
     >
       {{ 'gesuch-app.cockpit.gesuch.edit' | translate }}
     </a>
   </div>
 
-
   <button
     *ngIf="!periode.gesuchId && !periode.gesuchLoading"
-    type="button" class="btn btn-primary mb-4" (click)="handleCreate(periode.id)">
+    type="button"
+    class="btn btn-primary mb-4"
+    (click)="handleCreate(periode.id)"
+  >
     {{ 'gesuch-app.cockpit.gesuch.new' | translate }}
   </button>
-
-
 </div>
-
-

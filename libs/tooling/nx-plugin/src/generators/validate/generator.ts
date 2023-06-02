@@ -69,7 +69,7 @@ async function validateProjectTagsMatchProjectLocation(
   const violations = [];
   const fixes = [];
 
-  const { name, path :projectPath } = project;
+  const { name, path: projectPath } = project;
   const [appsOrLibs, scopeOrName, type] = projectPath.split(path.sep);
   const projectJson: any = await readJson(tree, projectPath);
   const tags: string[] = projectJson?.tags ?? [];

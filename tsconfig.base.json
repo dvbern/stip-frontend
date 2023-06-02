@@ -38,11 +38,11 @@
       "@dv/gesuch-app/feature/gesuch-form-person": [
         "libs/gesuch-app/feature/gesuch-form-person/src/index.ts"
       ],
-      "@dv/gesuch-app/pattern/main-layout": [
-        "libs/gesuch-app/pattern/main-layout/src/index.ts"
-      ],
       "@dv/gesuch-app/model/gesuch-form": [
         "libs/gesuch-app/model/gesuch-form/src/index.ts"
+      ],
+      "@dv/gesuch-app/pattern/main-layout": [
+        "libs/gesuch-app/pattern/main-layout/src/index.ts"
       ],
       "@dv/gesuch-app/util/gesuch-form-step-manager": [
         "libs/gesuch-app/util/gesuch-form-step-manager/src/index.ts"

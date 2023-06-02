@@ -1,7 +1,6 @@
 import { GesuchAppModelGesuchFormStep } from './gesuch-app-model-gesuch-form';
 
 export abstract class GesuchFormSteps {
-
   public static readonly COCKPIT: GesuchAppModelGesuchFormStep = {
     enabled: true,
     name: 'gesuch-app-feature-cockpit',

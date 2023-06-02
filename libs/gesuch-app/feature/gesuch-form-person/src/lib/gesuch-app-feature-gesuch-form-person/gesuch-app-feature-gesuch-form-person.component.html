@@ -22,7 +22,13 @@
     </div>
   </div>
 
-  <form [formGroup]="form" novalidate class="mt-4" *ngIf="!view().loading" (ngSubmit)="handleSaveAndContinue()">
+  <form
+    [formGroup]="form"
+    novalidate
+    class="mt-4"
+    *ngIf="!view().loading"
+    (ngSubmit)="handleSaveAndContinue()"
+  >
     <div class="row g-4">
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
@@ -528,10 +534,7 @@
     </div>
 
     <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
+      <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
       </button>
       <button
