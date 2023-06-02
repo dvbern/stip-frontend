@@ -29,7 +29,9 @@
     "e2e": "nx run-many --target=e2e",
     "build": "nx run-many --target=build",
     "format:test": "nx format:check",
-    "format:write": "nx format:write"
+    "format:write": "nx format:write",
+    "openapi": "ts-node scripts/openapi-build.ts",
+    "openapi:extract-current-templates": "openapi-generator-cli author template -g typescript-angular -o scripts/conf/openapi-templates/default-6.5.0"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +55,7 @@
     "@ngrx/store-devtools": "^16.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "@openapitools/openapi-generator-cli": "^2.6.0",
     "@popperjs/core": "^2.11.7",
     "bootstrap": "^5.2.3",
     "date-fns": "^2.30.0",
