@@ -7,6 +7,7 @@ export type LibType =
   | 'feature'
   | 'pattern'
   | 'data-access'
+  | 'event'
   | 'ui'
   | 'util'
   | 'util-fn'

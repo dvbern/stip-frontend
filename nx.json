@@ -56,7 +56,8 @@
       "style": "scss",
       "changeDetection": "OnPush",
       "displayBlock": true,
-      "standalone": true
+      "standalone": true,
+      "skipTests": true
     },
     "@nx/angular:directive": {
       "standalone": true

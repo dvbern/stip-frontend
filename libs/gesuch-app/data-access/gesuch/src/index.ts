@@ -1,6 +1,5 @@
 export * from './lib/gesuch-app-data-access-gesuch.feature';
 export * from './lib/gesuch-app-data-access-gesuch.selectors';
-export * from './lib/gesuch-app-data-access-gesuch.actions';
 export * from './lib/gesuch-app-data-access-gesuch.effects';
 
 /**

@@ -1,12 +1,10 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
-import {
-  GesuchAppDataAccessGesuchCockpitActions,
-  GesuchAppDataAccessGesuchFormActions,
-} from './gesuch-app-data-access-gesuch.actions';
-import { GesuchAppDataAccessGesuchApiActions } from './gesuch-app-data-access-gesuch-api.actions';
+import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 export interface State {
   gesuch: SharedModelGesuch | undefined;
@@ -28,10 +26,18 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     initialState,
 
     on(
-      GesuchAppDataAccessGesuchCockpitActions.init,
-      GesuchAppDataAccessGesuchCockpitActions.removeTriggered,
-      GesuchAppDataAccessGesuchFormActions.init,
-      GesuchAppDataAccessGesuchFormActions.nextStepTriggered,
+      GesuchAppEventCockpit.init,
+      (state): State => ({
+        ...state,
+        gesuchs: [],
+      })
+    ),
+
+    on(
+      GesuchAppEventCockpit.init,
+      GesuchAppEventCockpit.removeTriggered,
+      GesuchAppEventGesuchFormPerson.init,
+      GesuchAppEventGesuchFormPerson.nextStepTriggered,
       (state): State => ({
         ...state,
         gesuch: undefined,
@@ -40,7 +46,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchApiActions.gesuchsLoadedSuccess,
+      GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess,
       (state, { gesuchs }): State => ({
         ...state,
         gesuchs,
@@ -50,7 +56,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchApiActions.gesuchLoadedSuccess,
+      GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess,
       (state, { gesuch }): State => ({
         ...state,
         gesuch,
@@ -60,8 +66,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchApiActions.gesuchUpdatedSuccess,
-      GesuchAppDataAccessGesuchApiActions.gesuchRemovedSuccess,
+      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
+      GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess,
       (state): State => ({
         ...state,
         loading: false,
@@ -70,11 +76,11 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchApiActions.gesuchsLoadedFailure,
-      GesuchAppDataAccessGesuchApiActions.gesuchLoadedFailure,
-      GesuchAppDataAccessGesuchApiActions.gesuchCreatedFailure,
-      GesuchAppDataAccessGesuchApiActions.gesuchUpdatedFailure,
-      GesuchAppDataAccessGesuchApiActions.gesuchRemovedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,

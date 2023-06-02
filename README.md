@@ -7,27 +7,27 @@ Welcome to DV Stip Workspace!
 - [Getting Started](#getting-started)
 - [Workspace generators & Executors](#workspace-generators--executors)
 - [Architecture](#architecture)
-  * [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
-  * [Library types](#library-types)
-    + [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
-  * [Architecture overview](#architecture-overview)
-  * [Implicit dependencies](#implicit-dependencies)
-    + [Assets](#assets)
-    + [Styles](#styles)
-  * [Project naming](#project-naming)
-  * [Moving and removing of libraries](#moving-and-removing-of-libraries)
+  - [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
+  - [Library types](#library-types)
+    - [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
+  - [Architecture overview](#architecture-overview)
+  - [Implicit dependencies](#implicit-dependencies)
+    - [Assets](#assets)
+    - [Styles](#styles)
+  - [Project naming](#project-naming)
+  - [Moving and removing of libraries](#moving-and-removing-of-libraries)
 - [Customization](#customization)
-  * [Generator default options](#generator-default-options)
+  - [Generator default options](#generator-default-options)
 - [Linting](#linting)
-  * [Architecture](#architecture-1)
-  * [Bundle size](#bundle-size)
-  * [Angular](#angular)
-    + [Typescript](#typescript)
-    + [Template](#template)
-  * [NgRx](#ngrx)
+  - [Architecture](#architecture-1)
+  - [Bundle size](#bundle-size)
+  - [Angular](#angular)
+    - [Typescript](#typescript)
+    - [Template](#template)
+  - [NgRx](#ngrx)
 - [Testing](#testing)
-  * [Unit testing](#unit-testing)
-  * [E2e](#e2e)
+  - [Unit testing](#unit-testing)
+  - [E2e](#e2e)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -35,6 +35,9 @@ Welcome to DV Stip Workspace!
 ## Getting Started
 
 Install global `nx` CLI with `npm i -g nx` as it will make running of some commands easier.
+Install the dependencies with `npm ci --force`
+
+> The `--force` flag is used because the dependencies available at the time of the creation of the workspace did not fulfill their peerDependencies ranges perfectly. This might change in the future as newer versions of the libraries are released and the `--force` flag might not be needed anymore.
 
 ## Workspace generators & Executors
 

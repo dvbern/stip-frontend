@@ -7,14 +7,26 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  GesuchAppDataAccessGesuchFormActions,
-  selectGesuchAppDataAccessGesuchsView,
-} from '@dv/gesuch-app/data-access/gesuch';
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+  Anrede,
+  Land,
+  Zivilstand,
+  SharedModelGesuch,
+} from '@dv/shared/model/gesuch';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -23,20 +35,8 @@ import {
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
-import {
-  MASK_SOZIALVERSICHERUNGSNUMMER,
-  Anrede,
-  Land,
-  Zivilstand,
-  SharedModelGesuch,
-} from '@dv/shared/model/gesuch';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
+
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -123,7 +123,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(GesuchAppDataAccessGesuchFormActions.init());
+    this.store.dispatch(GesuchAppEventGesuchFormPerson.init());
     this.form.valueChanges.subscribe((c) => console.log('debug', c));
   }
 
@@ -132,8 +132,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     console.log(this.form.valid, this.form.errors, this.form.controls);
     if (this.form.valid) {
       this.store.dispatch(
-        GesuchAppDataAccessGesuchFormActions.nextStepTriggered({
-          target: 'gesuch-app-feature-gesuch-form-education',
+        GesuchAppEventGesuchFormPerson.nextStepTriggered({
+          target: GesuchFormSteps.EDUCATION,
           gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );
@@ -144,8 +144,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.store.dispatch(
-        GesuchAppDataAccessGesuchFormActions.prevStepTriggered({
-          target: 'gesuch-app-feature-cockpit',
+        GesuchAppEventGesuchFormPerson.prevStepTriggered({
+          target: GesuchFormSteps.COCKPIT,
           gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );

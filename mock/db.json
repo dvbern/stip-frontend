@@ -3,6 +3,29 @@
     "environment": "dev",
     "version": "0.1"
   },
+  "gesuchsperiode": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
+      "gueltigAb": "2022-02-01",
+      "gueltigBis": "2023-01-31",
+      "einreichfrist": "2022-06-30",
+      "aufschaltdatum": "2022-06-01"
+    },
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "gueltigAb": "2023-02-01",
+      "gueltigBis": "2024-01-31",
+      "einreichfrist": "2023-06-30",
+      "aufschaltdatum": "2023-06-01"
+    },
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+      "gueltigAb": "2023-08-01",
+      "gueltigBis": "2024-07-31",
+      "einreichfrist": "2023-12-31",
+      "aufschaltdatum": "2023-06-01"
+    }
+  ],
   "gesuch": [
     {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",

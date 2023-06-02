@@ -17,6 +17,7 @@ export function featureTypeFactory(
       routing: true,
       standalone: true,
       style: 'scss',
+      skipTests: true,
       changeDetection: 'OnPush',
       ...(scope !== 'shared'
         ? {
@@ -34,5 +35,29 @@ function postprocess(tree: Tree, options: NormalizedSchema) {
   updatePrefix(tree, options);
   tree.delete(
     path.join(options.projectRoot, options.nameDasherized, 'README.md')
+  );
+  tree.delete(
+    path.join(
+      options.projectRoot,
+      options.nameDasherized,
+      'src',
+      'lib',
+      'gesuch-app-feature-cockpit.routes.ts'
+    )
+  );
+
+  const pathToIndex = path.join(
+    options.projectRoot,
+    options.nameDasherized,
+    'src',
+    'index.ts'
+  );
+  const indexTsContent = tree.read(pathToIndex).toString();
+  tree.write(
+    pathToIndex,
+    indexTsContent.replace(
+      'lib/lib.routes',
+      `lib/${options.projectName}.routes`
+    )
   );
 }

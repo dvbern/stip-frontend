@@ -30,13 +30,13 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import {
-  SharedDataAccessConfigActions,
+  SharedDataAccessConfigEvents,
   sharedDataAccessConfigEffects,
   sharedDataAccessConfigsFeature,
 } from '@dv/shared/data-access/config';
 import { SharedPatternInterceptorDeploymentConfig } from '@dv/shared/pattern/interceptor-deployment-config';
 import {
-  SharedDataAccessLanguageActions,
+  SharedDataAccessLanguageEvents,
   sharedDataAccessLanguageEffects,
   sharedDataAccessLanguageFeature,
 } from '@dv/shared/data-access/language';
@@ -127,8 +127,8 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         const store = inject(Store);
         // rework to ngrxOnEffectsInit once available for functional effects
         // https://twitter.com/MarkoStDev/status/1661094873116581901
-        store.dispatch(SharedDataAccessConfigActions.appInit());
-        store.dispatch(SharedDataAccessLanguageActions.appInit());
+        store.dispatch(SharedDataAccessConfigEvents.appInit());
+        store.dispatch(SharedDataAccessLanguageEvents.appInit());
       },
     },
   ];

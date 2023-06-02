@@ -1,16 +1,17 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
-import {
-  GesuchAppDataAccessGesuchCockpitActions,
-  GesuchAppDataAccessGesuchFormActions,
-} from './gesuch-app-data-access-gesuch.actions';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
-import { GesuchAppDataAccessGesuchApiActions } from './gesuch-app-data-access-gesuch-api.actions';
+import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 export const loadGesuchs = createEffect(
   (
@@ -19,18 +20,18 @@ export const loadGesuchs = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppDataAccessGesuchCockpitActions.init,
-        GesuchAppDataAccessGesuchApiActions.gesuchRemovedSuccess
+        GesuchAppEventCockpit.init,
+        GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
       switchMap(() =>
         gesuchAppDataAccessGesuchService.getAll().pipe(
           map((gesuchs) =>
-            GesuchAppDataAccessGesuchApiActions.gesuchsLoadedSuccess({
+            GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
               gesuchs,
             })
           ),
           catchError(({ error }) => [
-            GesuchAppDataAccessGesuchApiActions.gesuchsLoadedFailure({
+            GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure({
               error: error.message,
             }),
           ])
@@ -48,7 +49,7 @@ export const loadGesuch = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchFormActions.init),
+      ofType(GesuchAppEventGesuchFormPerson.init),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
         if (!id) {
@@ -58,10 +59,10 @@ export const loadGesuch = createEffect(
         }
         return gesuchAppDataAccessGesuchService.get(id).pipe(
           map((gesuch) =>
-            GesuchAppDataAccessGesuchApiActions.gesuchLoadedSuccess({ gesuch })
+            GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess({ gesuch })
           ),
           catchError(({ error }) => [
-            GesuchAppDataAccessGesuchApiActions.gesuchLoadedFailure({
+            GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure({
               error: error.toString(),
             }),
           ])
@@ -78,17 +79,17 @@ export const createGesuch = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchCockpitActions.newTriggered),
-      exhaustMap(() =>
-        gesuchAppDataAccessGesuchService.create().pipe(
+      ofType(GesuchAppEventCockpit.newTriggered),
+      exhaustMap(({ periodeId }) =>
+        gesuchAppDataAccessGesuchService.create(periodeId).pipe(
           map(({ id }) =>
-            GesuchAppDataAccessGesuchApiActions.gesuchCreatedSuccess({
+            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
-              target: 'gesuch-app-feature-gesuch-form-person',
+              origin: GesuchFormSteps.PERSON,
             })
           ),
           catchError(({ error }) => [
-            GesuchAppDataAccessGesuchApiActions.gesuchCreatedFailure({
+            GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure({
               error: error.types,
             }),
           ])
@@ -106,19 +107,19 @@ export const updateGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppDataAccessGesuchFormActions.nextStepTriggered,
-        GesuchAppDataAccessGesuchFormActions.prevStepTriggered
+        GesuchAppEventGesuchFormPerson.nextStepTriggered,
+        GesuchAppEventGesuchFormPerson.prevStepTriggered
       ),
-      concatMap(({ gesuch, target }) =>
+      concatMap(({ gesuch, target: origin }) =>
         gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
-            GesuchAppDataAccessGesuchApiActions.gesuchUpdatedSuccess({
+            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
               id: gesuch.id!,
-              target,
+              origin,
             })
           ),
           catchError(({ error }) => [
-            GesuchAppDataAccessGesuchApiActions.gesuchUpdatedFailure({
+            GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
               error: error.toString(),
             }),
           ])
@@ -135,12 +136,12 @@ export const removeGesuch = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchCockpitActions.removeTriggered),
+      ofType(GesuchAppEventCockpit.removeTriggered),
       concatMap(({ id }) =>
         gesuchAppDataAccessGesuchService.remove(id).pipe(
-          map(() => GesuchAppDataAccessGesuchApiActions.gesuchRemovedSuccess()),
+          map(() => GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess()),
           catchError(({ error }) => [
-            GesuchAppDataAccessGesuchApiActions.gesuchRemovedFailure({
+            GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure({
               error: error.toString(),
             }),
           ])
@@ -152,14 +153,19 @@ export const removeGesuch = createEffect(
 );
 
 export const redirectToGesuchForm = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
+  (
+    actions$ = inject(Actions),
+    router = inject(Router),
+    stepManager = inject(GesuchAppUtilGesuchFormStepManagerService)
+  ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppDataAccessGesuchApiActions.gesuchCreatedSuccess,
-        GesuchAppDataAccessGesuchApiActions.gesuchUpdatedSuccess
+        GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess,
+        GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess
       ),
-      tap(({ id, target }) => {
-        router.navigate([target, id]);
+      tap(({ id, origin }) => {
+        const target = stepManager.getNext(origin);
+        router.navigate([target.name, id]);
       })
     );
   },

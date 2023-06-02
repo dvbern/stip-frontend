@@ -51,6 +51,9 @@ describe('app generator', () => {
         'libs/shared/styles/components/src',
       ]);
       expect(tree.exists('apps/example-app/project.json')).toBeTruthy();
+      expect(
+        tree.exists('apps/example-app/src/app/app.component.spec.ts')
+      ).toBeFalsy();
       const depConstraints = readJson(tree, '.eslintrc.json').overrides[0]
         .rules['@nx/enforce-module-boundaries'][1].depConstraints;
       expect(

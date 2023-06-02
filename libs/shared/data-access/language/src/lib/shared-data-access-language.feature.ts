@@ -2,7 +2,7 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { DEFAULT_LANGUAGE, Language } from '@dv/shared/model/language';
 
-import { SharedDataAccessLanguageActions } from './shared-data-access-language.actions';
+import { SharedDataAccessLanguageEvents } from './shared-data-access-language.events';
 
 export interface State {
   language: Language;
@@ -18,11 +18,11 @@ export const sharedDataAccessLanguageFeature = createFeature({
     initialState,
 
     on(
-      SharedDataAccessLanguageActions.resolvedDefault,
-      SharedDataAccessLanguageActions.resolvedFromBrowser,
-      SharedDataAccessLanguageActions.resolvedFromLocalStorage,
-      SharedDataAccessLanguageActions.headerMenuSelectorChange,
-      SharedDataAccessLanguageActions.footerSelectorChange,
+      SharedDataAccessLanguageEvents.resolvedDefault,
+      SharedDataAccessLanguageEvents.resolvedFromBrowser,
+      SharedDataAccessLanguageEvents.resolvedFromLocalStorage,
+      SharedDataAccessLanguageEvents.headerMenuSelectorChange,
+      SharedDataAccessLanguageEvents.footerSelectorChange,
       (state, { language }): State => ({ ...state, language })
     )
   ),

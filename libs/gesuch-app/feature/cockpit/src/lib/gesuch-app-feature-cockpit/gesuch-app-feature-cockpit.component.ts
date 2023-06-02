@@ -1,18 +1,15 @@
+import { CommonModule, NgFor } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { Store } from '@ngrx/store';
-
-import {
-  GesuchAppDataAccessGesuchCockpitActions,
-  selectGesuchAppDataAccessGesuchsView,
-} from '@dv/gesuch-app/data-access/gesuch';
+import { TranslateModule } from '@ngx-translate/core';
+import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
@@ -25,20 +22,18 @@ import {
 export class GesuchAppFeatureCockpitComponent implements OnInit {
   private store = inject(Store);
 
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
 
   ngOnInit() {
-    this.store.dispatch(GesuchAppDataAccessGesuchCockpitActions.init());
+    this.store.dispatch(GesuchAppEventCockpit.init());
   }
 
-  handleCreate() {
-    this.store.dispatch(GesuchAppDataAccessGesuchCockpitActions.newTriggered());
+  handleCreate(periodeId: string) {
+    this.store.dispatch(GesuchAppEventCockpit.newTriggered({ periodeId }));
   }
 
   handleRemove(id: string) {
-    this.store.dispatch(
-      GesuchAppDataAccessGesuchCockpitActions.removeTriggered({ id })
-    );
+    this.store.dispatch(GesuchAppEventCockpit.removeTriggered({ id }));
   }
 
   trackByIndex(index: number) {

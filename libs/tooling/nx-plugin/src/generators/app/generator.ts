@@ -34,6 +34,7 @@ export default async function (tree: Tree, options: AppGeneratorSchema) {
 
   const pathToApp = path.join(projectRoot, 'src', 'app');
   removeNxWelcomeComponent(tree, pathToApp);
+  removeAppComponentTests(tree, pathToApp);
   updateProjectJson(tree, projectRoot);
   addScope(tree, projectName);
 
@@ -101,6 +102,10 @@ function updateProjectJson(tree: Tree, projectRoot: string) {
     ];
     return json;
   });
+}
+
+function removeAppComponentTests(tree: Tree, pathToApp: string) {
+  tree.delete(path.join(pathToApp, 'app.component.spec.ts'));
 }
 
 function removeNxWelcomeComponent(tree: Tree, pathToApp: string) {

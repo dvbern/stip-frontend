@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import { Language } from '@dv/shared/model/language';
 
-export const SharedDataAccessLanguageActions = createActionGroup({
+export const SharedDataAccessLanguageEvents = createActionGroup({
   source: 'Language',
   events: {
     appInit: emptyProps(),

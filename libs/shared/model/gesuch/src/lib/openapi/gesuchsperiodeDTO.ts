@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GesuchsperiodeDTOGueltigkeit } from './gesuchsperiodeDTOGueltigkeit';
 
 export interface GesuchsperiodeDTO {
   id: string;
-  gueltigkeit: GesuchsperiodeDTOGueltigkeit;
-  gesuchsperiodeStatus: string;
+
+  gueltigAb: string;
+  gueltigBis: string;
+  einreichfrist: string;
+  aufschaltdatum: string;
 }

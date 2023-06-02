@@ -21,6 +21,7 @@ import { NormalizedSchema, LibTypeGeneratorMap } from './generator.interface';
 import { featureTypeFactory } from './types/feature';
 import { patternTypeFactory } from './types/pattern';
 import { dataAccessTypeFactory } from './types/data-access';
+import { eventTypeFactory } from './types/event';
 import { uiTypeFactory } from './types/ui';
 import { utilTypeFactory } from './types/util';
 import { utilFnTypeFactory } from './types/util-fn';
@@ -30,6 +31,7 @@ const LIB_TYPE_GENERATOR_MAP: LibTypeGeneratorMap = {
   feature: featureTypeFactory,
   pattern: patternTypeFactory,
   'data-access': dataAccessTypeFactory,
+  event: eventTypeFactory,
   ui: uiTypeFactory,
   util: utilTypeFactory,
   'util-fn': utilFnTypeFactory,
@@ -40,10 +42,10 @@ function normalizeOptions(
   tree: Tree,
   options: LibGeneratorSchema
 ): NormalizedSchema {
-  const projectDirectory = path.join(options.scope, options.type);
+  const projectDirectory = `/${options.scope}/${options.type}`;
   const nameDasherized = dasherize(options.name);
   const projectName = `${options.scope}-${options.type}-${nameDasherized}`;
-  const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
+  const projectRoot = `${getWorkspaceLayout(tree).libsDir}${projectDirectory}`;
   const parsedTags = [`type:${options.type}`, `scope:${options.scope}`];
 
   return {
@@ -71,6 +73,7 @@ export default async function (tree: Tree, options: LibGeneratorSchema) {
   });
 
   for (const { generator, defaultOptions } of generators) {
+    console.log();
     await generator(tree, {
       ...defaultOptions,
       name: normalizedOptions.name,

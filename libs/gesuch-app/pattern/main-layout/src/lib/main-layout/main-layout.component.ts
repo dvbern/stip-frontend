@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 
 import {
   selectLanguage,
-  SharedDataAccessLanguageActions,
+  SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
@@ -51,13 +51,13 @@ export class MainLayoutComponent {
 
   handleLanguageChangeHeader(language: Language) {
     this.store.dispatch(
-      SharedDataAccessLanguageActions.headerMenuSelectorChange({ language })
+      SharedDataAccessLanguageEvents.headerMenuSelectorChange({ language })
     );
   }
 
   handleLanguageChangeFooter(language: Language) {
     this.store.dispatch(
-      SharedDataAccessLanguageActions.footerSelectorChange({ language })
+      SharedDataAccessLanguageEvents.footerSelectorChange({ language })
     );
   }
 

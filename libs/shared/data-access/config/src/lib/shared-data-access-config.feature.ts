@@ -2,8 +2,7 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelDeploymentConfig } from '@dv/shared/model/config';
 
-import { SharedDataAccessConfigActions } from './shared-data-access-config.actions';
-import { SharedDataAccessConfigApiActions } from './shared-data-access-config-api.actions';
+import { SharedDataAccessConfigEvents } from './shared-data-access-config.events';
 
 export interface State {
   deploymentConfig: SharedModelDeploymentConfig | undefined;
@@ -22,7 +21,7 @@ export const sharedDataAccessConfigsFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(
-      SharedDataAccessConfigActions.appInit,
+      SharedDataAccessConfigEvents.appInit,
       (state): State => ({
         ...state,
         loading: true,
@@ -31,7 +30,7 @@ export const sharedDataAccessConfigsFeature = createFeature({
     ),
 
     on(
-      SharedDataAccessConfigApiActions.deploymentConfigLoadedSuccess,
+      SharedDataAccessConfigEvents.deploymentConfigLoadedSuccess,
       (state, { deploymentConfig }): State => ({
         ...state,
         deploymentConfig,
@@ -40,7 +39,7 @@ export const sharedDataAccessConfigsFeature = createFeature({
       })
     ),
     on(
-      SharedDataAccessConfigApiActions.deploymentConfigLoadedFailure,
+      SharedDataAccessConfigEvents.deploymentConfigLoadedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,
