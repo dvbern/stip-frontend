@@ -1,4 +1,7 @@
-<header class="position-sticky top-0 bg-body" [class.shadow-sm]="isScroll">
+<header
+  class="position-sticky top-0 border-bottom"
+  [class.shadow-sm]="isScroll"
+>
   <div class="container-md">
     <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
       <a routerLink="/">
@@ -49,19 +52,6 @@
   </ng-template>
 </header>
 
-<main class="mt-5">
-  <div class="container-md">
-    <router-outlet></router-outlet>
-  </div>
+<main>
+  <router-outlet></router-outlet>
 </main>
-
-<footer class="py-2 py-md-4 bg-light mt-5">
-  <div class="container-md">
-    <div class="d-flex justify-content-end">
-      <dv-shared-ui-language-selector
-        [language]="language()"
-        (languageChange)="handleLanguageChangeFooter($event)"
-      />
-    </div>
-  </div>
-</footer>

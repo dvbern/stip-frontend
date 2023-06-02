@@ -3,9 +3,24 @@
 // node_modules/bootstrap/scss/_variables.scss
 
 // colors
-$primary: #ea161f;
-$secondary: #b9b9b9;
-$info: #3c96e9;
+$black: #000;
+$red: #fe5454;
+$blue: #298bef;
+
+$primary: #fe5454;
+$secondary: #298bef;
+$info: #298bef;
+
+$body-bg: #fafbfd;
+$min-contrast-ratio: 3; // default 4.5 leads to black text on primary red background
+
+// fonts
+$font-size-root: 16px;
+$font-size-base: 1rem;
+$font-family-sans-serif: 'Open Sans';
+
+// radius
+$border-radius: 4px;
 
 // input
 $input-placeholder-color: $secondary;
@@ -23,3 +38,16 @@ $form-check-input-focus-box-shadow: 0 0 0 0.2rem
   rgba($form-check-input-focus-border, 0.25);
 $form-check-input-checked-bg-color: $info;
 $form-check-input-checked-border-color: $form-check-input-checked-bg-color;
+
+// buttons
+$btn-border-radius: 12px;
+
+$input-btn-padding-y: 12px;
+$input-btn-padding-x: 20px;
+$input-btn-line-height: 1.1;
+
+// card
+$card-border-radius: 8px;
+$card-border-width: 0;
+$card-spacer-y: 1.5rem;
+$card-spacer-x: 1.5rem;
