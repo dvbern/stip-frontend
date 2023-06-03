@@ -1,5 +1,5 @@
 {
-  "name": "gesuch-app/util-gesuch-form-step-manager",
+  "name": "gesuch-app-util-gesuch-form-step-manager",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gesuch-app/util/gesuch-form-step-manager/src",
   "prefix": "dv",
