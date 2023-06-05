@@ -75,7 +75,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
   const importMappingsArg = typeMap.filter(e => !!e[2]).map(e => `${e[1]}=${e[2]}`).join(',');
 
   const cmd = 'npx openapi-generator-cli generate'
-    + ' -i http://localhost:8080/openapi.yml'
+    + ' -i http://localhost:8080/q/openapi'
     + ' -g typescript-angular'
     + ' --template-dir scripts/conf/openapi-templates'
     + ` --global-property models,apis=${apisString},supportingFiles`
