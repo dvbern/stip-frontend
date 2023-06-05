@@ -4,16 +4,6 @@
   "sourceRoot": "libs/shared/model/gesuch/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/shared/model/gesuch",
-        "main": "libs/shared/model/gesuch/src/index.ts",
-        "tsConfig": "libs/shared/model/gesuch/tsconfig.lib.json",
-        "assets": ["libs/shared/model/gesuch/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

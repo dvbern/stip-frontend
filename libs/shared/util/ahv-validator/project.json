@@ -4,16 +4,6 @@
   "sourceRoot": "libs/shared/util/ahv-validator/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/shared/util/ahv-validator",
-        "main": "libs/shared/util/ahv-validator/src/index.ts",
-        "tsConfig": "libs/shared/util/ahv-validator/tsconfig.lib.json",
-        "assets": ["libs/shared/util/ahv-validator/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

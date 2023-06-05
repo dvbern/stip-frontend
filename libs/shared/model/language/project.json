@@ -4,16 +4,6 @@
   "sourceRoot": "libs/shared/model/language/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/shared/model/language",
-        "main": "libs/shared/model/language/src/index.ts",
-        "tsConfig": "libs/shared/model/language/tsconfig.lib.json",
-        "assets": ["libs/shared/model/language/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -7,7 +7,9 @@ import { LibTypeGenerator, NormalizedSchema } from '../generator.interface';
 export function utilFnTypeFactory(options: NormalizedSchema): LibTypeGenerator {
   return {
     libGenerator: libraryGenerator,
-    libDefaultOptions: {},
+    libDefaultOptions: {
+      bundler: 'none',
+    },
     generators: [],
     postprocess,
   };

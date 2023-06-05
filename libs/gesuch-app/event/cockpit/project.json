@@ -4,16 +4,6 @@
   "sourceRoot": "libs/gesuch-app/event/cockpit/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/gesuch-app/event/cockpit",
-        "main": "libs/gesuch-app/event/cockpit/src/index.ts",
-        "tsConfig": "libs/gesuch-app/event/cockpit/tsconfig.lib.json",
-        "assets": ["libs/gesuch-app/event/cockpit/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

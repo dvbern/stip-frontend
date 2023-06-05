@@ -8,6 +8,7 @@ export function eventTypeFactory(options: NormalizedSchema): LibTypeGenerator {
   return {
     libGenerator: libraryGenerator,
     libDefaultOptions: {
+      bundler: 'none',
       unitTestRunner: 'none',
     },
     generators: [],

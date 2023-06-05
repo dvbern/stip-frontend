@@ -1,0 +1,13 @@
+{{#apiInfo}}
+{{#apis}}
+{{#operations}}
+export * from './{{ classFilename }}';
+// import { {{ classname }} } from './{{ classFilename }}';
+{{/operations}}
+{{#withInterfaces}}
+export * from './{{ classFilename }}Interface';
+{{/withInterfaces}}
+{{/apis}}
+// Do not generate the constant as accidental use of this prevents tree-shaking.
+// export const APIS = [{{#apis}}{{#operations}}{{ classname }}{{/operations}}{{^-last}}, {{/-last}}{{/apis}}];
+{{/apiInfo}}

@@ -11,7 +11,7 @@ Indeterminate progress bar
  */
 
 .dv-progress-bar-indeterminate {
-  background-color: var(--dv-light);
+  background-color: var(--dv-gray-300);
 
   border-radius: 9999px;
 
@@ -22,7 +22,7 @@ Indeterminate progress bar
   overflow: hidden;
 
   div {
-    background-color: var(--dv-gray-300);
+    background-color: var(--dv-primary);
     border-radius: 9999px;
     position: absolute;
     bottom: 0;

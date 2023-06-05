@@ -3,7 +3,7 @@ $prefix: 'dv-';
 $dv-size-unit: 0.25rem;
 
 // order matters
-@import 'bootstrap-override';
+@import 'bootstrap-variables';
 
 :root {
   // expose DV sass variables to as css variables

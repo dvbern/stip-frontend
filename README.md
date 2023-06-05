@@ -7,30 +7,30 @@ Welcome to DV Stip Workspace!
 - [Getting Started](#getting-started)
 - [Workspace generators & Executors](#workspace-generators--executors)
 - [Architecture](#architecture)
-  * [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
-  * [Library types](#library-types)
-    + [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
-  * [Architecture overview](#architecture-overview)
-  * [Implicit dependencies](#implicit-dependencies)
-    + [Assets](#assets)
-    + [Styles](#styles)
-  * [Project naming](#project-naming)
-  * [Moving and removing of libraries](#moving-and-removing-of-libraries)
+  - [Why libraries instead of "a library" ?](#why-libraries-instead-of-a-library-)
+  - [Library types](#library-types)
+    - [Generating of additional components, services, pipes in the libraries](#generating-of-additional-components-services-pipes-in-the-libraries)
+  - [Architecture overview](#architecture-overview)
+  - [Implicit dependencies](#implicit-dependencies)
+    - [Assets](#assets)
+    - [Styles](#styles)
+  - [Project naming](#project-naming)
+  - [Moving and removing of libraries](#moving-and-removing-of-libraries)
 - [Customization](#customization)
-  * [Generator default options](#generator-default-options)
+  - [Generator default options](#generator-default-options)
 - [NgRx Tips](#ngrx-tips)
-  * [Events (actions)](#events-actions)
-  * [Local selectors](#local-selectors)
+  - [Events (actions)](#events-actions)
+  - [Local selectors](#local-selectors)
 - [Linting](#linting)
-  * [Architecture](#architecture-1)
-  * [Bundle size](#bundle-size)
-  * [Angular](#angular)
-    + [Typescript](#typescript)
-    + [Template](#template)
-  * [NgRx](#ngrx)
+  - [Architecture](#architecture-1)
+  - [Bundle size](#bundle-size)
+  - [Angular](#angular)
+    - [Typescript](#typescript)
+    - [Template](#template)
+  - [NgRx](#ngrx)
 - [Testing](#testing)
-  * [Unit testing](#unit-testing)
-  * [E2e](#e2e)
+  - [Unit testing](#unit-testing)
+  - [E2e](#e2e)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -229,7 +229,6 @@ This can be useful if you add additional Angular libraries which bring their own
 Additionally, default options can be evolved also for custom `@dv/tooling/nx-plugin` generators
 by adjusting `libDefaultOptions` in the `libs/tooling/nx-plugin/src/generators/lib/types/<type>.ts` files
 per library type.
-
 
 ## NgRx Tips
 

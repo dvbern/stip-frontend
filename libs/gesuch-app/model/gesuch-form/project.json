@@ -1,19 +1,9 @@
 {
-  "name": "gesuch-app\\model-gesuch-form",
+  "name": "gesuch-app-model-gesuch-form",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gesuch-app/model/gesuch-form/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/gesuch-app/model/gesuch-form",
-        "main": "libs/gesuch-app/model/gesuch-form/src/index.ts",
-        "tsConfig": "libs/gesuch-app/model/gesuch-form/tsconfig.lib.json",
-        "assets": ["libs/gesuch-app/model/gesuch-form/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
