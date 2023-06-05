@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PersonInAusbildungDTO } from './ausbildungDTO';
 import { GesuchDTOFall } from './gesuchDTOFall';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
 import { GesuchDTOGesuchsperiode } from './gesuchDTOGesuchsperiode';
@@ -21,4 +22,5 @@ export interface GesuchDTO {
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
   gesuchStatus: Gesuchstatus;
   gesuchNummer: number;
+  ausbildung: PersonInAusbildungDTO;
 }

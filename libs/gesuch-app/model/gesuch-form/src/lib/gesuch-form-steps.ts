@@ -9,13 +9,19 @@ export abstract class GesuchFormSteps {
 
   public static readonly PERSON: GesuchAppModelGesuchFormStep = {
     enabled: true,
-    name: '',
+    name: 'gesuch-app-feature-gesuch-form-person',
     translationKey: '',
   };
 
-  public static readonly EDUCATION: GesuchAppModelGesuchFormStep = {
+  public static readonly AUSBILDUNG: GesuchAppModelGesuchFormStep = {
     enabled: true,
     name: 'gesuch-app-feature-gesuch-form-education',
-    translationKey: 'EDUCATION_STEP',
+    translationKey: 'AUSBILDUNG_STEP',
+  };
+
+  public static readonly LEBENSLAUF: GesuchAppModelGesuchFormStep = {
+    enabled: true,
+    name: 'gesuch-app-feature-gesuch-form-lebenslauf',
+    translationKey: 'LEBENSLAUF_STEP',
   };
 }

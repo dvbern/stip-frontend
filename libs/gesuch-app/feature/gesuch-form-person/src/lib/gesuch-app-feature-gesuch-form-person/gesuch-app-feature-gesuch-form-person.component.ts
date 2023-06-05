@@ -133,7 +133,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.nextStepTriggered({
-          target: GesuchFormSteps.EDUCATION,
+          target: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );

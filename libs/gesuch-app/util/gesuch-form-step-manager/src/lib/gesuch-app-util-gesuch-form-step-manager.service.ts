@@ -15,9 +15,11 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.COCKPIT:
         return GesuchFormSteps.PERSON;
       case GesuchFormSteps.PERSON:
-        return GesuchFormSteps.EDUCATION;
-      case GesuchFormSteps.EDUCATION:
-        return GesuchFormSteps.EDUCATION;
+        return GesuchFormSteps.AUSBILDUNG;
+      case GesuchFormSteps.AUSBILDUNG:
+        return GesuchFormSteps.LEBENSLAUF;
+      case GesuchFormSteps.LEBENSLAUF:
+        return GesuchFormSteps.COCKPIT;
       default:
         throw new Error('Step not defined');
     }
@@ -30,8 +32,10 @@ export class GesuchAppUtilGesuchFormStepManagerService {
         return GesuchFormSteps.COCKPIT;
       case GesuchFormSteps.PERSON:
         return GesuchFormSteps.COCKPIT;
-      case GesuchFormSteps.EDUCATION:
+      case GesuchFormSteps.AUSBILDUNG:
         return GesuchFormSteps.PERSON;
+      case GesuchFormSteps.LEBENSLAUF:
+        return GesuchFormSteps.AUSBILDUNG;
       default:
         throw new Error('Step not defined');
     }
