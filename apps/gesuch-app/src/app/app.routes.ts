@@ -7,13 +7,6 @@ export const appRoutes: Route[] = [
     redirectTo: 'gesuch-app-feature-cockpit',
   },
   {
-    path: 'gesuch-app-feature-eltern',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/eltern').then(
-        (m) => m.gesuchAppFeatureElternRoutes
-      ),
-  },
-  {
     path: 'gesuch-app-feature-cockpit',
     title: 'gesuch-app.cockpit.title',
     loadChildren: () =>
