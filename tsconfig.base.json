@@ -32,6 +32,9 @@
       "@dv/gesuch-app/event/gesuch-form-education": [
         "libs/gesuch-app/event/gesuch-form-education/src/index.ts"
       ],
+      "@dv/gesuch-app/event/gesuch-form-familiensituation": [
+        "libs/gesuch-app/event/gesuch-form-familiensituation/src/index.ts"
+      ],
       "@dv/gesuch-app/event/gesuch-form-person": [
         "libs/gesuch-app/event/gesuch-form-person/src/index.ts"
       ],
