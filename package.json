@@ -12,6 +12,7 @@
     "graph": "nx dep-graph --groupByFolder",
     "readme:toc": "markdown-toc -i README.md",
     "beforecommit": "npm run validate && npm run lint && npm t && npm run format:write",
+    "prepare": "husky install",
     "reset": "nx reset",
     "start": "run-p serve:gesuch-app serve:gesuch-app:mock",
     "serve:gesuch-app": "nx serve gesuch-app --open",
