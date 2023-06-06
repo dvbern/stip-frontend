@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {SharedUiProgressBarComponent} from "@dv/shared/ui/progress-bar";
 import {TranslateModule} from "@ngx-translate/core";
 import {SharedUiFormFieldComponent, SharedUiFormLabelTargetDirective} from "@dv/shared/ui/form-field";
-import {SharedUiDvFormComponentComponent} from "@dv/shared/ui/dv-form-component";
 import {ElternForm} from "./ElternForm";
+import {SharedUiDvFormComponentComponent} from "../../../../../../shared/ui/dv-form-component/src";
 
 @Component({
   selector: 'dv-gesuch-app-feature-eltern',
