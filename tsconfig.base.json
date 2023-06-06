@@ -47,6 +47,9 @@
       "@dv/gesuch-app/feature/gesuch-form-education": [
         "libs/gesuch-app/feature/gesuch-form-education/src/index.ts"
       ],
+      "@dv/gesuch-app/feature/gesuch-form-familiensituation": [
+        "libs/gesuch-app/feature/gesuch-form-familiensituation/src/index.ts"
+      ],
       "@dv/gesuch-app/feature/gesuch-form-person": [
         "libs/gesuch-app/feature/gesuch-form-person/src/index.ts"
       ],

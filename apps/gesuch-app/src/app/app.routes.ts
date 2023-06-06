@@ -2,6 +2,14 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
+    path: 'gesuch-app-feature-gesuch-form-familiensituation',
+    title: 'gesuch-app.familiensituation.title',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
+        (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
+      ),
+  },
+  {
     path: 'gesuch-app-feature-eltern',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/eltern').then(
