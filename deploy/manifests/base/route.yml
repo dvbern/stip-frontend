@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: http
+spec:
+  host: ""
+  path: "/"
+  to:
+    kind: Service
+    name: gesuch-app
+  tls:
+    termination: edge
+  port:
+    targetPort: 80

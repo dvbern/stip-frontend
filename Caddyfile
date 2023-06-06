@@ -1,0 +1,40 @@
+:80 {
+        try_files {path} /
+        root * /srv/app
+        file_server
+
+        log {
+          format console
+        }
+
+        respond /_health 200
+
+        # Security Headers on all paths
+        header {
+                # disable FLoC tracking
+                Permissions-Policy interest-cohort=()
+
+                # enable HSTS
+                Strict-Transport-Security max-age=31536000;
+
+                # disable clients from sniffing the media type
+                X-Content-Type-Options nosniff
+
+                # clickjacking protection
+                X-Frame-Options DENY
+
+                # keep referrer data off of HTTP connections
+                Referrer-Policy no-referrer-when-downgrade
+        }
+
+
+        @assets {
+          path *.js
+          path *.css
+          path assets/images
+        }
+
+        header @assets Cache-Control public,max-age=31536000,immutable
+
+        encode zstd gzip
+}
