@@ -122,7 +122,7 @@
             "strasse": "Hohlstrasse 511",
             "nummer": "",
             "plz": "8048",
-            "ort": "Zurich",
+            "ort": "sdfsdf",
             "land": "CH"
           },
           "vormundschaft": false
@@ -131,14 +131,14 @@
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
       "ausbildung": {
-        "ausbildungsland": "AR",
-        "ausbildungsstaette": "",
-        "ausbildungsgang": "",
-        "fachrichtung": "",
-        "manuell": false,
-        "start": "",
-        "ende": "",
-        "pensum": 0
+        "ausbildungsland": "Schweizerland",
+        "ausbildungsstaette": "DVB",
+        "ausbildungsgang": "Stip",
+        "fachrichtung": "Welt verbessern",
+        "manuell": true,
+        "start": "99-01-01",
+        "ende": "2050-12-31",
+        "pensum": "120"
       }
     },
     {

@@ -2,16 +2,16 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'gesuch-app-feature-cockpit',
+  },
+  {
     path: 'gesuch-app-feature-eltern',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/eltern').then(
         (m) => m.gesuchAppFeatureElternRoutes
       ),
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'gesuch-app-feature-cockpit',
   },
   {
     path: 'gesuch-app-feature-cockpit',

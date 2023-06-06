@@ -30,10 +30,7 @@
                 "onlyDependOnLibsWithTags": [
                   "type:feature",
                   "type:data-access",
-                  "type:ui",
                   "type:pattern",
-                  "type:util",
-                  "type:util-fn",
                   "type:model"
                 ]
               },
