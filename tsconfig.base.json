@@ -89,7 +89,10 @@
       "@dv/shared/util/ahv-validator": [
         "libs/shared/util/ahv-validator/src/index.ts"
       ],
-      "@dv/tooling/nx-plugin": ["libs/tooling/nx-plugin/src/index.ts"]
+      "@dv/tooling/nx-plugin": ["libs/tooling/nx-plugin/src/index.ts"],
+      "@dv/shared/ui/dv-form-component": [
+        "libs/shared/ui/dv-form-component/src/index.ts"
+      ]
     }
   },
   "exclude": [
