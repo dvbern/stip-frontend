@@ -9,6 +9,14 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: GesuchFormSteps.FAMILIENSITUATION.name,
+    title: 'gesuch-app.familiensituation.title',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
+        (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
+      ),
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'gesuch-app-feature-cockpit',
