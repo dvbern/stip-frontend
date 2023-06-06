@@ -50,6 +50,7 @@ export default async function moduleBoundariesValidate(
     console.info(chalk.green.bold(aggregateFixes.join('\n\n'), '\n\n'));
     await formatFiles(tree);
   }
+  console.log(aggregateViolations);
   return () => {
     if (aggregateViolations.filter(Boolean)?.length > 0) {
       if (aggregateFixes.filter(Boolean)?.length > 0) {
@@ -149,8 +150,15 @@ Difference:              ${chalk.inverse(scopeFoldersDiff.join(', '))}`);
   const scopeGeneratorDiff = diff(scopes, scopesGenerator);
   if (scopeGeneratorDiff.length) {
     violations.push(`Scopes (.eslintrc.json): ${scopes.join(', ')}
-Scopes (generator):     ${scopesGenerator.join(', ')}
+Scopes (lib generator):  ${scopesGenerator.join(', ')}
 Difference:              ${chalk.inverse(scopeGeneratorDiff.join(', '))}`);
+  }
+
+  const folderGeneratorDiff = diff(scopeDirs, scopesGenerator);
+  if (folderGeneratorDiff.length) {
+    violations.push(`Scopes (lib generator):  ${scopesGenerator.join(', ')}
+Folder structure:        ${scopeDirs.join(', ')}
+Difference:              ${chalk.inverse(folderGeneratorDiff.join(', '))}`);
   }
 
   if (violations.length > 0) {
