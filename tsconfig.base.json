@@ -76,6 +76,9 @@
       "@dv/shared/pattern/ngb-datepicker-adapter": [
         "libs/shared/pattern/ngb-datepicker-adapter/src/index.ts"
       ],
+      "@dv/shared/ui/dv-form-component": [
+        "libs/shared/ui/dv-form-component/src/index.ts"
+      ],
       "@dv/shared/ui/form-field": ["libs/shared/ui/form-field/src/index.ts"],
       "@dv/shared/ui/language-selector": [
         "libs/shared/ui/language-selector/src/index.ts"
