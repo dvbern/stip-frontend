@@ -64,6 +64,9 @@
       ],
       "@dv/shared/model/api": ["libs/shared/model/api/src/index.ts"],
       "@dv/shared/model/config": ["libs/shared/model/config/src/index.ts"],
+      "@dv/shared/model/form-base": [
+        "libs/shared/model/form-base/src/index.ts"
+      ],
       "@dv/shared/model/gesuch": ["libs/shared/model/gesuch/src/index.ts"],
       "@dv/shared/model/language": ["libs/shared/model/language/src/index.ts"],
       "@dv/shared/pattern/core": ["libs/shared/pattern/core/src/index.ts"],

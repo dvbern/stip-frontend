@@ -1,0 +1,10 @@
+<dv-shared-ui-form-field>
+  <dv-shared-ui-form-label *ngIf="label">{{
+    label | translate
+    }}</dv-shared-ui-form-label>
+  <br>
+  <ng-content></ng-content>
+  <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+    {{ 'shared.form.error.required' | translate }}
+  </dv-shared-ui-form-message>
+</dv-shared-ui-form-field>
