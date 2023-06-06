@@ -50,7 +50,6 @@ export default async function moduleBoundariesValidate(
     console.info(chalk.green.bold(aggregateFixes.join('\n\n'), '\n\n'));
     await formatFiles(tree);
   }
-  console.log(aggregateViolations);
   return () => {
     if (aggregateViolations.filter(Boolean)?.length > 0) {
       if (aggregateFixes.filter(Boolean)?.length > 0) {
