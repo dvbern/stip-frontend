@@ -1,17 +1,18 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
-import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
-import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
-
-import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
-import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+
+import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
 
 export const loadGesuchs = createEffect(
   (
@@ -49,7 +50,10 @@ export const loadGesuch = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppEventGesuchFormPerson.init),
+      ofType(
+        GesuchAppEventGesuchFormPerson.init,
+        GesuchAppEventGesuchFormEducation.init
+      ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
         if (!id) {
@@ -108,10 +112,13 @@ export const updateGesuch = createEffect(
     return actions$.pipe(
       ofType(
         GesuchAppEventGesuchFormPerson.nextStepTriggered,
-        GesuchAppEventGesuchFormPerson.prevStepTriggered
+        GesuchAppEventGesuchFormPerson.prevStepTriggered,
+        GesuchAppEventGesuchFormEducation.nextStepTriggered,
+        GesuchAppEventGesuchFormEducation.prevStepTriggered
       ),
-      concatMap(({ gesuch, target: origin }) =>
-        gesuchAppDataAccessGesuchService.update(gesuch).pipe(
+      concatMap(({ gesuch, target: origin }) => {
+        console.log({ origin, gesuch });
+        return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
             GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
               id: gesuch.id!,
@@ -123,8 +130,8 @@ export const updateGesuch = createEffect(
               error: error.toString(),
             }),
           ])
-        )
-      )
+        );
+      })
     );
   },
   { functional: true }
@@ -164,7 +171,7 @@ export const redirectToGesuchForm = createEffect(
         GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess
       ),
       tap(({ id, origin }) => {
-        const target = stepManager.getNext(origin);
+        const target = stepManager.getNext(origin); // TODO aber bei zurueck muessen wir getPrevious nehmen
         router.navigate([target.name, id]);
       })
     );

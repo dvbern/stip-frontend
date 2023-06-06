@@ -13,6 +13,8 @@ $info: #298bef;
 
 $body-bg: #fafbfd;
 $min-contrast-ratio: 3; // default 4.5 leads to black text on primary red background
+$btn-link-color: lighten($black, 30%);
+$btn-link-hover-color: $black;
 
 // fonts
 $font-size-root: 16px;
@@ -23,6 +25,7 @@ $font-family-sans-serif: 'Open Sans';
 $border-radius: 4px;
 
 // input
+$input-bg: #fff;
 $input-placeholder-color: $secondary;
 $input-focus-border-color: $info;
 $input-focus-box-shadow: 0 0 0 0.2rem rgba($input-focus-border-color, 0.25);

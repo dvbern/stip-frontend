@@ -7,5 +7,5 @@ $dv-size-unit: 0.25rem;
 
 :root {
   // expose DV sass variables to as css variables
-  --#{$prefix}size-unit: #{$dv-size-unit};
+  --#{$prefix}size-unit: #{$dv-size-unit}; // bad. this will be overridden from bootstrap
 }

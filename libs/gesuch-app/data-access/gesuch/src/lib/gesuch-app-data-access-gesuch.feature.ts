@@ -1,3 +1,4 @@
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
@@ -38,6 +39,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventCockpit.removeTriggered,
       GesuchAppEventGesuchFormPerson.init,
       GesuchAppEventGesuchFormPerson.nextStepTriggered,
+      GesuchAppEventGesuchFormEducation.init,
+      GesuchAppEventGesuchFormEducation.nextStepTriggered,
       (state): State => ({
         ...state,
         gesuch: undefined,

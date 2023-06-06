@@ -129,7 +129,17 @@
         }
       },
       "gesuchStatus": "OFFEN",
-      "gesuchNummer": 0
+      "gesuchNummer": 0,
+      "ausbildung": {
+        "ausbildungsland": "AR",
+        "ausbildungsstaette": "",
+        "ausbildungsgang": "",
+        "fachrichtung": "",
+        "manuell": false,
+        "start": "",
+        "ende": "",
+        "pensum": 0
+      }
     },
     {
       "id": "rx_ZMda",
@@ -161,14 +171,6 @@
           "digitaleKommunikation": true
         }
       }
-    },
-    {
-      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "id": "8fSC3Mp"
-    },
-    {
-      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "id": "G9fGWwd"
     }
   ]
 }

@@ -8,6 +8,6 @@
   background: radial-gradient(closest-side, white 84%, transparent 85%),
     conic-gradient(
       var(--dv-primary) calc(var(--progress) * 1%),
-      var(--dv-light) 0
+      var(--dv-gray-300) 0
     );
 }

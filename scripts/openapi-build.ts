@@ -16,10 +16,9 @@
  */
 
 import * as fs from 'fs';
-import {PathLike} from "fs";
+import { PathLike } from 'fs';
 import childProcess = require('child_process');
 import path = require('path');
-
 
 const dependencies = require('../package.json').dependencies;
 
@@ -48,9 +47,7 @@ function deleteOldFilesSync(directory: string, timestamp: Date) {
 async function generateOpenApi(directory: string, apis: string[]) {
   const env = {
     ...process.env,
-    JAVA_OPTS: [
-      '-Dmodels',
-    ].join(' '),
+    JAVA_OPTS: ['-Dmodels'].join(' '),
   };
 
   const apisString = apis.join(':');
@@ -71,53 +68,53 @@ async function generateOpenApi(directory: string, apis: string[]) {
     // ['rest-includes', 'RestIncludes', typesPath],
     //['entity-id', 'EntityID', typesPath],
   ];
-  const typeMappingsArg = typeMap.map(e => `${e[0]}=${e[1]}`).join(',');
-  const importMappingsArg = typeMap.filter(e => !!e[2]).map(e => `${e[1]}=${e[2]}`).join(',');
+  const typeMappingsArg = typeMap.map((e) => `${e[0]}=${e[1]}`).join(',');
+  const importMappingsArg = typeMap
+    .filter((e) => !!e[2])
+    .map((e) => `${e[1]}=${e[2]}`)
+    .join(',');
 
-  const cmd = 'npx openapi-generator-cli generate'
-    + ' -i http://localhost:8080/q/openapi'
-    + ' -g typescript-angular'
-    + ' --template-dir scripts/conf/openapi-templates'
-    + ` --global-property models,apis=${apisString},supportingFiles`
-    + ` -p ngVersion=${ngVersion}`
-    + ' -p basePath=/'
-    + ' -p supportsES6=true'
-    + ' -p disallowAdditionalPropertiesIfNotPresent=false'
-    + ' -p legacyDiscriminatorBehavior=false'
+  const cmd =
+    'npx openapi-generator-cli generate' +
+    ' -i http://localhost:8080/q/openapi' +
+    ' -g typescript-angular' +
+    ' --template-dir scripts/conf/openapi-templates' +
+    ` --global-property models,apis=${apisString},supportingFiles` +
+    ` -p ngVersion=${ngVersion}` +
+    ' -p basePath=/' +
+    ' -p supportsES6=true' +
+    ' -p disallowAdditionalPropertiesIfNotPresent=false' +
+    ' -p legacyDiscriminatorBehavior=false' +
     // Sortierung: uebernimmt Originalreihenfolge
-    + ' -p sortModelPropertiesByRequiredFlag=false'
-    + ' -p sortParamsByRequiredFlag=false'
-    + ' -p enumPropertyNaming=original'
+    ' -p sortModelPropertiesByRequiredFlag=false' +
+    ' -p sortParamsByRequiredFlag=false' +
+    ' -p enumPropertyNaming=original' +
     // Eindeutiges Naming fuer Service-Methoden und Parameter-Objekte
-    + ' -p removeOperationIdPrefix=true'
-    + ' -p prefixParameterInterfaces=true'
+    ' -p removeOperationIdPrefix=true' +
+    ' -p prefixParameterInterfaces=true' +
     // sonst schneidet es bei einigen Enums den vordersten Teil einfach ab, wenn alle Eintraege das gleiche Prefix haben
-    + ' -p removeEnumValuePrefix=false'
-    + ' -p useSingleRequestParameter=true'
-    + ` --type-mappings ${typeMappingsArg}`
-   // + ` --import-mappings ${importMappingsArg}`
-    + ' -o ' + directory;
+    ' -p removeEnumValuePrefix=false' +
+    ' -p useSingleRequestParameter=true' +
+    ` --type-mappings ${typeMappingsArg}` +
+    // + ` --import-mappings ${importMappingsArg}`
+    ' -o ' +
+    directory;
 
   console.log('executing command: ', cmd);
-  const child = childProcess.exec(
-    cmd,
-    {env},
-  );
-  child.stdout?.on('data', data => {
+  const child = childProcess.exec(cmd, { env });
+  child.stdout?.on('data', (data) => {
     console.log(data.toString());
   });
-  child.stderr?.on('data', data => {
+  child.stderr?.on('data', (data) => {
     console.error(data.toString());
   });
 
-  return new Promise<void>(
-    (resolve, reject) => {
-      child.on('exit', code => code === 0
-        ? resolve()
-        : reject('exit code: ' + code));
-      child.on('error', reject);
-    },
-  );
+  return new Promise<void>((resolve, reject) => {
+    child.on('exit', (code) =>
+      code === 0 ? resolve() : reject('exit code: ' + code)
+    );
+    child.on('error', reject);
+  });
 }
 
 async function sleep(msec: number) {
@@ -137,15 +134,10 @@ async function sleep(msec: number) {
   // add more APIs as you go
   // Keep in mind: there is one file generated per OpenAPI-@Tag,
   // Names are CamelCase versions from OpenAPIConst Tags
-  const generatedApis = [
-    'Fall',
-    'Auth',
-    'Configuration'
-  ];
+  const generatedApis = ['Fall', 'Auth', 'Configuration'];
 
   await generateOpenApi(generatorPath, generatedApis);
 
   deleteOldFilesSync(apiPath, timestamp);
   deleteOldFilesSync(modelsPath, timestamp);
-
 })();
