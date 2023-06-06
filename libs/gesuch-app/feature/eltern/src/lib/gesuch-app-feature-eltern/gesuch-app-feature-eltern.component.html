@@ -2,47 +2,51 @@
   <dv-shared-ui-progress-bar></dv-shared-ui-progress-bar>
   <form>
     <div class="row">
-      <dv-shared-ui-dv-form-component label="test">
-        <input dvSharedUiFormLabelTarget formControlName="name" required/>
-      </dv-shared-ui-dv-form-component>
+      <dv-shared-ui-form-field>
+        <input dvSharedUiFormLabelTarget formControlName="name" required />
+      </dv-shared-ui-form-field>
     </div>
     <div class="row">
       <dv-shared-ui-form-field>
-        <input dvSharedUiFormLabelTarget formControlName="vorname"/>
+        <input dvSharedUiFormLabelTarget formControlName="vorname" />
       </dv-shared-ui-form-field>
     </div>
     <div class="row">
       <div>
-        <input formControlName="telefonnummer"/>
+        <input formControlName="telefonnummer" />
       </div>
     </div>
     <div class="row">
       <div>
-        <input formControlName="sozialversicherungsnummer"/>
+        <input formControlName="sozialversicherungsnummer" />
       </div>
     </div>
-    <h2>{{'shared.weiterangaben' | translate}}</h2>
+    <h2>{{ 'shared.weiterangaben' | translate }}</h2>
     <div class="row">
       <div>
-        <input type="date" formControlName="geburtsdatum"/>
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <input type="checkbox" formControlName="sozialhilfebeitraegeAusbezahlt"/>
+        <input type="date" formControlName="geburtsdatum" />
       </div>
     </div>
     <div class="row">
       <div>
-        <input type="checkbox" formControlName="ausweisbFluechtling"/>
+        <input
+          type="checkbox"
+          formControlName="sozialhilfebeitraegeAusbezahlt"
+        />
       </div>
     </div>
     <div class="row">
       <div>
-        <input type="checkbox" formControlName="ergaenzungsleistungAusbezahlt"/>
+        <input type="checkbox" formControlName="ausweisbFluechtling" />
       </div>
     </div>
-
+    <div class="row">
+      <div>
+        <input
+          type="checkbox"
+          formControlName="ergaenzungsleistungAusbezahlt"
+        />
+      </div>
+    </div>
   </form>
 </div>
-
