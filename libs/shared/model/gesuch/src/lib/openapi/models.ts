@@ -17,3 +17,7 @@ export * from './personInAusbildungDTO';
 export * from './personInAusbildungDTOAdresse';
 export * from './wohnsitz';
 export * from './zivilstand';
+export * from './familiensituationDTO';
+export * from './elternAbwesenheitsGrund';
+export * from './elternschaftsteilung';
+export * from './elternUnbekanntheitsGrund';
