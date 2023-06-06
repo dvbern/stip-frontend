@@ -53,9 +53,6 @@
       "@dv/gesuch-app/pattern/main-layout": [
         "libs/gesuch-app/pattern/main-layout/src/index.ts"
       ],
-      "@dv/gesuch-app/util/gesuch-form-familiensituation-visibility": [
-        "libs/gesuch-app/util/gesuch-form-familiensituation-visibility/src/index.ts"
-      ],
       "@dv/gesuch-app/util/gesuch-form-step-manager": [
         "libs/gesuch-app/util/gesuch-form-step-manager/src/index.ts"
       ],

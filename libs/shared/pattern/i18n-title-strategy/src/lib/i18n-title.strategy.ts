@@ -1,46 +1,42 @@
-import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
-import { inject, Injectable, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { effect, inject, Injectable } from '@angular/core';
+import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { getRouterSelectors } from '@ngrx/router-store';
-import { filter, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { withLatestFrom } from 'rxjs';
 
 const { selectTitle, selectUrl } = getRouterSelectors();
 
 const APP_NAME_I18N_KEY = 'gesuch-app.name';
 
 @Injectable()
-export class SharedPatternI18nTitleStrategy
-  extends TitleStrategy
-  implements OnDestroy
-{
+export class SharedPatternI18nTitleStrategy extends TitleStrategy {
   private title = inject(Title);
   private translateService = inject(TranslateService);
   private store = inject(Store);
-  private destroy$ = new Subject<void>();
 
   constructor() {
     super();
 
     // update current  title on language change
-    this.translateService.onLangChange
-      .pipe(
-        withLatestFrom(
-          this.store.select(selectTitle),
-          this.store.select(selectUrl)
-        ),
-        filter(([, , url]) => url !== undefined),
-        takeUntil(this.destroy$)
+    const langChangeWithTitleAndUrl$ = this.translateService.onLangChange.pipe(
+      withLatestFrom(
+        this.store.select(selectTitle),
+        this.store.select(selectUrl)
       )
-      .subscribe(([, title, url]) => {
+    );
+    const langChangeWithTitleAndUrl = toSignal(langChangeWithTitleAndUrl$);
+    effect(() => {
+      const [, title, url] = langChangeWithTitleAndUrl() ?? [];
+      if (url && !title) {
+        this.missingTranslationKey(url);
+      }
+      if (url !== undefined && title !== undefined) {
         this.updateTitleInternal(title, url);
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+      }
+    });
   }
 
   // update title on navigation
@@ -56,11 +52,15 @@ export class SharedPatternI18nTitleStrategy
         this.translateService.instant(APP_NAME_I18N_KEY);
       this.title.setTitle(`${routeTitleTranslation} - ${appNameTranslation}`);
     } else {
-      console.error(
-        `[${SharedPatternI18nTitleStrategy.name}]`,
-        `The title translation key for route "${url}" is not defined, please add it to the corresponding route config.`
-      );
+      this.missingTranslationKey(url);
     }
+  }
+
+  private missingTranslationKey(url: string) {
+    console.error(
+      `[${SharedPatternI18nTitleStrategy.name}]`,
+      `The title translation key for route "${url}" is not defined, please add it to the corresponding route config.`
+    );
   }
 }
 

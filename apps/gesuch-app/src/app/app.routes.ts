@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import {GesuchFormSteps} from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [
   {
@@ -7,14 +6,6 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('@dv/gesuch-app/feature/eltern').then(
         (m) => m.gesuchAppFeatureElternRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.FAMILIENSITUATION.name,
-    title: 'gesuch-app.familiensituation.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
-        (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
       ),
   },
   {

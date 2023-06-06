@@ -18,7 +18,11 @@ export const gesuchAppFeatureCockpitRoutes: Route[] = [
       provideEffects(gesuchAppDataAccessGesuchsperiodeEffects),
     ],
     children: [
-      { path: '', component: GesuchAppFeatureCockpitComponent },
+      {
+        path: '',
+        component: GesuchAppFeatureCockpitComponent,
+        title: 'gesuch-app.cockpit.title',
+      },
       // add more routes here (siblings)
       // it is also possible to add nested routes as children
       // of this feature root component (or even lazy loaded sub features)
