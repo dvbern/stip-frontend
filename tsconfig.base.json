@@ -35,6 +35,9 @@
       "@dv/gesuch-app/feature/cockpit": [
         "libs/gesuch-app/feature/cockpit/src/index.ts"
       ],
+      "@dv/gesuch-app/feature/eltern": [
+        "libs/gesuch-app/feature/eltern/src/index.ts"
+      ],
       "@dv/gesuch-app/feature/gesuch-form-education": [
         "libs/gesuch-app/feature/gesuch-form-education/src/index.ts"
       ],
