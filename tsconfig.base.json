@@ -17,6 +17,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@dv/gesuch-app/data-access/eltern": [
+        "libs/gesuch-app/data-access/eltern/src/index.ts"
+      ],
       "@dv/gesuch-app/data-access/gesuch": [
         "libs/gesuch-app/data-access/gesuch/src/index.ts"
       ],
