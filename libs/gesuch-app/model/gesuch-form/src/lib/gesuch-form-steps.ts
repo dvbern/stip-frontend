@@ -30,4 +30,10 @@ export abstract class GesuchFormSteps {
     name: 'gesuch-app-feature-gesuch-form-familiensituation',
     translationKey: 'FAMILIENSITUATION_STEP',
   };
+
+  public static readonly FAMILIENSITUATION: GesuchAppModelGesuchFormStep = {
+    enabled: true,
+    name: 'gesuch-app-feature-gesuch-form-familiensituation',
+    translationKey: 'FAMILIENSITUATION_STEP',
+  };
 }
