@@ -33,5 +33,6 @@
   "shared.form.radio.no": "Nein",
   "shared.form-field.toggle-info-messages": "Info-Meldungen anzeigen",
   "shared.form.error.required": "Dieses Feld ist erforderlich",
-  "shared.form.error.ahv": "Bitte geben Sie eine gültige AHV-Nummer ein"
+  "shared.form.error.ahv": "Bitte geben Sie eine gültige AHV-Nummer ein",
+  "shared.weiterangaben": "Weitere Angaben"
 }

@@ -1,12 +1,47 @@
 <div class="container">
   <dv-shared-ui-progress-bar></dv-shared-ui-progress-bar>
   <form>
-    <div dvSharedUiFormLabelTarget>
-      <input/>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input formControlName="name"/>
+      </div>
     </div>
-
-
-
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input formControlName="vorname"/>
+      </div>
+    </div>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input formControlName="telefonnummer"/>
+      </div>
+    </div>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input formControlName="sozialversicherungsnummer"/>
+      </div>
+    </div>
+    <h2>{{'shared.weiterangaben' | translate}}</h2>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input type="date" formControlName="geburtsdatum"/>
+      </div>
+    </div>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input type="checkbox" formControlName="sozialhilfebeitraegeAusbezahlt"/>
+      </div>
+    </div>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input type="checkbox" formControlName="ausweisbFluechtling"/>
+      </div>
+    </div>
+    <div class="row">
+      <div dvSharedUiFormLabelTarget>
+        <input type="checkbox" formControlName="ergaenzungsleistungAusbezahlt"/>
+      </div>
+    </div>
 
   </form>
   <p>gesuch-app-feature-eltern works!</p>
