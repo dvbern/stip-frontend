@@ -31,7 +31,7 @@ build:gesuch-app:
     - npm run build:gesuch-app
   artifacts:
     paths:
-      - "dist/gesuch-app"
+      - "dist/apps/gesuch-app"
     when: on_success
     expire_in: "1 day"
 
