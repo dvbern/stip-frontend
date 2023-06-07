@@ -19,6 +19,8 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.AUSBILDUNG:
         return GesuchFormSteps.FAMILIENSITUATION;
       case GesuchFormSteps.LEBENSLAUF:
+        return GesuchFormSteps.FAMILIENSITUATION;
+      case GesuchFormSteps.FAMILIENSITUATION:
         return GesuchFormSteps.COCKPIT;
       default:
         throw new Error('Step not defined');
