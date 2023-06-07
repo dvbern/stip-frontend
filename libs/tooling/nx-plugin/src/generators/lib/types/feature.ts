@@ -40,7 +40,7 @@ function postprocess(tree: Tree, options: NormalizedSchema) {
       options.nameDasherized,
       'src',
       'lib',
-      'gesuch-app-feature-cockpit.routes.ts'
+      'lib.routes.ts'
     )
   );
 
