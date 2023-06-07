@@ -15,7 +15,7 @@ export const gesuchAppFeatureGesuchFormFamiliensituationRoutes: Route[] = [
     ],
     children: [
       {
-        path: '',
+        path: ':id',
         component: GesuchAppFeatureGesuchFormFamiliensituationComponent,
       },
       // add more routes here (siblings)
