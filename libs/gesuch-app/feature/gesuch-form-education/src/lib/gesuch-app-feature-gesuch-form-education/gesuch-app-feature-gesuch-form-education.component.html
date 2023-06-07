@@ -47,7 +47,7 @@
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsland"
           >
-            <option [value]="null" selected>
+            <option [ngValue]="null" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
@@ -81,13 +81,13 @@
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsstaette"
           >
-            <option [value]="null" selected>
+            <option [ngValue]="null" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
               [value]="l.name"
               *ngFor="
-                let l of getAvailablAusbildungsstaettes();
+                let l of ausbildungsstaetteOptions();
                 trackBy: trackByIndex
               "
             >
@@ -113,7 +113,10 @@
             {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
           </dv-shared-ui-form-label>
 
-          <input
+          <!-- TODO disable wenn keine Stätte ausgewählt -->
+
+          <!-- TODO Typeahead-->
+          <!-- <input
             *ngIf="!form.value['manuell']"
             id="typeahead-focus"
             type="text"
@@ -128,27 +131,27 @@
             (focus)="focusAusbildungsgang$.next($any($event).target.value)"
             (click)="clickAusbildungsgang$.next($any($event).target.value)"
             #ngbTypeaheadAusbildungsgang="ngbTypeahead"
-          />
+          />-->
 
-          <!--<select
+          <select
             *ngIf="!form.value['manuell']"
             class="form-select"
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsgang"
           >
-            <option [value]="null"  selected>
+            <option [ngValue]="null" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
               [value]="l.name"
               *ngFor="
-                let l of getAvailableAusbildungsgangs2();
+                let l of getAvailableAusbildungsgangs();
                 trackBy: trackByIndex
               "
             >
               {{ l.name }}
             </option>
-          </select>-->
+          </select>
 
           <input
             *ngIf="form.value['manuell']"

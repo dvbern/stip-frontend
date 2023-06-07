@@ -39,7 +39,7 @@
   "gesuch-app.form.education.ausbildungsstaette.label": "Ausbildungsstätte",
   "gesuch-app.form.education.ausbildungsgang.label": "Ausbildungsgang",
   "gesuch-app.form.education.fachrichtung.label": "Fachrichtung",
-  "gesuch-app.form.education.manuell.label": "Ich konnte die Ausbildung nicht finden",
+  "gesuch-app.form.education.manuell.label": "Andere Ausbildungsstätte erfassen",
   "gesuch-app.form.education.duration.title": "Ausbildungsdauer",
   "gesuch-app.form.education.start.label": "Beginn der Ausbildung",
   "gesuch-app.form.education.ende.label": "Voraussichtliches Ende der Ausbildung",

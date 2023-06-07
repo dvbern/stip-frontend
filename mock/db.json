@@ -131,14 +131,16 @@
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
       "ausbildung": {
-        "ausbildungsland": "CH",
-        "ausbildungsstaette": "A",
-        "ausbildungsgang": "B",
-        "fachrichtung": "Welt verbessern 1",
-        "manuell": true,
-        "start": "99-01-01",
-        "ende": "2050-12-31",
-        "pensum": "120"
+        "ausbildungSB": {
+          "ausbildungsland": "CH",
+          "ausbildungsstaette": "Universität Basel",
+          "ausbildungsgang": "Bachelor",
+          "fachrichtung": "dfsdf",
+          "manuell": false,
+          "start": "2023-06-03",
+          "ende": "2023-06-10",
+          "pensum": 0
+        }
       }
     },
     {

@@ -17,7 +17,7 @@ export interface AusbildungDTO {
   ausbildungsgang: string;
   fachrichtung: string;
   manuell: boolean;
-  start: Date;
-  ende: Date;
+  start: string;
+  ende: string;
   pensum: number;
 }
