@@ -12,403 +12,397 @@
 
 export type Land =
   | 'CH'
+  | 'AF'
+  | 'EG'
   | 'AL'
+  | 'DZ'
   | 'AD'
+  | 'AO'
+  | 'AG'
+  | 'GQ'
+  | 'AR'
+  | 'AM'
+  | 'AZ'
+  | 'ET'
+  | 'AU'
+  | 'BS'
+  | 'BH'
+  | 'BD'
+  | 'BB'
+  | 'BY'
   | 'BE'
+  | 'BZ'
+  | 'BJ'
+  | 'BT'
+  | 'BO'
+  | 'BA'
+  | 'BR'
+  | 'BN'
   | 'BG'
+  | 'BF'
+  | 'BI'
+  | 'CV'
+  | 'CL'
+  | 'CN'
+  | 'CK'
+  | 'CR'
+  | 'CI'
   | 'DK'
   | 'DE'
-  | 'FI'
-  | 'FR'
-  | 'GR'
-  | 'GB'
-  | 'IE'
-  | 'IS'
-  | 'IT'
-  | 'LI'
-  | 'LU'
-  | 'MT'
-  | 'MC'
-  | 'NL'
-  | 'NO'
-  | 'AT'
-  | 'PL'
-  | 'PT'
-  | 'RO'
-  | 'SM'
-  | 'SE'
-  | 'ES'
-  | 'TR'
-  | 'HU'
-  | 'VA'
-  | 'CY'
-  | 'SK'
-  | 'CZ'
-  | 'RS'
-  | 'HR'
-  | 'SI'
-  | 'BA'
-  | 'ME'
-  | 'MK'
-  | 'XZ'
-  | 'EE'
-  | 'LV'
-  | 'LT'
-  | 'MD'
-  | 'RU'
-  | 'UA'
-  | 'BY'
-  | 'GF'
-  | 'ET'
-  | 'DJ'
-  | 'DZ'
-  | 'AO'
-  | 'BW'
-  | 'BI'
-  | 'BJ'
-  | 'CI'
-  | 'GA'
-  | 'GM'
-  | 'GH'
-  | 'GW'
-  | 'GN'
-  | 'CM'
-  | 'CV'
-  | 'KE'
-  | 'KM'
-  | 'CG'
-  | 'CD'
-  | 'LS'
-  | 'LR'
-  | 'LY'
-  | 'MG'
-  | 'MW'
-  | 'ML'
-  | 'MA'
-  | 'MR'
-  | 'MU'
-  | 'MZ'
-  | 'NE'
-  | 'NG'
-  | 'BF'
-  | 'ZW'
-  | 'RW'
-  | 'ZM'
-  | 'ST'
-  | 'SN'
-  | 'SC'
-  | 'SL'
-  | 'SO'
-  | 'ZA'
-  | 'SD'
-  | 'NA'
-  | 'SZ'
-  | 'TZ'
-  | 'TG'
-  | 'TD'
-  | 'TN'
-  | 'UG'
-  | 'EG'
-  | 'CF'
-  | 'ER'
-  | 'EH'
-  | 'AR'
-  | 'BS'
-  | 'BB'
-  | 'BO'
-  | 'BR'
-  | 'CL'
-  | 'CR'
+  | 'DM'
   | 'DO'
+  | 'DJ'
   | 'EC'
   | 'SV'
-  | 'GT'
-  | 'GY'
-  | 'HT'
-  | 'BZ'
-  | 'HN'
-  | 'JM'
-  | 'CA'
-  | 'CO'
-  | 'CU'
-  | 'MX'
-  | 'NI'
-  | 'PA'
-  | 'PY'
-  | 'PE'
-  | 'SR'
-  | 'TT'
-  | 'UY'
-  | 'VE'
-  | 'US'
+  | 'ER'
+  | 'EE'
+  | 'SZ'
+  | 'FJ'
+  | 'FI'
+  | 'FR'
+  | 'GA'
+  | 'GM'
+  | 'GE'
+  | 'GH'
   | 'GD'
-  | 'AG'
-  | 'LC'
-  | 'VC'
-  | 'KN'
-  | 'AF'
-  | 'BH'
-  | 'BT'
-  | 'BN'
-  | 'MM'
-  | 'LK'
-  | 'TW'
-  | 'CN'
+  | 'GR'
+  | 'GT'
+  | 'GN'
+  | 'GW'
+  | 'GF'
+  | 'HT'
+  | 'VA'
+  | 'HN'
   | 'IN'
   | 'ID'
   | 'IQ'
   | 'IR'
+  | 'IE'
+  | 'IS'
   | 'IL'
+  | 'IT'
+  | 'JM'
   | 'JP'
-  | 'YE'
+  | 'YD'
   | 'JO'
   | 'KH'
+  | 'CM'
+  | 'CA'
+  | 'KZ'
   | 'QA'
+  | 'KE'
+  | 'KG'
+  | 'KI'
+  | 'CO'
+  | 'KM'
+  | 'CG'
+  | 'CD'
+  | 'KR'
+  | 'KP'
+  | 'KS'
+  | 'HR'
+  | 'CU'
   | 'KW'
   | 'LA'
+  | 'LS'
+  | 'LV'
   | 'LB'
+  | 'LR'
+  | 'LY'
+  | 'LI'
+  | 'LT'
+  | 'LU'
+  | 'MG'
+  | 'MW'
   | 'MY'
-  | 'MV'
-  | 'OM'
-  | 'MN'
-  | 'NP'
-  | 'KP'
-  | 'AE'
-  | 'PK'
-  | 'PH'
-  | 'SA'
-  | 'SG'
-  | 'KR'
-  | 'SY'
-  | 'TH'
-  | 'VN'
-  | 'BD'
-  | 'TL'
-  | 'PS'
-  | 'AM'
-  | 'AZ'
-  | 'GE'
-  | 'KZ'
-  | 'KG'
-  | 'TJ'
-  | 'TM'
-  | 'UZ'
-  | 'AU'
-  | 'FJ'
-  | 'NR'
-  | 'VU'
-  | 'NZ'
-  | 'PG'
-  | 'TO'
-  | 'WS'
-  | 'SB'
-  | 'TV'
-  | 'KI'
+  | 'XX'
+  | 'ML'
+  | 'MT'
+  | 'MA'
   | 'MH'
+  | 'MR'
+  | 'MU'
+  | 'MX'
   | 'FM'
+  | 'MO'
+  | 'MC'
+  | 'MN'
+  | 'ME'
+  | 'MZ'
+  | 'MM'
+  | 'NA'
+  | 'NR'
+  | 'NP'
+  | 'NZ'
+  | 'NI'
+  | 'NL'
+  | 'NE'
+  | 'NG'
+  | 'NU'
+  | 'MK'
+  | 'NO'
+  | 'OM'
+  | 'AT'
+  | 'PK'
   | 'PW'
-  | 'NICHTANERKANNT'
-  | 'STAATENLOS'
-  | 'UNBEKANNT';
+  | 'PA'
+  | 'PG'
+  | 'PY'
+  | 'PE'
+  | 'PH'
+  | 'PO'
+  | 'PT'
+  | 'RW'
+  | 'RO'
+  | 'RU'
+  | 'SB'
+  | 'ZM'
+  | 'WS'
+  | 'SM'
+  | 'ST'
+  | 'SA'
+  | 'SE'
+  | 'SN'
+  | 'RS'
+  | 'SC'
+  | 'SL'
+  | 'ZW'
+  | 'SG'
+  | 'SK'
+  | 'SI'
+  | 'SO'
+  | 'ES'
+  | 'LK'
+  | 'KN'
+  | 'LC'
+  | 'VC'
+  | 'ZA'
+  | 'SD'
+  | 'SS'
+  | 'SR'
+  | 'SY'
+  | 'TJ'
+  | 'TZ'
+  | 'TH'
+  | 'TL'
+  | 'TG'
+  | 'TO'
+  | 'TT'
+  | 'TD'
+  | 'CZ'
+  | 'TN'
+  | 'TU'
+  | 'TM'
+  | 'TV'
+  | 'UG'
+  | 'UA'
+  | 'HU'
+  | 'UY'
+  | 'UZ'
+  | 'VU'
+  | 'VE'
+  | 'AE'
+  | 'US'
+  | 'GB'
+  | 'VN'
+  | 'CF'
+  | 'CY';
 
 export const Land = {
   CH: 'CH' as Land,
+  AF: 'AF' as Land,
+  EG: 'EG' as Land,
   AL: 'AL' as Land,
+  DZ: 'DZ' as Land,
   AD: 'AD' as Land,
+  AO: 'AO' as Land,
+  AG: 'AG' as Land,
+  GQ: 'GQ' as Land,
+  AR: 'AR' as Land,
+  AM: 'AM' as Land,
+  AZ: 'AZ' as Land,
+  ET: 'ET' as Land,
+  AU: 'AU' as Land,
+  BS: 'BS' as Land,
+  BH: 'BH' as Land,
+  BD: 'BD' as Land,
+  BB: 'BB' as Land,
+  BY: 'BY' as Land,
   BE: 'BE' as Land,
+  BZ: 'BZ' as Land,
+  BJ: 'BJ' as Land,
+  BT: 'BT' as Land,
+  BO: 'BO' as Land,
+  BA: 'BA' as Land,
+  BR: 'BR' as Land,
+  BN: 'BN' as Land,
   BG: 'BG' as Land,
+  BF: 'BF' as Land,
+  BI: 'BI' as Land,
+  CV: 'CV' as Land,
+  CL: 'CL' as Land,
+  CN: 'CN' as Land,
+  CK: 'CK' as Land,
+  CR: 'CR' as Land,
+  CI: 'CI' as Land,
   DK: 'DK' as Land,
   DE: 'DE' as Land,
-  FI: 'FI' as Land,
-  FR: 'FR' as Land,
-  GR: 'GR' as Land,
-  GB: 'GB' as Land,
-  IE: 'IE' as Land,
-  IS: 'IS' as Land,
-  IT: 'IT' as Land,
-  LI: 'LI' as Land,
-  LU: 'LU' as Land,
-  MT: 'MT' as Land,
-  MC: 'MC' as Land,
-  NL: 'NL' as Land,
-  NO: 'NO' as Land,
-  AT: 'AT' as Land,
-  PL: 'PL' as Land,
-  PT: 'PT' as Land,
-  RO: 'RO' as Land,
-  SM: 'SM' as Land,
-  SE: 'SE' as Land,
-  ES: 'ES' as Land,
-  TR: 'TR' as Land,
-  HU: 'HU' as Land,
-  VA: 'VA' as Land,
-  CY: 'CY' as Land,
-  SK: 'SK' as Land,
-  CZ: 'CZ' as Land,
-  RS: 'RS' as Land,
-  HR: 'HR' as Land,
-  SI: 'SI' as Land,
-  BA: 'BA' as Land,
-  ME: 'ME' as Land,
-  MK: 'MK' as Land,
-  XZ: 'XZ' as Land,
-  EE: 'EE' as Land,
-  LV: 'LV' as Land,
-  LT: 'LT' as Land,
-  MD: 'MD' as Land,
-  RU: 'RU' as Land,
-  UA: 'UA' as Land,
-  BY: 'BY' as Land,
-  GF: 'GF' as Land,
-  ET: 'ET' as Land,
-  DJ: 'DJ' as Land,
-  DZ: 'DZ' as Land,
-  AO: 'AO' as Land,
-  BW: 'BW' as Land,
-  BI: 'BI' as Land,
-  BJ: 'BJ' as Land,
-  CI: 'CI' as Land,
-  GA: 'GA' as Land,
-  GM: 'GM' as Land,
-  GH: 'GH' as Land,
-  GW: 'GW' as Land,
-  GN: 'GN' as Land,
-  CM: 'CM' as Land,
-  CV: 'CV' as Land,
-  KE: 'KE' as Land,
-  KM: 'KM' as Land,
-  CG: 'CG' as Land,
-  CD: 'CD' as Land,
-  LS: 'LS' as Land,
-  LR: 'LR' as Land,
-  LY: 'LY' as Land,
-  MG: 'MG' as Land,
-  MW: 'MW' as Land,
-  ML: 'ML' as Land,
-  MA: 'MA' as Land,
-  MR: 'MR' as Land,
-  MU: 'MU' as Land,
-  MZ: 'MZ' as Land,
-  NE: 'NE' as Land,
-  NG: 'NG' as Land,
-  BF: 'BF' as Land,
-  ZW: 'ZW' as Land,
-  RW: 'RW' as Land,
-  ZM: 'ZM' as Land,
-  ST: 'ST' as Land,
-  SN: 'SN' as Land,
-  SC: 'SC' as Land,
-  SL: 'SL' as Land,
-  SO: 'SO' as Land,
-  ZA: 'ZA' as Land,
-  SD: 'SD' as Land,
-  NA: 'NA' as Land,
-  SZ: 'SZ' as Land,
-  TZ: 'TZ' as Land,
-  TG: 'TG' as Land,
-  TD: 'TD' as Land,
-  TN: 'TN' as Land,
-  UG: 'UG' as Land,
-  EG: 'EG' as Land,
-  CF: 'CF' as Land,
-  ER: 'ER' as Land,
-  EH: 'EH' as Land,
-  AR: 'AR' as Land,
-  BS: 'BS' as Land,
-  BB: 'BB' as Land,
-  BO: 'BO' as Land,
-  BR: 'BR' as Land,
-  CL: 'CL' as Land,
-  CR: 'CR' as Land,
+  DM: 'DM' as Land,
   DO: 'DO' as Land,
+  DJ: 'DJ' as Land,
   EC: 'EC' as Land,
   SV: 'SV' as Land,
-  GT: 'GT' as Land,
-  GY: 'GY' as Land,
-  HT: 'HT' as Land,
-  BZ: 'BZ' as Land,
-  HN: 'HN' as Land,
-  JM: 'JM' as Land,
-  CA: 'CA' as Land,
-  CO: 'CO' as Land,
-  CU: 'CU' as Land,
-  MX: 'MX' as Land,
-  NI: 'NI' as Land,
-  PA: 'PA' as Land,
-  PY: 'PY' as Land,
-  PE: 'PE' as Land,
-  SR: 'SR' as Land,
-  TT: 'TT' as Land,
-  UY: 'UY' as Land,
-  VE: 'VE' as Land,
-  US: 'US' as Land,
+  ER: 'ER' as Land,
+  EE: 'EE' as Land,
+  SZ: 'SZ' as Land,
+  FJ: 'FJ' as Land,
+  FI: 'FI' as Land,
+  FR: 'FR' as Land,
+  GA: 'GA' as Land,
+  GM: 'GM' as Land,
+  GE: 'GE' as Land,
+  GH: 'GH' as Land,
   GD: 'GD' as Land,
-  AG: 'AG' as Land,
-  LC: 'LC' as Land,
-  VC: 'VC' as Land,
-  KN: 'KN' as Land,
-  AF: 'AF' as Land,
-  BH: 'BH' as Land,
-  BT: 'BT' as Land,
-  BN: 'BN' as Land,
-  MM: 'MM' as Land,
-  LK: 'LK' as Land,
-  TW: 'TW' as Land,
-  CN: 'CN' as Land,
+  GR: 'GR' as Land,
+  GT: 'GT' as Land,
+  GN: 'GN' as Land,
+  GW: 'GW' as Land,
+  GF: 'GF' as Land,
+  HT: 'HT' as Land,
+  VA: 'VA' as Land,
+  HN: 'HN' as Land,
   IN: 'IN' as Land,
   ID: 'ID' as Land,
   IQ: 'IQ' as Land,
   IR: 'IR' as Land,
+  IE: 'IE' as Land,
+  IS: 'IS' as Land,
   IL: 'IL' as Land,
+  IT: 'IT' as Land,
+  JM: 'JM' as Land,
   JP: 'JP' as Land,
-  YE: 'YE' as Land,
+  YD: 'YD' as Land,
   JO: 'JO' as Land,
   KH: 'KH' as Land,
+  CM: 'CM' as Land,
+  CA: 'CA' as Land,
+  KZ: 'KZ' as Land,
   QA: 'QA' as Land,
+  KE: 'KE' as Land,
+  KG: 'KG' as Land,
+  KI: 'KI' as Land,
+  CO: 'CO' as Land,
+  KM: 'KM' as Land,
+  CG: 'CG' as Land,
+  CD: 'CD' as Land,
+  KR: 'KR' as Land,
+  KP: 'KP' as Land,
+  KS: 'KS' as Land,
+  HR: 'HR' as Land,
+  CU: 'CU' as Land,
   KW: 'KW' as Land,
   LA: 'LA' as Land,
+  LS: 'LS' as Land,
+  LV: 'LV' as Land,
   LB: 'LB' as Land,
+  LR: 'LR' as Land,
+  LY: 'LY' as Land,
+  LI: 'LI' as Land,
+  LT: 'LT' as Land,
+  LU: 'LU' as Land,
+  MG: 'MG' as Land,
+  MW: 'MW' as Land,
   MY: 'MY' as Land,
-  MV: 'MV' as Land,
-  OM: 'OM' as Land,
-  MN: 'MN' as Land,
-  NP: 'NP' as Land,
-  KP: 'KP' as Land,
-  AE: 'AE' as Land,
-  PK: 'PK' as Land,
-  PH: 'PH' as Land,
-  SA: 'SA' as Land,
-  SG: 'SG' as Land,
-  KR: 'KR' as Land,
-  SY: 'SY' as Land,
-  TH: 'TH' as Land,
-  VN: 'VN' as Land,
-  BD: 'BD' as Land,
-  TL: 'TL' as Land,
-  PS: 'PS' as Land,
-  AM: 'AM' as Land,
-  AZ: 'AZ' as Land,
-  GE: 'GE' as Land,
-  KZ: 'KZ' as Land,
-  KG: 'KG' as Land,
-  TJ: 'TJ' as Land,
-  TM: 'TM' as Land,
-  UZ: 'UZ' as Land,
-  AU: 'AU' as Land,
-  FJ: 'FJ' as Land,
-  NR: 'NR' as Land,
-  VU: 'VU' as Land,
-  NZ: 'NZ' as Land,
-  PG: 'PG' as Land,
-  TO: 'TO' as Land,
-  WS: 'WS' as Land,
-  SB: 'SB' as Land,
-  TV: 'TV' as Land,
-  KI: 'KI' as Land,
+  XX: 'XX' as Land,
+  ML: 'ML' as Land,
+  MT: 'MT' as Land,
+  MA: 'MA' as Land,
   MH: 'MH' as Land,
+  MR: 'MR' as Land,
+  MU: 'MU' as Land,
+  MX: 'MX' as Land,
   FM: 'FM' as Land,
+  MO: 'MO' as Land,
+  MC: 'MC' as Land,
+  MN: 'MN' as Land,
+  ME: 'ME' as Land,
+  MZ: 'MZ' as Land,
+  MM: 'MM' as Land,
+  NA: 'NA' as Land,
+  NR: 'NR' as Land,
+  NP: 'NP' as Land,
+  NZ: 'NZ' as Land,
+  NI: 'NI' as Land,
+  NL: 'NL' as Land,
+  NE: 'NE' as Land,
+  NG: 'NG' as Land,
+  NU: 'NU' as Land,
+  MK: 'MK' as Land,
+  NO: 'NO' as Land,
+  OM: 'OM' as Land,
+  AT: 'AT' as Land,
+  PK: 'PK' as Land,
   PW: 'PW' as Land,
-  NICHTANERKANNT: 'NICHTANERKANNT' as Land,
-  STAATENLOS: 'STAATENLOS' as Land,
-  UNBEKANNT: 'UNBEKANNT' as Land,
+  PA: 'PA' as Land,
+  PG: 'PG' as Land,
+  PY: 'PY' as Land,
+  PE: 'PE' as Land,
+  PH: 'PH' as Land,
+  PO: 'PO' as Land,
+  PT: 'PT' as Land,
+  RW: 'RW' as Land,
+  RO: 'RO' as Land,
+  RU: 'RU' as Land,
+  SB: 'SB' as Land,
+  ZM: 'ZM' as Land,
+  WS: 'WS' as Land,
+  SM: 'SM' as Land,
+  ST: 'ST' as Land,
+  SA: 'SA' as Land,
+  SE: 'SE' as Land,
+  SN: 'SN' as Land,
+  RS: 'RS' as Land,
+  SC: 'SC' as Land,
+  SL: 'SL' as Land,
+  ZW: 'ZW' as Land,
+  SG: 'SG' as Land,
+  SK: 'SK' as Land,
+  SI: 'SI' as Land,
+  SO: 'SO' as Land,
+  ES: 'ES' as Land,
+  LK: 'LK' as Land,
+  KN: 'KN' as Land,
+  LC: 'LC' as Land,
+  VC: 'VC' as Land,
+  ZA: 'ZA' as Land,
+  SD: 'SD' as Land,
+  SS: 'SS' as Land,
+  SR: 'SR' as Land,
+  SY: 'SY' as Land,
+  TJ: 'TJ' as Land,
+  TZ: 'TZ' as Land,
+  TH: 'TH' as Land,
+  TL: 'TL' as Land,
+  TG: 'TG' as Land,
+  TO: 'TO' as Land,
+  TT: 'TT' as Land,
+  TD: 'TD' as Land,
+  CZ: 'CZ' as Land,
+  TN: 'TN' as Land,
+  TU: 'TU' as Land,
+  TM: 'TM' as Land,
+  TV: 'TV' as Land,
+  UG: 'UG' as Land,
+  UA: 'UA' as Land,
+  HU: 'HU' as Land,
+  UY: 'UY' as Land,
+  UZ: 'UZ' as Land,
+  VU: 'VU' as Land,
+  VE: 'VE' as Land,
+  AE: 'AE' as Land,
+  US: 'US' as Land,
+  GB: 'GB' as Land,
+  VN: 'VN' as Land,
+  CF: 'CF' as Land,
+  CY: 'CY' as Land,
 };

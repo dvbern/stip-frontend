@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ElternDTO } from './elternDTO';
 
-export interface PersonInAusbildungDTO {
+export interface ElternContainerDTO {
   id: string;
-  ausbildungsland: string;
-  ausbildungsstaette: string;
-  ausbildungsgang: string;
-  fachrichtung: string;
-  manuell: boolean;
-  start: Date;
-  ende: Date;
-  pensum: number;
+  elternGS?: ElternDTO;
+  elternSB?: ElternDTO;
 }

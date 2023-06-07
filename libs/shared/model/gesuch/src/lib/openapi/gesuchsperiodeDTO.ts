@@ -12,9 +12,8 @@
 
 export interface GesuchsperiodeDTO {
   id: string;
-
-  gueltigAb: string;
-  gueltigBis: string;
-  einreichfrist: string;
-  aufschaltdatum: string;
+  gueltigAb: Date;
+  gueltigBis: Date;
+  einreichfrist?: Date;
+  aufschaltdatum?: Date;
 }

@@ -16,7 +16,7 @@ export interface AdresseDTO {
   land: Land;
   coAdresse?: string;
   strasse: string;
-  nummer?: string;
+  hausnummer?: string;
   plz: string;
   ort: string;
 }

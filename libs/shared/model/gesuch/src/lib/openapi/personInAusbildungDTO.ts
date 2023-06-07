@@ -9,8 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PersonInAusbildungDTOAdresse } from './personInAusbildungDTOAdresse';
 import { Niederlassungsstatus } from './niederlassungsstatus';
+import { AdresseDTO } from './adresseDTO';
 import { Zivilstand } from './zivilstand';
 import { Anrede } from './anrede';
 import { Land } from './land';
@@ -18,7 +18,7 @@ import { Wohnsitz } from './wohnsitz';
 
 export interface PersonInAusbildungDTO {
   id: string;
-  adresse: PersonInAusbildungDTOAdresse;
+  adresse: AdresseDTO;
   sozialversicherungsnummer: string;
   name: string;
   vorname: string;
@@ -35,7 +35,7 @@ export interface PersonInAusbildungDTO {
   zivilstand?: Zivilstand;
   wohnsitz: Wohnsitz;
   sozialhilfebeitraege: boolean;
-  quellenbesteuerung: boolean;
+  quellenbesteuert: boolean;
   kinder: boolean;
   digitaleKommunikation: boolean;
 }

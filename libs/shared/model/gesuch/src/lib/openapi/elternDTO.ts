@@ -9,14 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Land } from './land';
+import { Anrede } from './anrede';
 
-export interface PersonInAusbildungDTOAdresse {
+export interface ElternDTO {
   id: string;
-  land: Land;
-  coAdresse?: string;
-  strasse: string;
-  nummer?: string;
-  plz: string;
-  ort: string;
+  sozialversicherungsnummer: string;
+  name: string;
+  vorname: string;
+  geschlecht: Anrede;
+  telefonnummer: string;
+  geburtsdatum: Date;
+  sozialhilfebeitraegeAusbezahlt: boolean;
+  ausweisbFluechtling: boolean;
+  ergaenzungsleistungAusbezahlt: boolean;
 }

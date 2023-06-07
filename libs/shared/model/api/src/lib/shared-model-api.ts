@@ -1,3 +1,5 @@
 const SHARED_MODEL_API_PREFIX = 'api';
 const SHARED_MODEL_API_VERSION = 'v1';
 export const SHARED_MODEL_API_URL = `http://localhost:4300/${SHARED_MODEL_API_PREFIX}/${SHARED_MODEL_API_VERSION}`;
+
+export const SHARED_MODEL_ELTERN_RESOURCE = `/eltern`;
