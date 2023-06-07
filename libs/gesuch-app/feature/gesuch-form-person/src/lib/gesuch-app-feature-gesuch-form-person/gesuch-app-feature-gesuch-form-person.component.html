@@ -2,7 +2,10 @@
   <div
     class="d-flex align-items-center justify-content-between border-bottom border-3 mb-4"
   >
-    <dv-gesuch-app-pattern-gesuch-form-steps />
+    <dv-shared-ui-progress-bar
+      [current]="1"
+      [total]="view().formStepMax"
+    ></dv-shared-ui-progress-bar>
     <div class="text-end">
       <h2>{{ 'gesuch-app.form.person.title' | translate }}</h2>
       <p class="fs-5 fst-italic">

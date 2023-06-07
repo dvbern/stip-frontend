@@ -37,7 +37,6 @@ import {
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
-import { GesuchAppPatternGesuchFormStepsComponent } from '@dv/gesuch-app/pattern/gesuch-form-steps';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
@@ -58,7 +57,6 @@ import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
-    GesuchAppPatternGesuchFormStepsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
