@@ -1,56 +1,106 @@
 <div class="container">
   <dv-shared-ui-progress-bar></dv-shared-ui-progress-bar>
   <form
+    [formGroup]="form"
+    novalidate
+    (ngSubmit)="handleSaveAndContinue()"
   >
     <div class="row">
-      <dv-shared-ui-dv-form-component label="test">
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.name.label' | translate
+          }}</dv-shared-ui-form-label>
         <input dvSharedUiFormLabelTarget
                formControlName="name"
                class="form-control"
                type="text"/>
-      </dv-shared-ui-dv-form-component>
+      </dv-shared-ui-form-field>
     </div>
     <div class="row">
-      <dv-shared-ui-dv-form-component label="test">
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.vorname.label' | translate
+          }}</dv-shared-ui-form-label>
         <input dvSharedUiFormLabelTarget
                formControlName="vorname"
                class="form-control"
                type="text"
-               />
-      </dv-shared-ui-dv-form-component>
+        />
+      </dv-shared-ui-form-field>
     </div>
     <div class="row">
-      <div>
-        <input formControlName="telefonnummer"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.telefonnummer.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input formControlName="telefonnummer"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
+      >
     </div>
     <div class="row">
-      <div>
-        <input formControlName="sozialversicherungsnummer"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.sozialversicherungsnummer.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input formControlName="sozialversicherungsnummer"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
     </div>
     <h2>{{'shared.weiterangaben' | translate}}</h2>
     <div class="row">
-      <div>
-        <input type="date" formControlName="geburtsdatum"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.geburtsdatum.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input type="date" formControlName="geburtsdatum"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
+      >
     </div>
     <div class="row">
-      <div>
-        <input type="checkbox" formControlName="sozialhilfebeitraegeAusbezahlt"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.sozialhilfebeitraegeAusbezahlt.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input type="checkbox" formControlName="sozialhilfebeitraegeAusbezahlt"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
     </div>
     <div class="row">
-      <div>
-        <input type="checkbox" formControlName="ausweisbFluechtling"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.ausweisbFluechtling.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input type="checkbox" formControlName="ausweisbFluechtling"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
     </div>
     <div class="row">
-      <div>
-        <input type="checkbox" formControlName="ergaenzungsleistungAusbezahlt"/>
-      </div>
+      <dv-shared-ui-form-field class="col-12">
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.eltern.ergaenzungsleistungAusbezahlt.label' | translate
+          }}</dv-shared-ui-form-label>
+        <input type="checkbox" formControlName="ergaenzungsleistungAusbezahlt"
+               class="form-control"/>
+      </dv-shared-ui-form-field>
     </div>
 
+    <div
+      class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
+    >
+      <button type="submit" class="btn btn-primary">
+        {{ 'gesuch-app.form.save-and-continue' | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-link"
+        data-test-id="form-person-action-back"
+        (click)="handleSaveAndBack()"
+      >
+        {{ 'gesuch-app.form.save-and-back' | translate }}
+      </button>
+    </div>
   </form>
 </div>
 
