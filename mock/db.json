@@ -131,10 +131,10 @@
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
       "ausbildung": {
-        "ausbildungsland": "Schweizerland",
-        "ausbildungsstaette": "DVB",
-        "ausbildungsgang": "Stip",
-        "fachrichtung": "Welt verbessern",
+        "ausbildungsland": "CH",
+        "ausbildungsstaette": "A",
+        "ausbildungsgang": "B",
+        "fachrichtung": "Welt verbessern 1",
         "manuell": true,
         "start": "99-01-01",
         "ende": "2050-12-31",
@@ -171,18 +171,83 @@
           "digitaleKommunikation": true
         }
       }
+    }
+  ],
+  "ausbildungsgangTree": [
+    {
+      "name": "CH",
+      "staettes": [
+        {
+          "name": "Universität Bern",
+          "ausbildungsgangs": [
+            {
+              "name": "Bachelor"
+            },
+            {
+              "name": "Master"
+            }
+          ]
+        },
+        {
+          "name": "Universität Basel",
+          "ausbildungsgangs": [
+            {
+              "name": "Bachelor"
+            },
+            {
+              "name": "Master"
+            }
+          ]
+        },
+        {
+          "name": "Gymnasium Interlaken",
+          "ausbildungsgangs": [
+            {
+              "name": "Maturität"
+            }
+          ]
+        },
+        {
+          "name": "Haarakademie",
+          "ausbildungsgangs": [
+            {
+              "name": "Berufsvorbereitendes Schuljahr"
+            }
+          ]
+        },
+        {
+          "name": "GIBB Bern",
+          "ausbildungsgangs": [
+            {
+              "name": "Berufsmaturität"
+            }
+          ]
+        }
+      ]
     },
     {
-      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "id": "S9hcWkh"
-    },
-    {
-      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "id": "1hDgsJP"
-    },
-    {
-      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "id": "agOUKym"
+      "name": "ausland",
+      "staettes": [
+        {
+          "name": "Desingskolen Kolding",
+          "ausbildungsgangs": [
+            {
+              "name": "Bachelor"
+            }
+          ]
+        },
+        {
+          "name": "Hochschule für Musik und Theater Leipzig",
+          "ausbildungsgangs": [
+            {
+              "name": "Bachelor"
+            },
+            {
+              "name": "Master"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

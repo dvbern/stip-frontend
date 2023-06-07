@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
-import {GesuchFormSteps} from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
@@ -30,7 +30,12 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   }
 
   handleCreate(periodeId: string) {
-    this.store.dispatch(GesuchAppEventCockpit.newTriggered({ periodeId, origin: GesuchFormSteps.COCKPIT }));
+    this.store.dispatch(
+      GesuchAppEventCockpit.newTriggered({
+        periodeId,
+        origin: GesuchFormSteps.COCKPIT,
+      })
+    );
   }
 
   handleRemove(id: string) {

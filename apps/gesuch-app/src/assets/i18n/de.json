@@ -44,6 +44,8 @@
   "gesuch-app.form.education.start.label": "Beginn der Ausbildung",
   "gesuch-app.form.education.ende.label": "Voraussichtliches Ende der Ausbildung",
   "gesuch-app.form.education.pensum.label": "Pensum",
+  "gesuch-app.form.education.ausbildungsland.CH": "Schweiz",
+  "gesuch-app.form.education.ausbildungsland.ausland": "Ausland",
   "gesuch-app.form.cv.title": "Lebenslauf",
   "gesuch-app.familiensituation.title": "Familiensituation",
   "gesuch-app.form.familiensituation.mutter": "Mutter",

@@ -17,3 +17,4 @@ export * from './personInAusbildungDTO';
 export * from './personInAusbildungDTOAdresse';
 export * from './wohnsitz';
 export * from './zivilstand';
+export * from './ausbildungsgangLand';

@@ -1,4 +1,4 @@
 export enum NavigationType {
   FORWARDS,
-  BACKWARDS
+  BACKWARDS,
 }
