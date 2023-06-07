@@ -6,11 +6,9 @@ import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
+import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
-import {
-  GesuchFormSteps,
-  NavigationType,
-} from '@dv/gesuch-app/model/gesuch-form';
+import { NavigationType } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
@@ -56,7 +54,8 @@ export const loadGesuch = createEffect(
     return actions$.pipe(
       ofType(
         GesuchAppEventGesuchFormPerson.init,
-        GesuchAppEventGesuchFormEducation.init
+        GesuchAppEventGesuchFormEducation.init,
+        GesuchAppEventGesuchFormFamiliensituation.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -119,7 +118,9 @@ export const updateGesuch = createEffect(
         GesuchAppEventGesuchFormPerson.nextStepTriggered,
         GesuchAppEventGesuchFormPerson.prevStepTriggered,
         GesuchAppEventGesuchFormEducation.nextStepTriggered,
-        GesuchAppEventGesuchFormEducation.prevStepTriggered
+        GesuchAppEventGesuchFormEducation.prevStepTriggered,
+        GesuchAppEventGesuchFormFamiliensituation.nextStepTriggered,
+        GesuchAppEventGesuchFormFamiliensituation.prevStepTriggered
       ),
       concatMap(({ gesuch, origin, navigationType }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(

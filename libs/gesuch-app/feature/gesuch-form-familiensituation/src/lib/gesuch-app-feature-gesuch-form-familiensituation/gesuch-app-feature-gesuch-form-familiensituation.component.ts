@@ -16,9 +16,15 @@ import {
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import {
+  GesuchFormSteps,
+  NavigationType,
+} from '@dv/gesuch-app/model/gesuch-form';
+import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
   ElternUnbekanntheitsGrund,
+  FamiliensituationDTO,
+  SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
@@ -67,46 +73,66 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   form: FormGroup<GesuchFamiliensituationForm> =
     this.formBuilder.group<GesuchFamiliensituationForm>({
-      leiblicheElternVerheiratetKonkubinat: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      gerichtlicheAlimentenregelung: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      werZahltAlimente: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      elternteilVerstorbenUnbekannt: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      elternteilVerstorben: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      mutterUnbekanntVerstorben: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      vaterUnbekanntVerstorben: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      mutterUnbekanntReason: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      vaterUnbekanntReason: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      vaterWiederverheiratet: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      mutterWiederverheiratet: new FormControl(null, {
-        validators: Validators.required,
-      }),
-      sorgerecht: new FormControl(null, { validators: Validators.required }),
-      obhut: new FormControl(null, { validators: Validators.required }),
-      obhutMutter: new FormControl(null, { validators: Validators.required }),
-      obhutVater: new FormControl(null, {
-        validators: Validators.required,
-        nonNullable: false,
-      }),
+      leiblicheElternVerheiratetKonkubinat: new FormControl(
+        { value: null, disabled: false },
+        { validators: Validators.required }
+      ),
+      gerichtlicheAlimentenregelung: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      werZahltAlimente: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      elternteilVerstorbenUnbekannt: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      elternteilVerstorben: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      mutterUnbekanntVerstorben: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      vaterUnbekanntVerstorben: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      mutterUnbekanntReason: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      vaterUnbekanntReason: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      vaterWiederverheiratet: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      mutterWiederverheiratet: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      sorgerecht: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      obhut: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      obhutMutter: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
+      obhutVater: new FormControl(
+        { value: null, disabled: true },
+        { validators: Validators.required }
+      ),
     });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -114,16 +140,20 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
     this.metadataService.registerForm(this.form);
-    this.form.valueChanges.subscribe(() =>
-      this.metadataService.update(this.form)
+    this.form.valueChanges.subscribe((newValue) =>
+      this.metadataService.update(newValue)
     );
   }
 
   constructor() {
     effect(() => {
       const { gesuch } = this.view();
-      const familiensitutationForForm = {};
-      this.form.patchValue({ ...familiensitutationForForm });
+      const familiensitutationForForm =
+        gesuch?.familiensituationContainer?.familiensituationSB || {};
+      this.form.patchValue(
+        { ...familiensitutationForForm },
+        { onlySelf: true, emitEvent: true }
+      );
     });
     // effect(() => {
     //   toSignal(this.form.valueChanges)();
@@ -133,5 +163,47 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   isVisible(formControlName: keyof GesuchFamiliensituationForm): boolean {
     return this.metadataService.isVisible(formControlName);
+  }
+
+  handleSaveAndContinue(): void {
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormFamiliensituation.nextStepTriggered({
+          gesuch: this.buildSharedModelDTOFromForm(),
+          origin: GesuchFormSteps.FAMILIENSITUATION,
+          navigationType: NavigationType.FORWARDS,
+        })
+      );
+    }
+  }
+
+  public handleSaveAndBack(): void {
+    this.metadataService.markVisibleFormControlsAsTouched();
+    if (this.form.valid) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormFamiliensituation.prevStepTriggered({
+          gesuch: this.buildSharedModelDTOFromForm(),
+          origin: GesuchFormSteps.FAMILIENSITUATION,
+          navigationType: NavigationType.BACKWARDS,
+        })
+      );
+    }
+  }
+
+  private buildSharedModelDTOFromForm(): Partial<SharedModelGesuch> {
+    const { gesuch } = this.view();
+    const formPart = {} as FamiliensituationDTO;
+    return {
+      ...gesuch,
+      familiensituationContainer: {
+        ...gesuch?.familiensituationContainer,
+        familiensituationSB: {
+          ...formPart,
+          ...gesuch?.familiensituationContainer?.familiensituationSB,
+          ...this.form.value,
+        },
+      },
+    } as Partial<SharedModelGesuch>;
   }
 }
