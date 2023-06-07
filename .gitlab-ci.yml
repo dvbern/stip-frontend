@@ -24,7 +24,7 @@ variables:
     paths:
       - .npm/
   before_script:
-    - npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts
+    - npm ci --cache=".npm" --ignore-scripts
 
 build:gesuch-app:
   stage: build

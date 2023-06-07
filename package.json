@@ -46,7 +46,7 @@
     "@angular/router": "~16.0.0",
     "@maskito/angular": "^0.12.1",
     "@maskito/core": "^0.12.1",
-    "@ng-bootstrap/ng-bootstrap": "^14.1.1",
+    "@ng-bootstrap/ng-bootstrap": "^15.0.0",
     "@ngrx/effects": "^16.0.0",
     "@ngrx/entity": "^16.0.0",
     "@ngrx/router-store": "^16.0.0",
