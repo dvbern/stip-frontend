@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "prepare": "husky install",
     "g": "nx generate @dv/tooling/nx-plugin:lib",
     "g:dry": "nx generate @dv/tooling/nx-plugin:lib --dry-run",
     "g:app": "nx generate @dv/tooling/nx-plugin:app",
@@ -11,7 +12,6 @@
     "validate:fix": "nx generate @dv/tooling/nx-plugin:validate --fix",
     "graph": "nx dep-graph --groupByFolder",
     "readme:toc": "markdown-toc -i README.md",
-    "beforecommit": "npm run validate && npm run lint && npm t && npm run format:write",
     "reset": "nx reset",
     "start": "run-p serve:gesuch-app serve:gesuch-app:mock",
     "serve:gesuch-app": "nx serve gesuch-app --open",
@@ -27,8 +27,8 @@
     "test": "nx run-many --target=test",
     "e2e": "nx run-many --target=e2e",
     "build": "nx run-many --target=build",
-    "format:test": "nx format:check",
-    "format:write": "nx format:write",
+    "format:test": "nx format:check --all",
+    "format:write": "nx format:write --all",
     "openapi": "ts-node scripts/openapi-build.ts",
     "openapi:extract-current-templates": "openapi-generator-cli author template -g typescript-angular -o scripts/conf/openapi-templates/default-6.5.0"
   },

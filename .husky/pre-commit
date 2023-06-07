@@ -3,3 +3,5 @@
 
 nx format:write --uncommited
 npm run validate
+npm run lint
+
