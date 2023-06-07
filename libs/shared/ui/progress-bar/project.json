@@ -2,7 +2,7 @@
   "name": "shared-ui-progress-bar",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/ui/progress-bar/src",
-  "prefix": "dv-shared-ui-progress-bar",
+  "prefix": "dv",
   "tags": ["type:ui", "scope:shared"],
   "projectType": "library",
   "targets": {

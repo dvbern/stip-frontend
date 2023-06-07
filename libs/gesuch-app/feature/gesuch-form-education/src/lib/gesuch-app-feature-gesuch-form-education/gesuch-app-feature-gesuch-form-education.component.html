@@ -33,8 +33,12 @@
       *ngIf="!view().loading"
       (ngSubmit)="handleSaveAndContinue()"
     >
-      <div class="row g-4">
-        <dv-shared-ui-form-field class="col-12">
+      <h3 class="mt-4">
+        {{ 'gesuch-app.form.education.place.title' | translate }}
+      </h3>
+
+      <div class="row g-4 mt-3">
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
             {{ 'gesuch-app.form.education.ausbildungsland.label' | translate }}
           </dv-shared-ui-form-label>
@@ -67,6 +71,98 @@
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
+
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>
+            {{
+              'gesuch-app.form.education.ausbildungsstaette.label' | translate
+            }}
+          </dv-shared-ui-form-label>
+
+          <select
+            *ngIf="!form.value['manuell']"
+            class="form-select"
+            dvSharedUiFormLabelTarget
+            formControlName="ausbildungsstaette"
+          >
+            <option [value]="null" disabled selected>
+              {{ 'shared.form.select.empty' | translate }}
+            </option>
+            <option
+              [value]="l.value"
+              *ngFor="
+                let l of Ausbildungsstaette | keyvalue;
+                trackBy: trackByIndex
+              "
+            >
+              {{ l.value }}
+            </option>
+          </select>
+
+          <input
+            *ngIf="form.value['manuell']"
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="ausbildungsstaette"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+      </div>
+      <div class="row g-4 mt-2">
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>
+            {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
+          </dv-shared-ui-form-label>
+
+          <select
+            *ngIf="!form.value['manuell']"
+            class="form-select"
+            dvSharedUiFormLabelTarget
+            formControlName="ausbildungsgang"
+          >
+            <option [value]="null" disabled selected>
+              {{ 'shared.form.select.empty' | translate }}
+            </option>
+            <option
+              [value]="l.value"
+              *ngFor="
+                let l of Ausbildungsgang | keyvalue;
+                trackBy: trackByIndex
+              "
+            >
+              {{ l.value }}
+            </option>
+          </select>
+
+          <input
+            *ngIf="form.value['manuell']"
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="ausbildungsgang"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>
+            {{ 'gesuch-app.form.education.fachrichtung.label' | translate }}
+          </dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="fachrichtung"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
       </div>
 
       <div class="row g-4">
@@ -82,6 +178,92 @@
               formControlName="manuell"
             />
           </div>
+        </dv-shared-ui-form-field>
+      </div>
+
+      <h3 class="mt-4">
+        {{ 'gesuch-app.form.education.duration.title' | translate }}
+      </h3>
+
+      <div class="row mt-3">
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.education.start.label' | translate
+          }}</dv-shared-ui-form-label>
+
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="dd.mm.yyyy"
+              dvSharedUiFormLabelTarget
+              formControlName="start"
+              ngbDatepicker
+              #dpStart="ngbDatepicker"
+            />
+            <button
+              (click)="dpStart.toggle()"
+              class="btn btn-outline-secondary position-relative"
+              type="button"
+            >
+              <span
+                class="material-symbols-rounded position-absolute translate-middle"
+              >
+                calendar_month
+              </span>
+            </button>
+          </div>
+
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.education.ende.label' | translate
+          }}</dv-shared-ui-form-label>
+
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="dd.mm.yyyy"
+              dvSharedUiFormLabelTarget
+              formControlName="ende"
+              ngbDatepicker
+              #dpEnde="ngbDatepicker"
+            />
+            <button
+              (click)="dpEnde.toggle()"
+              class="btn btn-outline-secondary position-relative"
+              type="button"
+            >
+              <span
+                class="material-symbols-rounded position-absolute translate-middle"
+              >
+                calendar_month
+              </span>
+            </button>
+          </div>
+
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+      </div>
+
+      <div class="row mt-3">
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>
+            {{ 'gesuch-app.form.education.pensum.label' | translate }}
+          </dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="pensum"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
 

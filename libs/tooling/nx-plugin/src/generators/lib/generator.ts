@@ -73,7 +73,6 @@ export default async function (tree: Tree, options: LibGeneratorSchema) {
   });
 
   for (const { generator, defaultOptions } of generators) {
-    console.log();
     await generator(tree, {
       ...defaultOptions,
       name: normalizedOptions.name,

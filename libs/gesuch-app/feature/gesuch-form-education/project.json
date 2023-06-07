@@ -2,7 +2,7 @@
   "name": "gesuch-app-feature-gesuch-form-education",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gesuch-app/feature/gesuch-form-education/src",
-  "prefix": "dv-gesuch-app-feature-gesuch-form-education",
+  "prefix": "dv",
   "tags": ["type:feature", "scope:gesuch-app"],
   "projectType": "library",
   "targets": {

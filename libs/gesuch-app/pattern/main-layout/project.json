@@ -2,7 +2,7 @@
   "name": "gesuch-app-pattern-main-layout",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gesuch-app/pattern/main-layout/src",
-  "prefix": "dv-gesuch-app-pattern-main-layout",
+  "prefix": "dv",
   "tags": ["type:pattern", "scope:gesuch-app"],
   "projectType": "library",
   "targets": {

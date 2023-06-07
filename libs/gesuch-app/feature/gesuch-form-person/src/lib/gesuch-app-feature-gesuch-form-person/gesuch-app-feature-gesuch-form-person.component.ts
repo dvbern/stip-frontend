@@ -108,12 +108,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventGesuchFormPerson.init());
-    this.form.valueChanges.subscribe((c) => console.log('debug', c));
   }
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    console.log(this.form.valid, this.form.errors, this.form.controls);
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.nextStepTriggered({

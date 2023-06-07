@@ -1,5 +1,5 @@
-import { Route } from '@angular/router';
-import { GesuchAppFeatureElternComponent } from './gesuch-app-feature-eltern/gesuch-app-feature-eltern.component';
+import {Route} from "@angular/router";
+import {GesuchAppFeatureElternComponent} from "./gesuch-app-feature-eltern/gesuch-app-feature-eltern.component";
 
 export const gesuchAppFeatureElternRoutes: Route[] = [
   {
@@ -10,7 +10,11 @@ export const gesuchAppFeatureElternRoutes: Route[] = [
       // always remove { providedIn: 'root' } from the feature specific services
     ],
     children: [
-      { path: '', component: GesuchAppFeatureElternComponent },
+      {
+        path: ':id',
+        title: 'gesuch-app.form.eltern.title',
+        component: GesuchAppFeatureElternComponent,
+      },
       // add more routes here (siblings)
       // it is also possible to add nested routes as children
       // of this feature root component (or even lazy loaded sub features)
