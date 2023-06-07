@@ -2,7 +2,7 @@
   "name": "shared-pattern-i18n-title-strategy",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/pattern/i18n-title-strategy/src",
-  "prefix": "dv-shared-pattern-i18n-title-strategy",
+  "prefix": "dv",
   "tags": ["type:pattern", "scope:shared"],
   "projectType": "library",
   "targets": {

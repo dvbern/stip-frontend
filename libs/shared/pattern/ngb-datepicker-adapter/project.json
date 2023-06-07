@@ -2,7 +2,7 @@
   "name": "shared-pattern-ngb-datepicker-adapter",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/pattern/ngb-datepicker-adapter/src",
-  "prefix": "dv-shared-pattern-ngb-datepicker-adapter",
+  "prefix": "dv",
   "tags": ["type:pattern", "scope:shared"],
   "projectType": "library",
   "targets": {

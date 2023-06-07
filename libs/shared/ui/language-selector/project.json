@@ -2,7 +2,7 @@
   "name": "shared-ui-language-selector",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/ui/language-selector/src",
-  "prefix": "dv-shared-ui-language-selector",
+  "prefix": "dv",
   "tags": ["type:ui", "scope:shared"],
   "projectType": "library",
   "targets": {
