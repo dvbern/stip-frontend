@@ -1,8 +1,12 @@
-import {FormControl} from '@angular/forms';
-import {ElternAbwesenheitsGrund, Elternschaftsteilung, ElternUnbekanntheitsGrund} from '@dv/shared/model/gesuch';
+import { FormControl } from '@angular/forms';
+import {
+  ElternAbwesenheitsGrund,
+  Elternschaftsteilung,
+  ElternUnbekanntheitsGrund,
+} from '@dv/shared/model/gesuch';
 
 export interface GesuchFamiliensituationForm {
-  leiblicheElternVerheiratetKonkubinat: FormControl< boolean | null>;
+  leiblicheElternVerheiratetKonkubinat: FormControl<boolean | null>;
   gerichtlicheAlimentenregelung: FormControl<boolean | null>;
   werZahltAlimente: FormControl<string | null>;
   elternteilVerstorbenUnbekannt: FormControl<boolean | null>;

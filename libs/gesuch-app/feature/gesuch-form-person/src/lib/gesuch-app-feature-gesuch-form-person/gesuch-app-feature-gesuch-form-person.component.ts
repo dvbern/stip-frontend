@@ -1,12 +1,27 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, effect, inject, OnInit} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {selectGesuchAppDataAccessGesuchsView} from '@dv/gesuch-app/data-access/gesuch';
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 
-import {GesuchAppEventGesuchFormPerson} from '@dv/gesuch-app/event/gesuch-form-person';
-import {GesuchFormSteps, NavigationType} from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import {
+  GesuchFormSteps,
+  NavigationType,
+} from '@dv/gesuch-app/model/gesuch-form';
 
-import {Anrede, Land, MASK_SOZIALVERSICHERUNGSNUMMER, SharedModelGesuch, Zivilstand} from '@dv/shared/model/gesuch';
+import {
+  Anrede,
+  Land,
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+  SharedModelGesuch,
+  Zivilstand,
+} from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -15,12 +30,16 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
-import {SharedUiProgressBarComponent} from '@dv/shared/ui/progress-bar';
-import {sharedUtilAhvValidator} from '@dv/shared/util/ahv-validator';
-import {MaskitoModule} from '@maskito/angular';
-import {NgbAlert, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {Store} from '@ngrx/store';
-import {TranslateModule} from '@ngx-translate/core';
+import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -117,7 +136,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         GesuchAppEventGesuchFormPerson.nextStepTriggered({
           origin: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.FORWARDS
+          navigationType: NavigationType.FORWARDS,
         })
       );
     }
@@ -130,7 +149,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         GesuchAppEventGesuchFormPerson.prevStepTriggered({
           origin: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.BACKWARDS
+          navigationType: NavigationType.BACKWARDS,
         })
       );
     }

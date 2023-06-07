@@ -1,9 +1,8 @@
 <div class="container mt-5 mb-5">
-
   <div
     class="d-flex align-items-center justify-content-between border-bottom border-3 mb-4"
   >
-    <dv-shared-ui-progress-bar [current]="4" [total]="12"/>
+    <dv-shared-ui-progress-bar [current]="4" [total]="12" />
     <div class="text-end">
       <h2>{{ 'gesuch-app.familiensituation.title' | translate }}</h2>
       <p class="fs-5 fst-italic">
@@ -24,18 +23,13 @@
       </div>
     </div>
 
-    <form
-      [formGroup]="form"
-      novalidate
-      class="mt-4"
-      *ngIf="!view().loading"
-      (ngSubmit)="handleSaveAndContinue()"
-    >
+    <form [formGroup]="form" novalidate class="mt-4" *ngIf="!view().loading">
       <div class="row g-4 mt-3">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="leiblicheElternVerheiratetKonkubinat"
@@ -45,7 +39,10 @@
               name="leiblicheElternVerheiratetKonkubinat"
               id="leiblicheElternVerheiratetKonkubinatJa"
             />
-            <label class="form-check-label" for="leiblicheElternVerheiratetKonkubinatJa">
+            <label
+              class="form-check-label"
+              for="leiblicheElternVerheiratetKonkubinatJa"
+            >
               {{ 'shared.form.radio.yes' | translate }}
             </label>
           </div>
@@ -58,18 +55,25 @@
               name="leiblicheElternVerheiratetKonkubinat"
               id="leiblicheElternVerheiratetKonkubinatNein"
             />
-            <label class="form-check-label" for="leiblicheElternVerheiratetKonkubinatNein">
+            <label
+              class="form-check-label"
+              for="leiblicheElternVerheiratetKonkubinatNein"
+            >
               {{ 'shared.form.radio.no' | translate }}
             </label>
           </div>
         </dv-shared-ui-form-field>
       </div>
 
-      <div class="row g-4 mt-3" *ngIf="isVisible('gerichtlicheAlimentenregelung')">
+      <div
+        class="row g-4 mt-3"
+        *ngIf="isVisible('gerichtlicheAlimentenregelung')"
+      >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="gerichtlicheAlimentenregelung"
@@ -79,7 +83,10 @@
               name="gerichtlicheAlimentenregelung"
               id="gerichtlicheAlimentenregelungJa"
             />
-            <label class="form-check-label" for="gerichtlicheAlimentenregelungJa">
+            <label
+              class="form-check-label"
+              for="gerichtlicheAlimentenregelungJa"
+            >
               {{ 'shared.form.radio.yes' | translate }}
             </label>
           </div>
@@ -92,18 +99,25 @@
               name="gerichtlicheAlimentenregelung"
               id="gerichtlicheAlimentenregelungNein"
             />
-            <label class="form-check-label" for="gerichtlicheAlimentenregelungNein">
+            <label
+              class="form-check-label"
+              for="gerichtlicheAlimentenregelungNein"
+            >
               {{ 'shared.form.radio.no' | translate }}
             </label>
           </div>
         </dv-shared-ui-form-field>
       </div>
 
-      <div class="row g-4 mt-3" *ngIf="isVisible('elternteilVerstorbenUnbekannt')">
+      <div
+        class="row g-4 mt-3"
+        *ngIf="isVisible('elternteilVerstorbenUnbekannt')"
+      >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="elternteilVerstorbenUnbekannt"
@@ -113,7 +127,10 @@
               name="elternteilVerstorbenUnbekannt"
               id="elternteilVerstorbenUnbekanntJa"
             />
-            <label class="form-check-label" for="elternteilVerstorbenUnbekanntJa">
+            <label
+              class="form-check-label"
+              for="elternteilVerstorbenUnbekanntJa"
+            >
               {{ 'shared.form.radio.yes' | translate }}
             </label>
           </div>
@@ -126,7 +143,10 @@
               name="elternteilVerstorbenUnbekannt"
               id="elternteilVerstorbenUnbekanntNein"
             />
-            <label class="form-check-label" for="elternteilVerstorbenUnbekanntNein">
+            <label
+              class="form-check-label"
+              for="elternteilVerstorbenUnbekanntNein"
+            >
               {{ 'shared.form.radio.no' | translate }}
             </label>
           </div>
@@ -136,8 +156,9 @@
       <div class="row g-4 mt-3" *ngIf="isVisible('werZahltAlimente')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.wer-zahlt-alimente.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <select
             class="form-select"
             dvSharedUiFormLabelTarget
@@ -152,7 +173,6 @@
             <option [value]="ELTERNSCHAFTSTEILUNG.VATER">
               {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
             </option>
-
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -161,11 +181,14 @@
       </div>
 
       <div class="row g-4 mt-3" *ngIf="isVisible('mutterUnbekanntVerstorben')">
-        <span>{{'gesuch-app.form.familiensituation.elternteil-verstorben.label' | translate}}</span>
+        <span>{{
+          'gesuch-app.form.familiensituation.elternteil-verstorben.label'
+            | translate
+        }}</span>
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.familiensituation.mutter' | translate
-            }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="mutterUnbekanntVerstorben"
@@ -175,7 +198,10 @@
               id="mutterTot"
             />
             <label class="form-check-label" for="mutterTot">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -187,7 +213,10 @@
               id="mutterUnbekannt"
             />
             <label class="form-check-label" for="mutterUnbekannt">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -199,7 +228,10 @@
               id="mutterUnbekanntVerstorbenNone"
             />
             <label class="form-check-label" for="mutterUnbekanntVerstorbenNone">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+                  | translate
+              }}
             </label>
           </div>
         </dv-shared-ui-form-field>
@@ -208,8 +240,9 @@
       <div class="row g-4 mt-3" *ngIf="isVisible('mutterUnbekanntReason')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="mutterUnbekanntReason"
@@ -218,8 +251,14 @@
               type="radio"
               id="mutterUnbekanntReasonAufenthaltsort"
             />
-            <label class="form-check-label" for="mutterUnbekanntReasonAufenthaltsort">
-              {{ 'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort' | translate }}
+            <label
+              class="form-check-label"
+              for="mutterUnbekanntReasonAufenthaltsort"
+            >
+              {{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -230,19 +269,24 @@
               type="radio"
               id="mutterUnbekanntReasonmutterschaftsanerkennung"
             />
-            <label class="form-check-label" for="mutterUnbekanntReasonmutterschaftsanerkennung">
-              {{ 'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung' | translate }}
+            <label
+              class="form-check-label"
+              for="mutterUnbekanntReasonmutterschaftsanerkennung"
+            >
+              {{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
+                  | translate
+              }}
             </label>
           </div>
         </dv-shared-ui-form-field>
       </div>
 
-
       <div class="row g-4 mt-3" *ngIf="isVisible('vaterUnbekanntVerstorben')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.familiensituation.vater' | translate
-            }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="vaterUnbekanntVerstorben"
@@ -252,7 +296,10 @@
               id="vaterTot"
             />
             <label class="form-check-label" for="vaterTot">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -264,7 +311,10 @@
               id="vaterUnbekannt"
             />
             <label class="form-check-label" for="vaterUnbekannt">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -276,7 +326,10 @@
               id="vaterUnbekanntVerstorbenNone"
             />
             <label class="form-check-label" for="vaterUnbekanntVerstorbenNone">
-              {{ 'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine' | translate }}
+              {{
+                'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+                  | translate
+              }}
             </label>
           </div>
         </dv-shared-ui-form-field>
@@ -285,8 +338,9 @@
       <div class="row g-4 mt-3" *ngIf="isVisible('mutterWiederverheiratet')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="mutterWiederverheiratet"
@@ -319,8 +373,9 @@
       <div class="row g-4 mt-3" *ngIf="isVisible('vaterUnbekanntReason')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.vater-unbekannt-reason.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="vaterUnbekanntReason"
@@ -329,8 +384,14 @@
               type="radio"
               id="vaterUnbekanntReasonAufenthaltsort"
             />
-            <label class="form-check-label" for="vaterUnbekanntReasonAufenthaltsort">
-              {{ 'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort' | translate }}
+            <label
+              class="form-check-label"
+              for="vaterUnbekanntReasonAufenthaltsort"
+            >
+              {{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                  | translate
+              }}
             </label>
           </div>
           <div class="form-check">
@@ -341,19 +402,25 @@
               type="radio"
               id="vaterUnbekanntReasonVaterschaftsanerkennung"
             />
-            <label class="form-check-label" for="vaterUnbekanntReasonVaterschaftsanerkennung">
-              {{ 'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung' | translate }}
+            <label
+              class="form-check-label"
+              for="vaterUnbekanntReasonVaterschaftsanerkennung"
+            >
+              {{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'
+                  | translate
+              }}
             </label>
           </div>
         </dv-shared-ui-form-field>
       </div>
 
-
       <div class="row g-4 mt-3" *ngIf="isVisible('vaterWiederverheiratet')">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.familiensituation.vater-wiederverheiratet.label' | translate
-            }}</dv-shared-ui-form-label>
+            'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'
+              | translate
+          }}</dv-shared-ui-form-label>
           <div class="form-check">
             <input
               formControlName="vaterWiederverheiratet"
@@ -382,9 +449,6 @@
           </div>
         </dv-shared-ui-form-field>
       </div>
-
-
-
     </form>
   </div>
 </div>

@@ -5,25 +5,21 @@
     <dv-shared-ui-progress-bar [current]="1" [total]="12" />
     <div class="text-end">
       <h2>{{ 'gesuch-app.form.eltern.title' | translate }}</h2>
-      <p class="fs-5 fst-italic">
-        {{ 'gesuch-app.form.next' | translate }}:
-      </p>
+      <p class="fs-5 fst-italic">{{ 'gesuch-app.form.next' | translate }}:</p>
     </div>
   </div>
-  <form
-    [formGroup]="form"
-    novalidate
-    (ngSubmit)="handleSaveAndContinue()"
-  >
+  <form [formGroup]="form" novalidate (ngSubmit)="handleSaveAndContinue()">
     <div class="row">
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.name.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input dvSharedUiFormLabelTarget
-               formControlName="name"
-               class="form-control"
-               type="text"/>
+        }}</dv-shared-ui-form-label>
+        <input
+          dvSharedUiFormLabelTarget
+          formControlName="name"
+          class="form-control"
+          type="text"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
@@ -33,11 +29,12 @@
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.vorname.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input dvSharedUiFormLabelTarget
-               formControlName="vorname"
-               class="form-control"
-               type="text"
+        }}</dv-shared-ui-form-label>
+        <input
+          dvSharedUiFormLabelTarget
+          formControlName="vorname"
+          class="form-control"
+          type="text"
         />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -48,9 +45,8 @@
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.telefonnummer.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input formControlName="telefonnummer"
-               class="form-control"/>
+        }}</dv-shared-ui-form-label>
+        <input formControlName="telefonnummer" class="form-control" />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
@@ -60,22 +56,27 @@
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.sozialversicherungsnummer.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input formControlName="sozialversicherungsnummer"
-               class="form-control"/>
+        }}</dv-shared-ui-form-label>
+        <input
+          formControlName="sozialversicherungsnummer"
+          class="form-control"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
       </dv-shared-ui-form-field>
     </div>
-    <h2>{{'shared.weiterangaben' | translate}}</h2>
+    <h2>{{ 'shared.weiterangaben' | translate }}</h2>
     <div class="row">
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.geburtsdatum.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input type="date" formControlName="geburtsdatum"
-               class="form-control"/>
+        }}</dv-shared-ui-form-label>
+        <input
+          type="date"
+          formControlName="geburtsdatum"
+          class="form-control"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
@@ -84,10 +85,14 @@
     <div class="row">
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
-          'gesuch-app.form.eltern.sozialhilfebeitraegeAusbezahlt.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input type="checkbox" formControlName="sozialhilfebeitraegeAusbezahlt"
-               class="form-control"/>
+          'gesuch-app.form.eltern.sozialhilfebeitraegeAusbezahlt.label'
+            | translate
+        }}</dv-shared-ui-form-label>
+        <input
+          type="checkbox"
+          formControlName="sozialhilfebeitraegeAusbezahlt"
+          class="form-control"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
@@ -97,9 +102,12 @@
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
           'gesuch-app.form.eltern.ausweisbFluechtling.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input type="checkbox" formControlName="ausweisbFluechtling"
-               class="form-control"/>
+        }}</dv-shared-ui-form-label>
+        <input
+          type="checkbox"
+          formControlName="ausweisbFluechtling"
+          class="form-control"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
@@ -108,19 +116,21 @@
     <div class="row">
       <dv-shared-ui-form-field class="col-12">
         <dv-shared-ui-form-label>{{
-          'gesuch-app.form.eltern.ergaenzungsleistungAusbezahlt.label' | translate
-          }}</dv-shared-ui-form-label>
-        <input type="checkbox" formControlName="ergaenzungsleistungAusbezahlt"
-               class="form-control"/>
+          'gesuch-app.form.eltern.ergaenzungsleistungAusbezahlt.label'
+            | translate
+        }}</dv-shared-ui-form-label>
+        <input
+          type="checkbox"
+          formControlName="ergaenzungsleistungAusbezahlt"
+          class="form-control"
+        />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
       </dv-shared-ui-form-field>
     </div>
 
-    <div
-      class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
-    >
+    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
       <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
       </button>
@@ -135,4 +145,3 @@
     </div>
   </form>
 </div>
-

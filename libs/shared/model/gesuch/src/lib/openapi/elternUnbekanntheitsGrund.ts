@@ -10,9 +10,12 @@
  * Do not edit the class manually.
  */
 
-export type ElternUnbekanntheitsGrund = 'UNBEKANNTER_AUFENTHALTSORT' | 'FEHLENDE_ANERKENNUNG';
+export type ElternUnbekanntheitsGrund =
+  | 'UNBEKANNTER_AUFENTHALTSORT'
+  | 'FEHLENDE_ANERKENNUNG';
 
 export const ElternUnbekanntheitsGrund = {
-  UNBEKANNTER_AUFENTHALTSORT: 'UNBEKANNTER_AUFENTHALTSORT' as ElternUnbekanntheitsGrund,
-  FEHLENDE_ANERKENNUNG: 'FEHLENDE_ANERKENNUNG' as ElternUnbekanntheitsGrund
+  UNBEKANNTER_AUFENTHALTSORT:
+    'UNBEKANNTER_AUFENTHALTSORT' as ElternUnbekanntheitsGrund,
+  FEHLENDE_ANERKENNUNG: 'FEHLENDE_ANERKENNUNG' as ElternUnbekanntheitsGrund,
 };

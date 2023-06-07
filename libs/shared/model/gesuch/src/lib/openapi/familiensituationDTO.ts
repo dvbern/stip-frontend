@@ -9,9 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {ElternAbwesenheitsGrund} from './elternAbwesenheitsGrund';
-import {Elternschaftsteilung} from './elternschaftsteilung';
-import {ElternUnbekanntheitsGrund} from './elternUnbekanntheitsGrund';
+import { ElternAbwesenheitsGrund } from './elternAbwesenheitsGrund';
+import { Elternschaftsteilung } from './elternschaftsteilung';
+import { ElternUnbekanntheitsGrund } from './elternUnbekanntheitsGrund';
 
 export interface FamiliensituationDTO {
   id: string;

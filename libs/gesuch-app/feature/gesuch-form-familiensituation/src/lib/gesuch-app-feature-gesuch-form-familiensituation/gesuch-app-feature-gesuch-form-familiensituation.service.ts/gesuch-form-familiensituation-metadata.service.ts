@@ -1,7 +1,10 @@
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {ElternAbwesenheitsGrund, Elternschaftsteilung} from '@dv/shared/model/gesuch';
-import {GesuchFamiliensituationForm} from '../gesuch-familiensituation-form';
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  ElternAbwesenheitsGrund,
+  Elternschaftsteilung,
+} from '@dv/shared/model/gesuch';
+import { GesuchFamiliensituationForm } from '../gesuch-familiensituation-form';
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +15,20 @@ export class GesuchFormFamiliensituationMetadataService {
       control: undefined,
       visible: true,
     },
-    elternteilVerstorben: {control: undefined, visible: false},
-    elternteilVerstorbenUnbekannt: {control: undefined, visible: false},
-    gerichtlicheAlimentenregelung: {control: undefined, visible: false},
-    mutterUnbekanntVerstorben: {control: undefined, visible: false},
-    mutterUnbekanntReason: {control: undefined, visible: false},
-    mutterWiederverheiratet: {control: undefined, visible: false},
-    obhut: {control: undefined, visible: false},
-    obhutMutter: {control: undefined, visible: false},
-    obhutVater: {control: undefined, visible: false},
-    sorgerecht: {control: undefined, visible: false},
-    vaterUnbekanntVerstorben: {control: undefined, visible: false},
-    vaterUnbekanntReason: {control: undefined, visible: false},
-    vaterWiederverheiratet: {control: undefined, visible: false},
-    werZahltAlimente: {control: undefined, visible: false},
+    elternteilVerstorben: { control: undefined, visible: false },
+    elternteilVerstorbenUnbekannt: { control: undefined, visible: false },
+    gerichtlicheAlimentenregelung: { control: undefined, visible: false },
+    mutterUnbekanntVerstorben: { control: undefined, visible: false },
+    mutterUnbekanntReason: { control: undefined, visible: false },
+    mutterWiederverheiratet: { control: undefined, visible: false },
+    obhut: { control: undefined, visible: false },
+    obhutMutter: { control: undefined, visible: false },
+    obhutVater: { control: undefined, visible: false },
+    sorgerecht: { control: undefined, visible: false },
+    vaterUnbekanntVerstorben: { control: undefined, visible: false },
+    vaterUnbekanntReason: { control: undefined, visible: false },
+    vaterWiederverheiratet: { control: undefined, visible: false },
+    werZahltAlimente: { control: undefined, visible: false },
   };
 
   registerForm(form: FormGroup<GesuchFamiliensituationForm>) {
@@ -57,12 +60,12 @@ export class GesuchFormFamiliensituationMetadataService {
         'obhut',
         'obhutVater',
         'obhutMutter',
-        'sorgerecht',
+        'sorgerecht'
       );
     }
     if (currentFormValues.leiblicheElternVerheiratetKonkubinat === false) {
       this.setVisible('gerichtlicheAlimentenregelung');
-      if (currentFormValues.gerichtlicheAlimentenregelung === true ) {
+      if (currentFormValues.gerichtlicheAlimentenregelung === true) {
         this.setVisible('werZahltAlimente');
         this.setInvisible(
           'mutterWiederverheiratet',
@@ -75,7 +78,7 @@ export class GesuchFormFamiliensituationMetadataService {
           'obhut',
           'obhutVater',
           'obhutMutter',
-          'sorgerecht',
+          'sorgerecht'
         );
       }
       if (currentFormValues.gerichtlicheAlimentenregelung === false) {
@@ -88,25 +91,28 @@ export class GesuchFormFamiliensituationMetadataService {
     this.resetInvisibleFormFields();
   }
 
-  private handleLeiblicheElternVerheiratetKonkubinatTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
+  private handleLeiblicheElternVerheiratetKonkubinatTrue(
+    form: FormGroup<GesuchFamiliensituationForm>
+  ): void {
     const currentFormValues = form.value;
 
     if (currentFormValues.elternteilVerstorbenUnbekannt === true) {
       this.handleElternteilVerstorbenUnbekanntTrue(form);
-
     }
     if (currentFormValues.elternteilVerstorbenUnbekannt === false) {
       this.handleElternteilVerstorbenUnbekanntFalse(form);
     }
   }
 
-  private handleElternteilVerstorbenUnbekanntFalse(form: FormGroup<GesuchFamiliensituationForm>): void {
+  private handleElternteilVerstorbenUnbekanntFalse(
+    form: FormGroup<GesuchFamiliensituationForm>
+  ): void {
     const currentFormValues = form.value;
     this.setInvisible(
       'mutterUnbekanntVerstorben',
       'vaterUnbekanntVerstorben',
       'mutterUnbekanntReason',
-      'vaterUnbekanntReason',
+      'vaterUnbekanntReason'
     );
     this.setVisible(
       'vaterWiederverheiratet',
@@ -114,88 +120,99 @@ export class GesuchFormFamiliensituationMetadataService {
       'sorgerecht',
       'obhut',
       'obhutVater',
-      'obhutMutter',
+      'obhutMutter'
     );
 
     if (currentFormValues.obhut === Elternschaftsteilung.GEMEINSAM) {
       this.setVisible('obhutVater', 'obhutMutter');
     } else {
-      this.setInvisible('obhutMutter', 'obhutVater')
+      this.setInvisible('obhutMutter', 'obhutVater');
     }
   }
 
-  private handleElternteilVerstorbenUnbekanntTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
+  private handleElternteilVerstorbenUnbekanntTrue(
+    form: FormGroup<GesuchFamiliensituationForm>
+  ): void {
     const currentFormValues = form.value;
-    this.setVisible(
-      'mutterUnbekanntVerstorben',
-      'vaterUnbekanntVerstorben',
-    );
+    this.setVisible('mutterUnbekanntVerstorben', 'vaterUnbekanntVerstorben');
     this.setInvisible(
       'vaterWiederverheiratet',
       'mutterWiederverheiratet',
       'sorgerecht',
-      'obhut',
+      'obhut'
     );
 
-    if (currentFormValues.mutterUnbekanntVerstorben === ElternAbwesenheitsGrund.UNBEKANNT) {
+    if (
+      currentFormValues.mutterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.UNBEKANNT
+    ) {
       this.setVisible('mutterUnbekanntReason');
       this.setInvisible('mutterWiederverheiratet');
     }
 
-    if (currentFormValues.vaterUnbekanntVerstorben === ElternAbwesenheitsGrund.UNBEKANNT) {
+    if (
+      currentFormValues.vaterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.UNBEKANNT
+    ) {
       this.setVisible('vaterUnbekanntReason');
       this.setInvisible('vaterWiederverheiratet');
     }
 
-    if (currentFormValues.mutterUnbekanntVerstorben === ElternAbwesenheitsGrund.VERSTORBEN) {
-      this.setInvisible(
-        'mutterUnbekanntReason',
-      );
+    if (
+      currentFormValues.mutterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.VERSTORBEN
+    ) {
+      this.setInvisible('mutterUnbekanntReason');
     }
 
-    if (currentFormValues.vaterUnbekanntVerstorben === ElternAbwesenheitsGrund.VERSTORBEN) {
-      this.setInvisible(
-        'vaterUnbekanntReason',
-      );
+    if (
+      currentFormValues.vaterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.VERSTORBEN
+    ) {
+      this.setInvisible('vaterUnbekanntReason');
     }
 
-    if (currentFormValues.mutterUnbekanntVerstorben === ElternAbwesenheitsGrund.WEDER_NOCH) {
-      this.setVisible(
-        'mutterWiederverheiratet',
-      );
-      this.setInvisible(
-        'mutterUnbekanntReason',
-      );
+    if (
+      currentFormValues.mutterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.WEDER_NOCH
+    ) {
+      this.setVisible('mutterWiederverheiratet');
+      this.setInvisible('mutterUnbekanntReason');
     }
-    if (currentFormValues.vaterUnbekanntVerstorben === ElternAbwesenheitsGrund.WEDER_NOCH) {
-      this.setVisible(
-        'vaterWiederverheiratet',
-      );
-      this.setInvisible(
-        'vaterUnbekanntReason',
-      );
+    if (
+      currentFormValues.vaterUnbekanntVerstorben ===
+      ElternAbwesenheitsGrund.WEDER_NOCH
+    ) {
+      this.setVisible('vaterWiederverheiratet');
+      this.setInvisible('vaterUnbekanntReason');
     }
   }
 
-  private setVisible(...controlNames: (keyof GesuchFamiliensituationForm)[]): void {
+  private setVisible(
+    ...controlNames: (keyof GesuchFamiliensituationForm)[]
+  ): void {
     for (const controlName of controlNames) {
       this.state[controlName].visible = true;
     }
   }
 
-  private setInvisible(...controlNames: (keyof GesuchFamiliensituationForm)[]): void {
+  private setInvisible(
+    ...controlNames: (keyof GesuchFamiliensituationForm)[]
+  ): void {
     for (const controlName of controlNames) {
       this.state[controlName].visible = false;
     }
   }
 
   private isNullOrUndefined<T>(
-    val: T | undefined | null,
+    val: T | undefined | null
   ): val is null | undefined {
     return val === undefined || val === null;
   }
 
-  public isVisible(formControlName: keyof GesuchFamiliensituationForm): boolean {
+  public isVisible(
+    formControlName: keyof GesuchFamiliensituationForm
+  ): boolean {
     return this.state[formControlName].visible;
   }
 
@@ -204,14 +221,14 @@ export class GesuchFormFamiliensituationMetadataService {
       if (Object.prototype.hasOwnProperty.call(this.state, controlName)) {
         const controlMetadata: {
           control: FormControl | undefined;
-          visible: boolean
+          visible: boolean;
         } = this.state[controlName as keyof GesuchFamiliensituationForm];
         if (this.isNullOrUndefined(controlMetadata.control)) {
           console.warn('wrong config, form not registered');
           return;
         }
         if (!controlMetadata.visible) {
-          controlMetadata.control.patchValue(null, {emitEvent: false});
+          controlMetadata.control.patchValue(null, { emitEvent: false });
         }
       }
     }
@@ -225,4 +242,4 @@ type FormGroupMetadata<T> = {
     visible: boolean;
     // Add more metadata properties as needed
   };
-}
+};
