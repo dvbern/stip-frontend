@@ -20,7 +20,7 @@ variables:
 
 build:gesuch-app:
   stage: build
-  extends: .distributed
+  extends: .base
   script:
     - npm run build:gesuch-app
   artifacts:
