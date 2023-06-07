@@ -3,23 +3,23 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { MainLayoutComponent } from './main-layout.component';
+import { GesuchAppPatternMainLayoutComponent } from './gesuch-app-pattern-main-layout.component';
 
 describe('MainLayoutComponent', () => {
-  let component: MainLayoutComponent;
-  let fixture: ComponentFixture<MainLayoutComponent>;
+  let component: GesuchAppPatternMainLayoutComponent;
+  let fixture: ComponentFixture<GesuchAppPatternMainLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [provideMockStore()],
       imports: [
-        MainLayoutComponent,
+        GesuchAppPatternMainLayoutComponent,
         TranslateModule.forRoot(),
         RouterTestingModule,
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MainLayoutComponent);
+    fixture = TestBed.createComponent(GesuchAppPatternMainLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

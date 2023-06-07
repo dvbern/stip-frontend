@@ -20,22 +20,21 @@ import { Language } from '@dv/shared/model/language';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 
 @Component({
-  selector: 'dv-gesuch-app-pattern-main-layout-main-layout',
+  selector: 'dv-gesuch-app-pattern-main-layout',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterOutlet,
     TranslateModule,
+    RouterOutlet,
     RouterLink,
     NgFor,
     NgbOffcanvasModule,
     SharedUiLanguageSelectorComponent,
   ],
-  templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss'],
+  templateUrl: './gesuch-app-pattern-main-layout.component.html',
+  styleUrls: ['./gesuch-app-pattern-main-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainLayoutComponent {
+export class GesuchAppPatternMainLayoutComponent {
   private store = inject(Store);
   private offCanvasService = inject(NgbOffcanvas);
 

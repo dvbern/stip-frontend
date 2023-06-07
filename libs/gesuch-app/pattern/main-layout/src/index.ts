@@ -1,4 +1,4 @@
-export * from './lib/main-layout/main-layout.component';
+export * from './lib/main-layout/gesuch-app-pattern-main-layout.component';
 /**
  * Pattern is an eagerly loaded feature
  * or in other words a combination of other utils, data-access, ui, etc...
