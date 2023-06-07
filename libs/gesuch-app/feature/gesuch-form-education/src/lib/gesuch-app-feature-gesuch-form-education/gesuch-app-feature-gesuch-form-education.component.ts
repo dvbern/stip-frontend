@@ -14,6 +14,7 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import {SharedUiProgressBarComponent} from '@dv/shared/ui/progress-bar';
+import {NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import {Store} from '@ngrx/store';
 import {TranslateModule} from '@ngx-translate/core';
 import {Subject, takeUntil} from 'rxjs';
@@ -31,6 +32,7 @@ import {Subject, takeUntil} from 'rxjs';
     SharedUiFormLabelComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormLabelTargetDirective,
+    NgbInputDatepicker,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -43,6 +45,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent
   private formBuilder = inject(FormBuilder);
 
   protected readonly Land = Land;
+  protected readonly Ausbildungsstaette = ['A', 'B', 'C'];
+  protected readonly Ausbildungsgang = ['A', 'B', 'C'];
   private destroy$ = new Subject<void>();
   private initializedForm$ = new Subject<void>();
 
@@ -50,13 +54,13 @@ export class GesuchAppFeatureGesuchFormEducationComponent
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
-    ausbildungsstaette: ['', []], // [Validators.required]],
-    ausbildungsgang: ['', []], // [Validators.required]],
-    fachrichtung: ['', []], // [Validators.required]],
+    ausbildungsstaette: ['', [Validators.required]],
+    ausbildungsgang: ['', [Validators.required]],
+    fachrichtung: ['', [Validators.required]],
     manuell: [false, []],
-    start: ['', []], // [Validators.required]],
-    ende: ['', []], // [Validators.required]],
-    pensum: [0, []], // [Validators.required]],
+    start: ['', [Validators.required]],
+    ende: ['', [Validators.required]],
+    pensum: [0, [Validators.required]],
   });
 
   constructor() {

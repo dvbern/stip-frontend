@@ -3,3 +3,4 @@
 /coverage
 .angular
 /libs/tooling/nx-plugin/src/generators/lib/files/
+/deploy

@@ -30,4 +30,16 @@ export abstract class GesuchFormSteps {
     name: 'gesuch-app-feature-gesuch-form-familiensituation',
     translationKey: 'FAMILIENSITUATION_STEP',
   };
+
+  public static readonly ELTERN_MUTTER: GesuchAppModelGesuchFormStep = {
+    enabled: true, // if famSit Mutter lebt noch, abhaengig von FamSit Daten
+    name: 'gesuch-app-feature-gesuch-eltern',
+    translationKey: '',
+  };
+
+  public static readonly ELTERN_VATER: GesuchAppModelGesuchFormStep = {
+    enabled: true, // if famSit Vater lebt noch, abhaengig von FamSit Daten
+    name: 'gesuch-app-feature-gesuch-eltern',
+    translationKey: '',
+  };
 }

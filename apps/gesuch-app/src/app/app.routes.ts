@@ -44,6 +44,7 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
+
   {
     path: '**',
     redirectTo: 'gesuch-app-feature-cockpit',

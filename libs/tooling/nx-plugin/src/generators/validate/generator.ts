@@ -27,6 +27,15 @@ export default async function moduleBoundariesValidate(
     name: readJson(tree, projectJsonPath).name,
     path: projectJsonPath,
   }));
+  const relevantLibProjectNames = projects
+    .map((p) => p.name)
+    .filter(
+      (n) =>
+        !n.endsWith('-app') &&
+        !n.endsWith('-e2e') &&
+        !n.startsWith('shared-styles') &&
+        !n.startsWith('shared-assets')
+    );
 
   const aggregateViolations = [];
   const aggregateFixes = [];
@@ -45,6 +54,12 @@ export default async function moduleBoundariesValidate(
   const boundariesViolation =
     await validateEslintEnforceModuleBoundariesMatchesFolderStructure(tree);
   aggregateViolations.push(...boundariesViolation);
+
+  const tsconfigBaseJsonViolations = await validateTsconfigBaseJson(
+    tree,
+    relevantLibProjectNames
+  );
+  aggregateViolations.push(...tsconfigBaseJsonViolations);
 
   if (aggregateFixes.filter(Boolean)?.length > 0) {
     console.info(chalk.green.bold(aggregateFixes.join('\n\n'), '\n\n'));
@@ -149,8 +164,15 @@ Difference:              ${chalk.inverse(scopeFoldersDiff.join(', '))}`);
   const scopeGeneratorDiff = diff(scopes, scopesGenerator);
   if (scopeGeneratorDiff.length) {
     violations.push(`Scopes (.eslintrc.json): ${scopes.join(', ')}
-Scopes (generator):     ${scopesGenerator.join(', ')}
+Scopes (lib generator):  ${scopesGenerator.join(', ')}
 Difference:              ${chalk.inverse(scopeGeneratorDiff.join(', '))}`);
+  }
+
+  const folderGeneratorDiff = diff(scopeDirs, scopesGenerator);
+  if (folderGeneratorDiff.length) {
+    violations.push(`Scopes (lib generator):  ${scopesGenerator.join(', ')}
+Folder structure:        ${scopeDirs.join(', ')}
+Difference:              ${chalk.inverse(folderGeneratorDiff.join(', '))}`);
   }
 
   if (violations.length > 0) {
@@ -161,6 +183,44 @@ Difference:              ${chalk.inverse(scopeGeneratorDiff.join(', '))}`);
   return violations;
 }
 
+async function validateTsconfigBaseJson(
+  tree: Tree,
+  libProjectNames: string[]
+): Promise<string[]> {
+  const violations = [];
+  const tsconfigBaseJson = await readJson(tree, './tsconfig.base.json');
+  const tsconfigBaseJsonPaths = tsconfigBaseJson?.compilerOptions?.paths ?? {};
+  const tsconfigBaseJsonPathsAsProjectNames = Object.keys(
+    tsconfigBaseJsonPaths
+  ).map((path) => path.replace('@dv/', '').replace(/\//g, '-'));
+
+  const tsconfigBaseJsonPathsWithoutProject = Object.keys(
+    tsconfigBaseJsonPaths
+  ).filter((path) => {
+    const projectNameFromPath = path.replace('@dv/', '').replace(/\//g, '-');
+    return !libProjectNames.includes(projectNameFromPath);
+  });
+  if (tsconfigBaseJsonPathsWithoutProject.length > 0) {
+    violations.push(
+      `The "tsconfig.base.json" file contains paths that do not match any project in the workspace: \n${chalk.inverse(
+        tsconfigBaseJsonPathsWithoutProject.join('\n')
+      )}\n`
+    );
+  }
+
+  const projectNamesWithoutTsconfigBaseJsonPath = libProjectNames.filter(
+    (projectName) => !tsconfigBaseJsonPathsAsProjectNames.includes(projectName)
+  );
+  if (projectNamesWithoutTsconfigBaseJsonPath.length > 0) {
+    violations.push(
+      `The following projects are missing a path in the "tsconfig.base.json" file: \n${chalk.inverse(
+        projectNamesWithoutTsconfigBaseJsonPath.join('\n')
+      )}\n`
+    );
+  }
+
+  return violations;
+}
 async function getModuleBoundaries(tree: Tree) {
   const ENFORCE_MODULE_BOUNDARIES = '@nx/enforce-module-boundaries';
   const eslintJson = await readJson(tree, './.eslintrc.json');

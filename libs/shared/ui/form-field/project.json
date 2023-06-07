@@ -2,7 +2,7 @@
   "name": "shared-ui-form-field",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/ui/form-field/src",
-  "prefix": "dv-shared-ui-form-field",
+  "prefix": "dv",
   "tags": ["type:ui", "scope:shared"],
   "projectType": "library",
   "targets": {
