@@ -15,6 +15,5 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 export class GesuchAppPatternGesuchFormStepsComponent {
   private store = inject(Store);
 
-  gesuchView =
-    this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  gesuchView = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 }
