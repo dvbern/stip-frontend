@@ -14,7 +14,7 @@ variables:
 
 .base:
   image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
-  tags: [ 'os:linux', 'zone:tz', 'type:docker' ]
+  tags: ['os:linux', 'zone:tz', 'type:docker']
   variables:
     HUSKY_SKIP_INSTALL: 1
   cache:
@@ -33,9 +33,9 @@ build:gesuch-app:
     - npm run build:gesuch-app
   artifacts:
     paths:
-      - "dist/apps/gesuch-app"
+      - 'dist/apps/gesuch-app'
     when: on_success
-    expire_in: "1 day"
+    expire_in: '1 day'
 
 build:gesuch-app:image:
   extends: .docker-build
@@ -50,18 +50,17 @@ build:gesuch-app:image:
     - job: build:gesuch-app
       artifacts: true
 
-
 deploy:
   stage: deploy
-  image: "${DVB_DOCKER_REGISTRY}/devops/docker/tools/k8s/main"
-  tags: ["os:linux", "type:docker", "zone:tz"]
+  image: '${DVB_DOCKER_REGISTRY}/devops/docker/tools/k8s/main'
+  tags: ['os:linux', 'type:docker', 'zone:tz']
   variables:
     STAGE: dev
   script:
     - git fetch origin $CI_COMMIT_BRANCH
     - cd deploy/$STAGE
     - kustomize edit set image $IMAGE
-    - "git commit --no-verify -a -m \"ci($STAGE): deploy image $IMAGE\""
+    - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE"'
     - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
