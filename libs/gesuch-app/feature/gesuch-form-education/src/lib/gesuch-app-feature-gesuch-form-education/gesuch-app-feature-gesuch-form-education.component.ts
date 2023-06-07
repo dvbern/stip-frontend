@@ -31,25 +31,25 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { selectGesuchAppDataAccessAusbildungsgangsView } from '@dv/gesuch-app/data-access/ausbildungsgang';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
+
+import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
   standalone: true,
   imports: [
     CommonModule,
-    SharedUiProgressBarComponent,
     TranslateModule,
     ReactiveFormsModule,
+    NgbInputDatepicker,
+    NgbTypeahead,
+    SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormMessageComponent,
     SharedUiFormLabelComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormLabelTargetDirective,
-    NgbInputDatepicker,
-    NgbTypeahead,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -70,13 +70,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     pensum: [0, [Validators.required]],
   });
 
-  view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
-  ausbildungsgangs$ = this.store.selectSignal(
-    selectGesuchAppDataAccessAusbildungsgangsView
+  view$ = this.store.selectSignal(
+    selectGesuchAppFeatureGesuchFormEducationView
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
   ausbildungsstaetteOptions$ = computed(() => {
-    const ausbildungsgangLands = this.ausbildungsgangs$().ausbildungsgangLands;
+    const ausbildungsgangLands = this.view$().ausbildungsgangLands;
     return (
       ausbildungsgangLands.find((item) => item.name === this.land$())
         ?.staettes || []
@@ -97,9 +96,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     // fill form
     effect(
       () => {
-        const { gesuch } = this.view$();
-        if (gesuch?.ausbildung?.ausbildungSB) {
-          const ausbildung = gesuch?.ausbildung?.ausbildungSB;
+        const { ausbildung } = this.view$();
+        if (ausbildung) {
           this.form.patchValue({ ...ausbildung });
         }
       },
@@ -185,7 +183,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    console.log('DEBUG', this.form.valid, this.form.errors, this.form.controls);
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.nextStepTriggered({
@@ -210,10 +207,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     }
   }
 
+  // TODO we should clean up this logic once we have final data structure
+  // eg extract to util service (for every form step)
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view$().gesuch;
     return {
-      ...gesuch,
+      ...this.view$().gesuch,
       ausbildung: {
         ausbildungSB: { ...(this.form.getRawValue() as any) },
       },
