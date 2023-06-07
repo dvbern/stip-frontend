@@ -4,11 +4,11 @@ kind: Kustomization
 nameSuffix: -dev
 
 resources:
-  - ../../base
+  - ../base
 
 images:
-  - name: docker-registry.dvbern.ch/kibon/stip-web/gesuch-app
-    newTag: test
+  - name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
+    newTag: latest
 
 patches:
   - target:

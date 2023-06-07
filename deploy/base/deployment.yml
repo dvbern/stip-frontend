@@ -18,7 +18,7 @@ spec:
       containers:
         - name: gesuch-app
           imagePullPolicy: Always
-          image: docker-registry.dvbern.ch/kibon/stip-web/gesuch-app:latest
+          image: docker-registry.dvbern.ch/kibon/stip/gesuch-app:latest
           ports:
             - name: http
               protocol: TCP

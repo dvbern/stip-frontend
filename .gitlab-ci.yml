@@ -1,0 +1,59 @@
+# WIP
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE: ${DVB_DOCKER_REGISTRY}/${CI_PROJECT_ROOT_NAMESPACE}/stip/gesuch-app:${CI_COMMIT_SHORT_SHA}
+
+.base:
+  image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
+  tags: [ 'os:linux', 'zone:tz', 'type:docker' ]
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --legacy-peer-deps --cache=".npm"
+
+build:gesuch-app:
+  stage: build
+  extends: .distributed
+  script:
+    - npm run build:gesuch-app
+  artifacts:
+    paths:
+      - "dist/gesuch-app"
+    when: on_success
+    expire_in: "1 day"
+
+build:gesuch-app:image:
+  extends: .docker-build
+  variables:
+    IMAGE_PATH: $IMAGE
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH
+      variables:
+        KANIKO_ARGS: '--no-push'
+  needs:
+    - job: build:gesuch-app
+      artifacts: true
+
+
+deploy:
+  stage: deploy
+  image: "${DVB_DOCKER_REGISTRY}/devops/docker/tools/k8s/main"
+  tags: ["os:linux", "type:docker", "zone:tz"]
+  variables:
+    STAGE: dev
+  script:
+    - git fetch origin $CI_COMMIT_BRANCH
+    - cd deploy/$STAGE
+    - kustomize edit set image $IMAGE
+    - "git commit -a -m \"ci($STAGE): deploy image $IMAGE\""
+    - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
