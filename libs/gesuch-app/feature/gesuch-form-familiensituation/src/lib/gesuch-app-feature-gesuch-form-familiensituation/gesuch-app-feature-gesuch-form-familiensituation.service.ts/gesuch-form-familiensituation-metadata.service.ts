@@ -81,45 +81,50 @@ export class GesuchFormFamiliensituationMetadataService {
       if (currentFormValues.gerichtlicheAlimentenregelung === false) {
         this.setVisible('elternteilVerstorbenUnbekannt');
         this.setInvisible('werZahltAlimente');
-        this.updateLeiblicheElternVerheiratetKonkubinatTrue(form);
+        this.handleLeiblicheElternVerheiratetKonkubinatTrue(form);
       }
     }
 
     this.resetInvisibleFormFields();
   }
 
-  private updateLeiblicheElternVerheiratetKonkubinatTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
+  private handleLeiblicheElternVerheiratetKonkubinatTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
     const currentFormValues = form.value;
 
     if (currentFormValues.elternteilVerstorbenUnbekannt === true) {
-      this.updateElternteilVerstorbenUnbekanntTrue(form);
+      this.handleElternteilVerstorbenUnbekanntTrue(form);
 
     }
     if (currentFormValues.elternteilVerstorbenUnbekannt === false) {
-      this.setInvisible(
-        'mutterUnbekanntVerstorben',
-        'vaterUnbekanntVerstorben',
-        'mutterUnbekanntReason',
-        'vaterUnbekanntReason',
-      );
-      this.setVisible(
-        'vaterWiederverheiratet',
-        'mutterWiederverheiratet',
-        'sorgerecht',
-        'obhut',
-        'obhutVater',
-        'obhutMutter',
-      );
-
-      if (currentFormValues.obhut === Elternschaftsteilung.GEMEINSAM) {
-        this.setVisible('obhutVater', 'obhutMutter');
-      } else {
-        this.setInvisible('obhutMutter', 'obhutVater')
-      }
+      this.handleElternteilVerstorbenUnbekanntFalse(form);
     }
   }
 
-  private updateElternteilVerstorbenUnbekanntTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
+  private handleElternteilVerstorbenUnbekanntFalse(form: FormGroup<GesuchFamiliensituationForm>): void {
+    const currentFormValues = form.value;
+    this.setInvisible(
+      'mutterUnbekanntVerstorben',
+      'vaterUnbekanntVerstorben',
+      'mutterUnbekanntReason',
+      'vaterUnbekanntReason',
+    );
+    this.setVisible(
+      'vaterWiederverheiratet',
+      'mutterWiederverheiratet',
+      'sorgerecht',
+      'obhut',
+      'obhutVater',
+      'obhutMutter',
+    );
+
+    if (currentFormValues.obhut === Elternschaftsteilung.GEMEINSAM) {
+      this.setVisible('obhutVater', 'obhutMutter');
+    } else {
+      this.setInvisible('obhutMutter', 'obhutVater')
+    }
+  }
+
+  private handleElternteilVerstorbenUnbekanntTrue(form: FormGroup<GesuchFamiliensituationForm>): void {
     const currentFormValues = form.value;
     this.setVisible(
       'mutterUnbekanntVerstorben',
@@ -182,10 +187,6 @@ export class GesuchFormFamiliensituationMetadataService {
     for (const controlName of controlNames) {
       this.state[controlName].visible = false;
     }
-  }
-
-  private isNotNullOrUndefined<T>(val: T | undefined | null): val is T {
-    return val !== undefined && val !== null;
   }
 
   private isNullOrUndefined<T>(
