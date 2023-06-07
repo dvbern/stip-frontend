@@ -1,4 +1,10 @@
 # WIP
+
+include:
+  - project: 'devops/gitlab/templates'
+    file:
+      - '/docker/docker.gitlab-ci.yml'
+
 stages:
   - build
   - deploy
