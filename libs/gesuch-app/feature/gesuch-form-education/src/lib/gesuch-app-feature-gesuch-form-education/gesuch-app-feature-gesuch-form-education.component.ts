@@ -5,7 +5,6 @@ import {
   effect,
   inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -89,8 +88,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     // fill form
     effect(() => {
       const { gesuch } = this.view();
-      if (gesuch?.ausbildung) {
-        const ausbildung = gesuch?.ausbildung;
+      if (gesuch?.ausbildung?.ausbildungSB) {
+        const ausbildung = gesuch?.ausbildung?.ausbildungSB;
         const ausbildungForForm = {
           ...ausbildung,
           start: ausbildung.start.toString(),
@@ -144,6 +143,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       this.ausbildungsgangs().ausbildungsgangLands
     );
   }
+
   getAvailableAusbildungsstaettesFor(
     land: string | undefined | null,
     ausbildungsgangLands: AusbildungsgangLand[]
@@ -209,7 +209,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     return {
       ...gesuch,
       ausbildung: {
-        ...(this.form.getRawValue() as any),
+        ausbildungSB: { ...(this.form.getRawValue() as any) },
       },
     } as Partial<SharedModelGesuch>;
   }
