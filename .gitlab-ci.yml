@@ -10,12 +10,13 @@ stages:
   - deploy
 
 variables:
-  HUSKY_SKIP_INSTALL: 1
   IMAGE: ${DVB_DOCKER_REGISTRY}/${CI_PROJECT_ROOT_NAMESPACE}/stip/gesuch-app:${CI_COMMIT_SHORT_SHA}
 
 .base:
   image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
   tags: [ 'os:linux', 'zone:tz', 'type:docker' ]
+  variables:
+    HUSKY_SKIP_INSTALL: 1
   cache:
     key:
       files:
@@ -23,7 +24,7 @@ variables:
     paths:
       - .npm/
   before_script:
-    - npm ci --legacy-peer-deps --cache=".npm"
+    - npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts
 
 build:gesuch-app:
   stage: build
