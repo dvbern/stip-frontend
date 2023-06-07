@@ -111,7 +111,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     effect(
       () => {
         const manuell = manuell$();
-        if (manuell !== undefined && manuell === null) {
+        if (manuell !== undefined && manuell === true) {
           // do not reset fields  on signal default value
           this.form.controls.ausbildungsstaette.patchValue(null);
           this.form.controls.ausbildungsgang.patchValue(null);
