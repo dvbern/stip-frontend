@@ -17,8 +17,8 @@
 
 import * as fs from 'fs';
 import { PathLike } from 'fs';
-import childProcess = require('child_process');
-import path = require('path');
+import childProcess from 'child_process';
+import path from 'path';
 
 const dependencies = require('../package.json').dependencies;
 

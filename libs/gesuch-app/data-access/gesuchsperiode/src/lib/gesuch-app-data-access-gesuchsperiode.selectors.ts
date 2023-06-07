@@ -10,13 +10,10 @@ export const selectGesuchAppDataAccessGesuchsperiodesView = createSelector(
     gesuchsperiodes: state.gesuchsperiodes.map((p) => ({
       ...p,
       semester:
-        getMonth(Date.parse(p.gueltigAb)) === 7
+        getMonth(p.gueltigAb) === 7
           ? GesuchsperiodeSemester.HERBST
           : GesuchsperiodeSemester.FRUEHLING,
-      yearsLabel: [
-        getYear(Date.parse(p.gueltigAb)),
-        getYear(Date.parse(p.gueltigBis)),
-      ].join('/'),
+      yearsLabel: [getYear(p.gueltigAb), getYear(p.gueltigBis)].join('/'),
     })),
   })
 );

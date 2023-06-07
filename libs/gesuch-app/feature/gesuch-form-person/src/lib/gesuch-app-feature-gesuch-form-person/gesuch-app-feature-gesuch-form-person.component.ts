@@ -7,14 +7,19 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
-
 import {
   Anrede,
   Land,
@@ -32,14 +37,8 @@ import {
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -49,6 +48,8 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
     MaskitoModule,
+    NgbInputDatepicker,
+    NgbAlert,
     SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormLabelComponent,
@@ -56,8 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
-    NgbInputDatepicker,
-    NgbAlert,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],

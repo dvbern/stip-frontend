@@ -31,6 +31,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'gesuch-app-feature-gesuch-form-eltern',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
+        (m) => m.gesuchAppFeatureGesuchFormElternRoutes
+      ),
+  },
+  {
     path: 'gesuch-app-feature-gesuch-form-person',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-person').then(
@@ -44,7 +51,6 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
-
   {
     path: '**',
     redirectTo: 'gesuch-app-feature-cockpit',

@@ -1,5 +1,6 @@
 {
   "/api/v1/*": "/$1",
   "/config/deployment": "/config",
-  "/gesuchsperiode/aktive": "/gesuchsperiode"
+  "/gesuchsperiode/aktive": "/gesuchsperiode",
+  "/eltern/${gesuchsid}": "/eltern"
 }
