@@ -149,7 +149,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       this.form.controls.ausbildungsstaette.valueChanges
     );
     effect(() => {
-      if (staette$() !== undefined && staette$() === null) {
+      if (staette$() !== undefined) {
         if (!this.form.value.manuell) {
           // resetten, wenn Wert nicht in Liste
           const ausbildungsgang = this.form.controls.ausbildungsgang.value;
