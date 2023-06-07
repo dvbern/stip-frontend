@@ -28,7 +28,7 @@ export interface PersonInAusbildungDTO {
   izvPLZ?: string;
   email: string;
   telefonnummer: string;
-  geburtsdatum: Date;
+  geburtsdatum: string;
   nationalitaet: Land;
   heimatort?: string;
   niederlassungsstatus?: Niederlassungsstatus;
