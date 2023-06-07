@@ -9,5 +9,11 @@ export const selectRouteId = selectRouteParam('id');
 
 export const selectGesuchAppDataAccessGesuchsView = createSelector(
   gesuchAppDataAccessGesuchsFeature.selectGesuchsState,
-  (state) => ({ ...state })
+  (state) => {
+    // TODO calculate formStepMax from gesuch state.gesuchg
+    return {
+      ...state,
+      formStepMax: 12,
+    };
+  }
 );
