@@ -4,13 +4,13 @@ kind: Kustomization
 nameSuffix: -dev
 
 resources:
-  - ../base
+- ../base
 
 images:
-  - name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
-    newTag: latest
+- name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
+  newTag: 0b9d9ce7
 
 patches:
-  - target:
-      kind: Route
-    path: route-patch.yml
+- path: route-patch.yml
+  target:
+    kind: Route
