@@ -13,8 +13,13 @@ export const selectGesuchAppFeatureCockpitView = createSelector(
 
     gesuchsperiodes: gesuchsPerioden.gesuchsperiodes
       // TODO where should we put this logic
-      .filter((p) => isBefore(p.aufschaltdatum, new Date()))
-      .filter((p) => isAfter(p.gueltigBis, addDays(new Date(), 1)))
+      .filter((p) =>
+        isBefore(
+          Date.parse(p.aufschaltdatum ? p.aufschaltdatum : ''),
+          new Date()
+        )
+      )
+      .filter((p) => isAfter(Date.parse(p.gueltigBis), addDays(new Date(), 1)))
       .map((p) => ({
         ...p,
         gesuchLoading: gesucheLoading,

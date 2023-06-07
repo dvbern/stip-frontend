@@ -18,7 +18,7 @@ export interface ElternDTO {
   vorname: string;
   geschlecht: Anrede;
   telefonnummer: string;
-  geburtsdatum: Date;
+  geburtsdatum: string;
   sozialhilfebeitraegeAusbezahlt: boolean;
   ausweisbFluechtling: boolean;
   ergaenzungsleistungAusbezahlt: boolean;
