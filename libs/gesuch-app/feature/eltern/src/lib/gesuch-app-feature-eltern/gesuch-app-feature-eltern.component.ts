@@ -1,15 +1,14 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SharedUiProgressBarComponent} from "@dv/shared/ui/progress-bar";
 import {TranslateModule} from "@ngx-translate/core";
-import {SharedUiFormFieldComponent} from "@dv/shared/ui/form-field";
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-
+import {SharedUiFormFieldComponent, SharedUiFormMessageComponent} from "../../../../../../shared/ui/form-field/src";
+import {SharedUiProgressBarComponent} from "../../../../../../shared/ui/progress-bar/src";
 
 @Component({
   selector: 'dv-gesuch-app-feature-eltern',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedUiProgressBarComponent, TranslateModule, SharedUiFormFieldComponent],
+  imports: [CommonModule, ReactiveFormsModule, SharedUiProgressBarComponent, TranslateModule, SharedUiFormFieldComponent, SharedUiFormFieldComponent, SharedUiFormMessageComponent, SharedUiProgressBarComponent],
   templateUrl: './gesuch-app-feature-eltern.component.html',
   styleUrls: ['./gesuch-app-feature-eltern.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
