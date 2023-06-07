@@ -1,18 +1,11 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, effect, inject, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
-import { Land, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import {selectGesuchAppDataAccessGesuchsView} from '@dv/gesuch-app/data-access/gesuch';
+import {GesuchAppEventGesuchFormEducation} from '@dv/gesuch-app/event/gesuch-form-education';
+import {GesuchFormSteps, NavigationType} from '@dv/gesuch-app/model/gesuch-form';
+import {Land, SharedModelGesuch} from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -20,10 +13,10 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
+import {SharedUiProgressBarComponent} from '@dv/shared/ui/progress-bar';
+import {Store} from '@ngrx/store';
+import {TranslateModule} from '@ngx-translate/core';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -104,8 +97,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.nextStepTriggered({
-          target: GesuchFormSteps.AUSBILDUNG,
+          origin: GesuchFormSteps.AUSBILDUNG,
           gesuch: this.buildUpdatedGesuchFromForm(),
+          navigationType: NavigationType.FORWARDS
         })
       );
     }
@@ -116,8 +110,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.prevStepTriggered({
-          target: GesuchFormSteps.PERSON,
+          origin: GesuchFormSteps.AUSBILDUNG,
           gesuch: this.buildUpdatedGesuchFromForm(),
+          navigationType: NavigationType.BACKWARDS
         })
       );
     }
