@@ -12,14 +12,16 @@
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
 import { FallDTO } from './fallDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
-import { Gesuchstatus } from './gesuchstatus';
+import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
+import { Gesuchstatus } from './gesuchstatus';
 
 export interface GesuchDTO {
   id?: string;
   fall: FallDTO;
   gesuchsperiode: GesuchsperiodeDTO;
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
+  familiensituationContainer?: FamiliensituationContainerDTO;
   gesuchStatus: Gesuchstatus;
   gesuchNummer: number;
   ausbildung: AusbildungContainerDTO;

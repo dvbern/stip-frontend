@@ -8,7 +8,7 @@ import {
 export interface GesuchFamiliensituationForm {
   leiblicheElternVerheiratetKonkubinat: FormControl<boolean | null>;
   gerichtlicheAlimentenregelung: FormControl<boolean | null>;
-  werZahltAlimente: FormControl<string | null>;
+  werZahltAlimente: FormControl<Elternschaftsteilung | null>;
   elternteilVerstorbenUnbekannt: FormControl<boolean | null>;
   elternteilVerstorben: FormControl<boolean | null>;
   mutterUnbekanntVerstorben: FormControl<ElternAbwesenheitsGrund | null>;

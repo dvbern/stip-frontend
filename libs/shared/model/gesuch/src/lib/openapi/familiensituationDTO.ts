@@ -14,20 +14,20 @@ import { Elternschaftsteilung } from './elternschaftsteilung';
 import { ElternUnbekanntheitsGrund } from './elternUnbekanntheitsGrund';
 
 export interface FamiliensituationDTO {
-  id: string;
-  leiblicheElternVerheiratetKonkubinat: boolean;
-  elternteilVerstorben: boolean;
-  elternteilVerstorbenUnbekannt: boolean;
-  gerichtlicheAlimentenregelung: boolean;
-  mutterUnbekanntVerstorben: ElternAbwesenheitsGrund;
-  mutterUnbekanntReason: ElternUnbekanntheitsGrund;
-  mutterWiederverheiratet: boolean;
-  obhut: Elternschaftsteilung;
-  obhutMutter: number;
-  obhutVater: number;
-  sorgerecht: Elternschaftsteilung;
-  vaterUnbekanntVerstorben: ElternAbwesenheitsGrund;
-  vaterUnbekanntReason: ElternUnbekanntheitsGrund;
-  vaterWiederverheiratet: boolean;
-  werZahltAlimente: Elternschaftsteilung;
+  id: string | null;
+  leiblicheElternVerheiratetKonkubinat?: boolean | null;
+  elternteilVerstorben?: boolean | null;
+  elternteilVerstorbenUnbekannt?: boolean | null;
+  gerichtlicheAlimentenregelung?: boolean | null;
+  mutterUnbekanntVerstorben?: ElternAbwesenheitsGrund | null;
+  mutterUnbekanntReason?: ElternUnbekanntheitsGrund | null;
+  mutterWiederverheiratet?: boolean | null;
+  obhut?: Elternschaftsteilung | null;
+  obhutMutter?: number | null;
+  obhutVater?: number | null;
+  sorgerecht?: Elternschaftsteilung | null;
+  vaterUnbekanntVerstorben?: ElternAbwesenheitsGrund | null;
+  vaterUnbekanntReason?: ElternUnbekanntheitsGrund | null;
+  vaterWiederverheiratet?: boolean | null;
+  werZahltAlimente?: Elternschaftsteilung | null;
 }
