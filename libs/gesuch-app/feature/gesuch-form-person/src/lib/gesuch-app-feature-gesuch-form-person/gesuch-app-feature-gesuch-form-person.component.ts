@@ -1,42 +1,26 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  OnInit,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
-import { TranslateModule } from '@ngx-translate/core';
-import { MaskitoModule } from '@maskito/angular';
-import { Store } from '@ngrx/store';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, effect, inject, OnInit} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {selectGesuchAppDataAccessGesuchsView} from '@dv/gesuch-app/data-access/gesuch';
 
-import {
-  MASK_SOZIALVERSICHERUNGSNUMMER,
-  Anrede,
-  Land,
-  Zivilstand,
-  SharedModelGesuch,
-} from '@dv/shared/model/gesuch';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
+import {GesuchAppEventGesuchFormPerson} from '@dv/gesuch-app/event/gesuch-form-person';
+import {GesuchFormSteps, NavigationType} from '@dv/gesuch-app/model/gesuch-form';
+
+import {Anrede, Land, MASK_SOZIALVERSICHERUNGSNUMMER, SharedModelGesuch, Zivilstand} from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageInfoDirective,
   SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
+  SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
-
-import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import {SharedUiProgressBarComponent} from '@dv/shared/ui/progress-bar';
+import {sharedUtilAhvValidator} from '@dv/shared/util/ahv-validator';
+import {MaskitoModule} from '@maskito/angular';
+import {NgbAlert, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import {Store} from '@ngrx/store';
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -133,8 +117,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.nextStepTriggered({
-          target: GesuchFormSteps.PERSON,
+          origin: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
+          navigationType: NavigationType.FORWARDS
         })
       );
     }
@@ -145,8 +130,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.prevStepTriggered({
-          target: GesuchFormSteps.COCKPIT,
+          origin: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
+          navigationType: NavigationType.BACKWARDS
         })
       );
     }

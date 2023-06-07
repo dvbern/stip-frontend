@@ -1,4 +1,4 @@
-import { GesuchAppModelGesuchFormStep } from '@dv/gesuch-app/model/gesuch-form';
+import {GesuchAppModelGesuchFormStep, NavigationType} from '@dv/gesuch-app/model/gesuch-form';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
@@ -11,11 +11,13 @@ export const GesuchAppDataAccessGesuchEvents = createActionGroup({
     gesuchCreatedSuccess: props<{
       id: string;
       origin: GesuchAppModelGesuchFormStep;
+      navigationType: NavigationType
     }>(),
     gesuchCreatedFailure: props<{ error: string }>(),
     gesuchUpdatedSuccess: props<{
       id: string;
       origin: GesuchAppModelGesuchFormStep;
+      navigationType: NavigationType
     }>(),
     gesuchUpdatedFailure: props<{ error: string }>(),
     gesuchRemovedSuccess: emptyProps(),

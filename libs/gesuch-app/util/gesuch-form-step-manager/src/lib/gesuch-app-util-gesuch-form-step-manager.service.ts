@@ -17,7 +17,7 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.PERSON:
         return GesuchFormSteps.AUSBILDUNG;
       case GesuchFormSteps.AUSBILDUNG:
-        return GesuchFormSteps.LEBENSLAUF;
+        return GesuchFormSteps.FAMILIENSITUATION;
       case GesuchFormSteps.LEBENSLAUF:
         return GesuchFormSteps.COCKPIT;
       default:
