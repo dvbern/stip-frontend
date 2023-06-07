@@ -1,10 +1,25 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ɵFormGroupValue,
+  ɵTypedOrUntyped,
+} from '@angular/forms';
 import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
+  FamiliensituationDTO,
 } from '@dv/shared/model/gesuch';
 import { GesuchFamiliensituationForm } from '../gesuch-familiensituation-form';
+
+// Metadata type for the form group
+type FormGroupMetadata<T> = {
+  [K in keyof T]: {
+    control: FormControl | undefined;
+    visible: boolean;
+    // Add more metadata properties as needed
+  };
+};
 
 @Injectable({
   providedIn: 'root',
@@ -42,11 +57,10 @@ export class GesuchFormFamiliensituationMetadataService {
         };
       }
     }
+    this.update(form.value);
   }
 
-  update(form: FormGroup<GesuchFamiliensituationForm>): void {
-    const currentFormValues = form.value;
-
+  update(currentFormValues: Partial<FamiliensituationDTO>): void {
     if (currentFormValues.leiblicheElternVerheiratetKonkubinat === true) {
       this.setInvisible(
         'mutterWiederverheiratet',
@@ -84,7 +98,7 @@ export class GesuchFormFamiliensituationMetadataService {
       if (currentFormValues.gerichtlicheAlimentenregelung === false) {
         this.setVisible('elternteilVerstorbenUnbekannt');
         this.setInvisible('werZahltAlimente');
-        this.handleLeiblicheElternVerheiratetKonkubinatTrue(form);
+        this.handleLeiblicheElternVerheiratetKonkubinatTrue(currentFormValues);
       }
     }
 
@@ -92,22 +106,19 @@ export class GesuchFormFamiliensituationMetadataService {
   }
 
   private handleLeiblicheElternVerheiratetKonkubinatTrue(
-    form: FormGroup<GesuchFamiliensituationForm>
+    currentFormValues: Partial<FamiliensituationDTO>
   ): void {
-    const currentFormValues = form.value;
-
     if (currentFormValues.elternteilVerstorbenUnbekannt === true) {
-      this.handleElternteilVerstorbenUnbekanntTrue(form);
+      this.handleElternteilVerstorbenUnbekanntTrue(currentFormValues);
     }
     if (currentFormValues.elternteilVerstorbenUnbekannt === false) {
-      this.handleElternteilVerstorbenUnbekanntFalse(form);
+      this.handleElternteilVerstorbenUnbekanntFalse(currentFormValues);
     }
   }
 
   private handleElternteilVerstorbenUnbekanntFalse(
-    form: FormGroup<GesuchFamiliensituationForm>
+    currentFormValues: Partial<FamiliensituationDTO>
   ): void {
-    const currentFormValues = form.value;
     this.setInvisible(
       'mutterUnbekanntVerstorben',
       'vaterUnbekanntVerstorben',
@@ -131,9 +142,8 @@ export class GesuchFormFamiliensituationMetadataService {
   }
 
   private handleElternteilVerstorbenUnbekanntTrue(
-    form: FormGroup<GesuchFamiliensituationForm>
+    currentFormValues: Partial<FamiliensituationDTO>
   ): void {
-    const currentFormValues = form.value;
     this.setVisible('mutterUnbekanntVerstorben', 'vaterUnbekanntVerstorben');
     this.setInvisible(
       'vaterWiederverheiratet',
@@ -193,6 +203,12 @@ export class GesuchFormFamiliensituationMetadataService {
   ): void {
     for (const controlName of controlNames) {
       this.state[controlName].visible = true;
+      const control = this.state[controlName].control;
+      if (this.isNullOrUndefined(control)) {
+        console.warn('wrong config, form not registered');
+        return;
+      }
+      control.enable({ emitEvent: false });
     }
   }
 
@@ -201,6 +217,12 @@ export class GesuchFormFamiliensituationMetadataService {
   ): void {
     for (const controlName of controlNames) {
       this.state[controlName].visible = false;
+      const control = this.state[controlName].control;
+      if (this.isNullOrUndefined(control)) {
+        console.warn('wrong config, form not registered');
+        return;
+      }
+      // control.disable({emitEvent: false});
     }
   }
 
@@ -233,13 +255,20 @@ export class GesuchFormFamiliensituationMetadataService {
       }
     }
   }
-}
 
-// Metadata type for the form group
-type FormGroupMetadata<T> = {
-  [K in keyof T]: {
-    control: FormControl | undefined;
-    visible: boolean;
-    // Add more metadata properties as needed
-  };
-};
+  public markVisibleFormControlsAsTouched(): void {
+    for (const controlName in this.state) {
+      if (Object.prototype.hasOwnProperty.call(this.state, controlName)) {
+        const controlMetadata =
+          this.state[controlName as keyof GesuchFamiliensituationForm];
+        if (this.isNullOrUndefined(controlMetadata.control)) {
+          console.warn('wrong config, form not registered');
+          return;
+        }
+        if (controlMetadata.visible) {
+          controlMetadata.control.markAsTouched({ onlySelf: true });
+        }
+      }
+    }
+  }
+}
