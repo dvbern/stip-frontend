@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-nx format:write --uncommited
+npx pretty-quick --staged
 npm run validate
 npm run lint
 
