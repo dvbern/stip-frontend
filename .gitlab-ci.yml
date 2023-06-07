@@ -10,6 +10,7 @@ stages:
   - deploy
 
 variables:
+  HUSKY_SKIP_INSTALL: 1
   IMAGE: ${DVB_DOCKER_REGISTRY}/${CI_PROJECT_ROOT_NAMESPACE}/stip/gesuch-app:${CI_COMMIT_SHORT_SHA}
 
 .base:
