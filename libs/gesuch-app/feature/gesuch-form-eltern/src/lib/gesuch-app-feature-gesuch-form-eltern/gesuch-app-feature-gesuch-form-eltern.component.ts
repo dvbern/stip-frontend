@@ -1,31 +1,41 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import {
   SharedUiFormFieldComponent,
+  SharedUiFormLabelComponent,
   SharedUiFormMessageComponent,
-} from '../../../../../../shared/ui/form-field/src';
-import { SharedUiProgressBarComponent } from '../../../../../../shared/ui/progress-bar/src';
+} from '@dv/shared/ui/form-field';
+import { TranslateModule } from '@ngx-translate/core';
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'dv-gesuch-app-feature-eltern',
+  selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     SharedUiProgressBarComponent,
-    TranslateModule,
-    SharedUiFormFieldComponent,
     SharedUiFormFieldComponent,
     SharedUiFormMessageComponent,
-    SharedUiProgressBarComponent,
+    SharedUiFormLabelComponent,
+    ReactiveFormsModule,
+    TranslateModule,
   ],
-  templateUrl: './gesuch-app-feature-eltern.component.html',
-  styleUrls: ['./gesuch-app-feature-eltern.component.scss'],
+  templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
+  styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppFeatureElternComponent {
+export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
+  private store = inject(Store);
+
   private formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.group({
@@ -38,6 +48,10 @@ export class GesuchAppFeatureElternComponent {
     ausweisbFluechtling: [undefined],
     ergaenzungsleistungAusbezahlt: [undefined],
   });
+
+  ngOnInit(): void {
+    this.store.dispatch(GesuchAppEventGesuchFormEltern.init());
+  }
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();

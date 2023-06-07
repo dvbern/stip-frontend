@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
-import { GesuchAppFeatureElternComponent } from './gesuch-app-feature-eltern/gesuch-app-feature-eltern.component';
+import { GesuchAppFeatureGesuchFormElternComponent } from './gesuch-app-feature-gesuch-form-eltern/gesuch-app-feature-gesuch-form-eltern.component';
 
-export const gesuchAppFeatureElternRoutes: Route[] = [
+export const gesuchAppFeatureGesuchFormElternRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'prefix',
@@ -13,7 +13,7 @@ export const gesuchAppFeatureElternRoutes: Route[] = [
       {
         path: ':id',
         title: 'gesuch-app.form.eltern.title',
-        component: GesuchAppFeatureElternComponent,
+        component: GesuchAppFeatureGesuchFormElternComponent,
       },
       // add more routes here (siblings)
       // it is also possible to add nested routes as children
