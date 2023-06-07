@@ -17,7 +17,7 @@
     <!-- loading -->
     <div
       data-test-id="form-ausbildung-loading"
-      *ngIf="view().loading"
+      *ngIf="view$().loading"
       class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
     >
       <div class="dv-progress-bar-indeterminate">
@@ -30,7 +30,7 @@
       [formGroup]="form"
       novalidate
       class="mt-4"
-      *ngIf="!view().loading"
+      *ngIf="!view$().loading"
       (ngSubmit)="handleSaveAndContinue()"
     >
       <h3 class="mt-4">
@@ -53,7 +53,7 @@
             <option
               [value]="l.name"
               *ngFor="
-                let l of ausbildungsgangs().ausbildungsgangLands;
+                let l of ausbildungsgangs$().ausbildungsgangLands;
                 trackBy: trackByIndex
               "
             >
@@ -87,7 +87,7 @@
             <option
               [value]="l.name"
               *ngFor="
-                let l of ausbildungsstaetteOptions();
+                let l of ausbildungsstaetteOptions$();
                 trackBy: trackByIndex
               "
             >
@@ -144,10 +144,7 @@
             </option>
             <option
               [value]="l.name"
-              *ngFor="
-                let l of getAvailableAusbildungsgangs();
-                trackBy: trackByIndex
-              "
+              *ngFor="let l of ausbildungsgangOptions$(); trackBy: trackByIndex"
             >
               {{ l.name }}
             </option>

@@ -7,22 +7,22 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { selectGesuchAppDataAccessAusbildungsgangsView } from '@dv/gesuch-app/data-access/ausbildungsgang';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
-import {
-  Ausbildungsgang,
-  AusbildungsgangLand,
-  AusbildungsgangStaette,
-  SharedModelGesuch,
-} from '@dv/shared/model/gesuch';
+import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -31,20 +31,9 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  merge,
-  Observable,
-  OperatorFunction,
-  skip,
-  Subject,
-} from 'rxjs';
+import { selectGesuchAppDataAccessAusbildungsgangsView } from '@dv/gesuch-app/data-access/ausbildungsgang';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -70,11 +59,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
 
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
-  ausbildungsgangs = this.store.selectSignal(
-    selectGesuchAppDataAccessAusbildungsgangsView
-  );
-
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
     ausbildungsstaette: ['', [Validators.required]],
@@ -86,22 +70,36 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     pensum: [0, [Validators.required]],
   });
 
-  landChangesSignal = toSignal(this.form.controls.ausbildungsland.valueChanges);
-  ausbildungsstaetteOptions = computed(() => {
-    const land = this.landChangesSignal();
-    const ausbildungsgangLands = this.ausbildungsgangs().ausbildungsgangLands;
-    return this.getAvailableAusbildungsstaettesFor(land, ausbildungsgangLands);
+  view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  ausbildungsgangs$ = this.store.selectSignal(
+    selectGesuchAppDataAccessAusbildungsgangsView
+  );
+  land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
+  ausbildungsstaetteOptions$ = computed(() => {
+    const ausbildungsgangLands = this.ausbildungsgangs$().ausbildungsgangLands;
+    return (
+      ausbildungsgangLands.find((item) => item.name === this.land$())
+        ?.staettes || []
+    );
+  });
+  ausbildungsstaett$ = toSignal(
+    this.form.controls.ausbildungsstaette.valueChanges
+  );
+  ausbildungsgangOptions$ = computed(() => {
+    return (
+      this.ausbildungsstaetteOptions$().find(
+        (item) => item.name === this.ausbildungsstaett$()
+      )?.ausbildungsgangs || []
+    );
   });
 
   constructor() {
     // fill form
     effect(
       () => {
-        const { gesuch } = this.view();
+        const { gesuch } = this.view$();
         if (gesuch?.ausbildung?.ausbildungSB) {
           const ausbildung = gesuch?.ausbildung?.ausbildungSB;
-
-          console.log('patching form', ausbildung);
           this.form.patchValue({ ...ausbildung });
         }
       },
@@ -109,128 +107,71 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     );
 
     // When manuell is changed, clear Ausbildungsstaette and Ausbildungsgang
-    const manuellChangesSignal = toSignal(
-      this.form.controls.manuell.valueChanges.pipe(
-        skip(1) // do not reset fields  on initial data load
-      )
-    );
+    const manuell$ = toSignal(this.form.controls.manuell.valueChanges);
     effect(
       () => {
-        const manuellChanges = manuellChangesSignal();
-        if (manuellChanges !== undefined) {
+        const manuell = manuell$();
+        if (manuell !== undefined && manuell === null) {
           // do not reset fields  on signal default value
-          this.form.controls.ausbildungsstaette.patchValue('');
-          this.form.controls.ausbildungsgang.patchValue('');
+          this.form.controls.ausbildungsstaette.patchValue(null);
+          this.form.controls.ausbildungsgang.patchValue(null);
         }
       },
       { allowSignalWrites: true }
     );
 
     // When Land is changed (and not in manuell Mode), clear Ausbildungsstaette
-    const landChangesSignal = toSignal(
-      this.form.controls.ausbildungsland.valueChanges.pipe(skip(1))
-    );
-    effect(() => {
-      const landChanges = landChangesSignal();
-      if (landChanges !== undefined) {
-        // do not reset fields  on signal default value
-
-        if (!this.form.controls.manuell) {
-          this.form.controls.ausbildungsstaette.patchValue('');
-        }
-      }
-    });
-
-    // When Land  null, disable staette
-    const landChangesSignal2 = toSignal(
-      this.form.controls.ausbildungsland.valueChanges
-    );
+    const land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
     effect(
       () => {
-        const landChanges = landChangesSignal2();
-        console.log(landChanges, typeof landChanges);
-        if (landChanges === null) {
-          this.form.controls.ausbildungsstaette.disable();
-        } else {
-          this.form.controls.ausbildungsstaette.enable();
+        if (land$() !== undefined && land$() === null) {
+          // do not reset fields  on signal default value
+          if (!this.form.value.manuell) {
+            this.form.controls.ausbildungsstaette.patchValue(null);
+          }
         }
       },
       { allowSignalWrites: true }
     );
 
+    // When Land  null, disable staette
+    effect(
+      () =>
+        this.setDisabledState(
+          this.form.controls.ausbildungsstaette,
+          land$() === null
+        ),
+      { allowSignalWrites: true }
+    );
+
     // When Ausbildungsstaette is changed (and not in manuell Mode), clear Ausbildungsgang if it is not available
-    const staetteChangesSignal = toSignal(
-      this.form.controls.ausbildungsstaette.valueChanges.pipe(skip(1))
+    const staette$ = toSignal(
+      this.form.controls.ausbildungsstaette.valueChanges
     );
     effect(() => {
-      const staetteChanges = staetteChangesSignal();
-      console.log('staette changes ', staetteChanges);
-      if (staetteChanges !== undefined) {
+      if (staette$() !== undefined && staette$() === null) {
         if (!this.form.value.manuell) {
-          const ausbildungsgang = this.form.controls.ausbildungsgang.value;
-          console.log('resetting Ausbildungsgang ', ausbildungsgang);
           // resetten, wenn Wert nicht in Liste
-          if (
-            !this.getAvailableAusbildungsgangs().find(
-              (each) => each.name === ausbildungsgang
-            )
-          ) {
-            this.form.controls.ausbildungsgang.patchValue('');
+          const ausbildungsgang = this.form.controls.ausbildungsgang.value;
+          const isAusbildungsgangAvailableInOptions =
+            this.ausbildungsgangOptions$().find(
+              (ag) => ag.name === ausbildungsgang
+            );
+          if (!isAusbildungsgangAvailableInOptions) {
+            this.form.controls.ausbildungsgang.patchValue(null);
           }
         }
       }
     });
 
-    // When Staette  null, disable gang
-    const staetteChangesSignal2 = toSignal(
-      this.form.controls.ausbildungsstaette.valueChanges
-    );
+    // When Staette null, disable gang
     effect(
-      () => {
-        const staetteChanges = staetteChangesSignal2();
-        if (staetteChanges === null) {
-          this.form.controls.ausbildungsgang.disable();
-        } else {
-          this.form.controls.ausbildungsgang.enable();
-        }
-      },
+      () =>
+        this.setDisabledState(
+          this.form.controls.ausbildungsgang,
+          staette$() === null
+        ),
       { allowSignalWrites: true }
-    );
-  }
-
-  getAvailablAusbildungsstaettes() {
-    return this.getAvailableAusbildungsstaettesFor(
-      this.form.get('ausbildungsland')?.value,
-      this.ausbildungsgangs().ausbildungsgangLands
-    );
-  }
-
-  getAvailableAusbildungsstaettesFor(
-    land: string | undefined | null,
-    ausbildungsgangLands: AusbildungsgangLand[]
-  ) {
-    return (
-      ausbildungsgangLands.find((each) => each.name === land)?.staettes || []
-    );
-  }
-
-  getAvailableAusbildungsgangsFor(
-    land: string | undefined | null,
-    ausbildungsStaettes: AusbildungsgangStaette[]
-  ) {
-    return (
-      ausbildungsStaettes.find((each) => each.name === land)
-        ?.ausbildungsgangs || []
-    );
-  }
-
-  getAvailableAusbildungsgangs() {
-    return this.getAvailableAusbildungsgangsFor(
-      this.form.get('ausbildungsstaette')?.value,
-      this.getAvailableAusbildungsstaettesFor(
-        this.form.get('ausbildungsland')?.value,
-        this.ausbildungsgangs().ausbildungsgangLands
-      )
     );
   }
 
@@ -238,9 +179,13 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.store.dispatch(GesuchAppEventGesuchFormEducation.init());
   }
 
+  trackByIndex(index: number) {
+    return index;
+  }
+
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    console.log(this.form.valid, this.form.errors, this.form.controls);
+    console.log('DEBUG', this.form.valid, this.form.errors, this.form.controls);
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.nextStepTriggered({
@@ -266,7 +211,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view().gesuch;
+    const gesuch = this.view$().gesuch;
     return {
       ...gesuch,
       ausbildung: {
@@ -275,38 +220,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     } as Partial<SharedModelGesuch>;
   }
 
-  trackByIndex(index: number) {
-    return index;
-  }
-
-  focusAusbildungsgang$ = new Subject<string>();
-  clickAusbildungsgang$ = new Subject<string>();
-
-  searchAusbildungsgang(
-    list: Ausbildungsgang[],
-    instance: NgbTypeahead
-  ): OperatorFunction<string, readonly string[]> {
-    return (text$: Observable<string>) => {
-      const debouncedText$ = text$.pipe(
-        debounceTime(200),
-        distinctUntilChanged()
-      );
-      const clicksWithClosedPopup$ = this.clickAusbildungsgang$.pipe(
-        filter(() => !instance.isPopupOpen())
-      );
-      const inputFocus$ = this.focusAusbildungsgang$;
-      return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-        map((term) =>
-          (term === ''
-            ? list
-            : list.filter(
-                (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
-              )
-          )
-            .map((staette) => staette.name)
-            .slice(0, 10)
-        )
-      );
-    };
+  private setDisabledState(control: FormControl, isDisabled: boolean) {
+    if (isDisabled) {
+      control.disable();
+    } else {
+      control.enable();
+    }
   }
 }
