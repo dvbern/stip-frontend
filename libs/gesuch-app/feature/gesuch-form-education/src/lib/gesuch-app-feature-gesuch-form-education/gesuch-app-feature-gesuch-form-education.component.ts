@@ -237,8 +237,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
         map((term) =>
           (term === ''
-            ? list
-            : list.filter(
+              ? list
+              : list.filter(
                 (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
               )
           )
