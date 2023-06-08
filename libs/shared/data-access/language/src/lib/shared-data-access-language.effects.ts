@@ -53,25 +53,6 @@ export const syncLanguageToNgxTranslate = createEffect(
       ),
       tap(({ language }) => {
         ngxTranslateService.use(language);
-      }),
-      concatMap(({ language }) =>
-        ngxTranslateService.getTranslation(`shared.${language}`).pipe(
-          map((sharedTranslationsForLanguage) => ({
-            language,
-            sharedTranslationsForLanguage,
-          })),
-          catchError(() => {
-            console.error(`Shared translations for "${language}" not found`);
-            return EMPTY;
-          })
-        )
-      ),
-      tap(({ language, sharedTranslationsForLanguage }) => {
-        ngxTranslateService.setTranslation(
-          language,
-          sharedTranslationsForLanguage,
-          true
-        );
       })
     );
   },
