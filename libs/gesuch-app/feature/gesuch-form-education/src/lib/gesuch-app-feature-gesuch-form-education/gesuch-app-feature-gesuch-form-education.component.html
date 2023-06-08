@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <pre>{{form.getRawValue() | json}}</pre>
+    <pre>{{ form.getRawValue() | json }}</pre>
 
     <!-- form -->
     <form
@@ -48,8 +48,9 @@
             class="form-select"
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsland"
+            (change)="handleLandChangedByUser()"
           >
-            <option [ngValue]="null" selected>
+            <option [ngValue]="''" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
@@ -82,8 +83,9 @@
             class="form-select"
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsstaette"
+            (change)="handleStaetteChangedByUser()"
           >
-            <option [ngValue]="null" selected>
+            <option [ngValue]="''" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
@@ -141,7 +143,7 @@
             dvSharedUiFormLabelTarget
             formControlName="ausbildungsgang"
           >
-            <option [ngValue]="null" selected>
+            <option [ngValue]="''" selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option

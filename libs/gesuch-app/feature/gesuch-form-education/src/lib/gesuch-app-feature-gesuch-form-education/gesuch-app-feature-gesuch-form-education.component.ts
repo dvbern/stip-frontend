@@ -1,11 +1,26 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, effect, inject, OnInit} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
-import {GesuchAppEventGesuchFormEducation} from '@dv/gesuch-app/event/gesuch-form-education';
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
-import {GesuchFormSteps, NavigationType} from '@dv/gesuch-app/model/gesuch-form';
-import {SharedModelGesuch} from '@dv/shared/model/gesuch';
+import {
+  GesuchFormSteps,
+  NavigationType,
+} from '@dv/gesuch-app/model/gesuch-form';
+import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -13,13 +28,13 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import {SharedUiProgressBarComponent} from '@dv/shared/ui/progress-bar';
-import {NgbInputDatepicker, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
-import {Store} from '@ngrx/store';
-import {TranslateModule} from '@ngx-translate/core';
-import {skip} from 'rxjs';
+import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
-import {selectGesuchAppFeatureGesuchFormEducationView} from './gesuch-app-feature-gesuch-form-education.selector';
+import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -47,8 +62,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
-    ausbildungsstaette: [{value: '', disabled: true}, [Validators.required]],
-    ausbildungsgang: [{value: '', disabled: true}, [Validators.required]],
+    ausbildungsstaette: ['', [Validators.required]],
+    ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
     manuell: [false, []],
     start: ['', [Validators.required]],
@@ -57,7 +72,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   });
 
   view$ = this.store.selectSignal(
-    selectGesuchAppFeatureGesuchFormEducationView,
+    selectGesuchAppFeatureGesuchFormEducationView
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
   ausbildungsstaetteOptions$ = computed(() => {
@@ -68,107 +83,54 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     );
   });
   ausbildungsstaett$ = toSignal(
-    this.form.controls.ausbildungsstaette.valueChanges,
+    this.form.controls.ausbildungsstaette.valueChanges
   );
   ausbildungsgangOptions$ = computed(() => {
     return (
       this.ausbildungsstaetteOptions$().find(
-        (item) => item.name === this.ausbildungsstaett$(),
+        (item) => item.name === this.ausbildungsstaett$()
       )?.ausbildungsgangs || []
     );
   });
 
   constructor() {
-
-    this.form.valueChanges.subscribe(value => console.log('form value changed: ', value))
-
     // fill form
     effect(
       () => {
-        const {ausbildung} = this.view$();
+        const { ausbildung } = this.view$();
         if (ausbildung) {
-          console.log('patching the form with ausbildung ', ausbildung)
-          this.form.patchValue({...ausbildung});
+          this.form.patchValue({ ...ausbildung });
         }
       },
-      {allowSignalWrites: true},
+      { allowSignalWrites: true }
     );
 
-    // When manuell is changed, clear Ausbildungsstaette and Ausbildungsgang
-    const manuell$ = toSignal(this.form.controls.manuell.valueChanges
-      .pipe(skip(1)), // we dot not want to reset the values on the initil data load!!
+    const land$ = toSignal(
+      this.form.controls.ausbildungsland.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsland)
+      )
     );
-    effect(
-      () => {
-        const manuell = manuell$();
-        if (manuell !== undefined) {
-          console.log('resettings staette and gang')
-          // do not reset fields  on signal default value
-          this.form.controls.ausbildungsstaette.patchValue(null);
-          this.form.controls.ausbildungsgang.patchValue(null);
-        }
-      },
-      {allowSignalWrites: true},
-    );
-
-    // When Land is changed (and not in manuell Mode), clear Ausbildungsstaette
-    const land$ = toSignal(this.form.controls.ausbildungsland.valueChanges
-      .pipe(skip(1)), // we dot not want to reset the values on the initil data load!!
-    );
-    effect(
-      () => {
-        if (land$() !== undefined) { // do not reset fields  on signal default value
-
-          if (!this.form.value.manuell) {
-            console.log('resettings staette')
-            this.form.controls.ausbildungsstaette.patchValue(null);
-          }
-        }
-      },
-      {allowSignalWrites: true},
-    );
-
     // When Land  null, disable staette
     effect(
       () => {
-        console.log('disable enable staette for land ', land$())
-        if (land$() !== undefined) { // do not enable/disable fields  on signal default value
-          this.setDisabledState(
-            this.form.controls.ausbildungsstaette,
-            land$() === null,
-          )
-        }
+        console.log('DISABLE statete', land$(), typeof land$());
+        // do not enable/disable fields  on signal default value
+        this.setDisabledState(this.form.controls.ausbildungsstaette, !land$());
       },
-      {allowSignalWrites: true},
+      { allowSignalWrites: true }
     );
-
-    // When Ausbildungsstaette is changed (and not in manuell Mode), clear Ausbildungsgang
-    const staette$ = toSignal(
-      this.form.controls.ausbildungsstaette.valueChanges
-        .pipe(skip(1)), // we dot not want to reset the values on the initil data load!!
-    );
-    effect(() => {
-      console.log('on staette changed: ', staette$(), typeof staette$())
-      if (staette$() !== undefined) {
-        if (!this.form.value.manuell) {
-          console.log('resettings gang')
-          this.form.controls.ausbildungsgang.patchValue(null);
-        }
-      }
-    });
 
     // When Staette null, disable gang
+    const staette$ = toSignal(
+      this.form.controls.ausbildungsstaette.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsstaette)
+      )
+    );
     effect(
       () => {
-        if (staette$() !== undefined) { // do not enable/disable fields  on signal default value
-
-          this.setDisabledState(
-            this.form.controls.ausbildungsgang,
-            staette$() === null,
-          )
-        }
+        this.setDisabledState(this.form.controls.ausbildungsgang, !staette$());
       },
-      {allowSignalWrites: true},
+      { allowSignalWrites: true }
     );
   }
 
@@ -180,6 +142,19 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     return index;
   }
 
+  // this form is special in that the resetting effect
+  // can't be done declarative because it's only the user interaction
+  // which should trigger it and not the backed patching of value
+  // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
+  handleLandChangedByUser() {
+    this.form.controls.ausbildungsstaette.patchValue('');
+    this.form.controls.ausbildungsgang.patchValue('');
+  }
+
+  handleStaetteChangedByUser() {
+    this.form.controls.ausbildungsgang.patchValue('');
+  }
+
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -188,7 +163,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuch: this.buildUpdatedGesuchFromForm(),
           navigationType: NavigationType.FORWARDS,
-        }),
+        })
       );
     }
   }
@@ -201,7 +176,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuch: this.buildUpdatedGesuchFromForm(),
           navigationType: NavigationType.BACKWARDS,
-        }),
+        })
       );
     }
   }
@@ -212,16 +187,16 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     return {
       ...this.view$().gesuch,
       ausbildung: {
-        ausbildungSB: {...(this.form.getRawValue() as any)},
+        ausbildungSB: { ...(this.form.getRawValue() as any) },
       },
     } as Partial<SharedModelGesuch>;
   }
 
   private setDisabledState(control: FormControl, isDisabled: boolean) {
     if (isDisabled) {
-      control.disable({emitEvent: false});
+      control.disable({ emitEvent: false });
     } else {
-      control.enable({emitEvent: false});
+      control.enable({ emitEvent: false });
     }
   }
 }

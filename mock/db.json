@@ -132,13 +132,13 @@
       "gesuchNummer": 0,
       "ausbildung": {
         "ausbildungSB": {
-          "ausbildungsland": "ausland",
-          "ausbildungsstaette": "Desingskolen Kolding",
+          "ausbildungsland": "CH",
+          "ausbildungsstaette": "Universität Bern",
           "ausbildungsgang": "Bachelor",
-          "fachrichtung": "dfgfdg",
+          "fachrichtung": "sxsadsd",
           "manuell": false,
-          "start": "2023-06-23",
-          "ende": "2023-06-29",
+          "start": "2023-06-07",
+          "ende": "2023-06-16",
           "pensum": 0
         }
       }
