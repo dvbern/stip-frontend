@@ -147,12 +147,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungsstaette.patchValue('');
-    this.form.controls.ausbildungsgang.patchValue('');
+    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungsgang.reset('');
   }
 
   handleStaetteChangedByUser() {
-    this.form.controls.ausbildungsgang.patchValue('');
+    this.form.controls.ausbildungsgang.reset('');
   }
 
   handleSaveAndContinue() {
