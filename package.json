@@ -14,6 +14,7 @@
     "readme:toc": "markdown-toc -i README.md",
     "reset": "nx reset",
     "start": "run-p serve:gesuch-app serve:gesuch-app:mock",
+    "start:backend": "run-p serve:gesuch-app --proxy-config proxy.conf.json",
     "serve:gesuch-app": "nx serve gesuch-app --open",
     "serve:gesuch-app:mock": "json-server --watch mock/db.json --delay 300 --port 4300 --routes mock/db-routes.json",
     "lint:gesuch-app": "nx lint gesuch-app",
