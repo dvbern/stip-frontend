@@ -6,6 +6,7 @@ import {
   effect,
   inject,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -29,12 +30,22 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  merge,
+  Observable,
+  startWith,
+  Subject,
+} from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
-import { startWith } from 'rxjs';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -59,6 +70,7 @@ import { startWith } from 'rxjs';
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
@@ -115,7 +127,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         console.log('DISABLE statete', land$(), typeof land$());
         // do not enable/disable fields  on signal default value
-        this.setDisabledState(this.form.controls.ausbildungsstaette, !land$());
+        this.formUtils.setDisabledState(
+          this.form.controls.ausbildungsstaette,
+          !land$()
+        );
       },
       { allowSignalWrites: true }
     );
@@ -128,7 +143,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     );
     effect(
       () => {
-        this.setDisabledState(this.form.controls.ausbildungsgang, !staette$());
+        this.formUtils.setDisabledState(
+          this.form.controls.ausbildungsgang,
+          !staette$()
+        );
       },
       { allowSignalWrites: true }
     );
@@ -197,11 +215,33 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     } as Partial<SharedModelGesuch>;
   }
 
-  private setDisabledState(control: FormControl, isDisabled: boolean) {
-    if (isDisabled) {
-      control.disable({ emitEvent: false });
-    } else {
-      control.enable({ emitEvent: false });
-    }
-  }
+  focusAusbildungsstaette$ = new Subject<string>();
+  clickAusbildungsstaette$ = new Subject<string>();
+
+  @ViewChild('ngbTypeaheadAusbildungsstaette', { static: false })
+  ausbildungsstaetteTypeaheadInstance?: NgbTypeahead;
+
+  searchAusbildungsstaette = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged()
+    );
+    const clicksWithClosedPopup$ = this.clickAusbildungsstaette$.pipe(
+      filter(() => !this.ausbildungsstaetteTypeaheadInstance!.isPopupOpen())
+    );
+    const inputFocus$ = this.focusAusbildungsstaette$;
+    const list = this.ausbildungsstaetteOptions$();
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map((term) =>
+        (term === ''
+          ? list
+          : list.filter(
+              (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
+            )
+        )
+          .map((staette) => staette.name)
+          .slice(0, 10)
+      )
+    );
+  };
 }

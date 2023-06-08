@@ -39,6 +39,7 @@
         {{ 'gesuch-app.form.education.place.title' | translate }}
       </h3>
 
+      <!-- LAND -->
       <div class="row g-4 mt-3">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
@@ -71,6 +72,7 @@
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
 
+        <!-- STAETTE -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
             {{
@@ -78,7 +80,28 @@
             }}
           </dv-shared-ui-form-label>
 
-          <select
+          <div class="input-group mb-3" *ngIf="!form.value['manuell']">
+            <input
+              id="typeahead-focus"
+              type="text"
+              class="form-control"
+              formControlName="ausbildungsstaette"
+              [ngbTypeahead]="searchAusbildungsstaette"
+              (focus)="focusAusbildungsstaette$.next($any($event).target.value)"
+              (click)="clickAusbildungsstaette$.next($any($event).target.value)"
+              [editable]="false"
+              #ngbTypeaheadAusbildungsstaette
+            />
+            <button
+              *ngIf="form.controls.ausbildungsstaette.value"
+              type="button"
+              class="btn btn-outline-secondary py-0 px-2"
+              (click)="form.controls.ausbildungsstaette.reset('')"
+            >
+              <span class="material-symbols-rounded align-middle">clear</span>
+            </button>
+          </div>
+          <!--<select
             *ngIf="!form.value['manuell']"
             class="form-select"
             dvSharedUiFormLabelTarget
@@ -97,7 +120,7 @@
             >
               {{ l.name }}
             </option>
-          </select>
+          </select>-->
 
           <input
             *ngIf="form.value['manuell']"
@@ -111,31 +134,13 @@
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
+
+      <!-- GANG -->
       <div class="row g-4 mt-2">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
             {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
           </dv-shared-ui-form-label>
-
-          <!-- TODO disable wenn keine Stätte ausgewählt -->
-
-          <!-- TODO Typeahead-->
-          <!-- <input
-            *ngIf="!form.value['manuell']"
-            id="typeahead-focus"
-            type="text"
-            class="form-control"
-            formControlName="ausbildungsgang"
-            [ngbTypeahead]="
-              searchAusbildungsgang(
-                getAvailableAusbildungsgangs(),
-                ngbTypeaheadAusbildungsgang
-              )
-            "
-            (focus)="focusAusbildungsgang$.next($any($event).target.value)"
-            (click)="clickAusbildungsgang$.next($any($event).target.value)"
-            #ngbTypeaheadAusbildungsgang="ngbTypeahead"
-          />-->
 
           <select
             *ngIf="!form.value['manuell']"
@@ -166,6 +171,7 @@
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
 
+        <!-- FACHRICHTUNG -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
             {{ 'gesuch-app.form.education.fachrichtung.label' | translate }}
@@ -182,6 +188,7 @@
         </dv-shared-ui-form-field>
       </div>
 
+      <!-- MANUELL -->
       <div class="row g-4">
         <dv-shared-ui-form-field class="col-12" [isCheckbox]="true">
           <dv-shared-ui-form-label
@@ -204,6 +211,7 @@
       </h3>
 
       <div class="row mt-3">
+        <!-- START -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.education.start.label' | translate
@@ -235,6 +243,8 @@
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
+
+        <!-- ENDE -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.education.ende.label' | translate
@@ -269,6 +279,7 @@
       </div>
 
       <div class="row mt-3">
+        <!-- PENSUM -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>
             {{ 'gesuch-app.form.education.pensum.label' | translate }}

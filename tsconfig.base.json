@@ -46,6 +46,7 @@
       "@dv/shared/ui/language-selector": ["libs/shared/ui/language-selector/src/index.ts"],
       "@dv/shared/ui/progress-bar": ["libs/shared/ui/progress-bar/src/index.ts"],
       "@dv/shared/util/ahv-validator": ["libs/shared/util/ahv-validator/src/index.ts"],
+      "@dv/shared/util/form": ["libs/shared/util/form/src/index.ts"],
       "@dv/tooling/nx-plugin": ["libs/tooling/nx-plugin/src/index.ts"]
     }
   },
