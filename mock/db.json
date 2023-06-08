@@ -132,13 +132,13 @@
       "gesuchNummer": 0,
       "ausbildung": {
         "ausbildungSB": {
-          "ausbildungsland": "CH",
-          "ausbildungsstaette": "Universität Basel",
+          "ausbildungsland": "ausland",
+          "ausbildungsstaette": "Desingskolen Kolding",
           "ausbildungsgang": "Bachelor",
-          "fachrichtung": "dfsdf",
+          "fachrichtung": "dfgfdg",
           "manuell": false,
-          "start": "2023-06-03",
-          "ende": "2023-06-10",
+          "start": "2023-06-23",
+          "ende": "2023-06-29",
           "pensum": 0
         }
       }
