@@ -30,7 +30,6 @@ export class GesuchFormFamiliensituationMetadataService {
       control: undefined,
       visible: true,
     },
-    elternteilVerstorben: { control: undefined, visible: false },
     elternteilVerstorbenUnbekannt: { control: undefined, visible: false },
     gerichtlicheAlimentenregelung: { control: undefined, visible: false },
     mutterUnbekanntVerstorben: { control: undefined, visible: false },
@@ -65,6 +64,7 @@ export class GesuchFormFamiliensituationMetadataService {
       this.setInvisible(
         'mutterWiederverheiratet',
         'vaterWiederverheiratet',
+        'werZahltAlimente',
         'gerichtlicheAlimentenregelung',
         'elternteilVerstorbenUnbekannt',
         'mutterUnbekanntVerstorben',
@@ -222,7 +222,7 @@ export class GesuchFormFamiliensituationMetadataService {
         console.warn('wrong config, form not registered');
         return;
       }
-      // control.disable({emitEvent: false});
+      control.disable({ emitEvent: false });
     }
   }
 

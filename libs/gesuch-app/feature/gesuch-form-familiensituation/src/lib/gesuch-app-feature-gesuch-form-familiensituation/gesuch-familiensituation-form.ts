@@ -10,7 +10,6 @@ export interface GesuchFamiliensituationForm {
   gerichtlicheAlimentenregelung: FormControl<boolean | null>;
   werZahltAlimente: FormControl<Elternschaftsteilung | null>;
   elternteilVerstorbenUnbekannt: FormControl<boolean | null>;
-  elternteilVerstorben: FormControl<boolean | null>;
   mutterUnbekanntVerstorben: FormControl<ElternAbwesenheitsGrund | null>;
   vaterUnbekanntVerstorben: FormControl<ElternAbwesenheitsGrund | null>;
   mutterUnbekanntReason: FormControl<ElternUnbekanntheitsGrund | null>;
