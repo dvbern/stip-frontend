@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -78,87 +79,85 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
         { validators: Validators.required }
       ),
       gerichtlicheAlimentenregelung: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       werZahltAlimente: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       elternteilVerstorbenUnbekannt: new FormControl(
-        { value: null, disabled: true },
-        { validators: Validators.required }
-      ),
-      elternteilVerstorben: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       mutterUnbekanntVerstorben: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       vaterUnbekanntVerstorben: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       mutterUnbekanntReason: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       vaterUnbekanntReason: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       vaterWiederverheiratet: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       mutterWiederverheiratet: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       sorgerecht: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       obhut: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       obhutMutter: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
       obhutVater: new FormControl(
-        { value: null, disabled: true },
+        { value: null, disabled: false },
         { validators: Validators.required }
       ),
     });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  formValue$ = toSignal(this.form.valueChanges);
 
   ngOnInit(): void {
-    this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
     this.metadataService.registerForm(this.form);
-    this.form.valueChanges.subscribe((newValue) =>
-      this.metadataService.update(newValue)
-    );
   }
 
   constructor() {
+    this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
+    effect(
+      () => {
+        const { gesuch } = this.view();
+        if (gesuch !== undefined) {
+          const initialFormFamSit =
+            gesuch?.familiensituationContainer?.familiensituationSB || {};
+          this.form.patchValue({ ...initialFormFamSit }, { emitEvent: true });
+        }
+      },
+      { allowSignalWrites: true }
+    );
     effect(() => {
-      const { gesuch } = this.view();
-      const familiensitutationForForm =
-        gesuch?.familiensituationContainer?.familiensituationSB || {};
-      this.form.patchValue(
-        { ...familiensitutationForForm },
-        { onlySelf: true, emitEvent: true }
-      );
+      const formValue = this.formValue$() as FamiliensituationDTO;
+      if (formValue !== undefined) {
+        this.metadataService.update(formValue);
+      }
     });
-    // effect(() => {
-    //   toSignal(this.form.valueChanges)();
-    //   this.metadataService.update(this.form);
-    // });
   }
 
   isVisible(formControlName: keyof GesuchFamiliensituationForm): boolean {
