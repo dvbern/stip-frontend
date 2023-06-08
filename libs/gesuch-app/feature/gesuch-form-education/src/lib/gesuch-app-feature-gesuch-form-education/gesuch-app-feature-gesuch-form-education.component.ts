@@ -155,6 +155,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.controls.ausbildungsgang.reset('');
   }
 
+  handleManuellChangedByUser() {
+    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungsgang.reset('');
+  }
+
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
