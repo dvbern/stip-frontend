@@ -9,19 +9,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
-import { SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { MASK_MM_YYYY, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -31,6 +26,8 @@ import {
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { SharedUtilFormService } from '@dv/shared/util/form';
+import { sharedUtilValidatorMonthYear } from '@dv/shared/util/validator-date';
+import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -62,6 +59,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     SharedUiFormLabelComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormLabelTargetDirective,
+    MaskitoModule,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -78,8 +76,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
     manuell: [false, []],
-    start: ['', [Validators.required]],
-    ende: ['', [Validators.required]],
+    start: ['', [Validators.required, sharedUtilValidatorMonthYear]],
+    ende: ['', [Validators.required, sharedUtilValidatorMonthYear]],
     pensum: [0, [Validators.required]],
   });
 
@@ -104,6 +102,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       )?.ausbildungsgangs || []
     );
   });
+
+  pensumOptions = ['FULLTIME', 'PARTTIME'];
 
   constructor() {
     // fill form
@@ -244,4 +244,5 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       )
     );
   };
+  protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
 }

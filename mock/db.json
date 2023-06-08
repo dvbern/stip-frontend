@@ -133,13 +133,13 @@
       "ausbildung": {
         "ausbildungSB": {
           "ausbildungsland": "CH",
-          "ausbildungsstaette": "Universität Bern",
+          "ausbildungsstaette": "Universität Basel",
           "ausbildungsgang": "Bachelor",
           "fachrichtung": "sxsadsd",
           "manuell": false,
-          "start": "2023-06-07",
-          "ende": "2023-06-16",
-          "pensum": 0
+          "start": "01.2011",
+          "ende": "11.2025",
+          "pensum": "FULLTIME"
         }
       }
     },

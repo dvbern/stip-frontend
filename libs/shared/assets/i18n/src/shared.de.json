@@ -34,5 +34,6 @@
   "shared.form-field.toggle-info-messages": "Info-Meldungen anzeigen",
   "shared.form.error.required": "Dieses Feld ist erforderlich",
   "shared.form.error.ahv": "Bitte geben Sie eine gültige AHV-Nummer ein",
+  "shared.form.error.monthYear": "Bitte geben Sie Monat und Jahr im Format MM.JJJJ ein (z.B. 08.2025)",
   "shared.weiterangaben": "Weitere Angaben"
 }

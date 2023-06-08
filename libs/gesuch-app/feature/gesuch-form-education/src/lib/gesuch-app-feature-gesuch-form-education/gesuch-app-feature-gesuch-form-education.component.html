@@ -217,30 +217,19 @@
             'gesuch-app.form.education.start.label' | translate
           }}</dv-shared-ui-form-label>
 
-          <div class="input-group">
-            <input
-              class="form-control"
-              placeholder="dd.mm.yyyy"
-              dvSharedUiFormLabelTarget
-              formControlName="start"
-              ngbDatepicker
-              #dpStart="ngbDatepicker"
-            />
-            <button
-              (click)="dpStart.toggle()"
-              class="btn btn-outline-secondary position-relative"
-              type="button"
-            >
-              <span
-                class="material-symbols-rounded position-absolute translate-middle"
-              >
-                calendar_month
-              </span>
-            </button>
-          </div>
+          <input
+            class="form-control"
+            dvSharedUiFormLabelTarget
+            formControlName="start"
+            placeholder="MM.YYYY"
+            [maskito]="MASK_MM_YYYY"
+          />
 
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYear'">
+            {{ 'shared.form.error.monthYear' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
 
@@ -250,30 +239,19 @@
             'gesuch-app.form.education.ende.label' | translate
           }}</dv-shared-ui-form-label>
 
-          <div class="input-group">
-            <input
-              class="form-control"
-              placeholder="dd.mm.yyyy"
-              dvSharedUiFormLabelTarget
-              formControlName="ende"
-              ngbDatepicker
-              #dpEnde="ngbDatepicker"
-            />
-            <button
-              (click)="dpEnde.toggle()"
-              class="btn btn-outline-secondary position-relative"
-              type="button"
-            >
-              <span
-                class="material-symbols-rounded position-absolute translate-middle"
-              >
-                calendar_month
-              </span>
-            </button>
-          </div>
+          <input
+            class="form-control"
+            dvSharedUiFormLabelTarget
+            formControlName="ende"
+            placeholder="MM.YYYY"
+            [maskito]="MASK_MM_YYYY"
+          />
 
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYear'">
+            {{ 'shared.form.error.monthYear' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
@@ -284,12 +262,26 @@
           <dv-shared-ui-form-label>
             {{ 'gesuch-app.form.education.pensum.label' | translate }}
           </dv-shared-ui-form-label>
-          <input
-            class="form-control"
-            type="text"
+
+          <select
+            class="form-select"
             dvSharedUiFormLabelTarget
             formControlName="pensum"
-          />
+          >
+            <option [ngValue]="''" selected>
+              {{ 'shared.form.select.empty' | translate }}
+            </option>
+            <option
+              [value]="l"
+              *ngFor="let l of pensumOptions; trackBy: trackByIndex"
+            >
+              {{
+                'gesuch-app.form.education.pensum.' + l.toLowerCase()
+                  | translate
+              }}
+            </option>
+          </select>
+
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
