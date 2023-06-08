@@ -8,7 +8,7 @@ resources:
 
 images:
 - name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
-  newTag: bf074234
+  newTag: fd6e4df1
 
 patches:
 - path: route-patch.yml
