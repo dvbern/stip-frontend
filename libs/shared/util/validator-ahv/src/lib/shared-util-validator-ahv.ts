@@ -26,7 +26,7 @@ export function sharedUtilIsValidAhv(ahv: string) {
   return checkDigit === calculatedCheckDigit;
 }
 
-export function sharedUtilAhvValidator(
+export function sharedUtilValidatorAhv(
   control: FormControl
 ): ValidationErrors | null {
   if (!control?.value) {

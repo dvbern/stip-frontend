@@ -1,9 +1,9 @@
 import { FormControl } from '@angular/forms';
 
 import {
-  sharedUtilAhvValidator,
+  sharedUtilValidatorAhv,
   sharedUtilIsValidAhv,
-} from './shared-util-ahv-validator';
+} from './shared-util-validator-ahv';
 
 describe('sharedUtilIsValidAhv', () => {
   it('valid ahv', () => {
@@ -17,10 +17,10 @@ describe('sharedUtilIsValidAhv', () => {
 describe('sharedUtilAhvValidator', () => {
   it('valid ahv', () => {
     const mock = new FormControl('756.9217.0769.85');
-    expect(sharedUtilAhvValidator(mock)).toBe(null);
+    expect(sharedUtilValidatorAhv(mock)).toBe(null);
   });
   it('invalid ahv', () => {
     const mock = new FormControl('756.9217.0769.40');
-    expect(sharedUtilAhvValidator(mock)).toEqual({ ahv: true });
+    expect(sharedUtilValidatorAhv(mock)).toEqual({ ahv: true });
   });
 });

@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-util-ahv-validator',
+  displayName: 'shared-util-validator-ahv',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/shared/util/ahv-validator',
+  coverageDirectory: '../../../../coverage/libs/shared/util/validator-ahv',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

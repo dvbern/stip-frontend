@@ -36,7 +36,7 @@ import {
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
@@ -83,7 +83,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
       '',
-      [Validators.required, sharedUtilAhvValidator],
+      [Validators.required, sharedUtilValidatorAhv],
     ],
     anrede: ['', [Validators.required]],
     name: ['', [Validators.required]],
