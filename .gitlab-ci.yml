@@ -60,7 +60,7 @@ deploy:
     - git fetch origin $CI_COMMIT_BRANCH
     - cd deploy/$STAGE
     - kustomize edit set image $IMAGE
-    - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE"'
+    - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE [ci skip]"'
     - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
