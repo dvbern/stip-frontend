@@ -17,6 +17,8 @@ export interface GesuchFamiliensituationForm {
   vaterWiederverheiratet: FormControl<boolean | null>;
   mutterWiederverheiratet: FormControl<boolean | null>;
   sorgerecht: FormControl<Elternschaftsteilung | null>;
+  sorgerechtVater: FormControl<number | null>;
+  sorgerechtMutter: FormControl<number | null>;
   obhut: FormControl<Elternschaftsteilung | null>;
   obhutMutter: FormControl<number | null>;
   obhutVater: FormControl<number | null>;
