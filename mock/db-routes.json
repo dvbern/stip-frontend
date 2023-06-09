@@ -2,5 +2,6 @@
   "/api/v1/*": "/$1",
   "/config/deployment": "/config",
   "/gesuchsperiode/aktive": "/gesuchsperiode",
-  "/eltern/${gesuchsid}": "/eltern"
+  "/eltern/gesuch/*/HERR": "/eltern-vater",
+  "/eltern/gesuch/*/FRAU": "/eltern-mutter"
 }

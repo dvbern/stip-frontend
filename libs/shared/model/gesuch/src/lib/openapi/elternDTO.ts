@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Anrede } from './anrede';
+import { AdresseDTO } from './adresseDTO';
 
 export interface ElternDTO {
   id: string;
@@ -19,7 +20,9 @@ export interface ElternDTO {
   geschlecht: Anrede;
   telefonnummer: string;
   geburtsdatum: string;
+  identischerZivilrechtlicherWohnsitz: boolean;
   sozialhilfebeitraegeAusbezahlt: boolean;
   ausweisbFluechtling: boolean;
   ergaenzungsleistungAusbezahlt: boolean;
+  adresse: AdresseDTO;
 }

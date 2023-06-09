@@ -4,6 +4,7 @@ import { loadElterns } from './gesuch-app-data-access-eltern.effects';
 
 import { GesuchAppDataAccessElternService } from './gesuch-app-data-access-eltern.service';
 import { GesuchAppDataAccessElternApiEvents } from './gesuch-app-data-access-eltern.events';
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 describe('GesuchAppDataAccessEltern Effects', () => {
   let scheduler: TestScheduler;
@@ -17,16 +18,16 @@ describe('GesuchAppDataAccessEltern Effects', () => {
   it('loads Eltern effect - success', () => {
     scheduler.run(({ expectObservable, hot, cold }) => {
       const gesuchAppDataAccessElternServiceMock = {
-        getAll: () => cold('150ms a', { a: [] }),
+        getAllForGesuch: () => cold('150ms a', { a: [] }),
       } as unknown as GesuchAppDataAccessElternService;
 
       const eventsMock$ = hot('10ms a', {
-        // TODO replace with a trigger event (eg some page init)
-        a: GesuchAppDataAccessElternApiEvents.dummy(),
+        a: GesuchAppEventGesuchFormEltern.init(),
       });
 
       const effectStream$ = loadElterns(
         eventsMock$,
+        // TODO Ask Tomas how to inject store to test it
         gesuchAppDataAccessElternServiceMock
       );
 

@@ -252,56 +252,52 @@
       ]
     }
   ],
-  "eltern": [
-    {
-      "id": "rx_ZMdc",
-      "elternContainer": {
-        "gesuchId": "rx_ZMda",
-        "elternSB": {
-          "sozialversicherungsnummer": "756.5936.9071.75",
-          "geschlecht": "FRAU",
-          "name": "Herich",
-          "vorname": "Kathy",
-          "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse",
-            "nummer": "511",
-            "plz": "8048",
-            "ort": "Zurich",
-            "land": "CH"
-          },
-          "telefonnummer": "+41787342091",
-          "geburtsdatum": "1987-07-17",
-          "sozialhilfebeitraegeAusbezahlt": false,
-          "ausweisbFluechtling": false,
-          "ergaenzungsleistungAusbezahlt": true
-        }
-      }
-    },
-    {
-      "id": "rx_ZMdd",
-      "elternContainer": {
-        "gesuchId": "rx_ZMda",
-        "elternSB": {
-          "sozialversicherungsnummer": "756.5936.9071.74",
-          "geschlecht": "MANN",
-          "name": "Herich",
-          "vorname": "Tom",
-          "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse",
-            "nummer": "511",
-            "plz": "8048",
-            "ort": "Zurich",
-            "land": "CH"
-          },
-          "telefonnummer": "+41787342091",
-          "geburtsdatum": "1987-08-17",
-          "sozialhilfebeitraegeAusbezahlt": false,
-          "ausweisbFluechtling": false,
-          "ergaenzungsleistungAusbezahlt": true
-        }
-      }
+  "eltern-mutter": {
+    "gesuchId": "rx_ZMda",
+    "id": "rx_ZMdc",
+    "elternSB": {
+      "sozialversicherungsnummer": "756.5936.9071.75",
+      "geschlecht": "FRAU",
+      "name": "Herich",
+      "vorname": "Kathy",
+      "addresse": {
+        "coAdresse": "",
+        "strasse": "Hohlstrasse",
+        "nummer": "511",
+        "plz": "8048",
+        "ort": "Zurich",
+        "land": "CH"
+      },
+      "identischerZivilrechtlicherWohnsitz": false,
+      "telefonnummer": "+41787342091",
+      "geburtsdatum": "1987-07-17",
+      "sozialhilfebeitraegeAusbezahlt": false,
+      "ausweisbFluechtling": false,
+      "ergaenzungsleistungAusbezahlt": true
     }
-  ]
+  },
+  "eltern-vater": {
+    "gesuchId": "rx_ZMda",
+    "id": "rx_ZMdd",
+    "elternSB": {
+      "sozialversicherungsnummer": "756.5936.9071.74",
+      "geschlecht": "MANN",
+      "name": "Herich",
+      "vorname": "Tom",
+      "addresse": {
+        "coAdresse": "",
+        "strasse": "Hohlstrasse",
+        "nummer": "511",
+        "plz": "8048",
+        "ort": "Zurich",
+        "land": "CH"
+      },
+      "identischerZivilrechtlicherWohnsitz": false,
+      "telefonnummer": "+41787342091",
+      "geburtsdatum": "1987-08-17",
+      "sozialhilfebeitraegeAusbezahlt": false,
+      "ausweisbFluechtling": false,
+      "ergaenzungsleistungAusbezahlt": true
+    }
+  }
 }
