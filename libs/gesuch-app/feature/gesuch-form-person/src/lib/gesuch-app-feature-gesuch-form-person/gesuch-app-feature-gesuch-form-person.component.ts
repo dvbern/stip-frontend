@@ -25,6 +25,7 @@ import {
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   SharedModelGesuch,
+  Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
 import {
@@ -70,6 +71,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly Anrede = Anrede;
   readonly Land = Land;
   readonly Zivilstand = Zivilstand;
+  readonly Wohnsitz = Wohnsitz;
 
   geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
   geburtsdatumMaxDate: NgbDateStruct = {
@@ -104,6 +106,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     heimatort: ['', [Validators.required]],
     vormundschaft: [false, []],
     zivilstand: ['', [Validators.required]],
+    wohnsitz: ['', [Validators.required]],
     sozialhilfebeitraege: [false, []],
     quellenbesteuerung: [false, []],
     kinder: [false, []],

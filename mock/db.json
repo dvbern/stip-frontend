@@ -102,14 +102,14 @@
           "name": "Trajan",
           "vorname": "Tomasdfgdfgfdg",
           "anrede": "HERR",
-          "identischerZivilrechtlicherWohnsitz": true,
+          "identischerZivilrechtlicherWohnsitz": false,
           "izvOrt": "string",
           "izvPLZ": "string",
-          "email": "string",
-          "telefonnummer": "string",
-          "geburtsdatum": "2023-05-24",
+          "email": "hallo@dvbern.ch",
+          "telefonnummer": "0780000000",
+          "geburtsdatum": "2023-05-06",
           "nationalitaet": "CH",
-          "heimatort": "string",
+          "heimatort": "Glarus",
           "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
           "zivilstand": "LEDIG",
           "wohnsitz": "ELTERN",
@@ -118,9 +118,9 @@
           "kinder": true,
           "digitaleKommunikation": true,
           "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse 511",
-            "nummer": "",
+            "coAdresse": "c/o Hans Müller",
+            "strasse": "Hohlstrasse",
+            "nummer": "511",
             "plz": "8048",
             "ort": "sdfsdf",
             "land": "CH"
@@ -133,12 +133,12 @@
       "ausbildung": {
         "ausbildungSB": {
           "ausbildungsland": "CH",
-          "ausbildungsstaette": "Universität Basel",
-          "ausbildungsgang": "Bachelor",
-          "fachrichtung": "sxsadsd",
+          "ausbildungsstaette": "Haarakademie",
+          "ausbildungsgang": "Berufsvorbereitendes Schuljahr",
+          "fachrichtung": "Die Welt retten",
           "manuell": false,
-          "start": "03.2028",
-          "ende": "11.2028",
+          "start": "10.2023",
+          "ende": "01.2024",
           "pensum": "FULLTIME"
         }
       }
