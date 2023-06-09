@@ -228,8 +228,24 @@
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYear'">
-            {{ 'shared.form.error.monthYear' | translate }}
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'monthYearMonth'"
+          >
+            {{ 'shared.form.error.monthYearMonth' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'monthYearYear'"
+          >
+            <ng-container *ngIf="form.controls.start.errors as errors">
+              {{
+                'shared.form.error.monthYearYear'
+                  | translate
+                    : {
+                        min: errors['monthYearYear']?.min,
+                        max: errors['monthYearYear']?.max
+                      }
+              }}
+            </ng-container>
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
 
@@ -250,8 +266,24 @@
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYear'">
-            {{ 'shared.form.error.monthYear' | translate }}
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'monthYearMonth'"
+          >
+            {{ 'shared.form.error.monthYearMonth' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'monthYearYear'"
+          >
+            <ng-container *ngIf="form.controls.ende.errors as errors">
+              {{
+                'shared.form.error.monthYearYear'
+                  | translate
+                    : {
+                        min: errors['monthYearYear']?.min,
+                        max: errors['monthYearYear']?.max
+                      }
+              }}
+            </ng-container>
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>

@@ -10,8 +10,24 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
+import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { getYear } from 'date-fns';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  merge,
+  Observable,
+  startWith,
+  Subject,
+} from 'rxjs';
+
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import {
   GesuchFormSteps,
   NavigationType,
@@ -26,22 +42,10 @@ import {
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { SharedUtilFormService } from '@dv/shared/util/form';
-import { sharedUtilValidatorMonthYear } from '@dv/shared/util/validator-date';
-import { MaskitoModule } from '@maskito/angular';
-import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  merge,
-  Observable,
-  startWith,
-  Subject,
-} from 'rxjs';
-
+  sharedUtilValidatorMonthYear,
+  sharedUtilValidatorMonthYearMonth,
+} from '@dv/shared/util/validator-date';
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
 @Component({
@@ -69,6 +73,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  currentYear = getYear(Date.now());
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
@@ -76,8 +81,25 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
     manuell: [false, []],
-    start: ['', [Validators.required, sharedUtilValidatorMonthYear]],
-    ende: ['', [Validators.required, sharedUtilValidatorMonthYear]],
+    start: [
+      '',
+      [
+        Validators.required,
+        sharedUtilValidatorMonthYearMonth,
+        sharedUtilValidatorMonthYear(
+          this.currentYear - 5,
+          this.currentYear + 5
+        ),
+      ],
+    ],
+    ende: [
+      '',
+      [
+        Validators.required,
+        sharedUtilValidatorMonthYearMonth,
+        sharedUtilValidatorMonthYear(this.currentYear, this.currentYear + 20),
+      ],
+    ],
     pensum: [0, [Validators.required]],
   });
 
