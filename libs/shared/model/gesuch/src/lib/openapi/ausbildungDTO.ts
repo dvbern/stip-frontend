@@ -19,5 +19,5 @@ export interface AusbildungDTO {
   manuell: boolean;
   start: string;
   ende: string;
-  pensum: number;
+  pensum: 'FULLTIME' | 'PARTTIME';
 }

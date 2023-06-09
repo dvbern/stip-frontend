@@ -25,7 +25,6 @@
   input,
   textarea,
   select {
-    border-width: 2px; // TODO lieber 1px, damit es nicht rutscht
     border-color: var(--dv-danger);
   }
 }

@@ -9,7 +9,14 @@ import {
   Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import {
@@ -31,7 +38,7 @@ import {
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
-  sharedUtilValidatorMonthYear,
+  sharedUtilValidatorMonthYearMin,
   sharedUtilValidatorMonthYearMonth,
 } from '@dv/shared/util/validator-date';
 
@@ -39,7 +46,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { getYear } from 'date-fns';
+import { getYear, isAfter } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -90,21 +97,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       [
         Validators.required,
         sharedUtilValidatorMonthYearMonth,
-        sharedUtilValidatorMonthYear(
-          this.currentYear - 5,
-          this.currentYear + 5
-        ),
+        sharedUtilValidatorMonthYearMin(this.currentYear),
       ],
     ],
-    ende: [
-      '',
-      [
-        Validators.required,
-        sharedUtilValidatorMonthYearMonth,
-        sharedUtilValidatorMonthYear(this.currentYear, this.currentYear + 20),
-      ],
-    ],
-    pensum: [0, [Validators.required]],
+    ende: ['', [Validators.required, sharedUtilValidatorMonthYearMonth], []],
+    pensum: ['', [Validators.required]],
   });
 
   view$ = this.store.selectSignal(
@@ -132,6 +129,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   pensumOptions = ['FULLTIME', 'PARTTIME'];
 
   constructor() {
+    // add multi-control validators
+    this.form.controls.ende.addValidators([
+      this.createValidatorEndAfterStart(this.form.controls.start),
+    ]);
+
     // fill form
     effect(
       () => {
@@ -278,4 +280,23 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
+
+  createValidatorEndAfterStart(startControl: FormControl<string | null>) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const startValue = startControl.value;
+      const endValue = control.value as string;
+      if (startValue && endValue) {
+        const [startMonth, startYear] = startValue
+          .split('.')
+          .map((value) => +value);
+        const [endMonth, endYear] = endValue.split('.').map((value) => +value);
+
+        const startDate = new Date(startYear, startMonth - 1);
+        const endDate = new Date(endYear, endMonth - 1);
+
+        return isAfter(endDate, startDate) ? null : { endDateAfterStart: true };
+      }
+      return null;
+    };
+  }
 }

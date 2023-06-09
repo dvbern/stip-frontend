@@ -6,13 +6,21 @@ export function sharedUtilIsValidMonthYearMonth(monthYear: string) {
   return validMonth;
 }
 
-export function sharedUtilIsValidMonthYearYear(
+export function sharedUtilIsValidMonthYearMin(
   monthYear: string,
-  minYear: number,
+  minYear: number
+) {
+  const [_, year] = monthYear.split('.').map((value) => +value);
+  const validYear = year >= minYear;
+  return validYear;
+}
+
+export function sharedUtilIsValidMonthYearMax(
+  monthYear: string,
   maxYear: number
 ) {
   const [_, year] = monthYear.split('.').map((value) => +value);
-  const validYear = year >= minYear && year <= maxYear;
+  const validYear = year <= maxYear;
   return validYear;
 }
 
@@ -30,15 +38,29 @@ export function sharedUtilValidatorMonthYearMonth(
   }
 }
 
-export function sharedUtilValidatorMonthYear(minYear: number, maxYear: number) {
+export function sharedUtilValidatorMonthYearMin(minYear: number) {
   return (control: FormControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
-      return sharedUtilIsValidMonthYearYear(control.value, minYear, maxYear)
+      return sharedUtilIsValidMonthYearMin(control.value, minYear)
         ? null
         : {
-            monthYearYear: { min: minYear, max: maxYear },
+            monthYearYearMin: { min: minYear },
+          };
+    }
+  };
+}
+
+export function sharedUtilValidatorMonthYearMax(maxYear: number) {
+  return (control: FormControl): ValidationErrors | null => {
+    if (!control?.value) {
+      return null;
+    } else {
+      return sharedUtilIsValidMonthYearMax(control.value, maxYear)
+        ? null
+        : {
+            monthYearYearMax: { max: maxYear },
           };
     }
   };

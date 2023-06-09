@@ -48,6 +48,8 @@
   "gesuch-app.form.education.pensum.parttime": "Teilzeit",
   "gesuch-app.form.education.ausbildungsland.CH": "Schweiz",
   "gesuch-app.form.education.ausbildungsland.ausland": "Ausland",
+  "gesuch-app.form.education.form.error.monthYearNotPast": "Das Datum darf nicht in der Vergangenheit liegen",
+  "gesuch-app.form.education.form.error.monthYearAfterStart": "Das Enddatum muss nach dem Startdatum sein",
   "gesuch-app.form.cv.title": "Lebenslauf",
   "gesuch-app.familiensituation.title": "Familiensituation",
   "gesuch-app.form.familiensituation.mutter": "Mutter",

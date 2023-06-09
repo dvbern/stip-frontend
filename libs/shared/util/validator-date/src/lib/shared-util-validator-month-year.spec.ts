@@ -1,8 +1,6 @@
 import { FormControl } from '@angular/forms';
 import {
   sharedUtilIsValidMonthYearMonth,
-  sharedUtilIsValidMonthYearYear,
-  sharedUtilValidatorMonthYear,
   sharedUtilValidatorMonthYearMonth,
 } from './shared-util-validator-month-year';
 
@@ -31,27 +29,6 @@ describe('monthYear: is valid month', () => {
     }
   );
 });
-describe('monthYear: is valid year', () => {
-  it.each([
-    // min/max year:
-    ['12.2022', 2023, 2024, false],
-    ['01.2023', 2023, 2024, true],
-    ['12.2024', 2023, 2024, true],
-    ['01.2025', 2023, 2024, false],
-  ])(
-    "Datemonth  '%s' (min='%s', max='%s') should be valid='%s'",
-    (
-      original: string,
-      minYear: number,
-      maxYear: number,
-      expectedValid: boolean
-    ) => {
-      expect(
-        sharedUtilIsValidMonthYearYear(original, minYear, maxYear)
-      ).toEqual(expectedValid);
-    }
-  );
-});
 
 describe('monthYear validator: month', () => {
   it.each([
@@ -77,30 +54,6 @@ describe('monthYear validator: month', () => {
       const mock = new FormControl(original);
       expect(sharedUtilValidatorMonthYearMonth(mock)).toEqual(
         validMonth ? null : { monthYearMonth: true }
-      );
-    }
-  );
-});
-
-describe('monthYear validator: year', () => {
-  it.each([
-    // min/max year:
-    ['12.2022', 2023, 2024, false],
-    ['01.2023', 2023, 2024, true],
-    ['12.2024', 2023, 2024, true],
-    ['01.2025', 2023, 2024, false],
-  ])(
-    "Datemonth  '%s' (min='%s', max='%s') should be  validYear='%s'",
-    (
-      original: string,
-      minYear: number,
-      maxYear: number,
-      validYear: boolean
-    ) => {
-      const mock = new FormControl(original);
-      const yearValidator = sharedUtilValidatorMonthYear(minYear, maxYear);
-      expect(yearValidator(mock)).toEqual(
-        validYear ? null : { monthYearYear: { min: minYear, max: maxYear } }
       );
     }
   );
