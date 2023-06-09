@@ -6,33 +6,21 @@ import {
   effect,
   inject,
   OnInit,
-  ViewChild,
+  Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { MaskitoModule } from '@maskito/angular';
-import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { getYear } from 'date-fns';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  merge,
-  Observable,
-  startWith,
-  Subject,
-} from 'rxjs';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
-import { MASK_MM_YYYY, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import {
+  AusbildungsgangStaette,
+  MASK_MM_YYYY,
+  SharedModelGesuch,
+} from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -46,6 +34,22 @@ import {
   sharedUtilValidatorMonthYear,
   sharedUtilValidatorMonthYearMonth,
 } from '@dv/shared/util/validator-date';
+
+import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { getYear } from 'date-fns';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  merge,
+  Observable,
+  OperatorFunction,
+  startWith,
+  Subject,
+} from 'rxjs';
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
 @Component({
@@ -237,34 +241,41 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     } as Partial<SharedModelGesuch>;
   }
 
+  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
+  ausbildungsstaetteTypeaheadFn$: Signal<
+    OperatorFunction<string, readonly any[]>
+  > = computed(() => {
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
+    );
+  });
+
   focusAusbildungsstaette$ = new Subject<string>();
-  clickAusbildungsstaette$ = new Subject<string>();
 
-  @ViewChild('ngbTypeaheadAusbildungsstaette', { static: false })
-  ausbildungsstaetteTypeaheadInstance?: NgbTypeahead;
+  createAusbildungsstaetteTypeaheadFn(list: AusbildungsgangStaette[]) {
+    console.log('computing typeaheading function for list ', list);
+    return (text$: Observable<string>) => {
+      const debouncedText$ = text$.pipe(
+        debounceTime(200),
+        distinctUntilChanged()
+      );
+      const inputFocus$ = this.focusAusbildungsstaette$;
+      return merge(debouncedText$, inputFocus$).pipe(
+        map((term) => {
+          console.log('typeaheading term ', term, list);
+          return (
+            term === ''
+              ? list
+              : list.filter(
+                  (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
+                )
+          )
+            .map((staette) => staette.name)
+            .slice(0, 10);
+        })
+      );
+    };
+  }
 
-  searchAusbildungsstaette = (text$: Observable<string>) => {
-    const debouncedText$ = text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged()
-    );
-    const clicksWithClosedPopup$ = this.clickAusbildungsstaette$.pipe(
-      filter(() => !this.ausbildungsstaetteTypeaheadInstance!.isPopupOpen())
-    );
-    const inputFocus$ = this.focusAusbildungsstaette$;
-    const list = this.ausbildungsstaetteOptions$();
-    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-      map((term) =>
-        (term === ''
-          ? list
-          : list.filter(
-              (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
-            )
-        )
-          .map((staette) => staette.name)
-          .slice(0, 10)
-      )
-    );
-  };
   protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
 }

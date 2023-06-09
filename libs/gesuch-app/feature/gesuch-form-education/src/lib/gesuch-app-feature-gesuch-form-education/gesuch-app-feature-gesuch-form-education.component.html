@@ -80,28 +80,29 @@
             }}
           </dv-shared-ui-form-label>
 
+          <!-- Typeahead -->
           <div class="input-group mb-3" *ngIf="!form.value['manuell']">
             <input
               id="typeahead-focus"
               type="text"
               class="form-control"
               formControlName="ausbildungsstaette"
-              [ngbTypeahead]="searchAusbildungsstaette"
+              [ngbTypeahead]="ausbildungsstaetteTypeaheadFn$()"
               (focus)="focusAusbildungsstaette$.next($any($event).target.value)"
-              (click)="clickAusbildungsstaette$.next($any($event).target.value)"
               [editable]="false"
-              #ngbTypeaheadAusbildungsstaette
             />
             <button
               *ngIf="form.controls.ausbildungsstaette.value"
               type="button"
               class="btn btn-outline-secondary py-0 px-2"
               (click)="form.controls.ausbildungsstaette.reset('')"
+              [tabIndex]="-1"
             >
               <span class="material-symbols-rounded align-middle">clear</span>
             </button>
           </div>
-          <!--<select
+
+          <!-- <select
             *ngIf="!form.value['manuell']"
             class="form-select"
             dvSharedUiFormLabelTarget
@@ -120,7 +121,7 @@
             >
               {{ l.name }}
             </option>
-          </select>-->
+          </select> -->
 
           <input
             *ngIf="form.value['manuell']"
