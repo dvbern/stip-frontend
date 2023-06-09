@@ -1,13 +1,21 @@
 <ng-container *ngIf="errorMessages$ | async as errorMessages">
   <div
-    [class.is-invalid]="
-      formFieldControl?.invalid && (touched$ | async) === true
-    "
+    [class.is-invalid]="(touchedAndInvalid$ | async) === true"
     [class.d-flex]="isCheckbox"
     [class.flex-row-reverse]="isCheckbox"
     [class.justify-content-end]="isCheckbox"
     [class.pt-4]="isCheckbox"
   >
+    <!--
+    touchedAndInvalid$ is better for change detection than "formFieldControl?.invalid && (touched$ | async) === true".
+    The latter is not recognized until we click away. Proof:
+    -->
+
+    <!--<pre>invalid: {{formFieldControl?.invalid}}</pre>
+    <pre>touched: {{(touched$ | async) === true}}</pre>
+    <pre>is-invalid: {{ formFieldControl?.invalid && (touched$ | async) === true}}</pre>
+    <pre>touchedAndInvalid$: {{ touchedAndInvalid$ | async}}</pre> -->
+
     <label [attr.for]="controlId" [class.pt-2]="isCheckbox">
       <ng-content select="dv-shared-ui-form-label"></ng-content>
     </label>

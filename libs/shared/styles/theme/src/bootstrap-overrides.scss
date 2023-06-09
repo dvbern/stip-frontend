@@ -15,3 +15,17 @@
     box-shadow: none;
   }
 }
+
+.input-group > .btn {
+  border-radius: var(--dv-border-radius);
+  box-shadow: none;
+}
+
+.is-invalid .control-wrapper {
+  input,
+  textarea,
+  select {
+    border-width: 2px; // TODO lieber 1px, damit es nicht rutscht
+    border-color: var(--dv-danger);
+  }
+}
