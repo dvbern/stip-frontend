@@ -1,7 +1,7 @@
 <!-- HEADER -->
 <header
-  class="position-fixed top-0 border-bottom w-100"
-  [class.shadow-sm]="isScroll"
+  class="top-0 border-bottom w-100"
+  [class.shadow-sm]="isScroll && !compactHeader"
 >
   <!-- Small screens Header -->
   <div class="container-md d-lg-none">
@@ -47,9 +47,17 @@
       </a>
 
       <!-- top left -->
-      <div class="d-flex gap-2 flex-grow-1">
-        <a routerLink="/" class="btn btn-primary pt-3">Dashboard</a>
-        <button type="button" class="btn btn-light">Posteingang</button>
+      <div class="d-flex flex-grow-1 ms-3">
+        <div class="d-flex gap-3 align-items-center">
+          <a routerLink="/" class="btn btn-primary d-flex align-items-center">
+            <i class="material-symbols-rounded text-white me-2">dashboard</i>
+            <span>Dashboard</span>
+          </a>
+          <button type="button" class="btn btn-light d-flex align-items-center">
+            <i class="material-symbols-rounded me-2">mail</i>
+            <span>Posteingang</span>
+          </button>
+        </div>
       </div>
 
       <!-- top right -->

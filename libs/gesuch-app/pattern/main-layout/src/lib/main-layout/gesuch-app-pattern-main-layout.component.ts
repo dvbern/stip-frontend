@@ -1,6 +1,8 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule, NgFor } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -9,16 +11,16 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
-import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-
 import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
+
+import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-pattern-main-layout',
@@ -39,8 +41,12 @@ import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-select
 export class GesuchAppPatternMainLayoutComponent {
   private store = inject(Store);
   private offCanvasService = inject(NgbOffcanvas);
+  protected breakpointObserver = inject(BreakpointObserver);
 
   isScroll = false;
+  breakpointCompactHeader = '(max-width: 992px)';
+  compactHeader = false;
+  cd = inject(ChangeDetectorRef);
 
   language = this.store.selectSignal(selectLanguage);
 
@@ -48,6 +54,15 @@ export class GesuchAppPatternMainLayoutComponent {
 
   @HostListener('window:scroll', ['$event']) handleScroll() {
     this.isScroll = window.scrollY > 0;
+  }
+
+  constructor() {
+    this.breakpointObserver
+      .observe(this.breakpointCompactHeader)
+      .subscribe((result) => {
+        this.compactHeader = result.matches;
+        this.cd.markForCheck();
+      }); // TODO unsubscribe on destroy
   }
 
   handleLanguageChangeHeader(language: Language) {
@@ -65,4 +80,6 @@ export class GesuchAppPatternMainLayoutComponent {
   openMenu() {
     this.offCanvasService.open(this.menu, { position: 'end', scroll: true });
   }
+
+  protected readonly Breakpoints = Breakpoints;
 }

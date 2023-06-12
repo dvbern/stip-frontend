@@ -5,16 +5,22 @@
 
   header {
     background-color: #fafbfd;
+    position: fixed;
 
-    // TODO header should scroll away on small deviced I believe
+    // small screens: header not sticky
+    @media screen and (max-width: 992px) {
+      background-color: #fff;
+      position: relative;
+    }
   }
 
   main {
     margin-top: 109px;
 
+    // small screens: header not sticky
     // TODO import breakpoint instead of hardcoding it
-    @media screen and (max-width: 768px) {
-      margin-top: 77px;
+    @media screen and (max-width: 992px) {
+      margin-top: 0;
     }
 
     flex: 1;
