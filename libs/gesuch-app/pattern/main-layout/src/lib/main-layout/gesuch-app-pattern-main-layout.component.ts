@@ -1,3 +1,4 @@
+import { CommonModule, NgFor } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,11 +7,11 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
+
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 import {
   selectLanguage,
@@ -29,6 +30,7 @@ import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-select
     NgFor,
     NgbOffcanvasModule,
     SharedUiLanguageSelectorComponent,
+    CommonModule,
   ],
   templateUrl: './gesuch-app-pattern-main-layout.component.html',
   styleUrls: ['./gesuch-app-pattern-main-layout.component.scss'],

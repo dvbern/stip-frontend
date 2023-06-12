@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,9 +6,18 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { selectGesuchAppDataAccessElternsView } from '@dv/gesuch-app/data-access/eltern';
+import {
+  GesuchAppEventGesuchFormMutter,
+  GesuchAppEventGesuchFormVater,
+} from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import {
+  Anrede,
+  Land,
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+} from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
   SharedUiFormLabelComponent,
@@ -15,31 +25,17 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import { TranslateModule } from '@ngx-translate/core';
-import {
-  GesuchAppEventGesuchFormMutter,
-  GesuchAppEventGesuchFormVater,
-} from '@dv/gesuch-app/event/gesuch-form-eltern';
-import {
-  MASK_SOZIALVERSICHERUNGSNUMMER,
-  Land,
-  Anrede,
-} from '@dv/shared/model/gesuch';
-import { Store } from '@ngrx/store';
 import { MaskitoModule } from '@maskito/angular';
-import {
-  gesuchAppDataAccessElternsFeature,
-  selectGesuchAppDataAccessElternsView,
-} from '@dv/gesuch-app/data-access/eltern';
-import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
   standalone: true,
   imports: [
     CommonModule,
-    SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormMessageComponent,
     SharedUiFormLabelComponent,
@@ -49,6 +45,7 @@ import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
     MaskitoModule,
     NgbInputDatepicker,
     SharedUiFormLabelTargetDirective,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],

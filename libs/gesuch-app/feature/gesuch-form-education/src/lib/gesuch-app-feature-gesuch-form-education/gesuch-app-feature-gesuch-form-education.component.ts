@@ -23,6 +23,7 @@ import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   AusbildungsgangStaette,
   MASK_MM_YYYY,
@@ -35,7 +36,6 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   sharedUtilValidatorMonthYearMin,
@@ -57,6 +57,7 @@ import {
   startWith,
   Subject,
 } from 'rxjs';
+
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
 @Component({
@@ -68,13 +69,13 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     ReactiveFormsModule,
     NgbInputDatepicker,
     NgbTypeahead,
-    SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormMessageComponent,
     SharedUiFormLabelComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormLabelTargetDirective,
     MaskitoModule,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],

@@ -5,10 +5,18 @@
 
   header {
     background-color: #fafbfd;
+
+    // TODO header should scroll away on small deviced I believe
   }
 
   main {
-    margin-top: 110px;
+    margin-top: 109px;
+
+    // TODO import breakpoint instead of hardcoding it
+    @media screen and (max-width: 768px) {
+      margin-top: 77px;
+    }
+
     flex: 1;
   }
 }

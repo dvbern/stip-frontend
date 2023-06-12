@@ -7,19 +7,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   Anrede,
   Land,
@@ -36,10 +31,15 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -51,13 +51,13 @@ import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form
     MaskitoModule,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],

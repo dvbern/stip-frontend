@@ -1,8 +1,10 @@
+<!-- HEADER -->
 <header
   class="position-fixed top-0 border-bottom w-100"
   [class.shadow-sm]="isScroll"
 >
-  <div class="container-md">
+  <!-- Small screens Header -->
+  <div class="container-md d-lg-none">
     <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
       <a routerLink="/">
         <img
@@ -11,6 +13,8 @@
           height="60"
         />
       </a>
+
+      <!-- search and burgermenu -->
       <div class="d-flex gap-2 align-items-center">
         <button
           class="dv-button-icon"
@@ -27,6 +31,31 @@
         >
           <span class="material-symbols-rounded">menu</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Large screens Header -->
+  <div class="d-none d-lg-block">
+    <div class="p-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/" class="me-3">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+
+      <!-- top left -->
+      <div class="d-flex gap-2 flex-grow-1">
+        <a routerLink="/" class="btn btn-primary pt-3">Dashboard</a>
+        <button type="button" class="btn btn-light">Posteingang</button>
+      </div>
+
+      <!-- top right -->
+      <div class="d-flex gap-2 align-items-center">
+        <button type="button" class="btn btn-secondary">?</button>
+        <button type="button" class="btn btn-light">Armin Student</button>
       </div>
     </div>
   </div>
@@ -52,6 +81,7 @@
   </ng-template>
 </header>
 
+<!-- MAIN CONTENT -->
 <main>
   <router-outlet></router-outlet>
 </main>
