@@ -49,11 +49,17 @@
       <!-- top left -->
       <div class="d-flex flex-grow-1 ms-3">
         <div class="d-flex gap-3 align-items-center">
-          <a routerLink="/" class="btn btn-primary d-flex align-items-center">
+          <a
+            routerLink="/"
+            class="btn btn-primary fw-normal px-2 d-flex align-items-center shadow-none"
+          >
             <i class="material-symbols-rounded text-white me-2">dashboard</i>
             <span>Dashboard</span>
           </a>
-          <button type="button" class="btn btn-light d-flex align-items-center">
+          <button
+            type="button"
+            class="btn btn-light fw-normal px-2 d-flex align-items-center shadow-none"
+          >
             <i class="material-symbols-rounded me-2">mail</i>
             <span>Posteingang</span>
           </button>
@@ -61,9 +67,36 @@
       </div>
 
       <!-- top right -->
-      <div class="d-flex gap-2 align-items-center">
-        <button type="button" class="btn btn-secondary">?</button>
-        <button type="button" class="btn btn-light">Armin Student</button>
+      <div class="d-flex gap-4 align-items-center">
+        <dv-shared-ui-icon-chip>
+          <i class="material-symbols-rounded text-secondary">question_mark</i>
+        </dv-shared-ui-icon-chip>
+
+        <div ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-light shadow-none d-flex align-items-center pe-1"
+            id="userMenu"
+            ngbDropdownToggle
+          >
+            <span>Armin Student</span>
+            <i class="material-symbols-rounded ms-2">expand_more</i>
+          </button>
+
+          <div ngbDropdownMenu aria-labelledby="userMenu">
+            <dv-shared-ui-language-selector
+              class="px-3 py-2"
+              [language]="language()"
+              (languageChange)="handleLanguageChangeHeader($event)"
+            />
+
+            <button type="button" ngbDropdownItem>Action - 1</button>
+            <button type="button" ngbDropdownItem>Another Action</button>
+            <button type="button" ngbDropdownItem>
+              Something else is here
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

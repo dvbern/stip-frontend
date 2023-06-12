@@ -7,6 +7,23 @@
   }
 }
 
+.btn.btn-light {
+  --dv-btn-color: #7f7f8b;
+  --dv-btn-bg: transparent;
+  --dv-btn-border-color: none;
+  --dv-btn-hover-color: #fff;
+  --dv-btn-hover-bg: var(--dv-primary);
+  --dv-btn-hover-border-color: none;
+  --dv-btn-focus-shadow-rgb: 211, 212, 213; // ?
+  --dv-btn-active-color: #fff;
+  --dv-btn-active-bg: var(--dv-primary);
+  --dv-btn-active-border-color: none;
+  --dv-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); // ?
+  --dv-btn-disabled-color: #a6a6b2;
+  --dv-btn-disabled-bg: transparent;
+  --dv-btn-disabled-border-color: none;
+}
+
 .btn-group {
   box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1),
     0px 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -27,4 +44,9 @@
   select {
     border-color: var(--dv-danger);
   }
+}
+
+// Dropdown: das seltsame Dreieck entfernen, stattdessen selber ein Icon einfuegen
+.dropdown-toggle::after {
+  border: none;
 }

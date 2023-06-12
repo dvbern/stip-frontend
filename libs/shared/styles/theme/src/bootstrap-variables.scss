@@ -13,6 +13,8 @@ $info: #298bef;
 
 $body-bg: #fafbfd;
 $min-contrast-ratio: 3; // default 4.5 leads to black text on primary red background
+$body-tertiary-bg: #e3e5e8; // e.g. in dropdown item hover
+
 $btn-link-color: lighten($black, 30%);
 $btn-link-hover-color: $black;
 

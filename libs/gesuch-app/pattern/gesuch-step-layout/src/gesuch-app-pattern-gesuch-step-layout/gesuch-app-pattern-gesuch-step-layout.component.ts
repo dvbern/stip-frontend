@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
+import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,24 +15,25 @@ import { TranslateModule } from '@ngx-translate/core';
     GesuchAppPatternGesuchStepNavComponent,
     SharedUiProgressBarComponent,
     TranslateModule,
+    SharedUiIconChipComponent,
   ],
   templateUrl: './gesuch-app-pattern-gesuch-step-layout.component.html',
   styleUrls: ['./gesuch-app-pattern-gesuch-step-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppPatternGesuchStepLayoutComponent {
-  @Input()
-  currentStepNumber = 0; // TODO from store?
+  @Input({ required: true })
+  currentStepNumber!: number; // TODO from store?
 
-  @Input()
-  maxStepNumber = 0; // TODO from store?
+  @Input({ required: true })
+  maxStepNumber!: number; // TODO from store?
 
-  @Input()
-  currentStepTitle = '';
+  @Input({ required: true })
+  currentStepTitle!: string;
 
-  @Input()
-  nextStepSubtitle = '';
+  @Input({ required: true })
+  nextStepSubtitle!: string;
 
-  @Input()
-  stepIconSymbolName?: string;
+  @Input({ required: true })
+  stepIconSymbolName!: string;
 }

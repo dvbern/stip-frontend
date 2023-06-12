@@ -9,6 +9,7 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 import {
@@ -16,9 +17,17 @@ import {
   SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
 import { Language } from '@dv/shared/model/language';
+import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 
-import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDropdown,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbOffcanvas,
+  NgbOffcanvasModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -33,6 +42,11 @@ import { TranslateModule } from '@ngx-translate/core';
     NgbOffcanvasModule,
     SharedUiLanguageSelectorComponent,
     CommonModule,
+    SharedUiIconChipComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem,
   ],
   templateUrl: './gesuch-app-pattern-main-layout.component.html',
   styleUrls: ['./gesuch-app-pattern-main-layout.component.scss'],
@@ -59,6 +73,7 @@ export class GesuchAppPatternMainLayoutComponent {
   constructor() {
     this.breakpointObserver
       .observe(this.breakpointCompactHeader)
+      .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         this.compactHeader = result.matches;
         this.cd.markForCheck();
