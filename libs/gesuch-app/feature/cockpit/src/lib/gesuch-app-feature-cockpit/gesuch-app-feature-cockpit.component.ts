@@ -33,7 +33,6 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     this.store.dispatch(
       GesuchAppEventCockpit.newTriggered({
         periodeId,
-        origin: GesuchFormSteps.COCKPIT,
       })
     );
   }

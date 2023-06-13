@@ -13,6 +13,7 @@ import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/g
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const loadGesuchs = createEffect(
   (
@@ -85,12 +86,11 @@ export const createGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(GesuchAppEventCockpit.newTriggered),
-      exhaustMap(({ periodeId, origin }) =>
+      exhaustMap(({ periodeId }) =>
         gesuchAppDataAccessGesuchService.create(periodeId).pipe(
           map(({ id }) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
-              origin,
             })
           ),
           catchError(({ error }) => [
@@ -159,19 +159,28 @@ export const removeGesuch = createEffect(
 );
 
 export const redirectToGesuchForm = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess),
+      tap(({ id }) => {
+        router.navigate([GesuchFormSteps.PERSON.route, id]);
+      })
+    );
+  },
+  { functional: true, dispatch: false }
+);
+
+export const redirectToGesuchFormStep = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
     stepManager = inject(GesuchAppUtilGesuchFormStepManagerService)
   ) => {
     return actions$.pipe(
-      ofType(
-        GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess,
-        GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess
-      ),
+      ofType(GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);
-        router.navigate([target.name, id]);
+        router.navigate([target.route, id]);
       })
     );
   },
@@ -186,4 +195,5 @@ export const gesuchAppDataAccessGesuchEffects = {
   updateGesuch,
   removeGesuch,
   redirectToGesuchForm,
+  redirectToGesuchFormStep,
 };

@@ -1,45 +1,28 @@
 import { GesuchAppModelGesuchFormStep } from './gesuch-app-model-gesuch-form';
 
 export abstract class GesuchFormSteps {
-  public static readonly COCKPIT: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-cockpit',
-    translationKey: 'COCKPIT_STEP',
+  static readonly PERSON: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-person',
+    translationKey: 'gesuch-app.form.person.title',
   };
 
-  public static readonly PERSON: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-person',
-    translationKey: '',
+  static readonly AUSBILDUNG: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-education',
+    translationKey: 'gesuch-app.form.education.title',
   };
 
-  public static readonly AUSBILDUNG: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-education',
-    translationKey: 'AUSBILDUNG_STEP',
+  static readonly LEBENSLAUF: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-lebenslauf',
+    translationKey: 'gesuch-app.form.lebenslauf.title',
   };
 
-  public static readonly LEBENSLAUF: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-lebenslauf',
-    translationKey: 'LEBENSLAUF_STEP',
+  static readonly FAMILIENSITUATION: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-familiensituation',
+    translationKey: 'gesuch-app.form.familiensituation.title',
   };
 
-  public static readonly FAMILIENSITUATION: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-familiensituation',
-    translationKey: 'FAMILIENSITUATION_STEP',
-  };
-
-  public static readonly ELTERN_MUTTER: GesuchAppModelGesuchFormStep = {
-    enabled: true, // if famSit Mutter lebt noch, abhaengig von FamSit Daten
-    name: 'gesuch-app-feature-gesuch-eltern',
-    translationKey: '',
-  };
-
-  public static readonly ELTERN_VATER: GesuchAppModelGesuchFormStep = {
-    enabled: true, // if famSit Vater lebt noch, abhaengig von FamSit Daten
-    name: 'gesuch-app-feature-gesuch-eltern',
-    translationKey: '',
+  static readonly ELTERN: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-eltern',
+    translationKey: 'gesuch-app.form.eltern.title',
   };
 }

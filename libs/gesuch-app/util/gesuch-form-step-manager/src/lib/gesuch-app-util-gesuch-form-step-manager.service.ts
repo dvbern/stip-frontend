@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import {
   GesuchAppModelGesuchFormStep,
   GesuchFormSteps,
@@ -8,12 +9,8 @@ import {
   providedIn: 'root',
 })
 export class GesuchAppUtilGesuchFormStepManagerService {
-  public getNext(
-    origin: GesuchAppModelGesuchFormStep
-  ): GesuchAppModelGesuchFormStep {
+  getNext(origin?: GesuchAppModelGesuchFormStep): GesuchAppModelGesuchFormStep {
     switch (origin) {
-      case GesuchFormSteps.COCKPIT:
-        return GesuchFormSteps.PERSON;
       case GesuchFormSteps.PERSON:
         return GesuchFormSteps.AUSBILDUNG;
       case GesuchFormSteps.AUSBILDUNG:
@@ -21,25 +18,7 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.LEBENSLAUF:
         return GesuchFormSteps.FAMILIENSITUATION;
       case GesuchFormSteps.FAMILIENSITUATION:
-        return GesuchFormSteps.COCKPIT;
-      default:
-        throw new Error('Step not defined');
-    }
-  }
-  public getPrevious(
-    origin: GesuchAppModelGesuchFormStep
-  ): GesuchAppModelGesuchFormStep {
-    switch (origin) {
-      case GesuchFormSteps.COCKPIT:
-        return GesuchFormSteps.COCKPIT;
-      case GesuchFormSteps.PERSON:
-        return GesuchFormSteps.COCKPIT;
-      case GesuchFormSteps.AUSBILDUNG:
-        return GesuchFormSteps.PERSON;
-      case GesuchFormSteps.LEBENSLAUF:
-        return GesuchFormSteps.AUSBILDUNG;
-      case GesuchFormSteps.FAMILIENSITUATION:
-        return GesuchFormSteps.AUSBILDUNG;
+        return GesuchFormSteps.FAMILIENSITUATION;
       default:
         throw new Error('Step not defined');
     }

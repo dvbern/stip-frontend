@@ -1,5 +1,4 @@
 export interface GesuchAppModelGesuchFormStep {
-  name: string;
+  route: string;
   translationKey: string;
-  enabled: boolean;
 }
