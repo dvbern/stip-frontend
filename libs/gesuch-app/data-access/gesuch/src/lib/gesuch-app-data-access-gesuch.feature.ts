@@ -39,9 +39,11 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventCockpit.init,
       GesuchAppEventCockpit.removeTriggered,
       GesuchAppEventGesuchFormPerson.init,
-      GesuchAppEventGesuchFormPerson.nextStepTriggered,
       GesuchAppEventGesuchFormEducation.init,
-      GesuchAppEventGesuchFormEducation.nextStepTriggered,
+      GesuchAppEventGesuchFormFamiliensituation.init,
+      GesuchAppEventGesuchFormPerson.saveTriggered,
+      GesuchAppEventGesuchFormEducation.saveTriggered,
+      GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
       GesuchAppEventGesuchFormFamiliensituation.init,
       (state): State => ({
         ...state,

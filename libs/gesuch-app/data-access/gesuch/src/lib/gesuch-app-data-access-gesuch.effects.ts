@@ -6,14 +6,12 @@ import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
-import { NavigationType } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 
-import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
-
+import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
 
 export const loadGesuchs = createEffect(
@@ -26,7 +24,7 @@ export const loadGesuchs = createEffect(
         GesuchAppEventCockpit.init,
         GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
-      switchMap(() =>
+      concatMap(() =>
         gesuchAppDataAccessGesuchService.getAll().pipe(
           map((gesuchs) =>
             GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
@@ -35,7 +33,7 @@ export const loadGesuchs = createEffect(
           ),
           catchError(({ error }) => [
             GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure({
-              error: error.message,
+              error: error?.message,
             }),
           ])
         )
@@ -93,7 +91,6 @@ export const createGesuch = createEffect(
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
               origin,
-              navigationType: NavigationType.FORWARDS,
             })
           ),
           catchError(({ error }) => [
@@ -115,20 +112,16 @@ export const updateGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppEventGesuchFormPerson.nextStepTriggered,
-        GesuchAppEventGesuchFormPerson.prevStepTriggered,
-        GesuchAppEventGesuchFormEducation.nextStepTriggered,
-        GesuchAppEventGesuchFormEducation.prevStepTriggered,
-        GesuchAppEventGesuchFormFamiliensituation.nextStepTriggered,
-        GesuchAppEventGesuchFormFamiliensituation.prevStepTriggered
+        GesuchAppEventGesuchFormPerson.saveTriggered,
+        GesuchAppEventGesuchFormEducation.saveTriggered,
+        GesuchAppEventGesuchFormFamiliensituation.saveTriggered
       ),
-      concatMap(({ gesuch, origin, navigationType }) => {
+      concatMap(({ gesuch, origin }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
             GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
               id: gesuch.id!,
               origin,
-              navigationType,
             })
           ),
           catchError(({ error }) => [
@@ -176,11 +169,8 @@ export const redirectToGesuchForm = createEffect(
         GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess,
         GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess
       ),
-      tap(({ id, origin, navigationType }) => {
-        const target =
-          navigationType === NavigationType.FORWARDS
-            ? stepManager.getNext(origin)
-            : stepManager.getPrevious(origin);
+      tap(({ id, origin }) => {
+        const target = stepManager.getNext(origin);
         router.navigate([target.name, id]);
       })
     );

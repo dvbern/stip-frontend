@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,14 +5,20 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
-
-import {
-  GesuchFormSteps,
-  NavigationType,
-} from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   Anrede,
@@ -32,14 +37,6 @@ import {
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -131,27 +128,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     this.store.dispatch(GesuchAppEventGesuchFormPerson.init());
   }
 
-  handleSaveAndContinue() {
+  handleSave() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.store.dispatch(
-        GesuchAppEventGesuchFormPerson.nextStepTriggered({
+        GesuchAppEventGesuchFormPerson.saveTriggered({
           origin: GesuchFormSteps.PERSON,
           gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.FORWARDS,
-        })
-      );
-    }
-  }
-
-  handleSaveAndBack() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.store.dispatch(
-        GesuchAppEventGesuchFormPerson.prevStepTriggered({
-          origin: GesuchFormSteps.PERSON,
-          gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.BACKWARDS,
         })
       );
     }

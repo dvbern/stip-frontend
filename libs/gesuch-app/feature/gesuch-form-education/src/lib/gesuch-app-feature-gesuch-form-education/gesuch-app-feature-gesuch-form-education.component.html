@@ -22,7 +22,7 @@
     novalidate
     class="mt-4"
     *ngIf="!view$().loading"
-    (ngSubmit)="handleSaveAndContinue()"
+    (ngSubmit)="handleSave()"
   >
     <h3 class="mt-4">
       {{ 'gesuch-app.form.education.place.title' | translate }}
@@ -304,14 +304,6 @@
     <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
       <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
-      </button>
-      <button
-        type="button"
-        class="btn btn-link"
-        data-test-id="form-person-action-back"
-        (click)="handleSaveAndBack()"
-      >
-        {{ 'gesuch-app.form.save-and-back' | translate }}
       </button>
     </div>
   </form>

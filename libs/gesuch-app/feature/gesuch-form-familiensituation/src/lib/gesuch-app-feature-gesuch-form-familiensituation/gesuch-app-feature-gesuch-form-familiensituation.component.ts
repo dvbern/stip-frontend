@@ -19,10 +19,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
-import {
-  GesuchFormSteps,
-  NavigationType,
-} from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
@@ -272,26 +269,13 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     });
   }
 
-  handleSaveAndContinue(): void {
+  handleSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.store.dispatch(
-        GesuchAppEventGesuchFormFamiliensituation.nextStepTriggered({
+        GesuchAppEventGesuchFormFamiliensituation.saveTriggered({
           gesuch: this.buildSharedModelDTOFromForm(),
           origin: GesuchFormSteps.FAMILIENSITUATION,
-          navigationType: NavigationType.FORWARDS,
-        })
-      );
-    }
-  }
-
-  public handleSaveAndBack(): void {
-    if (this.form.valid) {
-      this.store.dispatch(
-        GesuchAppEventGesuchFormFamiliensituation.prevStepTriggered({
-          gesuch: this.buildSharedModelDTOFromForm(),
-          origin: GesuchFormSteps.FAMILIENSITUATION,
-          navigationType: NavigationType.BACKWARDS,
         })
       );
     }

@@ -17,12 +17,24 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { getYear, isAfter } from 'date-fns';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  merge,
+  Observable,
+  OperatorFunction,
+  startWith,
+  Subject,
+} from 'rxjs';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import {
-  GesuchFormSteps,
-  NavigationType,
-} from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   AusbildungsgangStaette,
@@ -41,22 +53,6 @@ import {
   sharedUtilValidatorMonthYearMin,
   sharedUtilValidatorMonthYearMonth,
 } from '@dv/shared/util/validator-date';
-
-import { MaskitoModule } from '@maskito/angular';
-import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { getYear, isAfter } from 'date-fns';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  merge,
-  Observable,
-  OperatorFunction,
-  startWith,
-  Subject,
-} from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
@@ -207,27 +203,13 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.controls.ausbildungsgang.reset('');
   }
 
-  handleSaveAndContinue() {
+  handleSave() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.store.dispatch(
-        GesuchAppEventGesuchFormEducation.nextStepTriggered({
+        GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.FORWARDS,
-        })
-      );
-    }
-  }
-
-  handleSaveAndBack() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.store.dispatch(
-        GesuchAppEventGesuchFormEducation.prevStepTriggered({
-          origin: GesuchFormSteps.AUSBILDUNG,
-          gesuch: this.buildUpdatedGesuchFromForm(),
-          navigationType: NavigationType.BACKWARDS,
         })
       );
     }
