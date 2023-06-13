@@ -4,12 +4,10 @@ import {
   effect,
   inject,
   OnInit,
-  Signal,
 } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -74,22 +72,31 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
   form = this.formBuilder.group({
-    leiblicheElternVerheiratetKonkubinat: [null, [Validators.required]],
-    gerichtlicheAlimentenregelung: [null, [Validators.required]],
-    werZahltAlimente: [null, [Validators.required]],
-    elternteilVerstorbenUnbekannt: [null, [Validators.required]],
-    mutterUnbekanntVerstorben: [null, [Validators.required]],
-    vaterUnbekanntVerstorben: [null, [Validators.required]],
-    mutterUnbekanntReason: [null, [Validators.required]],
-    vaterUnbekanntReason: [null, [Validators.required]],
-    vaterWiederverheiratet: [null, [Validators.required]],
-    mutterWiederverheiratet: [null, [Validators.required]],
-    sorgerecht: [null, { validators: Validators.required }],
-    obhut: [null, { validators: Validators.required }],
-    obhutMutter: [null, { validators: Validators.required }],
-    obhutVater: [null, { validators: Validators.required }],
-    sorgerechtMutter: [null, [Validators.required]],
-    sorgerechtVater: [null, { validators: Validators.required }],
+    leiblicheElternVerheiratetKonkubinat: [
+      <boolean | null>null,
+      [Validators.required],
+    ],
+    gerichtlicheAlimentenregelung: [
+      <boolean | null>null,
+      [Validators.required],
+    ],
+    werZahltAlimente: ['', [Validators.required]],
+    elternteilVerstorbenUnbekannt: [
+      <boolean | null>null,
+      [Validators.required],
+    ],
+    mutterUnbekanntVerstorben: ['', [Validators.required]],
+    vaterUnbekanntVerstorben: ['', [Validators.required]],
+    mutterUnbekanntReason: ['', [Validators.required]],
+    vaterUnbekanntReason: ['', [Validators.required]],
+    vaterWiederverheiratet: [<boolean | null>null, [Validators.required]],
+    mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
+    sorgerecht: ['', [Validators.required]],
+    obhut: ['', [Validators.required]],
+    obhutMutter: [<number | null>null, [Validators.required]],
+    obhutVater: [<number | null>null, [Validators.required]],
+    sorgerechtMutter: [<number | null>null, [Validators.required]],
+    sorgerechtVater: [<number | null>null, [Validators.required]],
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -101,34 +108,26 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   }
 
   constructor() {
-    const leiblicheElternVerheiratetKonkubinat$: Signal<
-      null | undefined | boolean
-    > = toSignal(
+    const leiblicheElternVerheiratetKonkubinat$ = toSignal(
       this.form.controls.leiblicheElternVerheiratetKonkubinat.valueChanges
     );
-    const gerichtlicheAlimentenregelung$: Signal<null | undefined | boolean> =
-      toSignal(this.form.controls.gerichtlicheAlimentenregelung.valueChanges);
-    const werZahltAlimente$: Signal<null | undefined | Elternschaftsteilung> =
-      toSignal(this.form.controls.werZahltAlimente.valueChanges);
-    const elternteilVerstorbenUnbekannt$: Signal<null | undefined | boolean> =
-      toSignal(this.form.controls.elternteilVerstorbenUnbekannt.valueChanges);
-    const vaterVerstorbenUnbekannt$: Signal<
-      null | undefined | ElternAbwesenheitsGrund
-    > = toSignal(this.form.controls.vaterUnbekanntVerstorben.valueChanges);
-    const mutterVerstorbenUnbekannt$: Signal<
-      null | undefined | ElternAbwesenheitsGrund
-    > = toSignal(this.form.controls.mutterUnbekanntVerstorben.valueChanges);
-    const mutterUnbekanntReason$: Signal<
-      null | undefined | ElternUnbekanntheitsGrund
-    > = toSignal(this.form.controls.mutterUnbekanntReason.valueChanges);
-    const vaterUnbekanntReason$: Signal<
-      null | undefined | ElternUnbekanntheitsGrund
-    > = toSignal(this.form.controls.vaterUnbekanntReason.valueChanges);
-    const obhut$: Signal<null | undefined | Elternschaftsteilung> = toSignal(
-      this.form.controls.obhut.valueChanges
+    const gerichtlicheAlimentenregelung$ = toSignal(
+      this.form.controls.gerichtlicheAlimentenregelung.valueChanges
     );
-    const sorgerecht$: Signal<null | undefined | Elternschaftsteilung> =
-      toSignal(this.form.controls.sorgerecht.valueChanges);
+    const werZahltAlimente$ = toSignal(
+      this.form.controls.werZahltAlimente.valueChanges
+    );
+    const elternteilVerstorbenUnbekannt$ = toSignal(
+      this.form.controls.elternteilVerstorbenUnbekannt.valueChanges
+    );
+    const vaterVerstorbenUnbekannt$ = toSignal(
+      this.form.controls.vaterUnbekanntVerstorben.valueChanges
+    );
+    const mutterVerstorbenUnbekannt$ = toSignal(
+      this.form.controls.mutterUnbekanntVerstorben.valueChanges
+    );
+    const obhut$ = toSignal(this.form.controls.obhut.valueChanges);
+    const sorgerecht$ = toSignal(this.form.controls.sorgerecht.valueChanges);
 
     effect(
       () => {
