@@ -27,6 +27,7 @@
       "@dv/gesuch-app/event/gesuch-form-familiensituation": ["libs/gesuch-app/event/gesuch-form-familiensituation/src/index.ts"],
       "@dv/gesuch-app/event/gesuch-form-person": ["libs/gesuch-app/event/gesuch-form-person/src/index.ts"],
       "@dv/gesuch-app/feature/cockpit": ["libs/gesuch-app/feature/cockpit/src/index.ts"],
+      "@dv/gesuch-app/feature/gesuch-form-auszahlungen": ["libs/gesuch-app/feature/gesuch-form-auszahlungen/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-education": ["libs/gesuch-app/feature/gesuch-form-education/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-eltern": ["libs/gesuch-app/feature/gesuch-form-eltern/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-familiensituation": ["libs/gesuch-app/feature/gesuch-form-familiensituation/src/index.ts"],
