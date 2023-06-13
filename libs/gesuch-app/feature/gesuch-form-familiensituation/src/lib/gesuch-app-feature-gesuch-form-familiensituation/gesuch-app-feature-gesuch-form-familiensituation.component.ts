@@ -253,34 +253,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     );
 
     effect(() => {
-      const mutterUnbekanntReason = mutterUnbekanntReason$();
-      const vaterVerstorbenUnbekannt = vaterVerstorbenUnbekannt$();
-      if (
-        vaterVerstorbenUnbekannt === ElternAbwesenheitsGrund.WEDER_NOCH &&
-        mutterUnbekanntReason !== null &&
-        mutterUnbekanntReason !== undefined
-      ) {
-        this.setVisible(this.form.controls.vaterWiederverheiratet);
-      } else {
-        this.setInvisible(this.form.controls.vaterWiederverheiratet);
-      }
-    });
-
-    effect(() => {
-      const vaterUnbekanntReason = vaterUnbekanntReason$();
-      const mutterVerstorbenUnbekannt = mutterVerstorbenUnbekannt$();
-      if (
-        mutterVerstorbenUnbekannt === ElternAbwesenheitsGrund.WEDER_NOCH &&
-        vaterUnbekanntReason !== null &&
-        vaterUnbekanntReason !== undefined
-      ) {
-        this.setVisible(this.form.controls.mutterWiederverheiratet);
-      } else {
-        this.setInvisible(this.form.controls.mutterWiederverheiratet);
-      }
-    });
-
-    effect(() => {
       if (obhut$() === Elternschaftsteilung.GEMEINSAM) {
         this.setVisible(this.form.controls.obhutVater);
         this.setVisible(this.form.controls.obhutMutter);
