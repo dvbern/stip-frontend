@@ -22,6 +22,7 @@
       "@dv/gesuch-app/data-access/gesuch": ["libs/gesuch-app/data-access/gesuch/src/index.ts"],
       "@dv/gesuch-app/data-access/gesuchsperiode": ["libs/gesuch-app/data-access/gesuchsperiode/src/index.ts"],
       "@dv/gesuch-app/event/cockpit": ["libs/gesuch-app/event/cockpit/src/index.ts"],
+      "@dv/gesuch-app/event/gesuch-form-auszahlung": ["libs/gesuch-app/event/gesuch-form-auszahlung/src/index.ts"],
       "@dv/gesuch-app/event/gesuch-form-education": ["libs/gesuch-app/event/gesuch-form-education/src/index.ts"],
       "@dv/gesuch-app/event/gesuch-form-eltern": ["libs/gesuch-app/event/gesuch-form-eltern/src/index.ts"],
       "@dv/gesuch-app/event/gesuch-form-familiensituation": ["libs/gesuch-app/event/gesuch-form-familiensituation/src/index.ts"],
