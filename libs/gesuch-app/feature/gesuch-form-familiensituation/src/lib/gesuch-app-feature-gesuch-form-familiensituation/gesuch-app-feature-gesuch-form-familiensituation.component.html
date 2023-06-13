@@ -73,7 +73,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.gerichtlicheAlimentenregelung)"
+        *ngIf="!form.controls.gerichtlicheAlimentenregelung.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -117,7 +117,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.elternteilVerstorbenUnbekannt)"
+        *ngIf="!form.controls.elternteilVerstorbenUnbekannt.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -161,7 +161,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.werZahltAlimente)"
+        *ngIf="!form.controls.werZahltAlimente.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -191,7 +191,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.mutterUnbekanntVerstorben)"
+        *ngIf="!form.controls.mutterUnbekanntVerstorben.disabled"
       >
         <span>{{
           'gesuch-app.form.familiensituation.elternteil-verstorben.label'
@@ -251,7 +251,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.mutterUnbekanntReason)"
+        *ngIf="!form.controls.mutterUnbekanntReason.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -299,7 +299,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.mutterWiederverheiratet)"
+        *ngIf="!form.controls.mutterWiederverheiratet.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -337,7 +337,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.vaterUnbekanntVerstorben)"
+        *ngIf="!form.controls.vaterUnbekanntVerstorben.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -393,7 +393,7 @@
 
       <div
         class="row g-4 mt-3"
-        *ngIf="isVisible(form.controls.vaterWiederverheiratet)"
+        *ngIf="!form.controls.vaterWiederverheiratet.disabled"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -430,7 +430,7 @@
       </div>
 
       <div
-        *ngIf="isVisible(form.controls.vaterUnbekanntReason)"
+        *ngIf="!form.controls.vaterUnbekanntReason.disabled"
         class="row g-4 mt-3"
       >
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
@@ -477,7 +477,7 @@
         </dv-shared-ui-form-field>
       </div>
 
-      <div class="row g-4 mt-3" *ngIf="isVisible(form.controls.sorgerecht)">
+      <div class="row g-4 mt-3" *ngIf="!form.controls.sorgerecht.disabled">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.familiensituation.sorgerecht.label' | translate
@@ -511,8 +511,8 @@
 
       <div
         *ngIf="
-          isVisible(form.controls.sorgerechtVater) &&
-          isVisible(form.controls.sorgerechtMutter)
+          form.controls.sorgerechtVater.disabled &&
+          form.controls.sorgerechtMutter.disabled
         "
         class="row g-4 mt-3"
       >
@@ -550,7 +550,7 @@
         </dv-shared-ui-form-field>
       </div>
 
-      <div class="row g-4 mt-3" *ngIf="isVisible(form.controls.obhut)">
+      <div class="row g-4 mt-3" *ngIf="!form.controls.obhut.disabled">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.familiensituation.obhut.label' | translate
@@ -584,8 +584,8 @@
 
       <div
         *ngIf="
-          isVisible(form.controls.obhutVater) &&
-          isVisible(form.controls.obhutMutter)
+          form.controls.obhutVater.disabled &&
+          form.controls.obhutMutter.disabled
         "
         class="row g-4 mt-3"
       >
