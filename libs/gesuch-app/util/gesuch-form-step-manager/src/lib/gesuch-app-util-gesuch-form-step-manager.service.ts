@@ -21,25 +21,9 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.LEBENSLAUF:
         return GesuchFormSteps.FAMILIENSITUATION;
       case GesuchFormSteps.FAMILIENSITUATION:
+        return GesuchFormSteps.AUSZAHLUNGEN;
+      case GesuchFormSteps.AUSZAHLUNGEN:
         return GesuchFormSteps.COCKPIT;
-      default:
-        throw new Error('Step not defined');
-    }
-  }
-  public getPrevious(
-    origin: GesuchAppModelGesuchFormStep
-  ): GesuchAppModelGesuchFormStep {
-    switch (origin) {
-      case GesuchFormSteps.COCKPIT:
-        return GesuchFormSteps.COCKPIT;
-      case GesuchFormSteps.PERSON:
-        return GesuchFormSteps.COCKPIT;
-      case GesuchFormSteps.AUSBILDUNG:
-        return GesuchFormSteps.PERSON;
-      case GesuchFormSteps.LEBENSLAUF:
-        return GesuchFormSteps.AUSBILDUNG;
-      case GesuchFormSteps.FAMILIENSITUATION:
-        return GesuchFormSteps.AUSBILDUNG;
       default:
         throw new Error('Step not defined');
     }
