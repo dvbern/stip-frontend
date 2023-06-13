@@ -195,8 +195,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           this.setVisible(this.form.controls.vaterWiederverheiratet);
           this.setVisible(this.form.controls.mutterWiederverheiratet);
           this.setVisible(this.form.controls.sorgerecht);
-          this.setVisible(this.form.controls.sorgerechtVater);
-          this.setVisible(this.form.controls.sorgerechtMutter);
           this.setVisible(this.form.controls.obhut);
           this.setInvisible(this.form.controls.vaterUnbekanntVerstorben);
           this.setInvisible(this.form.controls.mutterUnbekanntVerstorben);

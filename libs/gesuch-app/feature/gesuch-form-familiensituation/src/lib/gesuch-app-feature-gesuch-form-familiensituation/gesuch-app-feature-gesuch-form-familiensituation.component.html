@@ -511,8 +511,8 @@
 
       <div
         *ngIf="
-          form.controls.sorgerechtVater.disabled &&
-          form.controls.sorgerechtMutter.disabled
+          !form.controls.sorgerechtVater.disabled &&
+          !form.controls.sorgerechtMutter.disabled
         "
         class="row g-4 mt-3"
       >
@@ -584,8 +584,8 @@
 
       <div
         *ngIf="
-          form.controls.obhutVater.disabled &&
-          form.controls.obhutMutter.disabled
+          !form.controls.obhutVater.disabled &&
+          !form.controls.obhutMutter.disabled
         "
         class="row g-4 mt-3"
       >
