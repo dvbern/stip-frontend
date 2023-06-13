@@ -44,6 +44,19 @@ function deleteOldFilesSync(directory: string, timestamp: Date) {
   }
 }
 
+function copyFilesForGesuch(directoryFrom: string, directoryTo: string) {
+  if (!fs.existsSync(directoryFrom) || !fs.existsSync(directoryTo)) {
+    return;
+  }
+
+  let files = fs.readdirSync(directoryFrom);
+  for (const file of files) {
+    const filePath = path.join(directoryFrom, file);
+    const filePathTo = path.join(directoryTo, file);
+    fs.copyFileSync(filePath, filePathTo);
+  }
+}
+
 async function generateOpenApi(directory: string, apis: string[]) {
   const env = {
     ...process.env,
@@ -134,10 +147,14 @@ async function sleep(msec: number) {
   // add more APIs as you go
   // Keep in mind: there is one file generated per OpenAPI-@Tag,
   // Names are CamelCase versions from OpenAPIConst Tags
-  const generatedApis = ['Fall', 'Auth', 'Configuration'];
+  const generatedApis = [''];
 
   await generateOpenApi(generatorPath, generatedApis);
 
   deleteOldFilesSync(apiPath, timestamp);
   deleteOldFilesSync(modelsPath, timestamp);
+  const gesuchModelPath = 'libs/shared/model/gesuch/src/lib/openapi';
+  copyFilesForGesuch(modelsPath, gesuchModelPath);
+  // we can generate only a selection of model entities according to namespace for example.
+  // That would allow us to split the model directly in the right packages. Lets see if we need it.
 })();
