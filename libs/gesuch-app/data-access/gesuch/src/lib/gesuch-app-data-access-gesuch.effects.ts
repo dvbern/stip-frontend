@@ -14,6 +14,7 @@ import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 export const loadGesuchs = createEffect(
   (
@@ -54,7 +55,8 @@ export const loadGesuch = createEffect(
       ofType(
         GesuchAppEventGesuchFormPerson.init,
         GesuchAppEventGesuchFormEducation.init,
-        GesuchAppEventGesuchFormFamiliensituation.init
+        GesuchAppEventGesuchFormFamiliensituation.init,
+        GesuchAppEventGesuchFormEltern.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -136,6 +138,32 @@ export const updateGesuch = createEffect(
   { functional: true }
 );
 
+export const updateGesuchSubform = createEffect(
+  (
+    actions$ = inject(Actions),
+    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
+  ) => {
+    return actions$.pipe(
+      ofType(GesuchAppEventGesuchFormEltern.saveParentTriggered),
+      concatMap(({ gesuch }) => {
+        return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
+          map(() =>
+            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
+              id: gesuch.id!,
+            })
+          ),
+          catchError(({ error }) => [
+            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
+              error: error.toString(),
+            }),
+          ])
+        );
+      })
+    );
+  },
+  { functional: true }
+);
+
 export const removeGesuch = createEffect(
   (
     actions$ = inject(Actions),
@@ -193,6 +221,7 @@ export const gesuchAppDataAccessGesuchEffects = {
   loadGesuch,
   createGesuch,
   updateGesuch,
+  updateGesuchSubform,
   removeGesuch,
   redirectToGesuchForm,
   redirectToGesuchFormStep,

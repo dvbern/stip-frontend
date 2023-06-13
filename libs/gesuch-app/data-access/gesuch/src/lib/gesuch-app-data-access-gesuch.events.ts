@@ -14,7 +14,12 @@ export const GesuchAppDataAccessGesuchEvents = createActionGroup({
       id: string;
       origin: GesuchAppModelGesuchFormStep;
     }>(),
+
     gesuchUpdatedFailure: props<{ error: string }>(),
+    gesuchUpdatedSubformSuccess: props<{
+      id: string;
+    }>(),
+    gesuchUpdatedSubformFailure: props<{ error: string }>(),
     gesuchRemovedSuccess: emptyProps(),
     gesuchRemovedFailure: props<{ error: string }>(),
     gesuchsLoadedSuccess: props<{ gesuchs: SharedModelGesuch[] }>(),

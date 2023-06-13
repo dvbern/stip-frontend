@@ -11,6 +11,7 @@ import {
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
+  withRouterConfig,
 } from '@angular/router';
 import {
   HttpBackend,
@@ -58,6 +59,9 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
     provideZoneChangeDetection({ eventCoalescing: true, runCoalescing: true }),
     provideRouter(
       appRoutes,
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+      }),
       withComponentInputBinding(),
       withEnabledBlockingInitialNavigation(),
       withInMemoryScrolling({

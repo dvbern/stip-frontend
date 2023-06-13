@@ -16,6 +16,7 @@ import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
 import { PartnerContainerDTO } from './partnerContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
+import { ElternContainerDTO } from './elternContainerDTO';
 
 export interface GesuchDTO {
   id?: string;
@@ -24,6 +25,7 @@ export interface GesuchDTO {
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
   familiensituationContainer?: FamiliensituationContainerDTO;
   gesuchStatus: Gesuchstatus;
+  elternContainers: ElternContainerDTO[];
   gesuchNummer: number;
   ausbildung: AusbildungContainerDTO;
 

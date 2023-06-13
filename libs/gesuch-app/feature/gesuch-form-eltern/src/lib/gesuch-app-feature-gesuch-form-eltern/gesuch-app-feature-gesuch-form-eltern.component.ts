@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,46 +5,27 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { selectGesuchAppDataAccessElternsView } from '@dv/gesuch-app/data-access/eltern';
-import {
-  GesuchAppEventGesuchFormMutter,
-  GesuchAppEventGesuchFormVater,
-} from '@dv/gesuch-app/event/gesuch-form-eltern';
-import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
-import {
-  Anrede,
-  Land,
-  MASK_SOZIALVERSICHERUNGSNUMMER,
-} from '@dv/shared/model/gesuch';
-import {
-  SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
-import { MaskitoModule } from '@maskito/angular';
-import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+
 import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
+import { ElternDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
   standalone: true,
   imports: [
     CommonModule,
-    SharedUiFormFieldComponent,
-    SharedUiFormMessageComponent,
-    SharedUiFormLabelComponent,
-    ReactiveFormsModule,
     TranslateModule,
-    SharedUiFormMessageErrorDirective,
-    MaskitoModule,
-    NgbInputDatepicker,
-    SharedUiFormLabelTargetDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
+    GesuchAppFeatureGesuchFormElternEditorComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],
@@ -53,80 +33,71 @@ import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature
 })
 export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   private store = inject(Store);
+  private actions = inject(Actions);
 
-  private formBuilder = inject(FormBuilder);
+  view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
-  readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
-
-  readonly Land = Land;
-
-  mutterLabel = 'gesuch-app.form.eltern.mutter.title';
-  vaterLabel = 'gesuch-app.form.eltern.vater.title';
-  displayLabel = '';
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
-
-  form = this.formBuilder.group({
-    name: ['', [Validators.required]],
-    vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
-    identischerZivilrechtlicherWohnsitz: [false, []],
-    telefonnummer: ['', [Validators.required]],
-    sozialversicherungsnummer: ['', [Validators.required]],
-    geburtsdatum: ['', [Validators.required]],
-    sozialhilfebeitraegeAusbezahlt: [false, [Validators.required]],
-    ausweisbFluechtling: [false, [Validators.required]],
-    ergaenzungsleistungAusbezahlt: [false, [Validators.required]],
-  });
-
-  view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
-
-  elternView = this.store.selectSignal(selectGesuchAppDataAccessElternsView);
+  editedParent?: ElternDTO;
 
   constructor() {
+    console.log('XXX constructor');
+    const actions$ = toSignal(this.actions);
     effect(() => {
-      const { elternContainer } = this.elternView();
-      console.log(elternContainer);
-      console.log(elternContainer?.elternSB);
-      if (elternContainer?.elternSB) {
-        const eltern = elternContainer.elternSB;
-        const elternForForm = {
-          ...eltern,
-          geburtsdatum: eltern.geburtsdatum.toString(),
-        };
-        this.form.patchValue({ ...elternForForm });
-      }
+      const a = actions$();
+      console.log(a);
     });
   }
 
   ngOnInit(): void {
-    if (this.view().type === Anrede.HERR) {
-      this.displayLabel = this.vaterLabel;
-      this.store.dispatch(GesuchAppEventGesuchFormVater.init());
-    } else {
-      this.displayLabel = this.mutterLabel;
-      this.store.dispatch(GesuchAppEventGesuchFormMutter.init());
-    }
-  }
-
-  handleSave() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      //TODO navigate next and save
-    }
+    this.store.dispatch(GesuchAppEventGesuchFormEltern.init());
   }
 
   trackByIndex(index: number) {
     return index;
+  }
+
+  handleEdit(parent: ElternDTO) {
+    this.editedParent = parent;
+  }
+
+  handleEditorSave(parent: ElternDTO) {
+    this.store.dispatch(
+      GesuchAppEventGesuchFormEltern.saveParentTriggered({
+        gesuch: this.buildUpdatedGesuchWithUpdatedParent(parent),
+      })
+    );
+    this.editedParent = undefined;
+  }
+
+  handleEditorCancel() {
+    this.editedParent = undefined;
+  }
+
+  private buildUpdatedGesuchWithUpdatedParent(parent: ElternDTO) {
+    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
+    // update existing parent if found
+    const updatedElternContainers =
+      gesuch?.elternContainers?.map((elternContainer) => {
+        if (elternContainer.elternSB?.id === parent.id) {
+          return {
+            ...elternContainer,
+            elternSB: parent,
+          };
+        } else {
+          return elternContainer;
+        }
+      }) ?? [];
+    // add new parent if not found
+    if (!parent.id) {
+      // TODO new parent doesnt have ID, will be added by backend?
+      updatedElternContainers.push({
+        elternSB: parent,
+        id: 'generated by backend? or FE uuid?',
+      });
+    }
+    return {
+      ...gesuch,
+      elternContainers: updatedElternContainers,
+    };
   }
 }

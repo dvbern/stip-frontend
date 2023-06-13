@@ -7,6 +7,7 @@ import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 export interface State {
   gesuch: SharedModelGesuch | undefined;
@@ -37,14 +38,15 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
 
     on(
       GesuchAppEventCockpit.init,
-      GesuchAppEventCockpit.removeTriggered,
       GesuchAppEventGesuchFormPerson.init,
       GesuchAppEventGesuchFormEducation.init,
       GesuchAppEventGesuchFormFamiliensituation.init,
+      GesuchAppEventGesuchFormEltern.init,
       GesuchAppEventGesuchFormPerson.saveTriggered,
       GesuchAppEventGesuchFormEducation.saveTriggered,
       GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-      GesuchAppEventGesuchFormFamiliensituation.init,
+      GesuchAppEventGesuchFormEltern.saveTriggered,
+      GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,
         gesuch: undefined,
@@ -75,6 +77,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     on(
       GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
       GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess,
+      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
       (state): State => ({
         ...state,
         loading: false,
@@ -87,6 +90,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure,
       GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure,
       GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure,
+      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure,
       GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({

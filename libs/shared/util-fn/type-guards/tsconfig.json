@@ -1,7 +1,7 @@
 {
+  "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2022",
-    "useDefineForClassFields": false
+    "module": "commonjs"
   },
   "files": [],
   "include": [],
@@ -12,6 +12,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "extends": "../../../../tsconfig.base.json"
+  ]
 }

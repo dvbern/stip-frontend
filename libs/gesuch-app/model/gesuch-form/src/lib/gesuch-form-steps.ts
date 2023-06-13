@@ -22,7 +22,7 @@ export abstract class GesuchFormSteps {
   };
 
   static readonly ELTERN: GesuchAppModelGesuchFormStep = {
-    route: 'gesuch-app-feature-gesuch-eltern',
+    route: 'gesuch-app-feature-gesuch-form-eltern',
     translationKey: 'gesuch-app.form.eltern.title',
   };
 

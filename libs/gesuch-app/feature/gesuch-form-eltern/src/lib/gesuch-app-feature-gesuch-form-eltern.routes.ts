@@ -1,11 +1,7 @@
 import { Route } from '@angular/router';
+
 import { GesuchAppFeatureGesuchFormElternComponent } from './gesuch-app-feature-gesuch-form-eltern/gesuch-app-feature-gesuch-form-eltern.component';
-import { provideState } from '@ngrx/store';
-import {
-  gesuchAppDataAccessElternEffects,
-  gesuchAppDataAccessElternsFeature,
-} from '@dv/gesuch-app/data-access/eltern';
-import { provideEffects } from '@ngrx/effects';
+import { GesuchAppFeatureGesuchFormElternEditorComponent } from './gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
 
 export const gesuchAppFeatureGesuchFormElternRoutes: Route[] = [
   {

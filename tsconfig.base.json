@@ -18,7 +18,6 @@
     "baseUrl": ".",
     "paths": {
       "@dv/gesuch-app/data-access/ausbildungsgang": ["libs/gesuch-app/data-access/ausbildungsgang/src/index.ts"],
-      "@dv/gesuch-app/data-access/eltern": ["libs/gesuch-app/data-access/eltern/src/index.ts"],
       "@dv/gesuch-app/data-access/gesuch": ["libs/gesuch-app/data-access/gesuch/src/index.ts"],
       "@dv/gesuch-app/data-access/gesuchsperiode": ["libs/gesuch-app/data-access/gesuchsperiode/src/index.ts"],
       "@dv/gesuch-app/event/cockpit": ["libs/gesuch-app/event/cockpit/src/index.ts"],
@@ -53,6 +52,7 @@
       "@dv/shared/ui/icon-chip": ["libs/shared/ui/icon-chip/src/index.ts"],
       "@dv/shared/ui/language-selector": ["libs/shared/ui/language-selector/src/index.ts"],
       "@dv/shared/ui/progress-bar": ["libs/shared/ui/progress-bar/src/index.ts"],
+      "@dv/shared/util-fn/type-guards": ["libs/shared/util-fn/type-guards/src/index.ts"],
       "@dv/shared/util/form": ["libs/shared/util/form/src/index.ts"],
       "@dv/shared/util/validator-ahv": ["libs/shared/util/validator-ahv/src/index.ts"],
       "@dv/shared/util/validator-date": ["libs/shared/util/validator-date/src/index.ts"],

@@ -32,24 +32,7 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: 'gesuch-app-feature-gesuch-form-vater',
-    data: {
-      type: Anrede.HERR,
-    },
-    // TODO this has to load gesuch and determine the step (with help of step manager)
-    canMatch: [],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
-        (m) => m.gesuchAppFeatureGesuchFormElternRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-mutter',
-    data: {
-      type: Anrede.FRAU,
-    },
-    // TODO this has to load gesuch and determine the step (with help of step manager)
-    canMatch: [],
+    path: 'gesuch-app-feature-gesuch-form-eltern',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
         (m) => m.gesuchAppFeatureGesuchFormElternRoutes
