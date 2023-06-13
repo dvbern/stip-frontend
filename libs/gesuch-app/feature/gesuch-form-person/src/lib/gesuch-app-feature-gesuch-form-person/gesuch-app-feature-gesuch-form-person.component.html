@@ -283,7 +283,7 @@
               Datei(en) hineinziehen<br />
               oder
             </div>
-            <button type="button" class="btn btn-outline-secondary">
+            <button type="button" class="btn btn-outline-primary">
               Dateien durchsuchen
             </button>
           </div>
@@ -350,7 +350,7 @@
             />
             <button
               (click)="geburtsdatum.toggle()"
-              class="btn btn-outline-secondary position-relative"
+              class="btn btn-outline-primary position-relative"
               type="button"
             >
               <span
@@ -444,7 +444,10 @@
               [value]="z.value"
               *ngFor="let z of Zivilstand | keyvalue; trackBy: trackByIndex"
             >
-              {{ z.value }}
+              {{
+                'gesuch-app.form.person.zivilstand.' + (z.value | lowercase)
+                  | translate
+              }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -469,7 +472,10 @@
               [value]="z.value"
               *ngFor="let z of Wohnsitz | keyvalue; trackBy: trackByIndex"
             >
-              {{ z.value }}
+              {{
+                'gesuch-app.form.person.wohnsitz.' + (z.value | lowercase)
+                  | translate
+              }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

@@ -132,9 +132,9 @@
       "gesuchNummer": 0,
       "ausbildung": {
         "ausbildungSB": {
-          "ausbildungsland": "CH",
-          "ausbildungsstaette": "Haarakademie",
-          "ausbildungsgang": "Berufsvorbereitendes Schuljahr",
+          "ausbildungsland": "ausland",
+          "ausbildungsstaette": "Hochschule für Musik und Theater Leipzig",
+          "ausbildungsgang": "Master",
           "fachrichtung": "Die Welt retten",
           "manuell": false,
           "start": "10.2023",
