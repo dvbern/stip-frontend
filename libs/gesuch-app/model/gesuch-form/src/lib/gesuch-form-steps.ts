@@ -25,4 +25,9 @@ export abstract class GesuchFormSteps {
     route: 'gesuch-app-feature-gesuch-eltern',
     translationKey: 'gesuch-app.form.eltern.title',
   };
+
+  public static readonly PARTNER: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-partner',
+    translationKey: '',
+  };
 }

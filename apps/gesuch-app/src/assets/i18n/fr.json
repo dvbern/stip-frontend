@@ -10,6 +10,7 @@
   "gesuch-app.form.shared.firstname.label": "Prénom",
   "gesuch-app.form.shared.social-insurance-number.label": "Numéro AVS",
   "gesuch-app.form.shared.social-insurance-number.info": "You can find your social insurance number on your health insurance card.",
+  "gesuch-app.form.shared.address.co.label": "C/O Address",
   "gesuch-app.form.shared.address.street.label": "Rue",
   "gesuch-app.form.shared.address.number.label": "Nr.",
   "gesuch-app.form.shared.address.zipcode.label": "Code postal",
@@ -21,7 +22,6 @@
   "gesuch-app.form.person.title": "Person in Education",
   "gesuch-app.form.person.section.additional-information": "Additional information",
   "gesuch-app.form.person.salutation.label": "Title",
-  "gesuch-app.form.person.address.co.label": "C/O Address",
   "gesuch-app.form.person.email.label": "Email",
   "gesuch-app.form.person.nationality.label": "Nationality",
   "gesuch-app.form.person.origin.label": "Origin",
@@ -63,5 +63,7 @@
   "gesuch-app.cockpit.gesuch.nachfrist": "Nachfrist verlangen",
   "gesuch-app.cockpit.gesuch.remove": "Remove",
   "gesuch-app.cockpit.gesuch.semester.herbst": "Herbst",
-  "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr"
+  "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr",
+  "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
+  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen"
 }

@@ -10,6 +10,7 @@
   "gesuch-app.form.shared.firstname.label": "Firstname",
   "gesuch-app.form.shared.social-insurance-number.label": "Social insurance number",
   "gesuch-app.form.shared.social-insurance-number.info": "You can find your social insurance number on your health insurance card.",
+  "gesuch-app.form.shared.address.co.label": "C/O Address",
   "gesuch-app.form.shared.address.street.label": "Street",
   "gesuch-app.form.shared.address.number.label": "Nr.",
   "gesuch-app.form.shared.address.zipcode.label": "Zipcode",
@@ -21,7 +22,6 @@
   "gesuch-app.form.person.title": "Person in Education",
   "gesuch-app.form.person.section.additional-information": "Additional information",
   "gesuch-app.form.person.salutation.label": "Title",
-  "gesuch-app.form.person.address.co.label": "C/O Address",
   "gesuch-app.form.person.email.label": "Email",
   "gesuch-app.form.person.nationality.label": "Nationality",
   "gesuch-app.form.person.origin.label": "Origin",
@@ -43,5 +43,7 @@
   "gesuch-app.form.cv.title": "CV",
   "gesuch-app.cockpit.gesuch.new": "Add new Gesuch",
   "gesuch-app.cockpit.gesuch.edit": "Edit",
-  "gesuch-app.cockpit.gesuch.remove": "Remove"
+  "gesuch-app.cockpit.gesuch.remove": "Remove",
+  "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
+  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen"
 }

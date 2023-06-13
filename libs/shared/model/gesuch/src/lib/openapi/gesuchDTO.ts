@@ -14,6 +14,7 @@ import { FallDTO } from './fallDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
+import { PartnerContainerDTO } from './partnerContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
 
 export interface GesuchDTO {
@@ -25,4 +26,6 @@ export interface GesuchDTO {
   gesuchStatus: Gesuchstatus;
   gesuchNummer: number;
   ausbildung: AusbildungContainerDTO;
+
+  partnerContainer: PartnerContainerDTO;
 }

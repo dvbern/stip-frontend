@@ -10,6 +10,7 @@
   "gesuch-app.form.shared.firstname.label": "Vorname",
   "gesuch-app.form.shared.social-insurance-number.label": "Sozialversicherungsnummer",
   "gesuch-app.form.shared.social-insurance-number.info": "Sie finden Ihre AHV-Nummer auf Ihrer schweizerischen Krankenversicherungskarte.",
+  "gesuch-app.form.shared.address.co.label": "Co-Adresse",
   "gesuch-app.form.shared.address.street.label": "Strasse",
   "gesuch-app.form.shared.address.number.label": "Nr.",
   "gesuch-app.form.shared.address.zipcode.label": "PLZ",
@@ -21,7 +22,6 @@
   "gesuch-app.form.person.title": "Person in Ausbildung",
   "gesuch-app.form.person.section.additional-information": "Weitere Angaben",
   "gesuch-app.form.person.salutation.label": "Anrede",
-  "gesuch-app.form.person.address.co.label": "Co-Adresse",
   "gesuch-app.form.person.email.label": "E-Mail",
   "gesuch-app.form.person.nationality.label": "Nationalität",
   "gesuch-app.form.person.origin.label": "Heimatort",
@@ -98,5 +98,7 @@
   "gesuch-app.cockpit.gesuch.remove": "Löschen",
   "gesuch-app.cockpit.gesuch.semester.herbst": "Herbst",
   "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr",
-  "gesuch-app.cockpit.gesuch.img.alt": "Person am Schreibtisch"
+  "gesuch-app.cockpit.gesuch.img.alt": "Person am Schreibtisch",
+  "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
+  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen"
 }

@@ -12,6 +12,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'gesuch-app-feature-gesuch-form-partner',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-partner').then(
+        (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
+      ),
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'gesuch-app-feature-cockpit',
