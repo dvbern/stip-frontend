@@ -3,6 +3,13 @@ import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [
   {
+    path: GesuchFormSteps.AUSZAHLUNGEN.name,
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
+        (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
+      ),
+  },
+  {
     path: GesuchFormSteps.FAMILIENSITUATION.route,
     title: 'gesuch-app.familiensituation.title',
     loadChildren: () =>
