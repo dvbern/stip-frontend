@@ -28,7 +28,7 @@
       novalidate
       class="mt-4"
       *ngIf="!view().loading"
-      (ngSubmit)="handleSaveAndContinue()"
+      (ngSubmit)="handleSave()"
     >
       <div class="row g-4 mt-3">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
@@ -626,14 +626,6 @@
       >
         <button type="submit" class="btn btn-primary">
           {{ 'gesuch-app.form.save-and-continue' | translate }}
-        </button>
-        <button
-          type="button"
-          class="btn btn-link"
-          data-test-id="form-person-action-back"
-          (click)="handleSaveAndBack()"
-        >
-          {{ 'gesuch-app.form.save-and-back' | translate }}
         </button>
       </div>
     </form>

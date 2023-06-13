@@ -141,6 +141,17 @@
           "ende": "01.2024",
           "pensum": "FULLTIME"
         }
+      },
+      "familiensituationContainer": {
+        "familiensituationSB": {
+          "leiblicheElternVerheiratetKonkubinat": false,
+          "gerichtlicheAlimentenregelung": false,
+          "elternteilVerstorbenUnbekannt": false,
+          "vaterWiederverheiratet": true,
+          "mutterWiederverheiratet": false,
+          "sorgerecht": "VATER",
+          "obhut": "MUTTER"
+        }
       }
     },
     {
@@ -173,6 +184,10 @@
           "digitaleKommunikation": true
         }
       }
+    },
+    {
+      "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "id": "Dx2NYX-"
     }
   ],
   "ausbildungsgangTree": [

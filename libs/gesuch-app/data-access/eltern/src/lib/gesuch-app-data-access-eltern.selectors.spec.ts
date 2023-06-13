@@ -3,7 +3,7 @@ import { selectGesuchAppDataAccessElternsView } from './gesuch-app-data-access-e
 describe('selectGesuchAppDataAccessElternsView', () => {
   it('selects view', () => {
     const state = {
-      elterns: [],
+      elternContainer: undefined,
       loading: false,
       error: null,
     };

@@ -119,17 +119,10 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
     }
   }
 
-  handleSaveAndContinue() {
+  handleSave() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       //TODO navigate next and save
-    }
-  }
-
-  handleSaveAndBack() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      //TODO Navigate back and save
     }
   }
 
