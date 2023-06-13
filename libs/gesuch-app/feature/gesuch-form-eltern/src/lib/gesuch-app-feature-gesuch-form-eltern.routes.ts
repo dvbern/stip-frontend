@@ -16,6 +16,10 @@ export const gesuchAppFeatureGesuchFormElternRoutes: Route[] = [
         path: ':id',
         title: 'gesuch-app.form.eltern.title',
         component: GesuchAppFeatureGesuchFormElternComponent,
+        data: {
+          // reinitialize when navigated to the same route
+          shouldReuseRoute: false,
+        },
       },
       // add more routes here (siblings)
       // it is also possible to add nested routes as children

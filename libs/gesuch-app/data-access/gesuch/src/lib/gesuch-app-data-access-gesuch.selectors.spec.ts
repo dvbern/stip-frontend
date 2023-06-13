@@ -9,6 +9,6 @@ describe('selectGesuchAppDataAccessGesuchsView', () => {
       error: null,
     };
     const result = selectGesuchAppDataAccessGesuchsView.projector(state);
-    expect(result.gesuchFormStepsInfo.length).toEqual(5);
+    expect(result.gesuchFormStepsInfo.length).toEqual(6);
   });
 });

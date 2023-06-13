@@ -1,14 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
@@ -33,20 +30,10 @@ import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-f
 })
 export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   private store = inject(Store);
-  private actions = inject(Actions);
 
   view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
   editedParent?: ElternDTO;
-
-  constructor() {
-    console.log('XXX constructor');
-    const actions$ = toSignal(this.actions);
-    effect(() => {
-      const a = actions$();
-      console.log(a);
-    });
-  }
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormEltern.init());

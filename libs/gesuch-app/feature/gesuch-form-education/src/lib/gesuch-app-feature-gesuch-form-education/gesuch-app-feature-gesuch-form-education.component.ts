@@ -150,7 +150,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     // When Land  null, disable staette
     effect(
       () => {
-        console.log('DISABLE statete', land$(), typeof land$());
         // do not enable/disable fields  on signal default value
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungsstaette,
