@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, EMPTY, map, switchMap, tap } from 'rxjs';
+import { catchError, concatMap, EMPTY, map, tap } from 'rxjs';
 
 import { DEFAULT_LANGUAGE } from '@dv/shared/model/language';
 
@@ -53,25 +53,6 @@ export const syncLanguageToNgxTranslate = createEffect(
       ),
       tap(({ language }) => {
         ngxTranslateService.use(language);
-      }),
-      switchMap(({ language }) =>
-        ngxTranslateService.getTranslation(`shared.${language}`).pipe(
-          map((sharedTranslationsForLanguage) => ({
-            language,
-            sharedTranslationsForLanguage,
-          })),
-          catchError(() => {
-            console.error(`Shared translations for "${language}" not found`);
-            return EMPTY;
-          })
-        )
-      ),
-      tap(({ language, sharedTranslationsForLanguage }) => {
-        ngxTranslateService.setTranslation(
-          language,
-          sharedTranslationsForLanguage,
-          true
-        );
       })
     );
   },

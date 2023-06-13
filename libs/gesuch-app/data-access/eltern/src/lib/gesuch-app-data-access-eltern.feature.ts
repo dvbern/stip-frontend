@@ -1,16 +1,20 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchAppDataAccessElternApiEvents } from './gesuch-app-data-access-eltern.events';
+import { ElternContainerDTO } from '@dv/shared/model/gesuch';
+import {
+  GesuchAppEventGesuchFormMutter,
+  GesuchAppEventGesuchFormVater,
+} from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 export interface State {
-  // TODO interface should come from a model lib
-  elterns: any[];
+  elternContainer: ElternContainerDTO | undefined;
   loading: boolean;
   error: string | undefined;
 }
 
 const initialState: State = {
-  elterns: [],
+  elternContainer: undefined,
   loading: false,
   error: undefined,
 };
@@ -20,11 +24,12 @@ export const gesuchAppDataAccessElternsFeature = createFeature({
   reducer: createReducer(
     initialState,
 
-    // TODO replace with a trigger event (eg some page init)
     on(
-      GesuchAppDataAccessElternApiEvents.dummy,
+      GesuchAppEventGesuchFormVater.init,
+      GesuchAppEventGesuchFormMutter.init,
       (state): State => ({
         ...state,
+        elternContainer: undefined,
         loading: true,
         error: undefined,
       })
@@ -32,9 +37,9 @@ export const gesuchAppDataAccessElternsFeature = createFeature({
 
     on(
       GesuchAppDataAccessElternApiEvents.elternsLoadedSuccess,
-      (state, { elterns }): State => ({
+      (state, { elternContainer }): State => ({
         ...state,
-        elterns,
+        elternContainer,
         loading: false,
         error: undefined,
       })
@@ -44,7 +49,7 @@ export const gesuchAppDataAccessElternsFeature = createFeature({
       // add other failure events here (if handled the same way)
       (state, { error }): State => ({
         ...state,
-        elterns: [],
+        elternContainer: undefined,
         loading: false,
         error,
       })
@@ -56,7 +61,6 @@ export const {
   name, // feature name
   reducer,
   selectElternsState,
-  selectElterns,
   selectLoading,
   selectError,
 } = gesuchAppDataAccessElternsFeature;

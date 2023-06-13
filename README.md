@@ -38,9 +38,9 @@ Welcome to DV Stip Workspace!
 ## Getting Started
 
 Install global `nx` CLI with `npm i -g nx` as it will make running of some commands easier.
-Install the dependencies with `npm ci --force`
+Install the dependencies with `npm ci` (append `--legacy-peer-deps` or `--force`)
 
-> The `--force` flag is used because the dependencies available at the time of the creation of the workspace did not fulfill their peerDependencies ranges perfectly. This might change in the future as newer versions of the libraries are released and the `--force` flag might not be needed anymore.
+> The `--legacy-peer-deps` flag might need to used in case the dependencies available at the time of last workspace update did not fulfill their peerDependencies ranges perfectly. This might change again in the future as newer versions of the libraries are released and the `--legacy-peer-deps` flag might not be needed anymore.
 
 ## Workspace generators & Executors
 
@@ -77,6 +77,7 @@ any specific use case. Following list represents a concise summary of each libra
 - **feature** - lazy loaded feature (most custom logic will go here, eg components, services, ...)
 - **pattern** - reusable pattern (eg layout, form, ...) (eager feature)
 - **data-access** - headless NgRx based data access layer
+- **event** - events dispatched by features / patterns (and consumed by data-access)
 - **ui** - reusable UI component (eg button, input, ...)
 - **util** - reusable Angular injectable utility
 - **util-fn** - reusable TypeScript function utility (no Angular)

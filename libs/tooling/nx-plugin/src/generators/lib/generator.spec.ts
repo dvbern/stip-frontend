@@ -208,9 +208,7 @@ describe('lib generator', () => {
         )
       ).toBeTruthy();
       expect(
-        tree.exists(
-          'libs/shared/feature/example/src/lib/gesuch-app-feature-cockpit.routes.ts'
-        )
+        tree.exists('libs/shared/feature/example/src/lib/lib.routes.ts')
       ).toBeFalsy();
       expect(
         tree.exists('libs/shared/feature/example/package.json')

@@ -7,24 +7,20 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   Anrede,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   SharedModelGesuch,
+  Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
 import {
@@ -35,10 +31,15 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { sharedUtilAhvValidator } from '@dv/shared/util/ahv-validator';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -50,13 +51,13 @@ import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form
     MaskitoModule,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
@@ -70,6 +71,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly Anrede = Anrede;
   readonly Land = Land;
   readonly Zivilstand = Zivilstand;
+  readonly Wohnsitz = Wohnsitz;
 
   geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
   geburtsdatumMaxDate: NgbDateStruct = {
@@ -83,7 +85,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
       '',
-      [Validators.required, sharedUtilAhvValidator],
+      [Validators.required, sharedUtilValidatorAhv],
     ],
     anrede: ['', [Validators.required]],
     name: ['', [Validators.required]],
@@ -104,6 +106,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     heimatort: ['', [Validators.required]],
     vormundschaft: [false, []],
     zivilstand: ['', [Validators.required]],
+    wohnsitz: ['', [Validators.required]],
     sozialhilfebeitraege: [false, []],
     quellenbesteuerung: [false, []],
     kinder: [false, []],

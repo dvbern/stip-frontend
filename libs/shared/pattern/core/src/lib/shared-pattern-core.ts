@@ -13,21 +13,21 @@ import {
   withInMemoryScrolling,
 } from '@angular/router';
 import {
-  HttpClient,
+  HttpBackend,
   provideHttpClient,
   withInterceptors,
 } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideState, provideStore, Store } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
   MissingTranslationHandler,
   MissingTranslationHandlerParams,
 } from '@ngx-translate/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
 import {
   SharedDataAccessConfigEvents,
@@ -110,11 +110,10 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         loader: {
           provide: TranslateLoader,
           useFactory: () =>
-            new TranslateHttpLoader(
-              inject(HttpClient),
-              './assets/i18n/',
-              '.json'
-            ),
+            new MultiTranslateHttpLoader(inject(HttpBackend), [
+              { prefix: './assets/i18n/', suffix: '.json' },
+              { prefix: './assets/i18n/shared.', suffix: '.json' },
+            ]),
         },
       }),
     ]),

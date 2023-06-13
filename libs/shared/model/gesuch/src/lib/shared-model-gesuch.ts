@@ -33,6 +33,10 @@ export const MASK_SOZIALVERSICHERUNGSNUMMER: MaskitoOptions = {
   ],
 };
 
+export const MASK_MM_YYYY: MaskitoOptions = {
+  mask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/],
+};
+
 export enum GesuchsperiodeSemester {
   HERBST = 'HERBST',
   FRUEHLING = 'FRUEHLING',

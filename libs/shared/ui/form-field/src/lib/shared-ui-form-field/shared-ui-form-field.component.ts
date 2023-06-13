@@ -23,8 +23,8 @@ import {
 } from 'rxjs';
 
 import { SharedUiFormLabelComponent } from '../shared-ui-form-label/shared-ui-form-label.component';
-import { SharedUiFormMessageInfoDirective } from '../shared-ui-form-message/shared-ui-form-message-info.directive';
 import { SharedUiFormMessageErrorDirective } from '../shared-ui-form-message/shared-ui-form-message-error.directive';
+import { SharedUiFormMessageInfoDirective } from '../shared-ui-form-message/shared-ui-form-message-info.directive';
 
 let nextUniqueId = 0;
 
@@ -58,6 +58,7 @@ export class SharedUiFormFieldComponent implements DoCheck, AfterContentInit {
   touchedStateDuringCheck$ = new Subject<boolean>();
   showInfoIcon$: Observable<boolean> | undefined;
   errorMessages$: Observable<SharedUiFormMessageErrorDirective[]> | undefined;
+  touchedAndInvalid$: Observable<boolean> | undefined;
 
   ngDoCheck(): void {
     if (!this.formFieldControl) {
@@ -82,6 +83,14 @@ export class SharedUiFormFieldComponent implements DoCheck, AfterContentInit {
     this.touched$ = this.touchedStateDuringCheck$
       .asObservable()
       .pipe(startWith(false), distinctUntilChanged());
+
+    this.touchedAndInvalid$ = this.touchedStateDuringCheck$.asObservable().pipe(
+      map(
+        (touched) => this.formFieldControl?.invalid === true && touched === true
+      ),
+      startWith(false),
+      distinctUntilChanged()
+    );
 
     this.errorMessages$ = this.touched$.pipe(
       switchMap((touched) => {

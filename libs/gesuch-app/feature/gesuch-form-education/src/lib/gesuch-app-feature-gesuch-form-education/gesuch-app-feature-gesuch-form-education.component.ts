@@ -2,24 +2,31 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   OnInit,
+  Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { selectGesuchAppDataAccessAusbildungsgangsView } from '@dv/gesuch-app/data-access/ausbildungsgang';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import {
   GesuchFormSteps,
   NavigationType,
 } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
-  Ausbildungsgang,
-  AusbildungsgangLand,
   AusbildungsgangStaette,
+  MASK_MM_YYYY,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
@@ -29,36 +36,46 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
-import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  sharedUtilValidatorMonthYearMin,
+  sharedUtilValidatorMonthYearMonth,
+} from '@dv/shared/util/validator-date';
+
+import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { getYear, isAfter } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
-  filter,
   map,
   merge,
   Observable,
   OperatorFunction,
+  startWith,
   Subject,
 } from 'rxjs';
+
+import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
   standalone: true,
   imports: [
     CommonModule,
-    SharedUiProgressBarComponent,
     TranslateModule,
     ReactiveFormsModule,
+    NgbInputDatepicker,
+    NgbTypeahead,
     SharedUiFormFieldComponent,
     SharedUiFormMessageComponent,
     SharedUiFormLabelComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormLabelTargetDirective,
-    NgbInputDatepicker,
-    NgbTypeahead,
+    MaskitoModule,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -67,11 +84,8 @@ import {
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
-
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
-  ausbildungsgangs = this.store.selectSignal(
-    selectGesuchAppDataAccessAusbildungsgangsView
-  );
+  private formUtils = inject(SharedUtilFormService);
+  currentYear = getYear(Date.now());
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
@@ -79,97 +93,91 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
     manuell: [false, []],
-    start: ['', [Validators.required]],
-    ende: ['', [Validators.required]],
-    pensum: [0, [Validators.required]],
+    start: [
+      '',
+      [
+        Validators.required,
+        sharedUtilValidatorMonthYearMonth,
+        sharedUtilValidatorMonthYearMin(this.currentYear),
+      ],
+    ],
+    ende: ['', [Validators.required, sharedUtilValidatorMonthYearMonth], []],
+    pensum: ['', [Validators.required]],
   });
 
+  view$ = this.store.selectSignal(
+    selectGesuchAppFeatureGesuchFormEducationView
+  );
+  land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
+  ausbildungsstaetteOptions$ = computed(() => {
+    const ausbildungsgangLands = this.view$().ausbildungsgangLands;
+    return (
+      ausbildungsgangLands.find((item) => item.name === this.land$())
+        ?.staettes || []
+    );
+  });
+  ausbildungsstaett$ = toSignal(
+    this.form.controls.ausbildungsstaette.valueChanges
+  );
+  ausbildungsgangOptions$ = computed(() => {
+    return (
+      this.ausbildungsstaetteOptions$().find(
+        (item) => item.name === this.ausbildungsstaett$()
+      )?.ausbildungsgangs || []
+    );
+  });
+
+  pensumOptions = ['FULLTIME', 'PARTTIME'];
+
   constructor() {
+    // add multi-control validators
+    this.form.controls.ende.addValidators([
+      this.createValidatorEndAfterStart(this.form.controls.start),
+    ]);
+
     // fill form
-    effect(() => {
-      const { gesuch } = this.view();
-      if (gesuch?.ausbildung?.ausbildungSB) {
-        const ausbildung = gesuch?.ausbildung?.ausbildungSB;
-        const ausbildungForForm = {
-          ...ausbildung,
-          start: ausbildung.start.toString(),
-          ende: ausbildung.ende.toString(),
-        };
-        this.form.patchValue({ ...ausbildungForForm });
-      }
-    });
-
-    effect(() => {
-      const ausildungsgangs = this.ausbildungsgangs().ausbildungsgangLands;
-      console.log(ausildungsgangs);
-    });
-
-    // When manuell is changed, clear Ausbildungsstaette and Ausbildungsgang
-    const manuellChangesSignal = toSignal(
-      this.form.controls.manuell.valueChanges
+    effect(
+      () => {
+        const { ausbildung } = this.view$();
+        if (ausbildung) {
+          this.form.patchValue({ ...ausbildung });
+        }
+      },
+      { allowSignalWrites: true }
     );
-    effect(() => {
-      manuellChangesSignal();
-      this.form.controls.ausbildungsstaette.patchValue('');
-      this.form.controls.ausbildungsgang.patchValue('');
-    });
 
-    // When Land is changed (and not in manuell Mode), clear Ausbildungsstaette
-    const landChangesSignal = toSignal(
-      this.form.controls.ausbildungsland.valueChanges
-    );
-    effect(() => {
-      landChangesSignal();
-      this.form.controls.ausbildungsstaette.patchValue('');
-    });
-
-    // When Ausbildungsstaette is changed (and not in manuell Mode), clear Ausbildungsgang if it is not available
-    const staetteChangesSignal = toSignal(
-      this.form.controls.ausbildungsstaette.valueChanges
-    );
-    effect(() => {
-      const staette = staetteChangesSignal();
-      const ausbildungsgang = this.form.controls.ausbildungsgang.value;
-      // TODO
-      /*if (!this.getAvailablAusbildungsgangs(staette, []).includes(ausbildungsgang)) {
-        this.form.controls.ausbildungsgang.patchValue('');
-      }*/
-    });
-  }
-
-  getAvailablAusbildungsstaettes() {
-    return this.getAvailableAusbildungsstaettesFor(
-      this.form.get('ausbildungsland')?.value,
-      this.ausbildungsgangs().ausbildungsgangLands
-    );
-  }
-
-  getAvailableAusbildungsstaettesFor(
-    land: string | undefined | null,
-    ausbildungsgangLands: AusbildungsgangLand[]
-  ) {
-    return (
-      ausbildungsgangLands.find((each) => each.name === land)?.staettes || []
-    );
-  }
-
-  getAvailableAusbildungsgangsFor(
-    land: string | undefined | null,
-    ausbildungsStaettes: AusbildungsgangStaette[]
-  ) {
-    return (
-      ausbildungsStaettes.find((each) => each.name === land)
-        ?.ausbildungsgangs || []
-    );
-  }
-
-  getAvailableAusbildungsgangs() {
-    return this.getAvailableAusbildungsgangsFor(
-      this.form.get('ausbildungsstaette')?.value,
-      this.getAvailableAusbildungsstaettesFor(
-        this.form.get('ausbildungsland')?.value,
-        this.ausbildungsgangs().ausbildungsgangLands
+    const land$ = toSignal(
+      this.form.controls.ausbildungsland.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsland)
       )
+    );
+    // When Land  null, disable staette
+    effect(
+      () => {
+        console.log('DISABLE statete', land$(), typeof land$());
+        // do not enable/disable fields  on signal default value
+        this.formUtils.setDisabledState(
+          this.form.controls.ausbildungsstaette,
+          !land$()
+        );
+      },
+      { allowSignalWrites: true }
+    );
+
+    // When Staette null, disable gang
+    const staette$ = toSignal(
+      this.form.controls.ausbildungsstaette.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsstaette)
+      )
+    );
+    effect(
+      () => {
+        this.formUtils.setDisabledState(
+          this.form.controls.ausbildungsgang,
+          !staette$()
+        );
+      },
+      { allowSignalWrites: true }
     );
   }
 
@@ -177,9 +185,30 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.store.dispatch(GesuchAppEventGesuchFormEducation.init());
   }
 
+  trackByIndex(index: number) {
+    return index;
+  }
+
+  // this form is special in that the resetting effect
+  // can't be done declarative because it's only the user interaction
+  // which should trigger it and not the backed patching of value
+  // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
+  handleLandChangedByUser() {
+    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungsgang.reset('');
+  }
+
+  handleStaetteChangedByUser() {
+    this.form.controls.ausbildungsgang.reset('');
+  }
+
+  handleManuellChangedByUser() {
+    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungsgang.reset('');
+  }
+
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    console.log(this.form.valid, this.form.errors, this.form.controls);
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.nextStepTriggered({
@@ -204,48 +233,71 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     }
   }
 
+  // TODO we should clean up this logic once we have final data structure
+  // eg extract to util service (for every form step)
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view().gesuch;
     return {
-      ...gesuch,
+      ...this.view$().gesuch,
       ausbildung: {
         ausbildungSB: { ...(this.form.getRawValue() as any) },
       },
     } as Partial<SharedModelGesuch>;
   }
 
-  trackByIndex(index: number) {
-    return index;
-  }
+  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
+  ausbildungsstaetteTypeaheadFn$: Signal<
+    OperatorFunction<string, readonly any[]>
+  > = computed(() => {
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
+    );
+  });
 
-  focusAusbildungsgang$ = new Subject<string>();
-  clickAusbildungsgang$ = new Subject<string>();
+  focusAusbildungsstaette$ = new Subject<string>();
 
-  searchAusbildungsgang(
-    list: Ausbildungsgang[],
-    instance: NgbTypeahead
-  ): OperatorFunction<string, readonly string[]> {
+  createAusbildungsstaetteTypeaheadFn(list: AusbildungsgangStaette[]) {
+    console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(
         debounceTime(200),
         distinctUntilChanged()
       );
-      const clicksWithClosedPopup$ = this.clickAusbildungsgang$.pipe(
-        filter(() => !instance.isPopupOpen())
-      );
-      const inputFocus$ = this.focusAusbildungsgang$;
-      return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-        map((term) =>
-          (term === ''
-            ? list
-            : list.filter(
-                (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
-              )
+      const inputFocus$ = this.focusAusbildungsstaette$;
+      return merge(debouncedText$, inputFocus$).pipe(
+        map((term) => {
+          console.log('typeaheading term ', term, list);
+          return (
+            term === ''
+              ? list
+              : list.filter(
+                  (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
+                )
           )
             .map((staette) => staette.name)
-            .slice(0, 10)
-        )
+            .slice(0, 10);
+        })
       );
+    };
+  }
+
+  protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
+
+  createValidatorEndAfterStart(startControl: FormControl<string | null>) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const startValue = startControl.value;
+      const endValue = control.value as string;
+      if (startValue && endValue) {
+        const [startMonth, startYear] = startValue
+          .split('.')
+          .map((value) => +value);
+        const [endMonth, endYear] = endValue.split('.').map((value) => +value);
+
+        const startDate = new Date(startYear, startMonth - 1);
+        const endDate = new Date(endYear, endMonth - 1);
+
+        return isAfter(endDate, startDate) ? null : { endDateAfterStart: true };
+      }
+      return null;
     };
   }
 }

@@ -7,12 +7,14 @@ $black: #000;
 $red: #fe5454;
 $blue: #298bef;
 
-$primary: #fe5454;
-$secondary: #298bef;
+$primary: #298bef;
+$secondary: #fe5454;
 $info: #298bef;
 
 $body-bg: #fafbfd;
 $min-contrast-ratio: 3; // default 4.5 leads to black text on primary red background
+$body-tertiary-bg: #e3e5e8; // e.g. in dropdown item hover
+
 $btn-link-color: lighten($black, 30%);
 $btn-link-hover-color: $black;
 
@@ -20,6 +22,14 @@ $btn-link-hover-color: $black;
 $font-size-root: 16px;
 $font-size-base: 1rem;
 $font-family-sans-serif: 'Open Sans';
+
+$h1-font-size: 38px;
+$h2-font-size: 30px;
+$h3-font-size: 24px;
+$h4-font-size: 20px;
+$h5-font-size: 18px;
+$h6-font-size: 16px;
+$headings-font-weight: 600;
 
 // radius
 $border-radius: 4px;
@@ -29,6 +39,7 @@ $input-bg: #fff;
 $input-placeholder-color: $secondary;
 $input-focus-border-color: $info;
 $input-focus-box-shadow: 0 0 0 0.2rem rgba($input-focus-border-color, 0.25);
+$input-placeholder-color: #bbb;
 
 // select
 $form-select-focus-border-color: $info;
@@ -45,9 +56,9 @@ $form-check-input-checked-border-color: $form-check-input-checked-bg-color;
 // buttons
 $btn-border-radius: 12px;
 
-$input-btn-padding-y: 12px;
+$input-btn-padding-y: 10px;
 $input-btn-padding-x: 20px;
-$input-btn-line-height: 1.1;
+$input-btn-line-height: 1.5;
 
 // card
 $card-border-radius: 8px;

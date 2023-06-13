@@ -1,0 +1,128 @@
+<!-- HEADER -->
+<header
+  class="top-0 border-bottom w-100"
+  [class.shadow-sm]="isScroll && !compactHeader"
+>
+  <!-- Small screens Header -->
+  <div class="container-md d-lg-none">
+    <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+
+      <!-- search and burgermenu -->
+      <div class="d-flex gap-2 align-items-center">
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.search' | translate"
+        >
+          <span class="material-symbols-rounded">search</span>
+        </button>
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.menu' | translate"
+          (click)="openMenu()"
+        >
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Large screens Header -->
+  <div class="d-none d-lg-block">
+    <div class="p-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/" class="me-3">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+
+      <!-- top left -->
+      <div class="d-flex flex-grow-1 ms-3">
+        <div class="d-flex gap-3 align-items-center">
+          <a
+            routerLink="/"
+            class="btn btn-secondary fw-normal px-2 d-flex align-items-center shadow-none"
+          >
+            <i class="material-symbols-rounded text-white me-2">dashboard</i>
+            <span>Dashboard</span>
+          </a>
+          <button
+            type="button"
+            class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
+          >
+            <i class="material-symbols-rounded me-2">mail</i>
+            <span>Posteingang</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- top right -->
+      <div class="d-flex gap-4 align-items-center">
+        <dv-shared-ui-icon-chip>
+          <i class="material-symbols-rounded text-primary">question_mark</i>
+        </dv-shared-ui-icon-chip>
+
+        <div ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
+            id="userMenu"
+            ngbDropdownToggle
+          >
+            <span>Armin Student</span>
+            <i class="material-symbols-rounded ms-2">expand_more</i>
+          </button>
+
+          <div ngbDropdownMenu aria-labelledby="userMenu">
+            <dv-shared-ui-language-selector
+              class="px-3 py-2"
+              [language]="language()"
+              (languageChange)="handleLanguageChangeHeader($event)"
+            />
+
+            <button type="button" ngbDropdownItem>Action - 1</button>
+            <button type="button" ngbDropdownItem>Another Action</button>
+            <button type="button" ngbDropdownItem>
+              Something else is here
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #menu let-offcanvas>
+    <div class="offcanvas-header">
+      <h4 class="offcanvas-title">
+        {{ 'gesuch-app.header.menu.title' | translate }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        [attr.aria-label]="'shared.close' | translate"
+        (click)="offcanvas.dismiss()"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <dv-shared-ui-language-selector
+        [language]="language()"
+        (languageChange)="handleLanguageChangeHeader($event)"
+      />
+    </div>
+  </ng-template>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <router-outlet></router-outlet>
+</main>

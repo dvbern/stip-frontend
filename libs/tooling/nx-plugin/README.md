@@ -11,7 +11,7 @@ Run `npm run g` to run main `lib` generator which will prompt you to generate de
 
 ### feature - lazy loaded feature
 
-The lazy loaded feature (route) is a main building block of an application
+The lazy loaded feature (route or page) is a main building block of an application
 and every application consists of one or more lazy loaded features.
 
 Lazy loaded feature brings together multiple `pattern`s, `ui` components, `data-access`es and `util`s
@@ -32,6 +32,9 @@ feature with one key difference, it's not a self-contained lazy loaded unit of b
 A good example of pattern can be something like a `core` which represents reusable combination
 of basic infrastructure of an application or things like main layout.
 
+Another great example is any use case where we couple UI component to a specific data-access, such
+resulting entity should be implemented as a pattern (UI components should never be coupled to specific data access)
+
 As a rule of thumb, if you need to combine multiple libraries and inline entities AND their
 combination doesn't represent a lazy loaded feature, then you should create a `pattern`.
 
@@ -42,16 +45,36 @@ combination doesn't represent a lazy loaded feature, then you should create a `p
 
 Data access is a headless library which encapsulates all the NgRx related logic which is responsible
 for a single store **state slice** (usually single entity) and exposes
-a set of `selectors` and `actions` which can be used by other libraries to interact with the store state slice.
+a set of `selectors` and `actions` (we call them `events`) which can be used by other libraries to interact with the store state slice.
 
 It is possible and desirable to create `data-access` libraries which are incomplete, for example
 a data access library responsible for re-loading and application when there was a new release
 (eg the version changed in some config file in a backend). Such a library would only contain
 effect and an action which would periodically check for new version and dispatch an action when a new version is available.
 
+The `data-access` library has to be registered only once in:
+
+1. lazy loaded feature (state of feature)
+2. app.config.ts (global state of a single app)
+3. core (global state re-used in every app)
+
 - always headless (no components)
 - always imported in a feature or pattern
-- allows for an universal easy to compose interface (selectors and actions) for all business logic
+- allows for an universal easy to compose interface (selectors and events) for all business logic
+
+### event - decoupled `data-access` like events that belong to feature (or pattern)
+
+The event library type provides a solution to the following scenario.
+A single feature needs to consume state from multiple `data-access` libraries.
+More so, the feature has to trigger loading of this data when it's initialized in the running app.
+
+In this case we have the following options:
+
+1. Each data slice defines and exposes feature specific `event`s and the feature dispatches multiple "init" events in its `ngOnInit`, this is bad because it couples `data-access` to consumer features, it needs to know about the feature events, also dispatching multiple events for a single real event is a code smell
+2. Feature defines its own events inline - this leads to a cycle in the dep graph where `feature` depends on `data-access` (to consume its data with the help of exposed selectors) and at the same time the `data-access` depends on the feature to consume its events, our architecture should only have one way dep graph (clean, recommended by nx, ...)
+3. Use dedicated `event` library which is consumed by both `feature` and related `data-access` libs, one way dep graph is preserved, feature emits single event for single real event, `data-access` libs don't know about impl details of a particular feature
+
+- only contains events (NgRx actions)
 
 ### ui - reusable UI components
 

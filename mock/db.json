@@ -102,14 +102,14 @@
           "name": "Trajan",
           "vorname": "Tomasdfgdfgfdg",
           "anrede": "HERR",
-          "identischerZivilrechtlicherWohnsitz": true,
+          "identischerZivilrechtlicherWohnsitz": false,
           "izvOrt": "string",
           "izvPLZ": "string",
-          "email": "string",
-          "telefonnummer": "string",
-          "geburtsdatum": "2023-05-24",
+          "email": "hallo@dvbern.ch",
+          "telefonnummer": "0780000000",
+          "geburtsdatum": "2023-05-06",
           "nationalitaet": "CH",
-          "heimatort": "string",
+          "heimatort": "Glarus",
           "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
           "zivilstand": "LEDIG",
           "wohnsitz": "ELTERN",
@@ -118,9 +118,9 @@
           "kinder": true,
           "digitaleKommunikation": true,
           "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse 511",
-            "nummer": "",
+            "coAdresse": "c/o Hans Müller",
+            "strasse": "Hohlstrasse",
+            "nummer": "511",
             "plz": "8048",
             "ort": "sdfsdf",
             "land": "CH"
@@ -131,14 +131,16 @@
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
       "ausbildung": {
-        "ausbildungsland": "CH",
-        "ausbildungsstaette": "A",
-        "ausbildungsgang": "B",
-        "fachrichtung": "Welt verbessern 1",
-        "manuell": true,
-        "start": "99-01-01",
-        "ende": "2050-12-31",
-        "pensum": "120"
+        "ausbildungSB": {
+          "ausbildungsland": "ausland",
+          "ausbildungsstaette": "Hochschule für Musik und Theater Leipzig",
+          "ausbildungsgang": "Master",
+          "fachrichtung": "Die Welt retten",
+          "manuell": false,
+          "start": "10.2023",
+          "ende": "01.2024",
+          "pensum": "FULLTIME"
+        }
       }
     },
     {
@@ -250,56 +252,52 @@
       ]
     }
   ],
-  "eltern": [
-    {
-      "id": "rx_ZMdc",
-      "elternContainer": {
-        "gesuchId": "rx_ZMda",
-        "elternSB": {
-          "sozialversicherungsnummer": "756.5936.9071.75",
-          "geschlecht": "FRAU",
-          "name": "Herich",
-          "vorname": "Kathy",
-          "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse",
-            "nummer": "511",
-            "plz": "8048",
-            "ort": "Zurich",
-            "land": "CH"
-          },
-          "telefonnummer": "+41787342091",
-          "geburtsdatum": "1987-07-17",
-          "sozialhilfebeitraegeAusbezahlt": false,
-          "ausweisbFluechtling": false,
-          "ergaenzungsleistungAusbezahlt": true
-        }
-      }
-    },
-    {
-      "id": "rx_ZMdd",
-      "elternContainer": {
-        "gesuchId": "rx_ZMda",
-        "elternSB": {
-          "sozialversicherungsnummer": "756.5936.9071.74",
-          "geschlecht": "MANN",
-          "name": "Herich",
-          "vorname": "Tom",
-          "addresse": {
-            "coAdresse": "",
-            "strasse": "Hohlstrasse",
-            "nummer": "511",
-            "plz": "8048",
-            "ort": "Zurich",
-            "land": "CH"
-          },
-          "telefonnummer": "+41787342091",
-          "geburtsdatum": "1987-08-17",
-          "sozialhilfebeitraegeAusbezahlt": false,
-          "ausweisbFluechtling": false,
-          "ergaenzungsleistungAusbezahlt": true
-        }
-      }
+  "eltern-mutter": {
+    "gesuchId": "rx_ZMda",
+    "id": "rx_ZMdc",
+    "elternSB": {
+      "sozialversicherungsnummer": "756.5936.9071.75",
+      "geschlecht": "FRAU",
+      "name": "Herich",
+      "vorname": "Kathy",
+      "addresse": {
+        "coAdresse": "",
+        "strasse": "Hohlstrasse",
+        "nummer": "511",
+        "plz": "8048",
+        "ort": "Zurich",
+        "land": "CH"
+      },
+      "identischerZivilrechtlicherWohnsitz": false,
+      "telefonnummer": "+41787342091",
+      "geburtsdatum": "1987-07-17",
+      "sozialhilfebeitraegeAusbezahlt": false,
+      "ausweisbFluechtling": false,
+      "ergaenzungsleistungAusbezahlt": true
     }
-  ]
+  },
+  "eltern-vater": {
+    "gesuchId": "rx_ZMda",
+    "id": "rx_ZMdd",
+    "elternSB": {
+      "sozialversicherungsnummer": "756.5936.9071.74",
+      "geschlecht": "MANN",
+      "name": "Herich",
+      "vorname": "Tom",
+      "addresse": {
+        "coAdresse": "",
+        "strasse": "Hohlstrasse",
+        "nummer": "511",
+        "plz": "8048",
+        "ort": "Zurich",
+        "land": "CH"
+      },
+      "identischerZivilrechtlicherWohnsitz": false,
+      "telefonnummer": "+41787342091",
+      "geburtsdatum": "1987-08-17",
+      "sozialhilfebeitraegeAusbezahlt": false,
+      "ausweisbFluechtling": false,
+      "ergaenzungsleistungAusbezahlt": true
+    }
+  }
 }

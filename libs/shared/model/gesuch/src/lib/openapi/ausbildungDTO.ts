@@ -17,7 +17,7 @@ export interface AusbildungDTO {
   ausbildungsgang: string;
   fachrichtung: string;
   manuell: boolean;
-  start: Date;
-  ende: Date;
-  pensum: number;
+  start: string;
+  ende: string;
+  pensum: 'FULLTIME' | 'PARTTIME';
 }
