@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   OnInit,
+  Signal,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -40,8 +41,6 @@ import {
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
-import { GesuchFamiliensituationForm } from './gesuch-familiensituation-form';
-
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-familiensituation',
   standalone: true,
@@ -74,45 +73,23 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   readonly ELTERN_ABWESENHEITS_GRUND = ElternAbwesenheitsGrund;
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
-  form = this.formBuilder.group<GesuchFamiliensituationForm>({
-    leiblicheElternVerheiratetKonkubinat: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    gerichtlicheAlimentenregelung: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    werZahltAlimente: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    elternteilVerstorbenUnbekannt: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    mutterUnbekanntVerstorben: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    vaterUnbekanntVerstorben: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    mutterUnbekanntReason: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    vaterUnbekanntReason: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    vaterWiederverheiratet: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    mutterWiederverheiratet: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    sorgerecht: new FormControl(null, { validators: Validators.required }),
-    obhut: new FormControl(null, { validators: Validators.required }),
-    obhutMutter: new FormControl(null, { validators: Validators.required }),
-    obhutVater: new FormControl(null, { validators: Validators.required }),
-    sorgerechtMutter: new FormControl(null, {
-      validators: Validators.required,
-    }),
-    sorgerechtVater: new FormControl(null, { validators: Validators.required }),
+  form = this.formBuilder.group({
+    leiblicheElternVerheiratetKonkubinat: [null, [Validators.required]],
+    gerichtlicheAlimentenregelung: [null, [Validators.required]],
+    werZahltAlimente: [null, [Validators.required]],
+    elternteilVerstorbenUnbekannt: [null, [Validators.required]],
+    mutterUnbekanntVerstorben: [null, [Validators.required]],
+    vaterUnbekanntVerstorben: [null, [Validators.required]],
+    mutterUnbekanntReason: [null, [Validators.required]],
+    vaterUnbekanntReason: [null, [Validators.required]],
+    vaterWiederverheiratet: [null, [Validators.required]],
+    mutterWiederverheiratet: [null, [Validators.required]],
+    sorgerecht: [null, { validators: Validators.required }],
+    obhut: [null, { validators: Validators.required }],
+    obhutMutter: [null, { validators: Validators.required }],
+    obhutVater: [null, { validators: Validators.required }],
+    sorgerechtMutter: [null, [Validators.required]],
+    sorgerechtVater: [null, { validators: Validators.required }],
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -124,32 +101,34 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   }
 
   constructor() {
-    const leiblicheElternVerheiratetKonkubinat$ = toSignal(
+    const leiblicheElternVerheiratetKonkubinat$: Signal<
+      null | undefined | boolean
+    > = toSignal(
       this.form.controls.leiblicheElternVerheiratetKonkubinat.valueChanges
     );
-    const gerichtlicheAlimentenregelung$ = toSignal(
-      this.form.controls.gerichtlicheAlimentenregelung.valueChanges
+    const gerichtlicheAlimentenregelung$: Signal<null | undefined | boolean> =
+      toSignal(this.form.controls.gerichtlicheAlimentenregelung.valueChanges);
+    const werZahltAlimente$: Signal<null | undefined | Elternschaftsteilung> =
+      toSignal(this.form.controls.werZahltAlimente.valueChanges);
+    const elternteilVerstorbenUnbekannt$: Signal<null | undefined | boolean> =
+      toSignal(this.form.controls.elternteilVerstorbenUnbekannt.valueChanges);
+    const vaterVerstorbenUnbekannt$: Signal<
+      null | undefined | ElternAbwesenheitsGrund
+    > = toSignal(this.form.controls.vaterUnbekanntVerstorben.valueChanges);
+    const mutterVerstorbenUnbekannt$: Signal<
+      null | undefined | ElternAbwesenheitsGrund
+    > = toSignal(this.form.controls.mutterUnbekanntVerstorben.valueChanges);
+    const mutterUnbekanntReason$: Signal<
+      null | undefined | ElternUnbekanntheitsGrund
+    > = toSignal(this.form.controls.mutterUnbekanntReason.valueChanges);
+    const vaterUnbekanntReason$: Signal<
+      null | undefined | ElternUnbekanntheitsGrund
+    > = toSignal(this.form.controls.vaterUnbekanntReason.valueChanges);
+    const obhut$: Signal<null | undefined | Elternschaftsteilung> = toSignal(
+      this.form.controls.obhut.valueChanges
     );
-    const werZahltAlimente$ = toSignal(
-      this.form.controls.werZahltAlimente.valueChanges
-    );
-    const elternteilVerstorbenUnbekannt$ = toSignal(
-      this.form.controls.elternteilVerstorbenUnbekannt.valueChanges
-    );
-    const vaterVerstorbenUnbekannt$ = toSignal(
-      this.form.controls.vaterUnbekanntVerstorben.valueChanges
-    );
-    const mutterVerstorbenUnbekannt$ = toSignal(
-      this.form.controls.mutterUnbekanntVerstorben.valueChanges
-    );
-    const mutterUnbekanntReason$ = toSignal(
-      this.form.controls.mutterUnbekanntReason.valueChanges
-    );
-    const vaterUnbekanntReason$ = toSignal(
-      this.form.controls.vaterUnbekanntReason.valueChanges
-    );
-    const obhut$ = toSignal(this.form.controls.obhut.valueChanges);
-    const sorgerecht$ = toSignal(this.form.controls.sorgerecht.valueChanges);
+    const sorgerecht$: Signal<null | undefined | Elternschaftsteilung> =
+      toSignal(this.form.controls.sorgerecht.valueChanges);
 
     effect(
       () => {
