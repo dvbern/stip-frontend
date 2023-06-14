@@ -281,4 +281,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       return null;
     };
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

@@ -1,9 +1,5 @@
 <dv-gesuch-app-pattern-gesuch-step-layout
-  [currentStepNumber]="4"
-  [maxStepNumber]="12"
-  [currentStepTitle]="'gesuch-app.familiensituation.title' | translate"
-  [nextStepSubtitle]="'gesuch-app.form.eltern.title' | translate"
-  stepIconSymbolName="person"
+  [step]="GesuchFormSteps.FAMILIENSITUATION"
 >
   <div
     data-test-id="form-person-loading"

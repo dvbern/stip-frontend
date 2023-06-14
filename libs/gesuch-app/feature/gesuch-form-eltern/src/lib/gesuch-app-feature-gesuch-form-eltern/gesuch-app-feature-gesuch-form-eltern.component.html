@@ -1,10 +1,4 @@
-<dv-gesuch-app-pattern-gesuch-step-layout
-  [currentStepNumber]="5"
-  [maxStepNumber]="12"
-  [currentStepTitle]="'gesuch-app.form.eltern.title' | translate"
-  [nextStepSubtitle]="'gesuch-app.form.eltern-vater.title' | translate"
-  stepIconSymbolName="supervisor_account"
->
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.ELTERN">
   <div
     data-test-id="form-person-loading"
     *ngIf="view$().loading"

@@ -9,6 +9,9 @@ import {
   providedIn: 'root',
 })
 export class GesuchAppUtilGesuchFormStepManagerService {
+  getTotalSteps(): number {
+    return Object.entries(GesuchFormSteps).length;
+  }
   getNext(origin?: GesuchAppModelGesuchFormStep): GesuchAppModelGesuchFormStep {
     switch (origin) {
       case GesuchFormSteps.PERSON:
@@ -20,6 +23,8 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.FAMILIENSITUATION:
         return GesuchFormSteps.ELTERN;
       case GesuchFormSteps.ELTERN:
+        return GesuchFormSteps.GESCHWISTER;
+      case GesuchFormSteps.GESCHWISTER:
         return GesuchFormSteps.PARTNER;
       case GesuchFormSteps.PARTNER:
         return GesuchFormSteps.PERSON;

@@ -143,4 +143,6 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       },
     } as Partial<SharedModelGesuch>;
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

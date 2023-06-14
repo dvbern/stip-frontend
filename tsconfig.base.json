@@ -30,6 +30,7 @@
       "@dv/gesuch-app/feature/gesuch-form-education": ["libs/gesuch-app/feature/gesuch-form-education/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-eltern": ["libs/gesuch-app/feature/gesuch-form-eltern/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-familiensituation": ["libs/gesuch-app/feature/gesuch-form-familiensituation/src/index.ts"],
+      "@dv/gesuch-app/feature/gesuch-form-geschwister": ["libs/gesuch-app/feature/gesuch-form-geschwister/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-partner": ["libs/gesuch-app/feature/gesuch-form-partner/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-person": ["libs/gesuch-app/feature/gesuch-form-person/src/index.ts"],
       "@dv/gesuch-app/model/gesuch-form": ["libs/gesuch-app/model/gesuch-form/src/index.ts"],

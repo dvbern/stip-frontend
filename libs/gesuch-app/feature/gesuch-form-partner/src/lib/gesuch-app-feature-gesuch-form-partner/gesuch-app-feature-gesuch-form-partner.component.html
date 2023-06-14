@@ -1,10 +1,4 @@
-<dv-gesuch-app-pattern-gesuch-step-layout
-  [currentStepNumber]="1"
-  [maxStepNumber]="12"
-  [currentStepTitle]="'gesuch-app.form.partner.title' | translate"
-  [nextStepSubtitle]="'gesuch-app.form.kinder.title' | translate"
-  stepIconSymbolName="person"
->
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.PARTNER">
   <div>
     <!-- loading -->
     <div

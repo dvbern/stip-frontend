@@ -109,4 +109,6 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
       elternContainers: updatedElternContainers,
     };
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

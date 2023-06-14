@@ -337,4 +337,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   private setVisible(control: AbstractControl): void {
     control.enable();
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

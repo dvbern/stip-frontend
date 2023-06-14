@@ -1,10 +1,4 @@
-<dv-gesuch-app-pattern-gesuch-step-layout
-  [currentStepNumber]="2"
-  [maxStepNumber]="12"
-  [currentStepTitle]="'gesuch-app.form.education.title' | translate"
-  [nextStepSubtitle]="'gesuch-app.form.cv.title' | translate"
-  stepIconSymbolName="school"
->
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.AUSBILDUNG">
   <!-- loading -->
   <div
     data-test-id="form-ausbildung-loading"

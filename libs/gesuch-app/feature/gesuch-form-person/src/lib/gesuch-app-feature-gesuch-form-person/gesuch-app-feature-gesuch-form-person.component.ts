@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,16 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -37,6 +29,14 @@ import {
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -157,4 +157,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       },
     } as Partial<SharedModelGesuch>;
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }
