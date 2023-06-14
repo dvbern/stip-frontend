@@ -1,17 +1,10 @@
-<div class="container mt-5 mb-5">
-  <div
-    class="d-flex align-items-center justify-content-between border-bottom border-3 mb-4"
-  >
-    <dv-shared-ui-progress-bar [current]="10" [total]="12" />
-    <div class="text-end">
-      <h2>{{ 'gesuch-app.auszahlung.title' | translate }}</h2>
-      <p class="fs-5 fst-italic">
-        {{ 'gesuch-app.form.next' | translate }}:
-        {{ 'gesuch-app.auszahlung.einnahmen-kosten' | translate }}
-      </p>
-    </div>
-  </div>
-
+<dv-gesuch-app-pattern-gesuch-step-layout
+  [currentStepNumber]="2"
+  [maxStepNumber]="12"
+  [currentStepTitle]="'gesuch-app.form.education.title' | translate"
+  [nextStepSubtitle]="'gesuch-app.form.cv.title' | translate"
+  stepIconSymbolName="school"
+>
   <div>
     <div
       data-test-id="form-person-loading"
@@ -251,5 +244,5 @@
         </button>
       </div>
     </form>
-  </div>
-</div>
+  </div> </dv-gesuch-app-pattern-gesuch-step-layout
+>>

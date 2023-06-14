@@ -19,6 +19,7 @@ import {
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   ElternDTO,
   KontoinhaberinType,
@@ -55,6 +56,7 @@ import { extractIBAN, ExtractIBANResult } from 'ibantools';
     SharedUiProgressBarComponent,
     TranslateModule,
     MaskitoModule,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
