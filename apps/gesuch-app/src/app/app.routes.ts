@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { Anrede } from '@dv/shared/model/gesuch';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [

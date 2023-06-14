@@ -18,7 +18,7 @@ export abstract class GesuchFormSteps {
 
   static readonly FAMILIENSITUATION: GesuchAppModelGesuchFormStep = {
     route: 'gesuch-app-feature-gesuch-form-familiensituation',
-    translationKey: 'gesuch-app.form.familiensituation.title',
+    translationKey: 'gesuch-app.familiensituation.title',
   };
 
   static readonly ELTERN: GesuchAppModelGesuchFormStep = {
