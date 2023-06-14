@@ -24,6 +24,7 @@ import {
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
+import { GesuchsperiodeDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
@@ -56,10 +57,19 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     this.store.dispatch(GesuchAppEventCockpit.init());
   }
 
-  handleCreate(periodeId: string) {
+  private initFall = {
+    id: '',
+    fallNummer: 1,
+    mandant: 'bern',
+  };
+
+  handleCreate(periode: GesuchsperiodeDTO) {
     this.store.dispatch(
       GesuchAppEventCockpit.newTriggered({
-        periodeId,
+        gesuch: {
+          fall: this.initFall,
+          gesuchsperiode: periode,
+        },
       })
     );
   }
