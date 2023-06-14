@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-
-import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [GesuchAppPatternMainLayoutComponent],
+  imports: [RouterOutlet],
   selector: 'dv-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

@@ -12,6 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -50,6 +51,7 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
+    GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',

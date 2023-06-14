@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
+import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
@@ -16,6 +18,8 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiProgressBarComponent,
     TranslateModule,
     SharedUiIconChipComponent,
+    GesuchAppPatternMainLayoutComponent,
+    RouterLink,
   ],
   templateUrl: './gesuch-app-pattern-gesuch-step-layout.component.html',
   styleUrls: ['./gesuch-app-pattern-gesuch-step-layout.component.scss'],

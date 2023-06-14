@@ -16,13 +16,8 @@
 
       <!-- search and burgermenu -->
       <div class="d-flex gap-2 align-items-center">
-        <button
-          class="dv-button-icon"
-          type="button"
-          [attr.aria-label]="'shared.search' | translate"
-        >
-          <span class="material-symbols-rounded">search</span>
-        </button>
+        <ng-content select=".header-mobile-addons"></ng-content>
+
         <button
           class="dv-button-icon"
           type="button"
@@ -48,56 +43,11 @@
 
       <!-- top left -->
       <div class="d-flex flex-grow-1 ms-3">
-        <div class="d-flex gap-3 align-items-center">
-          <a
-            routerLink="/"
-            class="btn btn-secondary fw-normal px-2 d-flex align-items-center shadow-none"
-          >
-            <i class="material-symbols-rounded text-white me-2">dashboard</i>
-            <span>Dashboard</span>
-          </a>
-          <button
-            type="button"
-            class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
-          >
-            <i class="material-symbols-rounded me-2">mail</i>
-            <span>Posteingang</span>
-          </button>
-        </div>
+        <ng-content select=".header-desktop-left"></ng-content>
       </div>
 
       <!-- top right -->
-      <div class="d-flex gap-4 align-items-center">
-        <dv-shared-ui-icon-chip>
-          <i class="material-symbols-rounded text-primary">question_mark</i>
-        </dv-shared-ui-icon-chip>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
-            id="userMenu"
-            ngbDropdownToggle
-          >
-            <span>Armin Student</span>
-            <i class="material-symbols-rounded ms-2">expand_more</i>
-          </button>
-
-          <div ngbDropdownMenu aria-labelledby="userMenu">
-            <dv-shared-ui-language-selector
-              class="px-3 py-2"
-              [language]="language()"
-              (languageChange)="handleLanguageChangeHeader($event)"
-            />
-
-            <button type="button" ngbDropdownItem>Action - 1</button>
-            <button type="button" ngbDropdownItem>Another Action</button>
-            <button type="button" ngbDropdownItem>
-              Something else is here
-            </button>
-          </div>
-        </div>
-      </div>
+      <ng-content select=".header-desktop-right"></ng-content>
     </div>
   </div>
 
@@ -113,16 +63,14 @@
         (click)="offcanvas.dismiss()"
       ></button>
     </div>
+
     <div class="offcanvas-body">
-      <dv-shared-ui-language-selector
-        [language]="language()"
-        (languageChange)="handleLanguageChangeHeader($event)"
-      />
+      <ng-content select=".mobile-nav-content"></ng-content>
     </div>
   </ng-template>
 </header>
 
 <!-- MAIN CONTENT -->
 <main>
-  <router-outlet></router-outlet>
+  <ng-content></ng-content>
 </main>
