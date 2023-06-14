@@ -100,6 +100,7 @@
   "gesuch-app.auszahlung.einnahmen-kosten": "Einnahmen & Kosten",
   "gesuch-app.form.auszahlung.sozialdienst-institution.label": "Sozialdienst / Institution",
   "gesuch-app.form.auszahlung.iban.label": "IBAN",
+  "gesuch-app.form.auszahlung.form.error.invalidCountry": "Die eingebene IBAN ist keine Schweizer IBAN",
   "gesuch-app.cockpit.gesuch.new": "Antrag erstellen",
   "gesuch-app.cockpit.gesuch.edit": "Bearbeiten",
   "gesuch-app.cockpit.gesuch.nachfrist": "Nachfrist verlangen",
