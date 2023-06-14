@@ -21,8 +21,8 @@ export class GesuchAppDataAccessGesuchService {
     return this.http.get<SharedModelGesuch>(`${RESOURCE_URL}/${id}`);
   }
 
-  create(periodeId: string) {
-    return this.http.post<{ id: string }>(`${RESOURCE_URL}`, { periodeId });
+  create(gesuch: Partial<SharedModelGesuch>) {
+    return this.http.post<{ id: string }>(`${RESOURCE_URL}`, gesuch);
   }
 
   update(gesuch: Partial<SharedModelGesuch>) {
