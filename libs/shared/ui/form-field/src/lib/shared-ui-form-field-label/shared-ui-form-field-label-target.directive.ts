@@ -4,9 +4,9 @@ import { SharedUiFormFieldComponent } from '../shared-ui-form-field/shared-ui-fo
 
 @Directive({
   standalone: true,
-  selector: '[dvSharedUiFormLabelTarget]',
+  selector: '[dvSharedUiFormFieldLabelTarget]',
 })
-export class SharedUiFormLabelTargetDirective implements OnInit {
+export class SharedUiFormFieldLabelTargetDirective implements OnInit {
   private parentFormField = inject(SharedUiFormFieldComponent);
 
   private host = inject(ElementRef);

@@ -25,12 +25,12 @@
     <!-- LAND -->
     <div class="row">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+        <dv-shared-ui-form-field-label>
           {{ 'gesuch-app.form.education.ausbildungsland.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
         <select
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ausbildungsland"
           (change)="handleLandChangedByUser()"
         >
@@ -49,16 +49,18 @@
             }}
           </option>
         </select>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
 
       <!-- STAETTE -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+        <dv-shared-ui-form-field-label>
           {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
 
         <!-- Typeahead -->
         <div class="position-relative" *ngIf="!form.value['manuell']">
@@ -92,7 +94,7 @@
         <!-- <select
           *ngIf="!form.value['manuell']"
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ausbildungsstaette"
           (change)="handleStaetteChangedByUser()"
         >
@@ -114,26 +116,28 @@
           *ngIf="form.value['manuell']"
           class="form-control"
           type="text"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ausbildungsstaette"
         />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <!-- GANG -->
     <div class="row">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+        <dv-shared-ui-form-field-label>
           {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
 
         <select
           *ngIf="!form.value['manuell']"
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ausbildungsgang"
         >
           <option [ngValue]="''" selected>
@@ -151,42 +155,46 @@
           *ngIf="form.value['manuell']"
           class="form-control"
           type="text"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ausbildungsgang"
         />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
 
       <!-- FACHRICHTUNG -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+        <dv-shared-ui-form-field-label>
           {{ 'gesuch-app.form.education.fachrichtung.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
         <input
           class="form-control"
           type="text"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="fachrichtung"
         />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <!-- MANUELL -->
     <div class="row g-4">
       <dv-shared-ui-form-field class="col-12" [isCheckbox]="true">
-        <dv-shared-ui-form-label
+        <dv-shared-ui-form-field-label
           >{{ 'gesuch-app.form.education.manuell.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             class="form-check-input"
             type="checkbox"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="manuell"
             (change)="handleManuellChangedByUser()"
           />
@@ -201,78 +209,82 @@
     <div class="row">
       <!-- START -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.education.start.label' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
 
         <input
           class="form-control"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="start"
           placeholder="MM.YYYY"
           [maskito]="MASK_MM_YYYY"
         />
 
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
+        </dv-shared-ui-form-field-message>
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'monthYearMonth'"
         >
           {{ 'shared.form.error.monthYearMonth' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearYearMin'"
+        </dv-shared-ui-form-field-message>
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'monthYearYearMin'"
         >
           {{
             'gesuch-app.form.education.form.error.monthYearNotPast' | translate
           }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
 
       <!-- ENDE -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.education.ende.label' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
 
         <input
           class="form-control"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="ende"
           placeholder="MM.YYYY"
           [maskito]="MASK_MM_YYYY"
         />
 
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
+        </dv-shared-ui-form-field-message>
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'monthYearMonth'"
         >
           {{ 'shared.form.error.monthYearMonth' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'endDateAfterStart'"
+        </dv-shared-ui-form-field-message>
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'endDateAfterStart'"
         >
           {{
             'gesuch-app.form.education.form.error.monthYearAfterStart'
               | translate
           }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <div class="row">
       <!-- PENSUM -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+        <dv-shared-ui-form-field-label>
           {{ 'gesuch-app.form.education.pensum.label' | translate }}
-        </dv-shared-ui-form-label>
+        </dv-shared-ui-form-field-label>
 
         <select
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="pensum"
         >
           <option [ngValue]="''" selected>
@@ -288,9 +300,11 @@
           </option>
         </select>
 
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 

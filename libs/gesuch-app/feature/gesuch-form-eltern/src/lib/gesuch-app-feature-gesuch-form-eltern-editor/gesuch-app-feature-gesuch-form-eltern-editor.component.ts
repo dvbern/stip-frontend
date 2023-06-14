@@ -15,10 +15,10 @@ import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
+  SharedUiFormFieldMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import {
   Anrede,
@@ -40,10 +40,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
     NgbInputDatepicker,
     ReactiveFormsModule,
     SharedUiFormFieldComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
-    SharedUiFormMessageErrorDirective,
+    SharedUiFormFieldLabelComponent,
+    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormFieldMessageComponent,
+    SharedUiFormFieldMessageErrorDirective,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern-editor.component.scss'],

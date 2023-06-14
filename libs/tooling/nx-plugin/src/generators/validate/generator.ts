@@ -14,7 +14,7 @@ export interface Result {
   fixes: string[];
 }
 
-export default async function moduleBoundariesValidate(
+export default async function validate(
   tree: Tree,
   schema: ValidateGeneratorSchema
 ) {
@@ -41,14 +41,18 @@ export default async function moduleBoundariesValidate(
   const aggregateFixes = [];
 
   for (const project of projects) {
-    const result = await validateProjectTagsMatchProjectLocation(
+    const { violations, fixes } = await validateProjectTagsMatchProjectLocation(
       tree,
       project,
       fix
     );
-    const { violations, fixes } = result;
     aggregateFixes.push(...fixes);
     aggregateViolations.push(...violations);
+  }
+
+  for (const project of projects) {
+    const validateSelectorsViolations = await validateSelectors(tree, project);
+    aggregateViolations.push(...validateSelectorsViolations);
   }
 
   const boundariesViolation =
@@ -60,6 +64,7 @@ export default async function moduleBoundariesValidate(
     relevantLibProjectNames
   );
   aggregateViolations.push(...tsconfigBaseJsonViolations);
+  aggregateViolations.push(...boundariesViolation);
 
   if (aggregateFixes.filter(Boolean)?.length > 0) {
     console.info(chalk.green.bold(aggregateFixes.join('\n\n'), '\n\n'));
@@ -74,6 +79,56 @@ export default async function moduleBoundariesValidate(
       throw new Error('Module boundaries validation failed');
     }
   };
+}
+
+async function validateSelectors(tree: Tree, project: Project) {
+  if (project.path.startsWith('apps') || project.path.includes('tooling')) {
+    return [];
+  }
+
+  const incorrectSelectors = [];
+  const { name: projectName, path: projectPath } = project;
+  const [, scope, type, name] = projectPath.split(path.sep);
+  const projectJson: any = await readJson(tree, projectPath);
+  const { sourceRoot } = projectJson;
+  findFiles(
+    tree,
+    path.join(sourceRoot, 'lib'),
+    /(component|pipe|directive)\.ts$/
+  ).forEach((filePath) => {
+    const fileContent = tree.read(filePath, 'utf-8');
+    const selectors = Array.from(
+      fileContent.matchAll(/selector:\s*'(?<selector>.*)'/g)
+    ).map((match) => match.groups?.selector);
+    selectors.forEach((selector) => {
+      const normalizedSelector = selector.replace(/-/g, '').toLowerCase();
+      const normalizedNamespace = `${scope}${type}${name}`
+        .replace(/-/g, '')
+        .toLowerCase();
+      if (!normalizedSelector.includes(normalizedNamespace)) {
+        incorrectSelectors.push({
+          filePath,
+          selector,
+        });
+      }
+    });
+  });
+
+  if (incorrectSelectors.length) {
+    const violation = `Project ${chalk.inverse(
+      projectName
+    )} has components, directive or pipes with selector that doesn't match its location.
+
+${incorrectSelectors
+  .map(({ filePath, selector }) => {
+    return `Selector: ${chalk.inverse(selector)}
+File:     ${filePath}`;
+  })
+  .join('\n\n')}`;
+    return [violation];
+  } else {
+    return [];
+  }
 }
 
 async function validateProjectTagsMatchProjectLocation(
@@ -221,6 +276,7 @@ async function validateTsconfigBaseJson(
 
   return violations;
 }
+
 async function getModuleBoundaries(tree: Tree) {
   const ENFORCE_MODULE_BOUNDARIES = '@nx/enforce-module-boundaries';
   const eslintJson = await readJson(tree, './.eslintrc.json');
@@ -256,7 +312,11 @@ function diff(a: any[], b: any[]) {
   );
 }
 
-function findFiles(tree: Tree, directory: string, fileName: string): string[] {
+function findFiles(
+  tree: Tree,
+  directory: string,
+  fileName: string | RegExp
+): string[] {
   const foundFiles: string[] = [];
 
   function searchFiles(dir: string) {
@@ -267,7 +327,11 @@ function findFiles(tree: Tree, directory: string, fileName: string): string[] {
 
       if (tree.exists(filePath)) {
         if (tree.isFile(filePath)) {
-          if (file === fileName) {
+          if (fileName instanceof RegExp) {
+            if (fileName.test(filePath)) {
+              foundFiles.push(filePath);
+            }
+          } else if (file === fileName) {
             foundFiles.push(filePath);
           }
         } else {

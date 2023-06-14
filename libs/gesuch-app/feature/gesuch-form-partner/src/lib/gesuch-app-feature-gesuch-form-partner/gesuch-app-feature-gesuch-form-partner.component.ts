@@ -23,9 +23,9 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
 } from '@dv/shared/ui/form-field';
 import { MaskitoModule } from '@maskito/angular';
 
@@ -38,9 +38,9 @@ import { MaskitoModule } from '@maskito/angular';
     GesuchAppPatternGesuchStepLayoutComponent,
     TranslateModule,
     SharedUiFormFieldComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldLabelComponent,
+    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormFieldMessageComponent,
     MaskitoModule,
     NgbInputDatepicker,
   ],

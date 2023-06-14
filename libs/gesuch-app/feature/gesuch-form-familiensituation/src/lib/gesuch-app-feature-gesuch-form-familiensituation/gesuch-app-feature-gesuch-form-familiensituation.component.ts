@@ -30,10 +30,10 @@ import {
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
+  SharedUiFormFieldMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
@@ -47,10 +47,10 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
     MaskitoModule,
     SharedUiProgressBarComponent,
     SharedUiFormFieldComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
-    SharedUiFormMessageErrorDirective,
+    SharedUiFormFieldLabelComponent,
+    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormFieldMessageComponent,
+    SharedUiFormFieldMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl:

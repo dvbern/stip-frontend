@@ -20,10 +20,10 @@
   >
     <div class="row g-4 mt-3">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="leiblicheElternVerheiratetKonkubinat"
@@ -56,9 +56,11 @@
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -67,10 +69,10 @@
       *ngIf="!form.controls.gerichtlicheAlimentenregelung.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="gerichtlicheAlimentenregelung"
@@ -100,9 +102,11 @@
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -111,10 +115,10 @@
       *ngIf="!form.controls.elternteilVerstorbenUnbekannt.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="elternteilVerstorbenUnbekannt"
@@ -144,21 +148,23 @@
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <div class="row g-4 mt-3" *ngIf="!form.controls.werZahltAlimente.disabled">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <select
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="werZahltAlimente"
         >
           <option [value]="null" disabled selected>
@@ -174,9 +180,11 @@
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -189,9 +197,9 @@
           | translate
       }}</span>
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.mutter' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="mutterUnbekanntVerstorben"
@@ -237,9 +245,11 @@
             }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -248,10 +258,10 @@
       *ngIf="!form.controls.mutterUnbekanntReason.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="mutterUnbekanntReason"
@@ -288,9 +298,11 @@
             }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -299,10 +311,10 @@
       *ngIf="!form.controls.mutterWiederverheiratet.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="mutterWiederverheiratet"
@@ -329,9 +341,11 @@
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -340,9 +354,9 @@
       *ngIf="!form.controls.vaterUnbekanntVerstorben.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.vater' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="vaterUnbekanntVerstorben"
@@ -388,9 +402,11 @@
             }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -399,10 +415,10 @@
       *ngIf="!form.controls.vaterWiederverheiratet.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="vaterWiederverheiratet"
@@ -429,9 +445,11 @@
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -440,10 +458,10 @@
       class="row g-4 mt-3"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
             | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             formControlName="vaterUnbekanntReason"
@@ -480,20 +498,22 @@
             }}
           </label>
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <div class="row g-4 mt-3" *ngIf="!form.controls.sorgerecht.disabled">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.sorgerecht.label' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <select
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="sorgerecht"
         >
           <option [value]="null" disabled selected>
@@ -509,9 +529,11 @@
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -523,20 +545,22 @@
       class="row g-4 mt-3"
     >
       <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.mutter' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="sorgerechtMutter"
           />
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
       <div class="col-6 col-md-8 col-xl-8">
         <span>{{
@@ -544,31 +568,33 @@
         }}</span>
       </div>
       <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.vater' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="sorgerechtVater"
           />
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
     <div class="row g-4 mt-3" *ngIf="!form.controls.obhut.disabled">
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.obhut.label' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <select
           class="form-select"
-          dvSharedUiFormLabelTarget
+          dvSharedUiFormFieldLabelTarget
           formControlName="obhut"
         >
           <option [value]="null" disabled selected>
@@ -584,9 +610,11 @@
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 
@@ -598,20 +626,22 @@
       class="row g-4 mt-3"
     >
       <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.mutter' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="obhutMutter"
           />
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
       <div class="col-6 col-md-8 col-xl-8">
         <span>{{
@@ -619,20 +649,22 @@
         }}</span>
       </div>
       <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
+        <dv-shared-ui-form-field-label>{{
           'gesuch-app.form.familiensituation.vater' | translate
-        }}</dv-shared-ui-form-label>
+        }}</dv-shared-ui-form-field-label>
         <div class="form-check">
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="obhutVater"
           />
         </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <dv-shared-ui-form-field-message
+          *dvSharedUiFormFieldMessageError="'required'"
+        >
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field-message>
       </dv-shared-ui-form-field>
     </div>
 

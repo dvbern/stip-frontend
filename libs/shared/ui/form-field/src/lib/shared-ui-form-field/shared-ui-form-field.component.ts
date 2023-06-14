@@ -22,9 +22,9 @@ import {
   switchMap,
 } from 'rxjs';
 
-import { SharedUiFormLabelComponent } from '../shared-ui-form-label/shared-ui-form-label.component';
-import { SharedUiFormMessageErrorDirective } from '../shared-ui-form-message/shared-ui-form-message-error.directive';
-import { SharedUiFormMessageInfoDirective } from '../shared-ui-form-message/shared-ui-form-message-info.directive';
+import { SharedUiFormFieldLabelComponent } from '../shared-ui-form-field-label/shared-ui-form-field-label.component';
+import { SharedUiFormFieldMessageErrorDirective } from '../shared-ui-form-field-message/shared-ui-form-field-message-error.directive';
+import { SharedUiFormFieldMessageInfoDirective } from '../shared-ui-form-field-message/shared-ui-form-field-message-info.directive';
 
 let nextUniqueId = 0;
 
@@ -39,16 +39,16 @@ let nextUniqueId = 0;
 export class SharedUiFormFieldComponent implements DoCheck, AfterContentInit {
   @Input() isCheckbox = false;
 
-  @ContentChild(SharedUiFormLabelComponent, { read: ElementRef })
+  @ContentChild(SharedUiFormFieldLabelComponent, { read: ElementRef })
   formLabel: ElementRef | undefined;
 
   @ContentChild(NgControl) formFieldControl: NgControl | undefined;
 
-  @ContentChildren(SharedUiFormMessageInfoDirective) infoMessages:
-    | QueryList<SharedUiFormMessageInfoDirective>
+  @ContentChildren(SharedUiFormFieldMessageInfoDirective) infoMessages:
+    | QueryList<SharedUiFormFieldMessageInfoDirective>
     | undefined;
-  @ContentChildren(SharedUiFormMessageErrorDirective) errorMessages:
-    | QueryList<SharedUiFormMessageErrorDirective>
+  @ContentChildren(SharedUiFormFieldMessageErrorDirective) errorMessages:
+    | QueryList<SharedUiFormFieldMessageErrorDirective>
     | undefined;
 
   controlId = `dv-form-field-${nextUniqueId++}`;
@@ -57,7 +57,9 @@ export class SharedUiFormFieldComponent implements DoCheck, AfterContentInit {
   touched$: Observable<boolean> | undefined;
   touchedStateDuringCheck$ = new Subject<boolean>();
   showInfoIcon$: Observable<boolean> | undefined;
-  errorMessages$: Observable<SharedUiFormMessageErrorDirective[]> | undefined;
+  errorMessages$:
+    | Observable<SharedUiFormFieldMessageErrorDirective[]>
+    | undefined;
   touchedAndInvalid$: Observable<boolean> | undefined;
 
   ngDoCheck(): void {
@@ -116,15 +118,15 @@ export class SharedUiFormFieldComponent implements DoCheck, AfterContentInit {
     return index;
   }
 
-  private getAccurateErrors(): SharedUiFormMessageErrorDirective[] {
+  private getAccurateErrors(): SharedUiFormFieldMessageErrorDirective[] {
     if (!this.formFieldControl?.errors) {
       return [];
     }
     const errorKeys = Object.keys(this.formFieldControl.errors);
     return this.errorMessages!.reduce(
       (
-        acc: SharedUiFormMessageErrorDirective[],
-        current: SharedUiFormMessageErrorDirective
+        acc: SharedUiFormFieldMessageErrorDirective[],
+        current: SharedUiFormFieldMessageErrorDirective
       ) => {
         if (errorKeys.includes(current.errorKey!) || !current.errorKey) {
           acc.push(current);

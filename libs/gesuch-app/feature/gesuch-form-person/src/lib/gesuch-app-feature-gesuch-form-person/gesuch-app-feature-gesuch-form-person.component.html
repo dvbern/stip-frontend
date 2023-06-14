@@ -21,28 +21,32 @@
       <!-- AHV -->
       <div class="row g-4">
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.social-insurance-number.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="sozialversicherungsnummer"
             placeholder="756.xxxx.xxxx.xx"
             [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageInfo>
+          <dv-shared-ui-form-field-message *dvSharedUiFormFieldMessageInfo>
             {{
               'gesuch-app.form.shared.social-insurance-number.info' | translate
             }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          </dv-shared-ui-form-field-message>
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'ahv'">
+          </dv-shared-ui-form-field-message>
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'ahv'"
+          >
             {{ 'shared.form.error.ahv' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
       </div>
 
@@ -53,12 +57,12 @@
       <div class="row g-4">
         <!-- Anrede -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.salutation.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <select
             class="form-select"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="anrede"
           >
             <option [value]="null" disabled selected>
@@ -74,43 +78,49 @@
               }}
             </option>
           </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- Name -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.lastname.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             data-test-id="form-person-name"
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="name"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
       </div>
       <div class="row g-4 mt-1">
         <!-- Vorname -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.firstname.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="vorname"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- C/O-Adresse -->
@@ -118,15 +128,15 @@
           class="col-12 col-md-6 col-xl-4"
           formGroupName="adresse"
         >
-          <dv-shared-ui-form-label
+          <dv-shared-ui-form-field-label
             >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
               'shared.form.optional.label' | translate
             }})
-          </dv-shared-ui-form-label>
+          </dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="coAdresse"
           />
         </dv-shared-ui-form-field>
@@ -137,38 +147,38 @@
           <div class="row gx-2">
             <!-- Strasse -->
             <dv-shared-ui-form-field class="col-8 col-xl-9">
-              <dv-shared-ui-form-label
+              <dv-shared-ui-form-field-label
                 >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
-              </dv-shared-ui-form-label>
+              </dv-shared-ui-form-field-label>
               <input
                 class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                dvSharedUiFormFieldLabelTarget
                 formControlName="strasse"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
+              <dv-shared-ui-form-field-message
+                *dvSharedUiFormFieldMessageError="'required'"
               >
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
+              </dv-shared-ui-form-field-message>
             </dv-shared-ui-form-field>
 
             <!-- Nr -->
             <dv-shared-ui-form-field class="col-4 col-xl-3">
-              <dv-shared-ui-form-label
+              <dv-shared-ui-form-field-label
                 >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
-              </dv-shared-ui-form-label>
+              </dv-shared-ui-form-field-label>
               <input
                 class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                dvSharedUiFormFieldLabelTarget
                 formControlName="hausnummer"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
+              <dv-shared-ui-form-field-message
+                *dvSharedUiFormFieldMessageError="'required'"
               >
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
+              </dv-shared-ui-form-field-message>
             </dv-shared-ui-form-field>
           </div>
         </div>
@@ -177,40 +187,40 @@
           <div class="row gx-2">
             <!-- PLZ -->
             <dv-shared-ui-form-field class="col-5 col-md-4 col-xl-3">
-              <dv-shared-ui-form-label
+              <dv-shared-ui-form-field-label
                 >{{
                   'gesuch-app.form.shared.address.zipcode.label' | translate
                 }}
-              </dv-shared-ui-form-label>
+              </dv-shared-ui-form-field-label>
               <input
                 class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                dvSharedUiFormFieldLabelTarget
                 formControlName="plz"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
+              <dv-shared-ui-form-field-message
+                *dvSharedUiFormFieldMessageError="'required'"
               >
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
+              </dv-shared-ui-form-field-message>
             </dv-shared-ui-form-field>
 
             <!-- Ort -->
             <dv-shared-ui-form-field class="col-7 col-md-8 col-xl-9">
-              <dv-shared-ui-form-label
+              <dv-shared-ui-form-field-label
                 >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
-              </dv-shared-ui-form-label>
+              </dv-shared-ui-form-field-label>
               <input
                 class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                dvSharedUiFormFieldLabelTarget
                 formControlName="ort"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
+              <dv-shared-ui-form-field-message
+                *dvSharedUiFormFieldMessageError="'required'"
               >
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
+              </dv-shared-ui-form-field-message>
             </dv-shared-ui-form-field>
           </div>
         </div>
@@ -222,12 +232,12 @@
           class="col-12 col-md-6 col-xl-4"
           formGroupName="adresse"
         >
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.address.country.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <select
             class="form-select"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="land"
           >
             <option [value]="null" disabled selected>
@@ -240,9 +250,11 @@
               {{ l.value }}
             </option>
           </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- Wohnsitz -->
@@ -250,17 +262,17 @@
           class="col-12 col-md-6 col-xl-4"
           [isCheckbox]="true"
         >
-          <dv-shared-ui-form-label
+          <dv-shared-ui-form-field-label
             >{{
               'gesuch-app.form.shared.identical-civil-residence.label'
                 | translate
             }}
-          </dv-shared-ui-form-label>
+          </dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              dvSharedUiFormLabelTarget
+              dvSharedUiFormFieldLabelTarget
               formControlName="identischerZivilrechtlicherWohnsitz"
             />
           </div>
@@ -294,48 +306,52 @@
       <div class="row g-4">
         <!-- E-MAIL -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.email.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="email"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- TEL -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.phone.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="telefonnummer"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
       </div>
       <div class="row g-4 mt-1">
         <!-- GEBURTSDATUM -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.shared.birthday.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
 
           <div class="input-group">
             <input
               class="form-control"
               placeholder="dd.mm.yyyy"
-              dvSharedUiFormLabelTarget
+              dvSharedUiFormFieldLabelTarget
               formControlName="geburtsdatum"
               ngbDatepicker
               [minDate]="geburtsdatumMinDate"
@@ -355,19 +371,21 @@
             </button>
           </div>
 
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- NATIONALITAET -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.nationality.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <select
             class="form-select"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="nationalitaet"
           >
             <option [value]="null" disabled selected>
@@ -380,26 +398,30 @@
               {{ l.value }}
             </option>
           </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
       </div>
       <div class="row g-4 mt-1">
         <!-- HEIMATORT -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.origin.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <input
             class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="heimatort"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- VORMUNDSCHAFT -->
@@ -407,14 +429,14 @@
           class="col-12 col-md-6 col-xl-4"
           [isCheckbox]="true"
         >
-          <dv-shared-ui-form-label
+          <dv-shared-ui-form-field-label
             >{{ 'gesuch-app.form.person.guardianship.label' | translate }}
-          </dv-shared-ui-form-label>
+          </dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              dvSharedUiFormLabelTarget
+              dvSharedUiFormFieldLabelTarget
               formControlName="vormundschaft"
             />
           </div>
@@ -423,12 +445,12 @@
       <div class="row g-4 mt-1">
         <!-- ZIVILSTAND -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.marital-status.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <select
             class="form-select"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="zivilstand"
           >
             <option [value]="null" disabled selected>
@@ -444,19 +466,21 @@
               }}
             </option>
           </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- Wohnsitz -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.wohnsitz.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <select
             class="form-select"
-            dvSharedUiFormLabelTarget
+            dvSharedUiFormFieldLabelTarget
             formControlName="wohnsitz"
           >
             <option [value]="null" disabled selected>
@@ -472,9 +496,11 @@
               }}
             </option>
           </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <dv-shared-ui-form-field-message
+            *dvSharedUiFormFieldMessageError="'required'"
+          >
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field-message>
         </dv-shared-ui-form-field>
 
         <!-- Info Konkubinat -->
@@ -497,9 +523,9 @@
       <div class="row g-4 mt-1">
         <!-- Sozialhilfebeitraege -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.social-security.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               formControlName="sozialhilfebeitraege"
@@ -530,9 +556,9 @@
 
         <!-- Quellenbesteuerung -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.tax-at-source.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               formControlName="quellenbesteuerung"
@@ -565,9 +591,9 @@
       <div class="row g-4 mt-1">
         <!-- Kinder -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+          <dv-shared-ui-form-field-label>{{
             'gesuch-app.form.person.children.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               formControlName="kinder"
@@ -601,16 +627,16 @@
           class="col-12 col-md-6 col-xl-4"
           [isCheckbox]="true"
         >
-          <dv-shared-ui-form-label
+          <dv-shared-ui-form-field-label
             >{{
               'gesuch-app.form.person.digital-communication.label' | translate
             }}
-          </dv-shared-ui-form-label>
+          </dv-shared-ui-form-field-label>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              dvSharedUiFormLabelTarget
+              dvSharedUiFormFieldLabelTarget
               formControlName="digitaleKommunikation"
             />
           </div>

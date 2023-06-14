@@ -17,10 +17,10 @@ import {
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
+  SharedUiFormFieldMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,11 +32,11 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ReactiveFormsModule,
     SharedUiFormFieldComponent,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldMessageComponent,
     TranslateModule,
-    SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormLabelComponent,
+    SharedUiFormFieldMessageErrorDirective,
+    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormFieldLabelComponent,
     NgbInputDatepicker,
   ],
   templateUrl:

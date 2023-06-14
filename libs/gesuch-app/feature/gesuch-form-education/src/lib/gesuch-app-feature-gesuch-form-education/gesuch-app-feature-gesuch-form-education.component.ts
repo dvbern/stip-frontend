@@ -43,10 +43,10 @@ import {
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
+  SharedUiFormFieldMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
@@ -66,10 +66,10 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     NgbInputDatepicker,
     NgbTypeahead,
     SharedUiFormFieldComponent,
-    SharedUiFormMessageComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
+    SharedUiFormFieldMessageComponent,
+    SharedUiFormFieldLabelComponent,
+    SharedUiFormFieldMessageErrorDirective,
+    SharedUiFormFieldLabelTargetDirective,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],

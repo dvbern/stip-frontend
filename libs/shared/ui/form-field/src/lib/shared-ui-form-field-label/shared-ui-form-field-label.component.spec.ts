@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedUiFormLabelComponent } from './shared-ui-form-label.component';
+import { SharedUiFormFieldLabelComponent } from './shared-ui-form-field-label.component';
 
 describe('SharedUiFormLabelComponent', () => {
-  let component: SharedUiFormLabelComponent;
-  let fixture: ComponentFixture<SharedUiFormLabelComponent>;
+  let component: SharedUiFormFieldLabelComponent;
+  let fixture: ComponentFixture<SharedUiFormFieldLabelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUiFormLabelComponent],
+      imports: [SharedUiFormFieldLabelComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SharedUiFormLabelComponent);
+    fixture = TestBed.createComponent(SharedUiFormFieldLabelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

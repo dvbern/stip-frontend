@@ -22,11 +22,11 @@ import {
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
-  SharedUiFormMessageErrorDirective,
-  SharedUiFormMessageInfoDirective,
+  SharedUiFormFieldLabelComponent,
+  SharedUiFormFieldLabelTargetDirective,
+  SharedUiFormFieldMessageComponent,
+  SharedUiFormFieldMessageErrorDirective,
+  SharedUiFormFieldMessageInfoDirective,
 } from '@dv/shared/ui/form-field';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { MaskitoModule } from '@maskito/angular';
@@ -49,11 +49,11 @@ import { TranslateModule } from '@ngx-translate/core';
     NgbInputDatepicker,
     NgbAlert,
     SharedUiFormFieldComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
-    SharedUiFormMessageInfoDirective,
-    SharedUiFormMessageErrorDirective,
+    SharedUiFormFieldLabelComponent,
+    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormFieldMessageComponent,
+    SharedUiFormFieldMessageInfoDirective,
+    SharedUiFormFieldMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
