@@ -19,3 +19,6 @@ export * from './familiensituationDTO';
 export * from './elternAbwesenheitsGrund';
 export * from './elternschaftsteilung';
 export * from './elternUnbekanntheitsGrund';
+export * from './auszahlungDTO';
+export * from './auszahlungContainerDTO';
+export * from './KontoinhaberinType';
