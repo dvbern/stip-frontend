@@ -18,8 +18,9 @@
   <dv-gesuch-app-feature-gesuch-form-eltern-editor
     *ngIf="editedParent"
     [parent]="editedParent"
-    (save)="handleEditorSave($event)"
-    (cancel)="handleEditorCancel()"
+    (saveTriggered)="handleEditorSave($event)"
+    (autoSaveTriggered)="handleEditorAutoSave($event)"
+    (closeTriggered)="handleEditorClose()"
   />
 
   <div class="row g-4" *ngIf="!editedParent">
@@ -29,7 +30,13 @@
         *ngIf="view$().isVaterPlaceholder"
       >
         <div class="card-body">
-          <button type="button" class="btn btn-primary">Add vater</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="handleAddVater()"
+          >
+            Add vater
+          </button>
         </div>
       </div>
     </div>
@@ -63,5 +70,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <button type="button" class="btn btn-primary" (click)="handleContinue()">
+      {{ 'gesuch-app.form.next' | translate }}
+    </button>
   </div>
 </dv-gesuch-app-pattern-gesuch-step-layout>

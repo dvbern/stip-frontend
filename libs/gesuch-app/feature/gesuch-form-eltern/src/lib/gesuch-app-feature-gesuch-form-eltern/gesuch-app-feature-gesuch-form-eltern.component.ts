@@ -12,8 +12,9 @@ import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 
 import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
-import { ElternDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { Anrede, ElternDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
@@ -33,7 +34,7 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
 
   view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
-  editedParent?: ElternDTO;
+  editedParent?: Partial<ElternDTO>;
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormEltern.init());
@@ -47,16 +48,37 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
     this.editedParent = parent;
   }
 
+  handleAddVater() {
+    this.editedParent = {
+      geschlecht: Anrede.HERR,
+    };
+  }
+
   handleEditorSave(parent: ElternDTO) {
     this.store.dispatch(
-      GesuchAppEventGesuchFormEltern.saveParentTriggered({
+      GesuchAppEventGesuchFormEltern.saveSubformTriggered({
         gesuch: this.buildUpdatedGesuchWithUpdatedParent(parent),
+        origin: GesuchFormSteps.ELTERN,
       })
     );
     this.editedParent = undefined;
   }
 
-  handleEditorCancel() {
+  handleEditorAutoSave(parent: ElternDTO) {
+    console.log('TODO save parent on blur', parent);
+  }
+
+  handleContinue() {
+    const { gesuch } = this.view$();
+    this.store.dispatch(
+      GesuchAppEventGesuchFormEltern.nextTriggered({
+        id: gesuch!.id!,
+        origin: GesuchFormSteps.ELTERN,
+      })
+    );
+  }
+
+  handleEditorClose() {
     this.editedParent = undefined;
   }
 

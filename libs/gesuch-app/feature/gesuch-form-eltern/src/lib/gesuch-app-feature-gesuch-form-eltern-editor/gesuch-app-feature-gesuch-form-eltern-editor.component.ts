@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
@@ -26,6 +27,8 @@ import {
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import { TranslateModule } from '@ngx-translate/core';
+import { debounceTime } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern-editor',
@@ -51,9 +54,10 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 {
   private formBuilder = inject(FormBuilder);
 
-  @Input({ required: true }) parent!: ElternDTO;
-  @Output() save = new EventEmitter<ElternDTO>();
-  @Output() cancel = new EventEmitter<void>();
+  @Input({ required: true }) parent!: Partial<ElternDTO>;
+  @Output() saveTriggered = new EventEmitter<ElternDTO>();
+  @Output() autoSaveTriggered = new EventEmitter<ElternDTO>();
+  @Output() closeTriggered = new EventEmitter<void>();
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly Land = Land;
@@ -93,7 +97,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     this.form.markAsTouched();
     if (this.form.valid) {
       // TODO MAKE THE DTO AND FORM MATCH
-      this.save.emit(this.form.getRawValue() as any);
+      this.saveTriggered.emit(this.form.getRawValue() as any);
     }
   }
   trackByIndex(index: number) {
@@ -101,6 +105,6 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   }
 
   handleCancel() {
-    this.cancel.emit();
+    this.closeTriggered.emit();
   }
 }

@@ -18,6 +18,7 @@ export const GesuchAppDataAccessGesuchEvents = createActionGroup({
     gesuchUpdatedFailure: props<{ error: string }>(),
     gesuchUpdatedSubformSuccess: props<{
       id: string;
+      origin: GesuchAppModelGesuchFormStep;
     }>(),
     gesuchUpdatedSubformFailure: props<{ error: string }>(),
     gesuchRemovedSuccess: emptyProps(),

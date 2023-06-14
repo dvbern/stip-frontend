@@ -20,7 +20,9 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.FAMILIENSITUATION:
         return GesuchFormSteps.ELTERN;
       case GesuchFormSteps.ELTERN:
-        return GesuchFormSteps.ELTERN;
+        return GesuchFormSteps.PARTNER;
+      case GesuchFormSteps.PARTNER:
+        return GesuchFormSteps.PERSON;
       default:
         throw new Error('Step not defined');
     }

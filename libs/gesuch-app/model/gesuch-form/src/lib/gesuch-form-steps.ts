@@ -28,6 +28,6 @@ export abstract class GesuchFormSteps {
 
   public static readonly PARTNER: GesuchAppModelGesuchFormStep = {
     route: 'gesuch-app-feature-gesuch-form-partner',
-    translationKey: '',
+    translationKey: 'gesuch-app.form.partner.title',
   };
 }

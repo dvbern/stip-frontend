@@ -7,9 +7,16 @@ export const GesuchAppEventGesuchFormEltern = createActionGroup({
   source: 'GesuchFormEltern Eltern Page',
   events: {
     init: emptyProps(),
-    saveParentTriggered: props<{ gesuch: Partial<SharedModelGesuch> }>(),
     saveTriggered: props<{
       gesuch: Partial<SharedModelGesuch>;
+      origin: GesuchAppModelGesuchFormStep;
+    }>(),
+    saveSubformTriggered: props<{
+      gesuch: Partial<SharedModelGesuch>;
+      origin: GesuchAppModelGesuchFormStep;
+    }>(),
+    nextTriggered: props<{
+      id: string;
       origin: GesuchAppModelGesuchFormStep;
     }>(),
   },

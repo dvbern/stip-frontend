@@ -9,12 +9,12 @@ import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-f
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
+import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
-import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
 
 export const loadGesuchs = createEffect(
   (
@@ -144,12 +144,13 @@ export const updateGesuchSubform = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppEventGesuchFormEltern.saveParentTriggered),
-      concatMap(({ gesuch }) => {
+      ofType(GesuchAppEventGesuchFormEltern.saveSubformTriggered),
+      concatMap(({ gesuch, origin }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
             GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
               id: gesuch.id!,
+              origin,
             })
           ),
           catchError(({ error }) => [
@@ -198,17 +199,32 @@ export const redirectToGesuchForm = createEffect(
   { functional: true, dispatch: false }
 );
 
-export const redirectToGesuchFormStep = createEffect(
+export const redirectToGesuchFormNextStep = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
     stepManager = inject(GesuchAppUtilGesuchFormStepManagerService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess),
+      ofType(
+        GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
+        GesuchAppEventGesuchFormEltern.nextTriggered
+      ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);
         router.navigate([target.route, id]);
+      })
+    );
+  },
+  { functional: true, dispatch: false }
+);
+
+export const refreshGesuchFormStep = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess),
+      tap(({ id, origin }) => {
+        router.navigate([origin.route, id]);
       })
     );
   },
@@ -224,5 +240,6 @@ export const gesuchAppDataAccessGesuchEffects = {
   updateGesuchSubform,
   removeGesuch,
   redirectToGesuchForm,
-  redirectToGesuchFormStep,
+  redirectToGesuchFormNextStep,
+  refreshGesuchFormStep,
 };
