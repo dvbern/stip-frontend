@@ -8,11 +8,11 @@ import {
   gesuchAppDataAccessGesuchsFeature,
 } from '@dv/gesuch-app/data-access/gesuch';
 
-import { appRoutes } from './app.routes';
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideSharedPatternCore(appRoutes),
+    provideSharedPatternCore(routes),
     provideState(gesuchAppDataAccessGesuchsFeature),
     provideEffects(gesuchAppDataAccessGesuchEffects),
   ],
