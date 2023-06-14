@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
@@ -53,7 +54,8 @@ export const loadGesuch = createEffect(
       ofType(
         GesuchAppEventGesuchFormPerson.init,
         GesuchAppEventGesuchFormEducation.init,
-        GesuchAppEventGesuchFormFamiliensituation.init
+        GesuchAppEventGesuchFormFamiliensituation.init,
+        GesuchAppEventGesuchFormAuszahlung.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -114,7 +116,8 @@ export const updateGesuch = createEffect(
       ofType(
         GesuchAppEventGesuchFormPerson.saveTriggered,
         GesuchAppEventGesuchFormEducation.saveTriggered,
-        GesuchAppEventGesuchFormFamiliensituation.saveTriggered
+        GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
+        GesuchAppEventGesuchFormAuszahlung.saveTriggered
       ),
       concatMap(({ gesuch, origin }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
