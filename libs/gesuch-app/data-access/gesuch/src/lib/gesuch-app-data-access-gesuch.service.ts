@@ -22,11 +22,11 @@ export class GesuchAppDataAccessGesuchService {
   }
 
   create(gesuch: Partial<SharedModelGesuch>) {
-    return this.http.post<{ id: string }>(`${RESOURCE_URL}`, gesuch);
+    return this.http.post<string>(`${RESOURCE_URL}`, gesuch);
   }
 
   update(gesuch: Partial<SharedModelGesuch>) {
-    return this.http.put<void>(`${RESOURCE_URL}/${gesuch.id}`, gesuch);
+    return this.http.put<void>(`${RESOURCE_URL}`, gesuch);
   }
 
   remove(id: string) {

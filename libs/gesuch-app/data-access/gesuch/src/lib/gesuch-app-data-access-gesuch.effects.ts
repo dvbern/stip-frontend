@@ -90,7 +90,7 @@ export const createGesuch = createEffect(
       ofType(GesuchAppEventCockpit.newTriggered),
       exhaustMap(({ gesuch }) =>
         gesuchAppDataAccessGesuchService.create(gesuch).pipe(
-          map(({ id }) =>
+          map((id) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
             })
@@ -126,11 +126,14 @@ export const updateGesuch = createEffect(
               origin,
             })
           ),
-          catchError(({ error }) => [
-            GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
-              error: error.toString(),
-            }),
-          ])
+          catchError((error) => {
+            console.log(error);
+            return [
+              GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
+                error: error.toString(),
+              }),
+            ];
+          })
         );
       })
     );

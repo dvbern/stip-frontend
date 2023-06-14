@@ -42,6 +42,14 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormEducation.init,
       GesuchAppEventGesuchFormFamiliensituation.init,
       GesuchAppEventGesuchFormEltern.init,
+      (state): State => ({
+        ...state,
+        gesuch: undefined,
+        loading: true,
+      })
+    ),
+
+    on(
       GesuchAppEventGesuchFormPerson.saveTriggered,
       GesuchAppEventGesuchFormEducation.saveTriggered,
       GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
@@ -50,7 +58,6 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,
-        gesuch: undefined,
         loading: true,
       })
     ),
