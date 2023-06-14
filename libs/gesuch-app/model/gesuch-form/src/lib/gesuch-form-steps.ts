@@ -32,14 +32,7 @@ export abstract class GesuchFormSteps {
   };
 
   public static readonly AUSZAHLUNGEN: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-auszahlungen',
-    translationKey: 'AUSZAHLUNGEN_STEP',
-  };
-
-  public static readonly AUSZAHLUNGEN: GesuchAppModelGesuchFormStep = {
-    enabled: true,
-    name: 'gesuch-app-feature-gesuch-form-auszahlungen',
+    route: 'gesuch-app-feature-gesuch-form-auszahlungen',
     translationKey: 'AUSZAHLUNGEN_STEP',
   };
 }
