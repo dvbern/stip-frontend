@@ -35,6 +35,8 @@ of basic infrastructure of an application or things like main layout.
 Another great example is any use case where we couple UI component to a specific data-access, such
 resulting entity should be implemented as a pattern (UI components should never be coupled to specific data access)
 
+Same logic would follow for things like guards or interceptors which are coupled to specific data access.
+
 As a rule of thumb, if you need to combine multiple libraries and inline entities AND their
 combination doesn't represent a lazy loaded feature, then you should create a `pattern`.
 
