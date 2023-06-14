@@ -8,9 +8,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
+  AbstractControl,
   FormBuilder,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
@@ -20,6 +23,7 @@ import {
   ElternDTO,
   KontoinhaberinType,
   Land,
+  MASK_IBAN,
   PersonInAusbildungDTO,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
@@ -31,8 +35,10 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form-field';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { extractIBAN, ExtractIBANResult } from 'ibantools';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-auszahlungen',
@@ -48,6 +54,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageErrorDirective,
     SharedUiProgressBarComponent,
     TranslateModule,
+    MaskitoModule,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
@@ -58,6 +65,8 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   KontoinhaberinType = KontoinhaberinType;
+  MASK_IBAN = MASK_IBAN;
+  Land = Land;
 
   form = this.fb.group({
     kontoinhaberin: [<KontoinhaberinType | null>null, [Validators.required]],
@@ -70,7 +79,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
       ort: ['', [Validators.required]],
       land: [<null | Land>null, [Validators.required]],
     }),
-    iban: ['', [Validators.required]],
+    iban: ['', [Validators.required, this.ibanValidator()]],
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -128,6 +137,22 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     this.store.dispatch(GesuchAppEventGesuchFormAuszahlung.init());
   }
 
+  handleSave(): void {
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormAuszahlung.saveTriggered({
+          gesuch: this.buildBackGesuch(),
+          origin: GesuchFormSteps.AUSZAHLUNGEN,
+        })
+      );
+    }
+  }
+
+  trackByIndex(index: number) {
+    return index;
+  }
+
   private setGesuchstellerinValues(
     personInAusbildung: PersonInAusbildungDTO | undefined
   ): void {
@@ -154,23 +179,40 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     this.form.controls.addresse.patchValue(elternValues?.adresse);
   }
 
-  handleSave(): void {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.store.dispatch(
-        GesuchAppEventGesuchFormAuszahlung.saveTriggered({
-          gesuch: this.buildBackGesuch(),
-          origin: GesuchFormSteps.AUSZAHLUNGEN,
-        })
-      );
+  private ibanValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value === null || control.value === '') {
+        return null;
+      }
+      const extractIBANResult = extractIBAN(control.value);
+      if (extractIBANResult.valid && extractIBANResult.countryCode === 'CH') {
+        return null;
+      }
+      return this.constructIBANValidationErrors(extractIBANResult, control);
+    };
+  }
+
+  private constructIBANValidationErrors(
+    extractIBANResult: ExtractIBANResult,
+    control: AbstractControl
+  ): {
+    invalidIBAN?: boolean;
+    invalidCountry?: string;
+  } {
+    const errorObject: { invalidIBAN?: boolean; invalidCountry?: string } =
+      {} as ValidationErrors;
+
+    if (!extractIBANResult.valid) {
+      errorObject.invalidIBAN = true;
+      return errorObject;
     }
-  }
 
-  trackByIndex(index: number) {
-    return index;
-  }
+    if (extractIBANResult.countryCode !== 'CH') {
+      errorObject.invalidCountry = control.value;
+    }
 
-  protected readonly Land = Land;
+    return errorObject;
+  }
 
   private buildBackGesuch(): Partial<SharedModelGesuch> {
     const gesuch = this.view().gesuch;

@@ -225,9 +225,20 @@
             type="text"
             dvSharedUiFormLabelTarget
             formControlName="iban"
+            [maskito]="MASK_IBAN"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'invalidIBAN'"
+          >
+            {{ 'shared.form.error.invalidIBAN' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message
+            *dvSharedUiFormMessageError="'invalidCountry'"
+          >
+            {{ 'shared.form.error.invalidCountry' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
