@@ -1,4 +1,5 @@
 export * from './adresseDTO';
+export * from './ausbildungssituation';
 export * from './anrede';
 export * from './benutzerLoginDTO';
 export * from './deploymentConfigDTO';
@@ -8,6 +9,7 @@ export * from './fallDTO';
 export * from './gesuchDTO';
 export * from './gesuchsperiodeDTO';
 export * from './gesuchstatus';
+export * from './geschwisterDTO';
 export * from './land';
 export * from './niederlassungsstatus';
 export * from './personInAusbildungContainerDTO';

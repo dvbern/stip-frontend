@@ -7,7 +7,7 @@
   border-radius: 50%;
   background: radial-gradient(closest-side, white 87%, transparent 88%),
     conic-gradient(
-      var(--dv-primary) calc(var(--progress) * 1%),
+      var(--dv-secondary) calc(var(--progress) * 1%),
       var(--dv-gray-300) 0
     );
   font-size: 14px;

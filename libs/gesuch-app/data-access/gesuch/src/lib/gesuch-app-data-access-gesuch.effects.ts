@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
@@ -56,7 +57,8 @@ export const loadGesuch = createEffect(
         GesuchAppEventGesuchFormPerson.init,
         GesuchAppEventGesuchFormEducation.init,
         GesuchAppEventGesuchFormFamiliensituation.init,
-        GesuchAppEventGesuchFormEltern.init
+        GesuchAppEventGesuchFormEltern.init,
+        GesuchAppEventGesuchFormGeschwister.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -90,10 +92,8 @@ export const createGesuch = createEffect(
       ofType(GesuchAppEventCockpit.newTriggered),
       exhaustMap(({ gesuch }) =>
         gesuchAppDataAccessGesuchService.create(gesuch).pipe(
-          map((id) =>
-            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
-              id,
-            })
+          map(({ id }) =>
+            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({ id })
           ),
           catchError(({ error }) => [
             GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure({
@@ -147,7 +147,10 @@ export const updateGesuchSubform = createEffect(
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppEventGesuchFormEltern.saveSubformTriggered),
+      ofType(
+        GesuchAppEventGesuchFormEltern.saveSubformTriggered,
+        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered
+      ),
       concatMap(({ gesuch, origin }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
           map(() =>
@@ -211,7 +214,8 @@ export const redirectToGesuchFormNextStep = createEffect(
     return actions$.pipe(
       ofType(
         GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
-        GesuchAppEventGesuchFormEltern.nextTriggered
+        GesuchAppEventGesuchFormEltern.nextTriggered,
+        GesuchAppEventGesuchFormGeschwister.nextTriggered
       ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);

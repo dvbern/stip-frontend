@@ -11,6 +11,7 @@
  */
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
 import { FallDTO } from './fallDTO';
+import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
@@ -30,4 +31,5 @@ export interface GesuchDTO {
   ausbildung: AusbildungContainerDTO;
 
   partnerContainer: PartnerContainerDTO;
+  geschwisterContainers: GeschwisterContainerDTO[];
 }

@@ -1,2 +1,114 @@
 <dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.GESCHWISTER">
+  <!-- loading -->
+  <div
+    data-test-id="form-geschwister-loading"
+    *ngIf="view$().loading"
+    class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+  >
+    <div class="dv-progress-bar-indeterminate">
+      <div></div>
+    </div>
+  </div>
+
+  <!-- geschwister editor -->
+  <dv-gesuch-app-feature-gesuch-form-geschwister-editor
+    *ngIf="editedGeschwister"
+    [geschwister]="editedGeschwister"
+    (saveTriggered)="handleEditorSave($event)"
+    (autoSaveTriggered)="handleEditorAutoSave($event)"
+    (closeTriggered)="handleEditorClose()"
+  />
+
+  <ng-container *ngIf="!editedGeschwister">
+    <div class="row flex-xl-row-reverse">
+      <!-- Infobx -->
+      <div class="col-12 col-xl-4">
+        <ngb-alert type="info" [dismissible]="false">
+          <div class="d-flex gap-3">
+            <span class="material-symbols-rounded text-info"> info </span>
+            <span>{{
+              'gesuch-app.form.geschwister.top.info' | translate
+            }}</span>
+          </div>
+        </ngb-alert>
+      </div>
+
+      <!-- Table -->
+      <div
+        class="col-12 col-xl-8"
+        *ngIf="this.view$().gesuch?.geschwisterContainers as geschwisters"
+      >
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">
+                {{ 'gesuch-app.form.geschwister.name' | translate }}
+              </th>
+              <th scope="col">
+                {{
+                  'gesuch-app.form.geschwister.geburtsdatum.label' | translate
+                }}
+              </th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let geschwisterRaw of geschwisters; trackBy: trackByIndex"
+            >
+              <ng-container
+                *ngIf="
+                  asGeschwister(geschwisterRaw!.geschwisterSB!) as geschwister
+                "
+              >
+                <th scope="row">
+                  <i class="material-symbols-rounded">done</i>
+                </th>
+                <td>{{ geschwister.name }} {{ geschwister.vorname }}</td>
+                <td>{{ geschwister.geburtsdatum }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 lh-1"
+                    (click)="handleEditGeschwister(geschwister)"
+                    [title]="'gesuch-app.form.geschwister.edit' | translate"
+                  >
+                    <i class="material-symbols-rounded">edit</i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 lh-1"
+                    (click)="handleDeleteGeschwister(geschwister)"
+                    [title]="'gesuch-app.form.geschwister.delete' | translate"
+                  >
+                    <i class="material-symbols-rounded">delete</i>
+                  </button>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ADD -->
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="handleAddGeschwister()"
+    >
+      {{ 'gesuch-app.form.geschwister.add' | translate }}
+    </button>
+
+    <!-- Buttons -->
+    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+      <button type="button" class="btn btn-primary" (click)="handleContinue()">
+        {{ 'gesuch-app.form.gonext' | translate }}
+      </button>
+    </div>
+  </ng-container>
 </dv-gesuch-app-pattern-gesuch-step-layout>

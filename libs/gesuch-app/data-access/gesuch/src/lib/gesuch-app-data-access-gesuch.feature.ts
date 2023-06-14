@@ -1,5 +1,6 @@
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
+import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
@@ -42,6 +43,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormEducation.init,
       GesuchAppEventGesuchFormFamiliensituation.init,
       GesuchAppEventGesuchFormEltern.init,
+      GesuchAppEventGesuchFormGeschwister.init,
       (state): State => ({
         ...state,
         gesuch: undefined,
@@ -55,6 +57,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
       GesuchAppEventGesuchFormEltern.saveTriggered,
       GesuchAppEventGesuchFormEltern.saveSubformTriggered,
+      GesuchAppEventGesuchFormGeschwister.saveTriggered,
+      GesuchAppEventGesuchFormGeschwister.saveSubformTriggered,
       GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,
@@ -85,10 +89,17 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     on(
       GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
       GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess,
-      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
       (state): State => ({
         ...state,
         loading: false,
+        error: undefined,
+      })
+    ),
+
+    on(
+      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
+      (state): State => ({
+        ...state,
         error: undefined,
       })
     ),
