@@ -14,6 +14,13 @@
             "allow": [],
             "depConstraints": [
               {
+                "sourceTag": "scope:sachbearbeitung-app",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "scope:sachbearbeitung-app"
+                ]
+              },
+              {
                 "sourceTag": "scope:gesuch-app",
                 "onlyDependOnLibsWithTags": ["scope:shared", "scope:gesuch-app"]
               },
