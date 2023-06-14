@@ -222,7 +222,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
         ...gesuch?.auszahlungContainer,
         auszahlungSB: {
           ...gesuch?.auszahlungContainer?.auszahlungSB,
-          ...(this.form.value as any),
+          ...(this.form.getRawValue() as any),
         },
       },
     };
