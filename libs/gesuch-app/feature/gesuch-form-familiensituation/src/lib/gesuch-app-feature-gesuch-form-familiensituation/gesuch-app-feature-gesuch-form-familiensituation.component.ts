@@ -102,8 +102,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
-    Object.values(this.form.controls).forEach((control) => control.disable());
-    this.form.controls.leiblicheElternVerheiratetKonkubinat.enable();
   }
 
   constructor() {
@@ -131,6 +129,10 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     effect(
       () => {
         const { gesuch } = this.view();
+        Object.values(this.form.controls).forEach((control) =>
+          control.disable()
+        );
+        this.form.controls.leiblicheElternVerheiratetKonkubinat.enable();
         if (gesuch !== undefined) {
           const initialFormFamSit =
             gesuch?.familiensituationContainer?.familiensituationSB || {};
