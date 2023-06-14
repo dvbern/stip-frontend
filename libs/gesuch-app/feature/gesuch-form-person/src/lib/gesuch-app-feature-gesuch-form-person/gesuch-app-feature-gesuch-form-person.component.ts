@@ -87,10 +87,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     anrede: ['', [Validators.required]],
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
+    adresse: this.formBuilder.group({
       coAdresse: ['', []],
       strasse: ['', [Validators.required]],
-      nummer: ['', []],
+      hausnummer: ['', []],
       plz: ['', [Validators.required]],
       ort: ['', [Validators.required]],
       land: ['', [Validators.required]],

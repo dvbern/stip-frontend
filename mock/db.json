@@ -117,7 +117,7 @@
           "quellenbesteuerung": true,
           "kinder": true,
           "digitaleKommunikation": true,
-          "addresse": {
+          "adresse": {
             "coAdresse": "c/o Hans Müller",
             "strasse": "Hohlstrasse",
             "nummer": "511",
@@ -162,7 +162,7 @@
             "geschlecht": "FRAU",
             "name": "Herich",
             "vorname": "Kathy",
-            "addresse": {
+            "adresse": {
               "coAdresse": "",
               "strasse": "Hohlstrasse",
               "nummer": "511",
@@ -186,7 +186,7 @@
             "geschlecht": "HERR",
             "name": "Herich",
             "vorname": "Tom",
-            "addresse": {
+            "adresse": {
               "coAdresse": "",
               "strasse": "Hohlstrasse",
               "nummer": "511",
@@ -212,7 +212,7 @@
           "anrede": "FRAU",
           "name": "Herich",
           "vorname": "Tomas",
-          "addresse": {
+          "adresse": {
             "coAdresse": "",
             "strasse": "Hohlstrasse",
             "nummer": "511",

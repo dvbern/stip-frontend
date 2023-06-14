@@ -122,7 +122,7 @@
         <!-- C/O-Adresse -->
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
-          formGroupName="addresse"
+          formGroupName="adresse"
         >
           <dv-shared-ui-form-label
             >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
@@ -138,7 +138,7 @@
         </dv-shared-ui-form-field>
       </div>
 
-      <div class="row g-4 mt-1" formGroupName="addresse">
+      <div class="row g-4 mt-1" formGroupName="adresse">
         <div class="col-12 col-md-6 col-xl-4">
           <div class="row gx-2">
             <!-- Strasse -->
@@ -168,7 +168,7 @@
                 class="form-control"
                 type="text"
                 dvSharedUiFormLabelTarget
-                formControlName="nummer"
+                formControlName="hausnummer"
               />
               <dv-shared-ui-form-message
                 *dvSharedUiFormMessageError="'required'"
@@ -226,7 +226,7 @@
         <!-- Land -->
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
-          formGroupName="addresse"
+          formGroupName="adresse"
         >
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.shared.address.country.label' | translate

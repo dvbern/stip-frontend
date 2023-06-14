@@ -73,7 +73,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
+    adresse: this.formBuilder.group({
       strasse: ['', [Validators.required]],
       nummer: ['', []],
       plz: ['', [Validators.required]],

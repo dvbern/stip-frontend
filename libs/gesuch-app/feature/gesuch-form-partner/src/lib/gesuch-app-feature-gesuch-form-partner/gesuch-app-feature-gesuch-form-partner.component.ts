@@ -72,7 +72,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
     ],
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
+    adresse: this.formBuilder.group({
       coAdresse: ['', []],
       strasse: ['', [Validators.required]],
       nummer: ['', []],
