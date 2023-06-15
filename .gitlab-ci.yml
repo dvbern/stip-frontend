@@ -15,7 +15,6 @@ variables:
   ARTIFACT_COMPRESSION_LEVEL: 'fast'
   CACHE_COMPRESSION_LEVEL: 'fast'
   GIT_DEPTH: 0
-  IMAGE: ${DVB_DOCKER_REGISTRY}/${CI_PROJECT_ROOT_NAMESPACE}/stip/gesuch-app:${CI_COMMIT_SHORT_SHA}
 
 .node-cache: &node-cache
   key:
@@ -67,6 +66,26 @@ format-check:
   extends: .base
   script:
     - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+
+build:affected:
+  stage: build
+  extends: .base
+  script:
+    - node ./tools/pipeline/generate.js "$(npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
+    - cat affected-apps.gitlab-ci.yml
+  artifacts:
+    expire_in: 30 days
+    paths:
+      - affected-apps.gitlab-ci.yml
+
+trigger:apps:
+  stage: build
+  trigger:
+    include:
+      - artifact: affected-apps.gitlab-ci.yml
+        job: build-affected
+  needs:
+    - job: 'build:affected'
 
 build:gesuch-app:
   stage: build
