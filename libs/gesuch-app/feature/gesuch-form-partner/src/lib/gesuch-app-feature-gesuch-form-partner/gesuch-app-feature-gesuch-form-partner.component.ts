@@ -22,11 +22,11 @@ import {
 } from '@dv/shared/model/gesuch';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  SharedUiFormFieldComponent,
+  SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
-} from '@dv/shared/ui/form-field';
+} from '@dv/shared/ui/form';
 import { MaskitoModule } from '@maskito/angular';
 
 @Component({
@@ -37,7 +37,7 @@ import { MaskitoModule } from '@maskito/angular';
     ReactiveFormsModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     TranslateModule,
-    SharedUiFormFieldComponent,
+    SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
@@ -72,7 +72,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
     ],
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
+    adresse: this.formBuilder.group({
       coAdresse: ['', []],
       strasse: ['', [Validators.required]],
       nummer: ['', []],
@@ -143,4 +143,6 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       },
     } as Partial<SharedModelGesuch>;
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

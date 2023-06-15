@@ -3,6 +3,20 @@ import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [
   {
+    path: 'gesuch-app-feature-gesuch-form-lebenslauf',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-lebenslauf').then(
+        (m) => m.gesuchAppFeatureGesuchFormLebenslaufRoutes
+      ),
+  },
+  {
+    path: 'gesuch-app-feature-gesuch-form-geschwister',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-geschwister').then(
+        (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
+      ),
+  },
+  {
     path: GesuchFormSteps.AUSZAHLUNGEN.route,
     title: 'gesuch-app.auszahlung.title',
     loadChildren: () =>
@@ -24,11 +38,6 @@ export const appRoutes: Route[] = [
       import('@dv/gesuch-app/feature/gesuch-form-partner').then(
         (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
       ),
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'gesuch-app-feature-cockpit',
   },
   {
     path: 'gesuch-app-feature-cockpit',
@@ -59,6 +68,15 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
+];
+
+export const routes: Route[] = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'gesuch-app-feature-cockpit',
+  },
+  ...appRoutes,
   {
     path: '**',
     redirectTo: 'gesuch-app-feature-cockpit',

@@ -11,24 +11,23 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaskitoModule } from '@maskito/angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  SharedUiFormFieldComponent,
+  SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+} from '@dv/shared/ui/form';
 import {
   Anrede,
   ElternDTO,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
-import { TranslateModule } from '@ngx-translate/core';
-import { debounceTime } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern-editor',
@@ -39,11 +38,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
     TranslateModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormFieldComponent,
+    SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
+    SharedUiFormAddressComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern-editor.component.scss'],
@@ -73,13 +73,9 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
+      this.formBuilder
+    ),
     identischerZivilrechtlicherWohnsitz: [false, []],
     telefonnummer: ['', [Validators.required]],
     sozialversicherungsnummer: ['', [Validators.required]],

@@ -29,12 +29,12 @@ import {
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
+  SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+} from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
 @Component({
@@ -46,7 +46,7 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
     TranslateModule,
     MaskitoModule,
     SharedUiProgressBarComponent,
-    SharedUiFormFieldComponent,
+    SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
@@ -337,4 +337,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   private setVisible(control: AbstractControl): void {
     control.enable();
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

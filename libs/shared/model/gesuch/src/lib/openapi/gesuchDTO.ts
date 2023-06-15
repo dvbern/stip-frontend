@@ -12,8 +12,10 @@
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
 import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
 import { FallDTO } from './fallDTO';
+import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
+import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
 import { PartnerContainerDTO } from './partnerContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
@@ -32,4 +34,6 @@ export interface GesuchDTO {
   ausbildung: AusbildungContainerDTO;
 
   partnerContainer: PartnerContainerDTO;
+  geschwisterContainers: GeschwisterContainerDTO[];
+  lebenslaufItemContainers: LebenslaufItemContainerDTO[];
 }

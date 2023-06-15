@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,16 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -29,14 +21,23 @@ import {
   Zivilstand,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
+  SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
-} from '@dv/shared/ui/form-field';
+} from '@dv/shared/ui/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { MaskitoModule } from '@maskito/angular';
+import {
+  NgbAlert,
+  NgbDateStruct,
+  NgbInputDatepicker,
+} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -48,13 +49,14 @@ import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
     MaskitoModule,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiFormFieldComponent,
+    SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
+    SharedUiFormAddressComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
@@ -87,14 +89,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     anrede: ['', [Validators.required]],
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    addresse: this.formBuilder.group({
-      coAdresse: ['', []],
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
+      this.formBuilder
+    ),
     identischerZivilrechtlicherWohnsitz: [false, []],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
@@ -157,4 +154,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       },
     } as Partial<SharedModelGesuch>;
   }
+
+  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

@@ -2,6 +2,8 @@ import { inject } from '@angular/core';
 import { catchError, switchMap, map, of } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
+
 import { SharedDataAccessConfigService } from './shared-data-access-config.service';
 import { SharedDataAccessConfigEvents } from './shared-data-access-config.events';
 
@@ -19,13 +21,11 @@ export const loadDeploymentConfig = createEffect(
               deploymentConfig,
             })
           ),
-          catchError((error: { message: string }) =>
-            of(
-              SharedDataAccessConfigEvents.deploymentConfigLoadedFailure({
-                error: error.message,
-              })
-            )
-          )
+          catchError((error) => [
+            SharedDataAccessConfigEvents.deploymentConfigLoadedFailure({
+              error: sharedUtilFnErrorTransformer(error),
+            }),
+          ])
         )
       )
     );

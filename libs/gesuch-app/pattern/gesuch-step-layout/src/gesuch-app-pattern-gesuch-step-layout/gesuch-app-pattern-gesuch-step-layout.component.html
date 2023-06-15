@@ -2,6 +2,11 @@
   <div class="d-flex h-100">
     <!-- left step nav (Desktop) -->
     <div class="d-none d-lg-block border-end bg-white h-100">
+      <p class="m-4">
+        <span class="small">in Bearbeitung durch</span><br />
+        <span class="fw-medium">Eva Mendes</span>
+      </p>
+
       <dv-gesuch-app-pattern-gesuch-step-nav class="p-4" style="width: 296px" />
     </div>
 
@@ -11,16 +16,16 @@
         class="d-flex align-items-center justify-content-between border-bottom border-1 pb-3 mt-3 mb-4 d-lg-none"
       >
         <dv-shared-ui-progress-bar
-          [current]="currentStepNumber"
-          [total]="maxStepNumber"
+          [current]="step.currentStepNumber"
+          [total]="stepManager.getTotalSteps()"
         ></dv-shared-ui-progress-bar>
         <div class="text-end">
           <h5 style="letter-spacing: 1.13px; margin-bottom: 4px">
-            {{ currentStepTitle }}
+            {{ step.translationKey | translate }}
           </h5>
           <p class="fst-italic mb-0">
             {{ 'gesuch-app.form.next' | translate }}:
-            {{ nextStepSubtitle }}
+            {{ stepManager.getNext(step).translationKey | translate }}
           </p>
         </div>
       </div>
@@ -29,11 +34,11 @@
       <div class="d-none d-lg-flex justify-content-start">
         <dv-shared-ui-icon-chip class="step-icon me-3">
           <i class="material-symbols-rounded text-primary">{{
-            stepIconSymbolName
+            step.iconSymbolName
           }}</i>
         </dv-shared-ui-icon-chip>
 
-        <h2 class="fw-bold">{{ currentStepTitle }}</h2>
+        <h2 class="fw-bold">{{ step.translationKey | translate }}</h2>
       </div>
 
       <div>

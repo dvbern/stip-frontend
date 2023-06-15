@@ -22,10 +22,12 @@ export class GesuchAppDataAccessGesuchService {
   }
 
   create(gesuch: Partial<SharedModelGesuch>) {
+    // use REST because then it is compatible with mock backend
     return this.http.post<{ id: string }>(`${RESOURCE_URL}`, gesuch);
   }
 
   update(gesuch: Partial<SharedModelGesuch>) {
+    // use REST because then it is compatible with mock backend
     return this.http.put<void>(`${RESOURCE_URL}/${gesuch.id}`, gesuch);
   }
 

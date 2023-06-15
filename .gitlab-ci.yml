@@ -1,66 +1,49 @@
-# WIP
-
 include:
-  - project: 'devops/gitlab/templates'
-    file:
-      - '/docker/docker.gitlab-ci.yml'
+  - local: '.gitlab/common.gitlab-ci.yml'
+
+image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
 
 stages:
+  - validate
   - build
   - deploy
 
-variables:
-  IMAGE: ${DVB_DOCKER_REGISTRY}/${CI_PROJECT_ROOT_NAMESPACE}/stip/gesuch-app:${CI_COMMIT_SHORT_SHA}
+install:
+  stage: .pre
+  extends: .base
+  before_script: []
+  script:
+    - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
+      echo "Skipping npm ci because a cached version is available"'
 
-.base:
-  image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
-  tags: ['os:linux', 'zone:tz', 'type:docker']
-  variables:
-    HUSKY_SKIP_INSTALL: 1
-  cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - .npm/
-  before_script:
-    - npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts
+lint:
+  stage: validate
+  extends: .base
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=3
 
-build:gesuch-app:
+format-check:
+  stage: validate
+  extends: .base
+  script:
+    - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+
+build:pipeline:
   stage: build
   extends: .base
   script:
-    - npm run build:gesuch-app
+    - node ./tools/pipeline/generate.js "$(npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
+    - cat affected-apps.gitlab-ci.yml
   artifacts:
+    expire_in: 30 days
     paths:
-      - 'dist/apps/gesuch-app'
-    when: on_success
-    expire_in: '1 day'
+      - affected-apps.gitlab-ci.yml
 
-build:gesuch-app:image:
-  extends: .docker-build
-  variables:
-    IMAGE_PATH: $IMAGE
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_COMMIT_BRANCH
-      variables:
-        KANIKO_ARGS: '--no-push'
+trigger:affected-apps:
+  stage: build
+  trigger:
+    include:
+      - artifact: affected-apps.gitlab-ci.yml
+        job: build:pipeline
   needs:
-    - job: build:gesuch-app
-      artifacts: true
-
-deploy:
-  stage: deploy
-  image: '${DVB_DOCKER_REGISTRY}/devops/docker/tools/k8s/main'
-  tags: ['os:linux', 'type:docker', 'zone:tz']
-  variables:
-    STAGE: dev
-  script:
-    - git fetch origin $CI_COMMIT_BRANCH
-    - cd deploy/$STAGE
-    - kustomize edit set image $IMAGE
-    - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE [ci skip]"'
-    - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - job: 'build:pipeline'

@@ -1,5 +1,7 @@
-import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
 import { createActionGroup, props } from '@ngrx/store';
+
+import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
+import { SharedModelError } from '@dv/shared/model/error';
 
 export const GesuchAppDataAccessGesuchsperiodeEvents = createActionGroup({
   source: 'Gesuchsperiode API',
@@ -7,6 +9,6 @@ export const GesuchAppDataAccessGesuchsperiodeEvents = createActionGroup({
     gesuchsperiodesLoadedSuccess: props<{
       gesuchsperiodes: GesuchsperiodeDTO[];
     }>(),
-    gesuchsperiodesLoadedFailure: props<{ error: string }>(),
+    gesuchsperiodesLoadedFailure: props<{ error: SharedModelError }>(),
   },
 });
