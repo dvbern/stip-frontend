@@ -19,14 +19,14 @@ variables:
     - key:
         files:
           - package-lock.json
-        paths:
-          - .npm/
+      paths:
+        - .npm/
     - key:
         files:
           - package.json
           - package-lock.json
-        paths:
-          - node_modules/
+      paths:
+        - node_modules/
   before_script:
     - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
       echo "Skipping npm ci because a cached version is available"'
