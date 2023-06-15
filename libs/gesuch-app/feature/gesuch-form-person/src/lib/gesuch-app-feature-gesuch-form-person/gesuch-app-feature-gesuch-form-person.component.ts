@@ -37,6 +37,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -55,6 +56,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
+    SharedUiFormAddressComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
@@ -87,14 +89,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     anrede: ['', [Validators.required]],
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    adresse: this.formBuilder.group({
-      coAdresse: ['', []],
-      strasse: ['', [Validators.required]],
-      hausnummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
+      this.formBuilder
+    ),
     identischerZivilrechtlicherWohnsitz: [false, []],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],

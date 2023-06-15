@@ -1,0 +1,102 @@
+<div class="row g-4" [formGroup]="group">
+  <!-- Strasse -->
+  <dv-shared-ui-form-field class="col-8 col-xl-9">
+    <dv-shared-ui-form-label
+      >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
+    </dv-shared-ui-form-label>
+    <input
+      class="form-control"
+      type="text"
+      dvSharedUiFormLabelTarget
+      formControlName="strasse"
+    />
+    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </dv-shared-ui-form-message>
+  </dv-shared-ui-form-field>
+
+  <!-- Nr -->
+  <dv-shared-ui-form-field class="col-4 col-xl-3">
+    <dv-shared-ui-form-label
+      >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
+    </dv-shared-ui-form-label>
+    <input
+      class="form-control"
+      type="text"
+      dvSharedUiFormLabelTarget
+      formControlName="hausnummer"
+    />
+    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </dv-shared-ui-form-message>
+  </dv-shared-ui-form-field>
+  <!-- PLZ -->
+  <dv-shared-ui-form-field class="col-5 col-md-4 col-xl-3">
+    <dv-shared-ui-form-label
+      >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+    </dv-shared-ui-form-label>
+    <input
+      class="form-control"
+      type="text"
+      dvSharedUiFormLabelTarget
+      formControlName="plz"
+    />
+    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </dv-shared-ui-form-message>
+  </dv-shared-ui-form-field>
+
+  <!-- Ort -->
+  <dv-shared-ui-form-field class="col-7 col-md-8 col-xl-9">
+    <dv-shared-ui-form-label
+      >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+    </dv-shared-ui-form-label>
+    <input
+      class="form-control"
+      type="text"
+      dvSharedUiFormLabelTarget
+      formControlName="ort"
+    />
+    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </dv-shared-ui-form-message>
+  </dv-shared-ui-form-field>
+
+  <dv-shared-ui-form-field class="col-12 col-md-6">
+    <dv-shared-ui-form-label
+      >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
+        'shared.form.optional.label' | translate
+      }})
+    </dv-shared-ui-form-label>
+    <input
+      class="form-control"
+      type="text"
+      dvSharedUiFormLabelTarget
+      formControlName="coAdresse"
+    />
+  </dv-shared-ui-form-field>
+
+  <dv-shared-ui-form-field class="col-12 col-md-6">
+    <dv-shared-ui-form-label>{{
+      'gesuch-app.form.shared.address.country.label' | translate
+    }}</dv-shared-ui-form-label>
+    <select
+      class="form-select"
+      dvSharedUiFormLabelTarget
+      formControlName="land"
+    >
+      <option [value]="null" disabled selected>
+        {{ 'shared.form.select.empty' | translate }}
+      </option>
+      <option
+        [value]="l.value"
+        *ngFor="let l of Land | keyvalue; trackBy: trackByIndex"
+      >
+        {{ l.value }}
+      </option>
+    </select>
+    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </dv-shared-ui-form-message>
+  </dv-shared-ui-form-field>
+</div>
