@@ -1,5 +1,7 @@
+import { createActionGroup, props } from '@ngrx/store';
+
 import { AusbildungsgangLand } from '@dv/shared/model/gesuch';
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { SharedModelError } from '@dv/shared/model/error';
 
 export const GesuchAppDataAccessAusbildungsgangApiEvents = createActionGroup({
   source: 'Ausbildungsgang API',
@@ -7,6 +9,6 @@ export const GesuchAppDataAccessAusbildungsgangApiEvents = createActionGroup({
     ausbildungsgangsLoadedSuccess: props<{
       ausbildungsgangLands: AusbildungsgangLand[];
     }>(),
-    ausbildungsgangsLoadedFailure: props<{ error: string }>(),
+    ausbildungsgangsLoadedFailure: props<{ error: SharedModelError }>(),
   },
 });

@@ -16,6 +16,7 @@ import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 
 export const loadGesuchs = createEffect(
   (
@@ -34,9 +35,9 @@ export const loadGesuchs = createEffect(
               gesuchs,
             })
           ),
-          catchError(({ error }) => [
+          catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure({
-              error: error?.message,
+              error: sharedUtilFnErrorTransformer(error),
             }),
           ])
         )
@@ -71,9 +72,9 @@ export const loadGesuch = createEffect(
           map((gesuch) =>
             GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess({ gesuch })
           ),
-          catchError(({ error }) => [
+          catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure({
-              error: error.toString(),
+              error: sharedUtilFnErrorTransformer(error),
             }),
           ])
         );
@@ -95,9 +96,9 @@ export const createGesuch = createEffect(
           map(({ id }) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({ id })
           ),
-          catchError(({ error }) => [
+          catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure({
-              error: error.types,
+              error: sharedUtilFnErrorTransformer(error),
             }),
           ])
         )
@@ -126,14 +127,11 @@ export const updateGesuch = createEffect(
               origin,
             })
           ),
-          catchError((error) => {
-            console.log(error);
-            return [
-              GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
-                error: error.toString(),
-              }),
-            ];
-          })
+          catchError((error) => [
+            GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
+              error: sharedUtilFnErrorTransformer(error),
+            }),
+          ])
         );
       })
     );
@@ -159,9 +157,9 @@ export const updateGesuchSubform = createEffect(
               origin,
             })
           ),
-          catchError(({ error }) => [
+          catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
-              error: error.toString(),
+              error: sharedUtilFnErrorTransformer(error),
             }),
           ])
         );
@@ -181,9 +179,9 @@ export const removeGesuch = createEffect(
       concatMap(({ id }) =>
         gesuchAppDataAccessGesuchService.remove(id).pipe(
           map(() => GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess()),
-          catchError(({ error }) => [
+          catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure({
-              error: error.toString(),
+              error: sharedUtilFnErrorTransformer(error),
             }),
           ])
         )

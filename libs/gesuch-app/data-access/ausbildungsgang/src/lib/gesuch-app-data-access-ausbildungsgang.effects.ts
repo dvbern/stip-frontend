@@ -5,6 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { GesuchAppDataAccessAusbildungsgangService } from './gesuch-app-data-access-ausbildungsgang.service';
 import { GesuchAppDataAccessAusbildungsgangApiEvents } from './gesuch-app-data-access-ausbildungsgang.events';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 
 export const loadAusbildungsgangs = createEffect(
   (
@@ -22,13 +23,11 @@ export const loadAusbildungsgangs = createEffect(
               { ausbildungsgangLands }
             )
           ),
-          catchError((error: { message: string }) =>
-            of(
-              GesuchAppDataAccessAusbildungsgangApiEvents.ausbildungsgangsLoadedFailure(
-                { error: error.message }
-              )
-            )
-          )
+          catchError((error) => [
+            GesuchAppDataAccessAusbildungsgangApiEvents.ausbildungsgangsLoadedFailure(
+              { error: sharedUtilFnErrorTransformer(error) }
+            ),
+          ])
         )
       )
     );

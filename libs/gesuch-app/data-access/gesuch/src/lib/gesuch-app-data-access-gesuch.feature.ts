@@ -1,10 +1,11 @@
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
-import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
+import { SharedModelError } from '@dv/shared/model/error';
 import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
+import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
+import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -14,7 +15,7 @@ export interface State {
   gesuch: SharedModelGesuch | undefined;
   gesuchs: SharedModelGesuch[];
   loading: boolean;
-  error: string | undefined;
+  error: SharedModelError | undefined;
 }
 
 const initialState: State = {

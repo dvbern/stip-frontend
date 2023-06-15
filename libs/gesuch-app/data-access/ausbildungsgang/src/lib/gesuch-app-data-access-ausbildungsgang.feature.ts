@@ -1,13 +1,15 @@
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import { AusbildungsgangLand } from '@dv/shared/model/gesuch';
 import { createFeature, createReducer, on } from '@ngrx/store';
+
+import { SharedModelError } from '@dv/shared/model/error';
+import { AusbildungsgangLand } from '@dv/shared/model/gesuch';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
 import { GesuchAppDataAccessAusbildungsgangApiEvents } from './gesuch-app-data-access-ausbildungsgang.events';
 
 export interface State {
   ausbildungsgangLands: AusbildungsgangLand[];
   loading: boolean;
-  error: string | undefined;
+  error: SharedModelError | undefined;
 }
 
 const initialState: State = {

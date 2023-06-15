@@ -89,8 +89,11 @@ async function validateSelectors(tree: Tree, project: Project) {
   const incorrectSelectors = [];
   const { name: projectName, path: projectPath } = project;
   const [, scope, type, name] = projectPath.split(path.sep);
-  const projectJson: any = await readJson(tree, projectPath);
+  const projectJson = await readJson(tree, projectPath);
   const { sourceRoot } = projectJson;
+  if (!sourceRoot) {
+    return [];
+  }
   findFiles(
     tree,
     path.join(sourceRoot, 'lib'),

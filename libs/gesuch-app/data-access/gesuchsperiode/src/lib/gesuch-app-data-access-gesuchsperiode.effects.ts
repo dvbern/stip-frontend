@@ -6,6 +6,7 @@ import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
 import { GesuchAppDataAccessGesuchsperiodeService } from './gesuch-app-data-access-gesuchsperiode.service';
 import { GesuchAppDataAccessGesuchsperiodeEvents } from './gesuch-app-data-access-gesuchsperiode.events';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 
 export const loadGesuchsperiodes = createEffect(
   (
@@ -23,13 +24,11 @@ export const loadGesuchsperiodes = createEffect(
               { gesuchsperiodes }
             )
           ),
-          catchError((error: { message: string }) =>
-            of(
-              GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure(
-                { error: error.message }
-              )
-            )
-          )
+          catchError((error) => [
+            GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure(
+              { error: sharedUtilFnErrorTransformer(error) }
+            ),
+          ])
         )
       )
     );
