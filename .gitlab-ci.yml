@@ -1,4 +1,5 @@
 include:
+  - local: '.gitlab/common.gitlab-ci.yml'
   - project: 'devops/gitlab/templates'
     file:
       - '/docker/docker.gitlab-ci.yml'
@@ -9,43 +10,6 @@ stages:
   - validate
   - build
   - deploy
-
-variables:
-  FF_USE_FASTZIP: 'true'
-  ARTIFACT_COMPRESSION_LEVEL: 'fast'
-  CACHE_COMPRESSION_LEVEL: 'fast'
-  GIT_DEPTH: 0
-
-.node-cache: &node-cache
-  key:
-    files:
-      - package.json
-      - package-lock.json
-  paths:
-    - node_modules/
-  policy: pull-push
-
-.npm-cache: &npm-cache
-  key:
-    files:
-      - package-lock.json
-  paths:
-    - .npm
-  policy: pull-push
-
-.base:
-  tags: ['os:linux', 'zone:tz', 'type:docker']
-  cache:
-    - <<: *node-cache
-    - <<: *npm-cache
-  before_script:
-    - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
-      echo "Skipping npm ci because a cached version is available"'
-    - NX_HEAD=$CI_COMMIT_SHA
-    - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 install:
   stage: .pre
@@ -67,7 +31,7 @@ format-check:
   script:
     - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
 
-build:affected:
+build:pipeline:
   stage: build
   extends: .base
   script:
@@ -78,11 +42,11 @@ build:affected:
     paths:
       - affected-apps.gitlab-ci.yml
 
-trigger:apps:
+trigger:affected-apps:
   stage: build
   trigger:
     include:
       - artifact: affected-apps.gitlab-ci.yml
-        job: build:affected
+        job: build:pipeline
   needs:
-    - job: 'build:affected'
+    - job: 'build:pipeline'

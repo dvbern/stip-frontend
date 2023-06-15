@@ -1,6 +1,9 @@
 const { writeFileSync } = require('fs');
 
 const createStages = () => `
+include:
+  - local: '.gitlab/common.gitlab-ci.yml'
+
 stages:
   - build
   - deploy
