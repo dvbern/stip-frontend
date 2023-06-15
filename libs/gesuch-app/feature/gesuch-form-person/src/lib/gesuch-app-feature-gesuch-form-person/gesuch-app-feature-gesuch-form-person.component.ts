@@ -37,7 +37,9 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -57,6 +59,7 @@ import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
+    SharedPatternDocumentUploadComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],

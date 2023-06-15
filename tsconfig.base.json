@@ -50,6 +50,7 @@
       "@dv/shared/model/gesuch": ["libs/shared/model/gesuch/src/index.ts"],
       "@dv/shared/model/language": ["libs/shared/model/language/src/index.ts"],
       "@dv/shared/pattern/core": ["libs/shared/pattern/core/src/index.ts"],
+      "@dv/shared/pattern/document-upload": ["libs/shared/pattern/document-upload/src/index.ts"],
       "@dv/shared/pattern/i18n-title-strategy": ["libs/shared/pattern/i18n-title-strategy/src/index.ts"],
       "@dv/shared/pattern/interceptor-deployment-config": ["libs/shared/pattern/interceptor-deployment-config/src/index.ts"],
       "@dv/shared/pattern/ngb-datepicker-adapter": ["libs/shared/pattern/ngb-datepicker-adapter/src/index.ts"],
