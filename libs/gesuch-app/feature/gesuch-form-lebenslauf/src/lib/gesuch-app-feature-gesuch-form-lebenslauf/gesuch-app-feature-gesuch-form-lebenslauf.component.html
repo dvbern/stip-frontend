@@ -39,11 +39,8 @@
 
     <div class="row">
       <!-- Table -->
-      <div
-        class="col-12 col-xl-8"
-        *ngIf="this.view$().gesuch?.lebenslaufItemContainers as items"
-      >
-        <table class="table" *ngIf="items.length">
+      <div class="col-12 col-xl-8">
+        <table class="table table-borderless">
           <thead>
             <tr>
               <th scope="col"></th>
@@ -64,47 +61,77 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let itemRaw of items; trackBy: trackByIndex">
-              <ng-container *ngIf="asItem(itemRaw!.lebenslaufItemSB!) as item">
-                <td>
-                  <i class="material-symbols-rounded me-2">
-                    {{ item.type === 'AUSBILDUNG' ? 'school' : 'work' }}
-                  </i>
-                </td>
-                <td>
-                  {{
-                    'gesuch-app.form.lebenslauf.item.subtype.' +
-                      (item.type === 'AUSBILDUNG'
-                        ? 'bildungsart'
-                        : 'taetigkeitsart') +
-                      '.' +
-                      item.subtype.toLowerCase() | translate
-                  }}
-                </td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.dateStart }}</td>
-                <td>{{ item.dateEnd }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-link p-0 lh-1"
-                    (click)="handleEditItem(item)"
-                    [title]="'gesuch-app.form.item.edit' | translate"
-                  >
-                    <i class="material-symbols-rounded">edit</i>
-                  </button>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-link p-0 lh-1"
-                    (click)="handleDeleteItem(item)"
-                    [title]="'gesuch-app.form.item.delete' | translate"
-                  >
-                    <i class="material-symbols-rounded">delete</i>
-                  </button>
-                </td>
-              </ng-container>
+            <!-- Lebenslauf items -->
+            <ng-container *ngIf="lebenslaufItems$() as items">
+              <tr
+                *ngFor="let itemRaw of items; trackBy: trackByIndex"
+                style="background-color: #efefef"
+                [class.bg-primary-subtle]="itemRaw?.type === 'AUSBILDUNG'"
+              >
+                <ng-container *ngIf="asItem(itemRaw!) as item">
+                  <td>
+                    <i
+                      class="material-symbols-rounded me-2"
+                      style="color: #999"
+                      [class.text-primary]="item.type === 'AUSBILDUNG'"
+                    >
+                      {{ item.type === 'AUSBILDUNG' ? 'school' : 'work' }}
+                    </i>
+                  </td>
+                  <td>
+                    {{
+                      'gesuch-app.form.lebenslauf.item.subtype.' +
+                        (item.type === 'AUSBILDUNG'
+                          ? 'bildungsart'
+                          : 'taetigkeitsart') +
+                        '.' +
+                        item.subtype.toLowerCase() | translate
+                    }}
+                  </td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.dateStart }}</td>
+                  <td>{{ item.dateEnd }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-link p-0 lh-1"
+                      (click)="handleEditItem(item)"
+                      [title]="
+                        'gesuch-app.form.lebenslaufitem.edit' | translate
+                      "
+                    >
+                      <i class="material-symbols-rounded">edit</i>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-link p-0 lh-1"
+                      (click)="handleDeleteItem(item)"
+                      [title]="
+                        'gesuch-app.form.lebenslaufitem.delete' | translate
+                      "
+                    >
+                      <i class="material-symbols-rounded">delete</i>
+                    </button>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+
+            <!-- geplante Ausbildung -->
+            <tr *ngIf="ausbildung$() as item" class="bg-primary-subtle">
+              <td>
+                <i class="material-symbols-rounded me-2 text-primary">
+                  school
+                </i>
+              </td>
+              <td>{{ item.ausbildungsstaette }}</td>
+              <td>{{ item.ausbildungsgang }}: {{ item.fachrichtung }}</td>
+              <td>{{ item.start }}</td>
+              <td>{{ item.ende }}</td>
+              <td></td>
+              <td></td>
             </tr>
           </tbody>
         </table>

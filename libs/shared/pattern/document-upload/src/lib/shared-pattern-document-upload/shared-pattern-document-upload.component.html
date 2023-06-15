@@ -1,0 +1,19 @@
+<div
+  class="spinner-border text-secondary my-4"
+  role="status"
+  *ngIf="view().loading"
+>
+  <span class="visually-hidden">Loading documents...</span>
+</div>
+
+<p *ngIf="view().error">{{ view().error?.message }}</p>
+
+<!-- todo add drop zone / file selector  -->
+<input type="file" (change)="handleDocumentAdded($any($event).target.value)" />
+
+<div *ngFor="let document of view().documents; trackBy: trackByIndex">
+  {{ document.id }}
+  <button type="button" (click)="handleRemoveClicked(document.id)">
+    Remove
+  </button>
+</div>
