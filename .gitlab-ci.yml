@@ -33,17 +33,17 @@ build:pipeline:
   extends: .base
   script:
     - node ./tools/pipeline/generate.js "$(npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
-    - cat affected-apps.gitlab-ci.yml
+    - cat affected-apps.gitlab-ci.template.yml
   artifacts:
     expire_in: 30 days
     paths:
-      - affected-apps.gitlab-ci.yml
+      - affected-apps.gitlab-ci.template.yml
 
 trigger:affected-apps:
   stage: build
   trigger:
     include:
-      - artifact: affected-apps.gitlab-ci.yml
+      - artifact: affected-apps.gitlab-ci.template.yml
         job: build:pipeline
   needs:
     - job: 'build:pipeline'

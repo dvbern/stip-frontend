@@ -1,0 +1,59 @@
+include:
+  - local: '.gitlab/common.gitlab-ci.yml'
+
+stages:
+  - build
+  - deploy
+
+# {{#each projects}}
+
+build:{{ this }}:
+  stage: build
+  extends: .base
+  script:
+    - npx nx build --project {{this}}
+  artifacts:
+    paths:
+      - 'dist/apps/{{ this }}'
+    when: on_success
+    expire_in: '1 day'
+
+build:{{ this }}:image:
+  extends: .docker-build
+  variables:
+    IMAGE_PATH: $DVB_DOCKER_REGISTRY/$CI_PROJECT_ROOT_NAMESPACE/stip/{{ this }}:$CI_COMMIT_SHORT_SHA
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH
+      variables:
+        KANIKO_ARGS: '--no-push'
+  needs:
+    - job: build:{{ this }}
+      artifacts: true
+
+deploy:{{ this }}:
+  stage: deploy
+  image: '$DVB_DOCKER_REGISTRY/devops/docker/tools/k8s/main'
+  tags: ['os:linux', 'type:docker', 'zone:tz']
+  variables:
+    STAGE: dev
+    IMAGE_PATH: $DVB_DOCKER_REGISTRY/$CI_PROJECT_ROOT_NAMESPACE/stip/{{ this }}:$CI_COMMIT_SHORT_SHA
+  script:
+    - git fetch origin $CI_COMMIT_BRANCH
+    - cd deploy/$STAGE
+    - kustomize edit set image $IMAGE
+    - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE_PATH [ci skip]"'
+    - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: build:{{ this }}:image
+
+# {{else}}
+
+build:empty:
+  stage: build
+  extends: .base
+  script:
+    - echo 'No apps affected!'
+# {{/each}}
