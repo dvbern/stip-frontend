@@ -109,19 +109,19 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
         switch (kontoinhaberin) {
           case KontoinhaberinType.GESUCHSTELLERIN:
-            this.setGesuchstellerinValues(
+            this.setValuesFrom(
               gesuch?.personInAusbildungContainer?.personInAusbildungSB
             );
             this.disableNameAndAdresse();
             break;
           case KontoinhaberinType.VATER:
             // replace with actual once implemented
-            this.setElternValues({} as ElternDTO);
+            this.setValuesFrom({} as ElternDTO);
             this.disableNameAndAdresse();
             break;
           case KontoinhaberinType.MUTTER:
             // replace with actual once implemented
-            this.setElternValues({} as ElternDTO);
+            this.setValuesFrom({} as ElternDTO);
             this.disableNameAndAdresse();
             break;
           case KontoinhaberinType.ANDERE:
@@ -155,12 +155,10 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     return index;
   }
 
-  private setGesuchstellerinValues(
-    personInAusbildung: PersonInAusbildungDTO | undefined
+  private setValuesFrom(
+    personInAusbildung: PersonInAusbildungDTO | ElternDTO | undefined
   ): void {
-    this.form.controls.name.patchValue(personInAusbildung?.name || '');
-    this.form.controls.vorname.patchValue(personInAusbildung?.vorname || '');
-    this.form.controls.addresse.patchValue(personInAusbildung?.adresse || {});
+    this.form.patchValue(personInAusbildung || {});
   }
 
   private disableNameAndAdresse(): void {
@@ -173,12 +171,6 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     this.form.controls.name.enable();
     this.form.controls.vorname.enable();
     this.form.controls.addresse.enable();
-  }
-
-  private setElternValues(elternValues: ElternDTO): void {
-    this.form.controls.name.patchValue(elternValues?.name);
-    this.form.controls.vorname.patchValue(elternValues?.vorname);
-    this.form.controls.addresse.patchValue(elternValues?.adresse);
   }
 
   private ibanValidator(): ValidatorFn {
