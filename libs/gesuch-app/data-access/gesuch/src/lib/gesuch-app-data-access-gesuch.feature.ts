@@ -5,6 +5,7 @@ import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
@@ -45,6 +46,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormFamiliensituation.init,
       GesuchAppEventGesuchFormEltern.init,
       GesuchAppEventGesuchFormGeschwister.init,
+      GesuchAppEventGesuchFormLebenslauf.init,
       (state): State => ({
         ...state,
         gesuch: undefined,
@@ -60,6 +62,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormEltern.saveSubformTriggered,
       GesuchAppEventGesuchFormGeschwister.saveTriggered,
       GesuchAppEventGesuchFormGeschwister.saveSubformTriggered,
+      GesuchAppEventGesuchFormLebenslauf.saveTriggered,
+      GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered,
       GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,

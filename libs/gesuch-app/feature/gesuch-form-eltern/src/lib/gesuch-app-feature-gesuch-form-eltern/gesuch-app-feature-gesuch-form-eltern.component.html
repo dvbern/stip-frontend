@@ -17,57 +17,59 @@
     (closeTriggered)="handleEditorClose()"
   />
 
-  <div class="row g-4" *ngIf="!editedParent">
-    <div class="col-12 col-md-6">
-      <div
-        class="card border-2 justify-content-center align-items-center"
-        *ngIf="view$().isVaterPlaceholder"
-      >
-        <div class="card-body">
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="handleAddVater()"
-          >
-            Add vater
-          </button>
+  <ng-container *ngIf="!editedParent">
+    <div class="row g-4">
+      <div class="col-12 col-md-6">
+        <div
+          class="card border-2 justify-content-center align-items-center"
+          *ngIf="view$().isVaterPlaceholder"
+        >
+          <div class="card-body">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="handleAddVater()"
+            >
+              Add vater
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-12 col-md-6">
-      <div
-        class="card border-2 justify-content-center align-items-center"
-        *ngIf="view$().isMutterPlaceholder"
-      >
-        <div class="card-body">
-          <button type="button" class="btn btn-primary">Add mutter</button>
+      <div class="col-12 col-md-6">
+        <div
+          class="card border-2 justify-content-center align-items-center"
+          *ngIf="view$().isMutterPlaceholder"
+        >
+          <div class="card-body">
+            <button type="button" class="btn btn-primary">Add mutter</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div
-      class="col-12 col-md-6"
-      *ngFor="let parent of view$().elterns; trackBy: trackByIndex"
-    >
-      <div class="card border-2">
-        <div class="card-body">
-          {{ parent.name }} {{ parent.vorname }}
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="handleEdit(parent)"
-          >
-            Edit
-          </button>
-          <button type="button" class="btn btn-danger">Remove</button>
+      <div
+        class="col-12 col-md-6"
+        *ngFor="let parent of view$().elterns; trackBy: trackByIndex"
+      >
+        <div class="card border-2">
+          <div class="card-body">
+            {{ parent.name }} {{ parent.vorname }}
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="handleEdit(parent)"
+            >
+              Edit
+            </button>
+            <button type="button" class="btn btn-danger">Remove</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
-    <button type="button" class="btn btn-primary" (click)="handleContinue()">
-      {{ 'gesuch-app.form.gonext' | translate }}
-    </button>
-  </div>
+    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+      <button type="button" class="btn btn-primary" (click)="handleContinue()">
+        {{ 'gesuch-app.form.gonext' | translate }}
+      </button>
+    </div>
+  </ng-container>
 </dv-gesuch-app-pattern-gesuch-step-layout>

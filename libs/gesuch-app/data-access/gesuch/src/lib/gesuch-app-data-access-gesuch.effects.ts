@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
@@ -59,7 +60,8 @@ export const loadGesuch = createEffect(
         GesuchAppEventGesuchFormEducation.init,
         GesuchAppEventGesuchFormFamiliensituation.init,
         GesuchAppEventGesuchFormEltern.init,
-        GesuchAppEventGesuchFormGeschwister.init
+        GesuchAppEventGesuchFormGeschwister.init,
+        GesuchAppEventGesuchFormLebenslauf.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -147,7 +149,8 @@ export const updateGesuchSubform = createEffect(
     return actions$.pipe(
       ofType(
         GesuchAppEventGesuchFormEltern.saveSubformTriggered,
-        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered
+        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered,
+        GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered
       ),
       concatMap(({ gesuch, origin }) => {
         return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
@@ -213,7 +216,8 @@ export const redirectToGesuchFormNextStep = createEffect(
       ofType(
         GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
         GesuchAppEventGesuchFormEltern.nextTriggered,
-        GesuchAppEventGesuchFormGeschwister.nextTriggered
+        GesuchAppEventGesuchFormGeschwister.nextTriggered,
+        GesuchAppEventGesuchFormLebenslauf.nextTriggered
       ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);

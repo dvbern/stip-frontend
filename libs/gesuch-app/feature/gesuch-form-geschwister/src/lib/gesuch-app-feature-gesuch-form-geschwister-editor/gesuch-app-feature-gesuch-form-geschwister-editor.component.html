@@ -126,11 +126,15 @@
   <!-- buttons -->
 
   <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
-    <button type="button" class="btn btn-secondary" (click)="handleCancel()">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="handleCancel()"
+    >
       {{ 'gesuch-app.form.back' | translate }}
     </button>
     <button type="submit" class="btn btn-primary">
-      {{ 'gesuch-app.form.save-and-continue' | translate }}
+      {{ 'gesuch-app.form.save-and-back' | translate }}
     </button>
   </div>
 </form>

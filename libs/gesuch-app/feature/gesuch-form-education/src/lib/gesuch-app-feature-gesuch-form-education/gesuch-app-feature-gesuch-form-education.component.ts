@@ -9,29 +9,7 @@ import {
   Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { MaskitoModule } from '@maskito/angular';
-import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { getYear, isAfter } from 'date-fns';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  merge,
-  Observable,
-  OperatorFunction,
-  startWith,
-  Subject,
-} from 'rxjs';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -50,9 +28,25 @@ import {
 } from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
+  createValidatorEndAfterStart,
   sharedUtilValidatorMonthYearMin,
   sharedUtilValidatorMonthYearMonth,
 } from '@dv/shared/util/validator-date';
+import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { getYear } from 'date-fns';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  merge,
+  Observable,
+  OperatorFunction,
+  startWith,
+  Subject,
+} from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
 
@@ -128,7 +122,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   constructor() {
     // add multi-control validators
     this.form.controls.ende.addValidators([
-      this.createValidatorEndAfterStart(this.form.controls.start),
+      createValidatorEndAfterStart(this.form.controls.start, false),
     ]);
 
     // fill form
@@ -262,25 +256,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
-
-  createValidatorEndAfterStart(startControl: FormControl<string | null>) {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const startValue = startControl.value;
-      const endValue = control.value as string;
-      if (startValue && endValue) {
-        const [startMonth, startYear] = startValue
-          .split('.')
-          .map((value) => +value);
-        const [endMonth, endYear] = endValue.split('.').map((value) => +value);
-
-        const startDate = new Date(startYear, startMonth - 1);
-        const endDate = new Date(endYear, endMonth - 1);
-
-        return isAfter(endDate, startDate) ? null : { endDateAfterStart: true };
-      }
-      return null;
-    };
-  }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
 }
