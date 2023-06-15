@@ -83,7 +83,7 @@ trigger:apps:
   trigger:
     include:
       - artifact: affected-apps.gitlab-ci.yml
-        job: build-affected
+        job: build:affected
   needs:
     - job: 'build:affected'
 
