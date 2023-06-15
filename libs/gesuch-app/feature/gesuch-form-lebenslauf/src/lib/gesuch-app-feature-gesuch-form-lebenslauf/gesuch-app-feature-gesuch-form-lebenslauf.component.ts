@@ -38,6 +38,29 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
 
   view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
+  ausbildung$ = computed(() => {
+    return this.view$().gesuch?.ausbildung?.ausbildungSB;
+  });
+
+  lebenslaufItems$ = computed(() => {
+    console.log(
+      'lebenslauf items: ',
+      this.view$().gesuch?.lebenslaufItemContainers
+    );
+    return this.view$()
+      .gesuch?.lebenslaufItemContainers.map((each) => each.lebenslaufItemSB)
+      .filter((each) => each?.id)
+      .sort((a, b) => {
+        const monthYearA = parseMonthYearString(a!.dateStart!);
+        const monthYearB = parseMonthYearString(b!.dateStart!);
+
+        if (monthYearB.year !== monthYearA.year) {
+          return monthYearA.year - monthYearB.year;
+        }
+        return monthYearA.month - monthYearB.month;
+      });
+  });
+
   minDate$: Signal<Date | null> = computed(() => {
     const geburtsdatum =
       this.view$().gesuch?.personInAusbildungContainer?.personInAusbildungSB

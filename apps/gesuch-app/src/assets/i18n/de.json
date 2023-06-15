@@ -119,6 +119,14 @@
   "gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart": "Tätigkeitstyp",
   "gesuch-app.form.lebenslauf.item.subtype.bildungsart": "Bildungsart",
 
+  "gesuch-app.form.lebenslauf.item.start.ausbildung": "Beginn der Ausbildung",
+  "gesuch-app.form.lebenslauf.item.start.taetigkeit": "Beginn der Tätigkeit",
+  "gesuch-app.form.lebenslauf.item.end.ausbildung": "Ende der Ausbildung",
+  "gesuch-app.form.lebenslauf.item.end.taetigkeit": "Ende der Tätigkeit",
+
+  "gesuch-app.form.lebenslaufitem.edit": "Eintrag bearbeiten",
+  "gesuch-app.form.lebenslaufitem.delete": "Eintrag löschen",
+
   "gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.andere_taetigkeit": "Andere Tätigkeit",
   "gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.erwerbstaetigkeit": "Erwerbstätigkeit",
 

@@ -1,4 +1,9 @@
-import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { isAfter, isEqual } from 'date-fns';
 
 export function sharedUtilIsValidMonthYearMonth(monthYear: string) {
@@ -39,8 +44,8 @@ export function sharedUtilValidatorMonthYearMonth(
   }
 }
 
-export function sharedUtilValidatorMonthYearMin(minYear: number) {
-  return (control: FormControl): ValidationErrors | null => {
+export function sharedUtilValidatorMonthYearMin(minYear: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
@@ -53,8 +58,8 @@ export function sharedUtilValidatorMonthYearMin(minYear: number) {
   };
 }
 
-export function sharedUtilValidatorMonthYearMax(maxYear: number) {
-  return (control: FormControl): ValidationErrors | null => {
+export function sharedUtilValidatorMonthYearMax(maxYear: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
@@ -70,7 +75,7 @@ export function sharedUtilValidatorMonthYearMax(maxYear: number) {
 export function createValidatorEndAfterStart(
   startControl: FormControl<string | null>,
   allowEqual: boolean
-) {
+): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const startValue = startControl.value;
     const endValue = control.value as string;
@@ -81,7 +86,7 @@ export function createValidatorEndAfterStart(
 export function createValidatorStartBeforeEnd(
   endControl: FormControl<string | null>,
   allowEqual: boolean
-) {
+): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const startValue = control.value as string;
     const endValue = endControl.value;
