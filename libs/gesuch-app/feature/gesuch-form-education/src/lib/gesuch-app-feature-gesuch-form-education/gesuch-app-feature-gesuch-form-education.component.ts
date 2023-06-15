@@ -42,12 +42,12 @@ import {
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-  SharedUiFormFieldMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
+} from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   sharedUtilValidatorMonthYearMin,
@@ -65,11 +65,11 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     ReactiveFormsModule,
     NgbInputDatepicker,
     NgbTypeahead,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldMessageComponent,
-    SharedUiFormFieldLabelComponent,
-    SharedUiFormFieldMessageErrorDirective,
-    SharedUiFormFieldLabelTargetDirective,
+    SharedUiFormComponent,
+    SharedUiFormMessageComponent,
+    SharedUiFormLabelComponent,
+    SharedUiFormMessageErrorDirective,
+    SharedUiFormLabelTargetDirective,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],

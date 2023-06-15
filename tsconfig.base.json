@@ -51,7 +51,7 @@
       "@dv/shared/pattern/interceptor-deployment-config": ["libs/shared/pattern/interceptor-deployment-config/src/index.ts"],
       "@dv/shared/pattern/ngb-datepicker-adapter": ["libs/shared/pattern/ngb-datepicker-adapter/src/index.ts"],
       "@dv/shared/pattern/route-reuse-strategy-configurable": ["libs/shared/pattern/route-reuse-strategy-configurable/src/index.ts"],
-      "@dv/shared/ui/form-field": ["libs/shared/ui/form-field/src/index.ts"],
+      "@dv/shared/ui/form": ["libs/shared/ui/form/src/index.ts"],
       "@dv/shared/ui/icon-chip": ["libs/shared/ui/icon-chip/src/index.ts"],
       "@dv/shared/ui/language-selector": ["libs/shared/ui/language-selector/src/index.ts"],
       "@dv/shared/ui/progress-bar": ["libs/shared/ui/progress-bar/src/index.ts"],

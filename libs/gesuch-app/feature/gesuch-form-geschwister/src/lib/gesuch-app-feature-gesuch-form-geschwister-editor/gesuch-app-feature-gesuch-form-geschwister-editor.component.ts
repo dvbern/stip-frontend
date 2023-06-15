@@ -16,12 +16,12 @@ import {
   Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-  SharedUiFormFieldMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
+} from '@dv/shared/ui/form';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -31,12 +31,12 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldMessageComponent,
+    SharedUiFormComponent,
+    SharedUiFormMessageComponent,
     TranslateModule,
-    SharedUiFormFieldMessageErrorDirective,
-    SharedUiFormFieldLabelTargetDirective,
-    SharedUiFormFieldLabelComponent,
+    SharedUiFormMessageErrorDirective,
+    SharedUiFormLabelTargetDirective,
+    SharedUiFormLabelComponent,
     NgbInputDatepicker,
   ],
   templateUrl:

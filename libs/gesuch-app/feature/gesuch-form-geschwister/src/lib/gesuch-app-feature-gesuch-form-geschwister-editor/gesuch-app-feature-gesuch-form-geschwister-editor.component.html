@@ -1,49 +1,45 @@
 <form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
   <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-      <dv-shared-ui-form-field-label>{{
+      <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.lastname.label' | translate
-      }}</dv-shared-ui-form-field-label>
+      }}</dv-shared-ui-form-label>
       <input
-        dvSharedUiFormFieldLabelTarget
+        dvSharedUiFormLabelTarget
         formControlName="name"
         class="form-control"
         type="text"
       />
-      <dv-shared-ui-form-field-message
-        *dvSharedUiFormFieldMessageError="'required'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-field-message>
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-      <dv-shared-ui-form-field-label>{{
+      <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.firstname.label' | translate
-      }}</dv-shared-ui-form-field-label>
+      }}</dv-shared-ui-form-label>
       <input
-        dvSharedUiFormFieldLabelTarget
+        dvSharedUiFormLabelTarget
         formControlName="vorname"
         class="form-control"
         type="text"
       />
-      <dv-shared-ui-form-field-message
-        *dvSharedUiFormFieldMessageError="'required'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-field-message>
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
 
   <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-      <dv-shared-ui-form-field-label>{{
+      <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.birthday.label' | translate
-      }}</dv-shared-ui-form-field-label>
+      }}</dv-shared-ui-form-label>
       <div class="input-group">
         <input
           class="form-control"
           placeholder="dd.mm.yyyy"
-          dvSharedUiFormFieldLabelTarget
+          dvSharedUiFormLabelTarget
           formControlName="geburtsdatum"
           ngbDatepicker
           [minDate]="geburtsdatumMinDate"
@@ -62,21 +58,19 @@
           </span>
         </button>
       </div>
-      <dv-shared-ui-form-field-message
-        *dvSharedUiFormFieldMessageError="'required'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-field-message>
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
 
     <!-- Wohnsitz -->
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-      <dv-shared-ui-form-field-label>{{
+      <dv-shared-ui-form-label>{{
         'gesuch-app.form.geschwister.wohnsitz.label' | translate
-      }}</dv-shared-ui-form-field-label>
+      }}</dv-shared-ui-form-label>
       <select
         class="form-select"
-        dvSharedUiFormFieldLabelTarget
+        dvSharedUiFormLabelTarget
         formControlName="wohnsitz"
       >
         <option [value]="null" disabled selected>
@@ -92,20 +86,18 @@
           }}
         </option>
       </select>
-      <dv-shared-ui-form-field-message
-        *dvSharedUiFormFieldMessageError="'required'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-field-message>
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
 
   <div class="row g-4 my-2">
     <!-- Ausbildungssituation -->
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-      <dv-shared-ui-form-field-label>{{
+      <dv-shared-ui-form-label>{{
         'gesuch-app.form.geschwister.ausbildungssituation.label' | translate
-      }}</dv-shared-ui-form-field-label>
+      }}</dv-shared-ui-form-label>
       <div
         class="form-check"
         *ngFor="let a of Ausbildungssituation | keyvalue; trackBy: trackByIndex"

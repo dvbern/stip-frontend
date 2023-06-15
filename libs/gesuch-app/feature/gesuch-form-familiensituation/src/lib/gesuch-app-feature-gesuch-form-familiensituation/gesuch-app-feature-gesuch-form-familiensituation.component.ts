@@ -29,12 +29,12 @@ import {
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-  SharedUiFormFieldMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
+} from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 
 @Component({
@@ -46,11 +46,11 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
     TranslateModule,
     MaskitoModule,
     SharedUiProgressBarComponent,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldLabelComponent,
-    SharedUiFormFieldLabelTargetDirective,
-    SharedUiFormFieldMessageComponent,
-    SharedUiFormFieldMessageErrorDirective,
+    SharedUiFormComponent,
+    SharedUiFormLabelComponent,
+    SharedUiFormLabelTargetDirective,
+    SharedUiFormMessageComponent,
+    SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl:

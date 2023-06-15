@@ -14,12 +14,12 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-  SharedUiFormFieldMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
+} from '@dv/shared/ui/form';
 import {
   Anrede,
   ElternDTO,
@@ -39,11 +39,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
     TranslateModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldLabelComponent,
-    SharedUiFormFieldLabelTargetDirective,
-    SharedUiFormFieldMessageComponent,
-    SharedUiFormFieldMessageErrorDirective,
+    SharedUiFormComponent,
+    SharedUiFormLabelComponent,
+    SharedUiFormLabelTargetDirective,
+    SharedUiFormMessageComponent,
+    SharedUiFormMessageErrorDirective,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern-editor.component.scss'],

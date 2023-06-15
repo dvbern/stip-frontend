@@ -21,13 +21,13 @@ import {
   Zivilstand,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-  SharedUiFormFieldMessageErrorDirective,
-  SharedUiFormFieldMessageInfoDirective,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
+  SharedUiFormMessageInfoDirective,
+} from '@dv/shared/ui/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { MaskitoModule } from '@maskito/angular';
 import {
@@ -48,12 +48,12 @@ import { TranslateModule } from '@ngx-translate/core';
     MaskitoModule,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldLabelComponent,
-    SharedUiFormFieldLabelTargetDirective,
-    SharedUiFormFieldMessageComponent,
-    SharedUiFormFieldMessageInfoDirective,
-    SharedUiFormFieldMessageErrorDirective,
+    SharedUiFormComponent,
+    SharedUiFormLabelComponent,
+    SharedUiFormLabelTargetDirective,
+    SharedUiFormMessageComponent,
+    SharedUiFormMessageInfoDirective,
+    SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',

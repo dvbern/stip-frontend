@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedUiFormFieldMessageComponent } from './shared-ui-form-field-message.component';
+import { SharedUiFormMessageComponent } from './shared-ui-form-message.component';
 
 describe('SharedUiFormMessageComponent', () => {
-  let component: SharedUiFormFieldMessageComponent;
-  let fixture: ComponentFixture<SharedUiFormFieldMessageComponent>;
+  let component: SharedUiFormMessageComponent;
+  let fixture: ComponentFixture<SharedUiFormMessageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUiFormFieldMessageComponent],
+      imports: [SharedUiFormMessageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SharedUiFormFieldMessageComponent);
+    fixture = TestBed.createComponent(SharedUiFormMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

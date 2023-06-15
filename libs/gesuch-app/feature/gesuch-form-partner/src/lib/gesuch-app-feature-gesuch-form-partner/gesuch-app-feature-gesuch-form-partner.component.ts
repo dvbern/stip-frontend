@@ -22,11 +22,11 @@ import {
 } from '@dv/shared/model/gesuch';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  SharedUiFormFieldComponent,
-  SharedUiFormFieldLabelComponent,
-  SharedUiFormFieldLabelTargetDirective,
-  SharedUiFormFieldMessageComponent,
-} from '@dv/shared/ui/form-field';
+  SharedUiFormComponent,
+  SharedUiFormLabelComponent,
+  SharedUiFormLabelTargetDirective,
+  SharedUiFormMessageComponent,
+} from '@dv/shared/ui/form';
 import { MaskitoModule } from '@maskito/angular';
 
 @Component({
@@ -37,10 +37,10 @@ import { MaskitoModule } from '@maskito/angular';
     ReactiveFormsModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     TranslateModule,
-    SharedUiFormFieldComponent,
-    SharedUiFormFieldLabelComponent,
-    SharedUiFormFieldLabelTargetDirective,
-    SharedUiFormFieldMessageComponent,
+    SharedUiFormComponent,
+    SharedUiFormLabelComponent,
+    SharedUiFormLabelTargetDirective,
+    SharedUiFormMessageComponent,
     MaskitoModule,
     NgbInputDatepicker,
   ],

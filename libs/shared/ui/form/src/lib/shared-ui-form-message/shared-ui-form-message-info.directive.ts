@@ -1,9 +1,9 @@
 import { Directive, inject, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[dvSharedUiFormFieldMessageInfo]',
+  selector: '[dvSharedUiFormMessageInfo]',
   standalone: true,
 })
-export class SharedUiFormFieldMessageInfoDirective {
+export class SharedUiFormMessageInfoDirective {
   public templateRef = inject(TemplateRef<any>);
 }
