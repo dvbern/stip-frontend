@@ -1,8 +1,5 @@
 include:
   - local: '.gitlab/common.gitlab-ci.yml'
-  - project: 'devops/gitlab/templates'
-    file:
-      - '/docker/docker.gitlab-ci.yml'
 
 image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
 
