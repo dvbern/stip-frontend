@@ -37,7 +37,7 @@ build:pipeline:
   artifacts:
     expire_in: 30 days
     paths:
-      - affected-apps.gitlab-ci.template.yml
+      - affected-apps.gitlab-ci.yml
 
 trigger:affected-apps:
   stage: build
