@@ -15,16 +15,21 @@ variables:
 .base:
   image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
   tags: ['os:linux', 'zone:tz', 'type:docker']
-  variables:
-    HUSKY_SKIP_INSTALL: 1
   cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - .npm/
+    - key:
+        files:
+          - package-lock.json
+        paths:
+          - .npm/
+    - key:
+        files:
+          - package.json
+          - package-lock.json
+        paths:
+          - node_modules/
   before_script:
-    - npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts
+    - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
+      echo "Skipping npm ci because a cached version is available"'
 
 build:gesuch-app:
   stage: build
