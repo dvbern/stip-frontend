@@ -504,4 +504,12 @@
       </div>
     </form>
   </div>
+  <dv-shared-pattern-document-upload
+    *ngIf="view().gesuch"
+    [options]="{
+      resource: 'gesuch',
+      resourceId: view().gesuch?.id!,
+      type: 'person'
+    }"
+  />
 </dv-gesuch-app-pattern-gesuch-step-layout>
