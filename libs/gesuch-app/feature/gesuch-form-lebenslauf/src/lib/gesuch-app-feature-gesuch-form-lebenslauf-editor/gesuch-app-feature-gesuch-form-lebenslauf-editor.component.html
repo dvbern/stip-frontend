@@ -1,0 +1,192 @@
+<form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
+  <div class="row g-4 my-2">
+    <!-- subtype -->
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.lebenslauf.item.subtype.' +
+          (item.type === 'AUSBILDUNG' ? 'bildungsart' : 'taetigkeitsart')
+          | translate
+      }}</dv-shared-ui-form-label>
+      <select
+        *ngIf="item.type === 'AUSBILDUNG'"
+        class="form-select"
+        dvSharedUiFormLabelTarget
+        formControlName="subtype"
+      >
+        <option [value]="null" disabled selected>
+          {{ 'shared.form.select.empty' | translate }}
+        </option>
+        <option
+          [value]="a.value"
+          *ngFor="let a of Bildungsart | keyvalue; trackBy: trackByIndex"
+        >
+          {{
+            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' +
+              (a.value | lowercase) | translate
+          }}
+        </option>
+      </select>
+      <select
+        *ngIf="item.type === 'TAETIGKEIT'"
+        class="form-select"
+        dvSharedUiFormLabelTarget
+        formControlName="subtype"
+      >
+        <option [value]="null" disabled selected>
+          {{ 'shared.form.select.empty' | translate }}
+        </option>
+        <option
+          [value]="a.value"
+          *ngFor="let a of Taetigskeitsart | keyvalue; trackBy: trackByIndex"
+        >
+          {{
+            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' +
+              (a.value | lowercase) | translate
+          }}
+        </option>
+      </select>
+    </dv-shared-ui-form-field>
+
+    <!-- name -->
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.lebenslauf.item.name.' +
+          (item.type === 'AUSBILDUNG' ? 'ausbildung' : 'taetigkeit') | translate
+      }}</dv-shared-ui-form-label>
+      <input
+        dvSharedUiFormLabelTarget
+        formControlName="name"
+        class="form-control"
+        type="text"
+      />
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+  </div>
+
+  <div class="row g-4 my-2">
+    <!-- START -->
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.education.start.label' | translate
+      }}</dv-shared-ui-form-label>
+
+      <input
+        class="form-control"
+        dvSharedUiFormLabelTarget
+        formControlName="dateStart"
+        placeholder="MM.YYYY"
+        [maskito]="MASK_MM_YYYY"
+      />
+
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYearMonth'">
+        {{ 'shared.form.error.monthYearMonth' | translate }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message
+        *dvSharedUiFormMessageError="'monthYearYearMin'"
+      >
+        {{
+          'gesuch-app.form.lebenslauf.form.error.monthYearMin'
+            | translate
+              : {
+                  min: form.controls.dateStart.errors!['monthYearYearMin']!.min
+                }
+        }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message
+        *dvSharedUiFormMessageError="'endDateAfterStart'"
+      >
+        {{
+          'gesuch-app.form.lebenslauf.form.error.monthYearAfterStart'
+            | translate
+        }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+
+    <!-- ENDE -->
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.education.ende.label' | translate
+      }}</dv-shared-ui-form-label>
+
+      <input
+        class="form-control"
+        dvSharedUiFormLabelTarget
+        formControlName="dateEnd"
+        placeholder="MM.YYYY"
+        [maskito]="MASK_MM_YYYY"
+      />
+
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYearMonth'">
+        {{ 'shared.form.error.monthYearMonth' | translate }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message
+        *dvSharedUiFormMessageError="'endDateAfterStart'"
+      >
+        {{
+          'gesuch-app.form.lebenslauf.form.error.monthYearAfterStart'
+            | translate
+        }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message
+        *dvSharedUiFormMessageError="'monthYearYearMax'"
+      >
+        {{
+          'gesuch-app.form.lebenslauf.form.error.monthYearMax'
+            | translate
+              : { max: form.controls.dateEnd.errors!['monthYearYearMax']!.max }
+        }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+  </div>
+
+  <div class="row g-4 my-2">
+    <!-- Wohnsitz -->
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.lebenslauf.item.wohnsitz' | translate
+      }}</dv-shared-ui-form-label>
+      <select
+        class="form-select"
+        dvSharedUiFormLabelTarget
+        formControlName="wohnsitz"
+      >
+        <option [value]="null" disabled selected>
+          {{ 'shared.form.select.empty' | translate }}
+        </option>
+        <!-- TODO Werte sollten alle Kantone plus Ausland sein -->
+        <option
+          [value]="a.value"
+          *ngFor="let a of Kanton | keyvalue; trackBy: trackByIndex"
+        >
+          {{ 'shared.kanton.' + (a.value | lowercase) | translate }}
+        </option>
+      </select>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+  </div>
+
+  <!-- buttons -->
+
+  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="handleCancel()"
+    >
+      {{ 'gesuch-app.form.back' | translate }}
+    </button>
+    <button type="submit" class="btn btn-primary">
+      {{ 'gesuch-app.form.save-and-back' | translate }}
+    </button>
+  </div>
+</form>

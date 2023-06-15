@@ -40,7 +40,7 @@
         class="col-12 col-xl-8"
         *ngIf="this.view$().gesuch?.geschwisterContainers as geschwisters"
       >
-        <table class="table">
+        <table class="table" *ngIf="geschwisters.length">
           <thead>
             <tr>
               <th scope="col"></th>

@@ -21,3 +21,8 @@ export * from './familiensituationDTO';
 export * from './elternAbwesenheitsGrund';
 export * from './elternschaftsteilung';
 export * from './elternUnbekanntheitsGrund';
+export * from './lebenslaufItemDTO';
+export * from './lebenslaufItemContainerDTO';
+export * from './bildungsart';
+export * from './taetigskeitsart';
+export * from './kanton';
