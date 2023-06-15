@@ -27,6 +27,7 @@ variables:
   policy: pull-push
 
 .base:
+  image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
   tags: ['os:linux', 'zone:tz', 'type:docker']
   cache:
     - <<: *node-cache
