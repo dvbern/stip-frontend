@@ -116,10 +116,14 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         Validators.required,
         sharedUtilValidatorMonthYearMonth,
         createValidatorStartBeforeEnd(this.form.controls.dateEnd, true),
-        sharedUtilValidatorMonthYearMin(
-          getYear(changes['minStartDate'].currentValue)
-        ),
       ]);
+      if (changes['minStartDate'].currentValue) {
+        this.form.controls.dateStart.addValidators([
+          sharedUtilValidatorMonthYearMin(
+            getYear(changes['minStartDate'].currentValue)
+          ),
+        ]);
+      }
     }
     if (changes['maxEndDate']) {
       this.form.controls.dateEnd.clearValidators();
@@ -127,10 +131,14 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         Validators.required,
         sharedUtilValidatorMonthYearMonth,
         createValidatorEndAfterStart(this.form.controls.dateStart, true),
-        sharedUtilValidatorMonthYearMax(
-          getYear(changes['maxEndDate'].currentValue)
-        ),
       ]);
+      if (changes['maxEndDate'].currentValue) {
+        this.form.controls.dateEnd.addValidators([
+          sharedUtilValidatorMonthYearMax(
+            getYear(changes['maxEndDate'].currentValue)
+          ),
+        ]);
+      }
     }
 
     // fill form

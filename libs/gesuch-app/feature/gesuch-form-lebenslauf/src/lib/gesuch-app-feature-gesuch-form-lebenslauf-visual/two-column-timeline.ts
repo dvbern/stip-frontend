@@ -85,6 +85,9 @@ export class TwoColumnTimeline {
     const leftCols = 1;
     const rightCols = 1;
 
+    const abstandHeight = 1;
+    const unevenStartHeight = 1;
+
     // Loop
     while (inputSorted.length) {
       console.log(' *************************************** ');
@@ -113,12 +116,13 @@ export class TwoColumnTimeline {
       }
       console.log('current: ', JSON.stringify(current.map((c) => c.label)));
 
-      // alle in current erhalten rowspan++
+      // alle in current erhalten rowspan++ (fuer ungleiche Starts)
       if (current.length) {
+        console.log('adding unevenStartHeight');
         for (const each of current) {
-          each.positionRowSpan += 1;
+          each.positionRowSpan += unevenStartHeight;
         }
-        startRow += 1;
+        startRow += unevenStartHeight;
       }
 
       if (current.length) {
@@ -142,7 +146,29 @@ export class TwoColumnTimeline {
             if (isEqual(each.dateEnd, endDate)) {
               current.splice(current.indexOf(each), 1);
               output.push(each);
-              console.log('moved from current to output: ', each.label);
+              console.log(
+                'moved from current to output at row: ',
+                each.positionStartRow,
+                each.label
+              );
+            }
+
+            // Abstand einfuegen, wenn das letzte Enddatum nicht direkt vorher war
+            if (output.length && current.length) {
+              const latestOutputEnddate = this.getLatestEnddate(output);
+              const expectedNextStart = addMonths(latestOutputEnddate, 1);
+              const gaplessNextBlockFound =
+                inputSorted.length && isEqual(startDate, expectedNextStart);
+              if (!gaplessNextBlockFound) {
+                // alle in current erhalten rowspan++
+                if (current.length) {
+                  console.log('adding abstandHeight');
+                  for (const each of current) {
+                    each.positionRowSpan += abstandHeight;
+                  }
+                  startRow += abstandHeight;
+                }
+              }
             }
           }
 
@@ -162,15 +188,6 @@ export class TwoColumnTimeline {
             current.length &&
             (!ealiestStartDateInInput ||
               isAfter(ealiestStartDateInInput, endDate));
-          // alle in current erhalten rowspan++
-          if (canMoveSomethingToOutput) {
-            if (current.length) {
-              for (const each of current) {
-                each.positionRowSpan += 1;
-              }
-              startRow += 1;
-            }
-          }
         }
       }
 
@@ -179,21 +196,22 @@ export class TwoColumnTimeline {
       if (!current.length && inputSorted.length) {
         console.log('current is empty');
         const latestOutputEnddate = this.getLatestEnddate(output);
+        const expectedNextStart = addMonths(latestOutputEnddate, 1);
         const gaplessNextBlockFound =
           inputSorted.length &&
-          isEqual(inputSorted[0].dateStart, latestOutputEnddate);
+          isEqual(inputSorted[0].dateStart, expectedNextStart);
         console.log('gap found: ', !gaplessNextBlockFound);
         if (!gaplessNextBlockFound) {
           output.push({
             col: 'BOTH',
-            dateStart: addMonths(latestOutputEnddate, 1),
+            dateStart: expectedNextStart,
             dateEnd: subMonths(inputSorted[0].dateStart, 1),
             positionStartRow: startRow,
             positionRowSpan: 1,
           } as TimelineGapBlock);
           console.log('added gap to output');
 
-          startRow += 1;
+          startRow++;
         }
       }
     }

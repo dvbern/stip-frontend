@@ -3,13 +3,16 @@
 
   .wrapper {
     display: grid;
-    grid-gap: var(--dv-gutter-x);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    //grid-template-rows: repeat(10, minmax(0, 1fr));
-    //grid-template-rows: repeat(10, minmax(50px, auto));
 
-    margin-left: 50px;
-    margin-right: 50px;
+    grid-gap: 8px var(--dv-gutter-x);
+    @media screen and (max-width: 992px) {
+      grid-gap: 8px 8px;
+    }
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    margin-left: 30px;
+    margin-right: 30px;
   }
 
   .box {
@@ -19,7 +22,7 @@
     --dv-alert-padding-x: 1rem;
     --dv-alert-padding-y: 1rem;
     --dv-alert-margin-bottom: 1rem;
-    --dv-alert-border: 3px solid var(--dv-alert-border-color);
+    --dv-alert-border: 1px solid var(--dv-alert-border-color);
     --dv-alert-border-radius: var(--dv-border-radius);
 
     --dv-alert-color: var(--dv-info-text-emphasis);
@@ -28,11 +31,24 @@
     --dv-alert-link-color: var(--dv-info-text-emphasis);
 
     padding: var(--dv-alert-padding-y) var(--dv-alert-padding-x);
-    margin-bottom: var(--dv-alert-margin-bottom);
     color: var(--dv-alert-color);
     background-color: var(--dv-alert-bg);
     border: var(--dv-alert-border);
     border-radius: var(--dv-border-radius);
+
+    h5 {
+      @media screen and (max-width: 992px) {
+        font-size: 16px;
+      }
+
+      overflow: hidden;
+    }
+
+    small {
+      @media screen and (max-width: 992px) {
+        font-size: 12px;
+      }
+    }
 
     &.right {
       background-color: #fff;
@@ -62,13 +78,13 @@
 
     &.left {
       .buttons {
-        left: -50px;
+        left: -40px;
       }
     }
 
     &.right {
       .buttons {
-        right: -50px;
+        right: -40px;
       }
     }
   }
