@@ -9,16 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Ausbildungsland } from './ausbildungsland';
 
-export interface AusbildungDTO {
+export interface DokumentDTO {
   id: string;
-  ausbildungsland: Ausbildungsland;
-  ausbildungsstaette: string;
-  ausbildungsgang: string;
-  fachrichtung: string;
-  manuell: boolean;
-  start: string;
-  ende: string;
-  pensum: 'FULLTIME' | 'PARTTIME';
+  filename: string;
+  filepfad: string;
+  filesize: string;
 }

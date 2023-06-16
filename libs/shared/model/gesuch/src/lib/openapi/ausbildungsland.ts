@@ -9,16 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Ausbildungsland } from './ausbildungsland';
 
-export interface AusbildungDTO {
-  id: string;
-  ausbildungsland: Ausbildungsland;
-  ausbildungsstaette: string;
-  ausbildungsgang: string;
-  fachrichtung: string;
-  manuell: boolean;
-  start: string;
-  ende: string;
-  pensum: 'FULLTIME' | 'PARTTIME';
-}
+export type Ausbildungsland = 'SCHWEIZ' | 'AUSLAND';
+
+export const Ausbildungsland = {
+  SCHWEIZ: 'SCHWEIZ' as Ausbildungsland,
+  AUSLAND: 'AUSLAND' as Ausbildungsland,
+};

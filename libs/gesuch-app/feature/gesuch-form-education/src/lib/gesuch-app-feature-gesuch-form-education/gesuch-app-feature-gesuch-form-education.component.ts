@@ -15,7 +15,8 @@ import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-f
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
-  AusbildungsgangStaette,
+  Ausbildungsland,
+  AusbildungstaetteDTO,
   MASK_MM_YYYY,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
@@ -77,6 +78,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private formUtils = inject(SharedUtilFormService);
   currentYear = getYear(Date.now());
 
+  readonly Ausbildungsland = Ausbildungsland;
+
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
     ausbildungsstaette: ['', [Validators.required]],
@@ -100,10 +103,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
   ausbildungsstaetteOptions$ = computed(() => {
-    const ausbildungsgangLands = this.view$().ausbildungsgangLands;
-    return (
-      ausbildungsgangLands.find((item) => item.name === this.land$())
-        ?.staettes || []
+    const ausbildungstaettes = this.view$().ausbildungstaettes;
+    return ausbildungstaettes.filter(
+      (item) => item.ausbildungsland === this.land$()
     );
   });
   ausbildungsstaett$ = toSignal(
@@ -113,7 +115,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     return (
       this.ausbildungsstaetteOptions$().find(
         (item) => item.name === this.ausbildungsstaett$()
-      )?.ausbildungsgangs || []
+      )?.ausbildungsgaenge || []
     );
   });
 
@@ -230,7 +232,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   focusAusbildungsstaette$ = new Subject<string>();
 
-  createAusbildungsstaetteTypeaheadFn(list: AusbildungsgangStaette[]) {
+  createAusbildungsstaetteTypeaheadFn(list: AusbildungstaetteDTO[]) {
     console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(
