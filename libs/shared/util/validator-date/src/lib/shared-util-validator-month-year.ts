@@ -100,11 +100,8 @@ export function validateStartBeforeEnd(
   allowEqual: boolean
 ): ValidationErrors | null {
   if (startValue && endValue) {
-    const start = parseMonthYearString(startValue);
-    const end = parseMonthYearString(endValue);
-
-    const startDate = new Date(start.year, start.month - 1);
-    const endDate = new Date(end.year, end.month - 1);
+    const startDate = dateFromMonthYearString(startValue);
+    const endDate = dateFromMonthYearString(endValue);
 
     if (allowEqual && isEqual(endDate, startDate)) {
       return null;
@@ -120,4 +117,15 @@ export function parseMonthYearString(monthYear: string): {
 } {
   const [month, year] = monthYear.split('.').map((value) => +value);
   return { month, year };
+}
+
+export function dateFromMonthYearString(monthYearString: string) {
+  const monthYear = parseMonthYearString(monthYearString);
+  return new Date(monthYear.year, monthYear.month - 1);
+}
+
+export function printDateAsMonthYear(date: Date) {
+  return (
+    ('' + (date.getMonth() + 1)).padStart(2, '0') + '.' + date.getFullYear()
+  );
 }

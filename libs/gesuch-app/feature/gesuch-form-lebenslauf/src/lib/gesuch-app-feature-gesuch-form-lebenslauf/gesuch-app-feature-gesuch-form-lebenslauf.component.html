@@ -25,137 +25,58 @@
     <!-- Infobx -->
     <div class="row">
       <div class="col-12 col-xl-8 my-3">
-        <!-- TODO von / bis ausrechnen -->
         <span>{{
           'gesuch-app.form.lebenslauf.top.info'
             | translate
               : {
-                  von: minDate$() ? (minDate$() | date) : '?',
-                  bis: maxDate$() ? (maxDate$() | date) : '?'
+                  von: minDate$() ? printDateAsMonthYear(minDate$()!) : '?',
+                  bis: maxDate$() ? printDateAsMonthYear(maxDate$()!) : '?'
                 }
         }}</span>
       </div>
     </div>
 
+    <!-- ADD -->
     <div class="row">
-      <!-- Table -->
-      <div class="col-12 col-xl-8">
-        <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">
-                {{ 'gesuch-app.form.lebenslauf.item.subtype' | translate }}
-              </th>
-              <th scope="col">
-                {{ 'gesuch-app.form.lebenslauf.item.name' | translate }}
-              </th>
-              <th scope="col">
-                {{ 'gesuch-app.form.lebenslauf.item.dateStart' | translate }}
-              </th>
-              <th scope="col">
-                {{ 'gesuch-app.form.lebenslauf.item.dateEnd' | translate }}
-              </th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Lebenslauf items -->
-            <ng-container *ngIf="lebenslaufItems$() as items">
-              <tr
-                *ngFor="let itemRaw of items; trackBy: trackByIndex"
-                style="background-color: #efefef"
-                [class.bg-primary-subtle]="itemRaw?.type === 'AUSBILDUNG'"
-              >
-                <ng-container *ngIf="asItem(itemRaw!) as item">
-                  <td>
-                    <i
-                      class="material-symbols-rounded me-2"
-                      style="color: #999"
-                      [class.text-primary]="item.type === 'AUSBILDUNG'"
-                    >
-                      {{ item.type === 'AUSBILDUNG' ? 'school' : 'work' }}
-                    </i>
-                  </td>
-                  <td>
-                    {{
-                      'gesuch-app.form.lebenslauf.item.subtype.' +
-                        (item.type === 'AUSBILDUNG'
-                          ? 'bildungsart'
-                          : 'taetigkeitsart') +
-                        '.' +
-                        item.subtype.toLowerCase() | translate
-                    }}
-                  </td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.dateStart }}</td>
-                  <td>{{ item.dateEnd }}</td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-link p-0 lh-1"
-                      (click)="handleEditItem(item)"
-                      [title]="
-                        'gesuch-app.form.lebenslaufitem.edit' | translate
-                      "
-                    >
-                      <i class="material-symbols-rounded">edit</i>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-link p-0 lh-1"
-                      (click)="handleDeleteItem(item)"
-                      [title]="
-                        'gesuch-app.form.lebenslaufitem.delete' | translate
-                      "
-                    >
-                      <i class="material-symbols-rounded">delete</i>
-                    </button>
-                  </td>
-                </ng-container>
-              </tr>
-            </ng-container>
-
-            <!-- geplante Ausbildung -->
-            <tr *ngIf="ausbildung$() as item" class="bg-primary-subtle">
-              <td>
-                <i class="material-symbols-rounded me-2 text-primary">
-                  school
-                </i>
-              </td>
-              <td>{{ item.ausbildungsstaette }}</td>
-              <td>{{ item.ausbildungsgang }}: {{ item.fachrichtung }}</td>
-              <td>{{ item.start }}</td>
-              <td>{{ item.ende }}</td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-12 col-xl-8 my-3">
+        <div class="row" style="margin-left: 50px; margin-right: 50px">
+          <div class="col-6 my-3 ps-0">
+            <button
+              type="button"
+              class="btn btn-outline-primary w-100 d-flex flex-column align-items-center rounded-2"
+              (click)="handleAddAusbildung(undefined)"
+            >
+              <i class="material-symbols-rounded fs-1">school</i>
+              {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
+            </button>
+          </div>
+          <div class="col-6 my-3 pe-0">
+            <button
+              type="button"
+              class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2"
+              (click)="handleAddTaetigkeit(undefined)"
+            >
+              <i class="material-symbols-rounded fs-1">work</i>
+              {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ADD -->
-    <div
-      class="mt-2 d-flex flex-column gap-3 flex-md-row justify-content-start"
-    >
-      <button
-        type="button"
-        class="btn btn-outline-primary"
-        (click)="handleAddAusbildung()"
-      >
-        {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
-      </button>
-      <button
-        type="button"
-        class="btn btn-outline-primary"
-        (click)="handleAddTaetigkeit()"
-      >
-        {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
-      </button>
+    <!-- visual -->
+    <div class="row">
+      <div class="col-12 col-xl-8 my-3" *ngIf="ausbildung$() as ausbildung">
+        <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
+          [lebenslaufItems]="lebenslaufItems$()"
+          [ausbildung]="ausbildung"
+          *ngIf="lebenslaufItems$() as items"
+          (addAusbildungTriggered)="handleAddAusbildung($event)"
+          (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
+          (editItemTriggered)="handleEditItemId($event, items)"
+          (deleteItemTriggered)="handleDeleteItemId($event, items)"
+        />
+      </div>
     </div>
 
     <!-- Buttons -->

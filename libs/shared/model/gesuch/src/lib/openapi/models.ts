@@ -26,3 +26,4 @@ export * from './lebenslaufItemContainerDTO';
 export * from './bildungsart';
 export * from './taetigskeitsart';
 export * from './kanton';
+export * from './ausbildungDTO';

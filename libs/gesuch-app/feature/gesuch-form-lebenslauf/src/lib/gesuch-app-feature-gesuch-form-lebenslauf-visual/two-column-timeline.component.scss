@@ -1,0 +1,95 @@
+:host {
+  display: block;
+
+  .wrapper {
+    display: grid;
+    grid-gap: var(--dv-gutter-x);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    //grid-template-rows: repeat(10, minmax(0, 1fr));
+    //grid-template-rows: repeat(10, minmax(50px, auto));
+
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  .box {
+    position: relative;
+    opacity: 0.8;
+
+    --dv-alert-padding-x: 1rem;
+    --dv-alert-padding-y: 1rem;
+    --dv-alert-margin-bottom: 1rem;
+    --dv-alert-border: 3px solid var(--dv-alert-border-color);
+    --dv-alert-border-radius: var(--dv-border-radius);
+
+    --dv-alert-color: var(--dv-info-text-emphasis);
+    --dv-alert-bg: var(--dv-info-bg-subtle);
+    --dv-alert-border-color: var(--dv-info-border-subtle);
+    --dv-alert-link-color: var(--dv-info-text-emphasis);
+
+    padding: var(--dv-alert-padding-y) var(--dv-alert-padding-x);
+    margin-bottom: var(--dv-alert-margin-bottom);
+    color: var(--dv-alert-color);
+    background-color: var(--dv-alert-bg);
+    border: var(--dv-alert-border);
+    border-radius: var(--dv-border-radius);
+
+    &.right {
+      background-color: #fff;
+      border-color: #aaa;
+    }
+
+    &.left {
+      background-color: var(--dv-primary-bg-subtle);
+      border-color: var(--dv-primary);
+      opacity: 0.7;
+    }
+
+    &.both {
+      background-color: var(--dv-secondary-bg-subtle);
+      border-color: var(--dv-secondary);
+    }
+
+    &.left,
+    &.right {
+      .buttons {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        width: 40px;
+      }
+    }
+
+    &.left {
+      .buttons {
+        left: -50px;
+      }
+    }
+
+    &.right {
+      .buttons {
+        right: -50px;
+      }
+    }
+  }
+
+  .show-contents-on-hover {
+    .show-on-hover {
+      display: none;
+    }
+  }
+
+  .show-contents-on-hover:hover {
+    .show-on-hover {
+      display: flex;
+    }
+  }
+
+  .add-chip {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    background-color: var(--dv-secondary);
+    color: #fff;
+  }
+}

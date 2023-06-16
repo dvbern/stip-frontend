@@ -1,0 +1,102 @@
+<div
+  class="wrapper"
+  *ngIf="timeline.items"
+  [style]="
+    'grid-template-rows: repeat(' +
+    ((timeline.rows || 1) - 1) +
+    ', minmax(70px, auto));' +
+    'grid-template-columns: repeat(' +
+    ((timeline.leftCols || 1) + (timeline.rightCols || 1)) +
+    ', minmax(0, 1fr))'
+  "
+>
+  <div
+    class="box"
+    *ngFor="let item of timeline.items; trackBy: trackByIndex"
+    [class.left]="item.col === 'LEFT'"
+    [class.right]="item.col === 'RIGHT'"
+    [class.both]="item.col === 'BOTH'"
+    [style]="
+      'grid-column: ' +
+      item.positionStartCol +
+      ' / span ' +
+      item.positionColSpan +
+      ';' +
+      'grid-row: ' +
+      item.positionStartRow +
+      ' / span ' +
+      item.positionRowSpan +
+      ';'
+    "
+  >
+    <!-- busy block -->
+    <ng-container *ngIf="isTimelineBusyBlock(item)">
+      <ng-container *ngIf="asBusyBlock(item) as busyItem">
+        <div class="buttons">
+          <button
+            *ngIf="busyItem.editable"
+            type="button"
+            class="btn btn-link p-0 lh-1"
+            (click)="handleEditItem(busyItem)"
+            [title]="'gesuch-app.form.lebenslaufitem.edit' | translate"
+          >
+            <i class="material-symbols-rounded">edit</i>
+          </button>
+          <button
+            *ngIf="busyItem.editable"
+            type="button"
+            class="btn btn-link p-0 lh-1"
+            (click)="handleDeleteItem(busyItem)"
+            [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
+          >
+            <i class="material-symbols-rounded">delete</i>
+          </button>
+        </div>
+        <h5>{{ asBusyBlock(item).label }}</h5>
+        <small>{{
+          printDateAsMonthYear(item.dateStart) +
+            ' - ' +
+            printDateAsMonthYear(item.dateEnd)
+        }}</small>
+      </ng-container>
+    </ng-container>
+
+    <!-- gap -->
+    <div
+      *ngIf="isTimelineGapBlock(item)"
+      class="d-flex flex-column gap-3 flex-md-row justify-content-between"
+    >
+      <div>
+        <h5>Fehlende Einträge</h5>
+        <small>{{
+          printDateAsMonthYear(item.dateStart) +
+            ' - ' +
+            printDateAsMonthYear(item.dateEnd)
+        }}</small>
+      </div>
+      <div
+        class="d-flex flex-column gap-3 flex-md-row justify-content-end align-items-center show-contents-on-hover"
+      >
+        <button
+          type="button"
+          class="btn btn-primary align-items-center show-on-hover"
+          (click)="handleAddAusbildung(asGapBlock(item))"
+        >
+          <i class="material-symbols-rounded me-2">school</i>
+          {{ 'gesuch-app.form.lebenslauf.add.ausbildung.short' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-dark align-items-center show-on-hover"
+          (click)="handleAddTaetigkeit(asGapBlock(item))"
+        >
+          <i class="material-symbols-rounded me-2">work</i>
+          {{ 'gesuch-app.form.lebenslauf.add.taetigkeit.short' | translate }}
+        </button>
+        <span class="d-flex align-items-center justify-content-center add-chip">
+          <i class="material-symbols-rounded fs-2">add</i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
