@@ -6,9 +6,24 @@
   .add-buttons {
     margin-left: 30px;
     margin-right: 30px;
-    .btn .fs-5 {
+
+    .btn.fs-5 {
       @media screen and (max-width: 992px) {
         font-size: 16px !important;
+      }
+    }
+
+    > :first-child {
+      padding-right: calc(var(--dv-gutter-x) / 2);
+      @media screen and (max-width: 992px) {
+        padding-right: 4px;
+      }
+    }
+
+    > :last-child {
+      padding-left: calc(var(--dv-gutter-x) / 2);
+      @media screen and (max-width: 992px) {
+        padding-left: 4px;
       }
     }
   }
