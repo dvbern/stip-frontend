@@ -2,15 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
-import { AusbildungsgangLand } from '@dv/shared/model/gesuch';
+import { AusbildungstaetteDTO } from '@dv/shared/model/gesuch';
 
-const RESOURCE_URL = `${SHARED_MODEL_API_URL}/ausbildungsgangTree`;
+const RESOURCE_URL = `${SHARED_MODEL_API_URL}/ausbildungstaette/all`;
 
 @Injectable({ providedIn: 'root' })
-export class GesuchAppDataAccessAusbildungsgangService {
+export class GesuchAppDataAccessAusbildungstaetteService {
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<AusbildungsgangLand[]>(RESOURCE_URL);
+    return this.http.get<AusbildungstaetteDTO[]>(RESOURCE_URL);
   }
 }

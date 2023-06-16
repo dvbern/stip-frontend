@@ -1,25 +1,26 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelError } from '@dv/shared/model/error';
-import { AusbildungsgangLand } from '@dv/shared/model/gesuch';
+
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
-import { GesuchAppDataAccessAusbildungsgangApiEvents } from './gesuch-app-data-access-ausbildungsgang.events';
+import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
+import { AusbildungstaetteDTO } from '@dv/shared/model/gesuch';
 
 export interface State {
-  ausbildungsgangLands: AusbildungsgangLand[];
+  ausbildungstaettes: AusbildungstaetteDTO[];
   loading: boolean;
   error: SharedModelError | undefined;
 }
 
 const initialState: State = {
-  ausbildungsgangLands: [],
+  ausbildungstaettes: [],
   loading: false,
   error: undefined,
 };
 
-export const gesuchAppDataAccessAusbildungsgangsFeature = createFeature({
-  name: 'ausbildungsgangs',
+export const gesuchAppDataAccessAusbildungstaettesFeature = createFeature({
+  name: 'ausbildungstaettes',
   reducer: createReducer(
     initialState,
 
@@ -33,20 +34,20 @@ export const gesuchAppDataAccessAusbildungsgangsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessAusbildungsgangApiEvents.ausbildungsgangsLoadedSuccess,
-      (state, { ausbildungsgangLands }): State => ({
+      GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedSuccess,
+      (state, { ausbildungstaettes }): State => ({
         ...state,
-        ausbildungsgangLands: ausbildungsgangLands,
+        ausbildungstaettes: ausbildungstaettes,
         loading: false,
         error: undefined,
       })
     ),
     on(
-      GesuchAppDataAccessAusbildungsgangApiEvents.ausbildungsgangsLoadedFailure,
+      GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedFailure,
       // add other failure events here (if handled the same way)
       (state, { error }): State => ({
         ...state,
-        ausbildungsgangLands: [],
+        ausbildungstaettes: [],
         loading: false,
         error,
       })
@@ -57,8 +58,8 @@ export const gesuchAppDataAccessAusbildungsgangsFeature = createFeature({
 export const {
   name, // feature name
   reducer,
-  selectAusbildungsgangsState,
-  selectAusbildungsgangLands,
+  selectAusbildungstaettesState,
+  selectAusbildungstaettes,
   selectLoading,
   selectError,
-} = gesuchAppDataAccessAusbildungsgangsFeature;
+} = gesuchAppDataAccessAusbildungstaettesFeature;
