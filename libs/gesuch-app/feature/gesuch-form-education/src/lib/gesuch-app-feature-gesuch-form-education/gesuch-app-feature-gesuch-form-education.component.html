@@ -34,7 +34,7 @@
           formControlName="ausbildungsland"
           (change)="handleLandChangedByUser()"
         >
-          <option [value]="null" selected>
+          <option [value]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
