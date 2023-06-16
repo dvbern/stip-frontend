@@ -3,7 +3,7 @@ import { selectGesuchAppDataAccessAusbildungstaettesView } from './gesuch-app-da
 describe('selectGesuchAppDataAccessAusbildungstaettesView', () => {
   it('selects view', () => {
     const state = {
-      ausbildungstaetteLands: [],
+      ausbildungstaettes: [],
       loading: false,
       error: null,
     };

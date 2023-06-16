@@ -4,6 +4,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
 
 import { GesuchAppDataAccessAusbildungstaetteService } from './gesuch-app-data-access-ausbildungstaette.service';
+import { loadAusbildungstaettes } from './gesuch-app-data-access-ausbildungstaette.effects';
 
 describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
   let scheduler: TestScheduler;
@@ -31,7 +32,7 @@ describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
 
       expectObservable(effectStream$).toBe('160ms a', {
         a: GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedSuccess(
-          { ausbildungstaetteLands: [] }
+          { ausbildungstaettes: [] }
         ),
       });
     });
