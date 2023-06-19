@@ -3,5 +3,6 @@
   "/config/deployment": "/config",
   "/gesuchsperiode/aktive": "/gesuchsperiode",
   "/eltern/gesuch/*/HERR": "/eltern-vater",
-  "/eltern/gesuch/*/FRAU": "/eltern-mutter"
+  "/eltern/gesuch/*/FRAU": "/eltern-mutter",
+  "/ausbildungstaette/all": "/ausbildungstaettes"
 }

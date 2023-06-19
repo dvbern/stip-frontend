@@ -88,7 +88,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungstaette: ['', [Validators.required]],
     ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
-    manuell: [false, []],
+    ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
       '',
       [
@@ -305,12 +305,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
   convertMonthYearToDateString(monthYearValue: string): string {
-    const [month, year] = monthYearValue.split('.').map((value) => +value);
+    const [month, year] = monthYearValue.split('.').map((value) => value);
     return year + '-' + month + '-' + '01';
   }
 
   convertDateStringToMonthYear(date: string): string {
-    const [year, month, day] = date.split('-').map((value) => +value);
+    const [year, month, day] = date.split('-').map((value) => value);
     return month + '.' + year;
   }
 }
