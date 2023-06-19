@@ -33,23 +33,30 @@
     <!-- busy block -->
     <ng-container *ngIf="isTimelineBusyBlock(item)">
       <ng-container *ngIf="asBusyBlock(item) as busyItem">
-        <h5>
-          <a
-            *ngIf="busyItem.editable"
-            class="w-100 d-block"
-            (click)="handleEditItem(busyItem)"
-          >
-            {{ asBusyBlock(item).label }}
-          </a>
-          <ng-container *ngIf="!busyItem.editable">
-            {{ asBusyBlock(item).label }}
-          </ng-container>
-        </h5>
-        <small>{{
-          printDateAsMonthYear(item.dateStart) +
-            ' - ' +
-            printDateAsMonthYear(item.dateEnd)
-        }}</small>
+        <div
+          class="d-flex flex-column gap-3"
+          *ngIf="busyItem.children as children"
+        >
+          <div *ngFor="let child of children; trackBy: trackByIndex">
+            <h5>
+              <a
+                *ngIf="child.editable"
+                class="w-100 d-block"
+                (click)="handleEditItem(child)"
+              >
+                {{ child.label }}
+              </a>
+              <ng-container *ngIf="!child.editable">
+                {{ child.label }}
+              </ng-container>
+            </h5>
+            <small>{{
+              printDateAsMonthYear(child.dateStart) +
+                ' - ' +
+                printDateAsMonthYear(child.dateEnd)
+            }}</small>
+          </div>
+        </div>
       </ng-container>
     </ng-container>
 

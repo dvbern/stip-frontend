@@ -28,6 +28,7 @@ import {
   isTimelineGapBlock,
   TimelineAddCommand,
   TimelineBusyBlock,
+  TimelineBusyBlockChild,
   TimelineGapBlock,
   TimelineRawItem,
   TwoColumnTimeline,
@@ -137,12 +138,10 @@ export class TwoColumnTimelineComponent implements OnChanges {
     });
   }
 
-  public handleEditItem(item: TimelineBusyBlock): void {
+  public handleEditItem(
+    item: TimelineBusyBlock | TimelineBusyBlockChild
+  ): void {
     this.editItemTriggered.emit(item.id);
-  }
-
-  public handleDeleteItem(item: TimelineBusyBlock): void {
-    this.deleteItemTriggered.emit(item.id);
   }
 
   protected readonly printDateAsMonthYear = printDateAsMonthYear;

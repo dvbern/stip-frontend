@@ -9,6 +9,9 @@ export interface TimelineRawItem {
   dateEnd: Date;
   editable: boolean;
 }
+export interface TimelineMergedRawItem extends TimelineRawItem {
+  children: TimelineRawItem[];
+}
 
 export interface TimelineAddCommand {
   dateStart: Date;
@@ -29,6 +32,16 @@ export class TimelineBusyBlock extends TimelineBlock {
   id!: string;
   override col!: 'LEFT' | 'RIGHT';
   label!: string;
+  editable!: boolean;
+
+  children?: TimelineBusyBlockChild[];
+}
+
+export class TimelineBusyBlockChild {
+  id!: string;
+  label!: string;
+  dateStart!: Date;
+  dateEnd!: Date;
   editable!: boolean;
 }
 
@@ -73,11 +86,10 @@ export class TwoColumnTimeline {
     leftCols: number;
     rightCols: number;
   } {
-    // setup
-    const inputSorted = [...rawItems].sort((a, b) =>
-      isBefore(a.dateStart, b.dateStart) ? -1 : 1
-    );
+    // preparation: sort and combine overlapping blocks of same column into one with children
+    const inputSorted = this.sortAndMergeRawItems(rawItems, 'MERGE');
 
+    // setup
     const output: (TimelineBusyBlock | TimelineGapBlock)[] = [];
     const current: TimelineBusyBlock[] = [];
 
@@ -110,6 +122,9 @@ export class TwoColumnTimeline {
             ...inputItem,
             positionStartRow: startRow,
             positionRowSpan: 0,
+            children: inputItem.children.map(
+              (rawChild) => rawChild as TimelineBusyBlockChild
+            ),
           } as TimelineBusyBlock);
           console.log('moved from input to current: ', inputItem.label);
         }
@@ -227,8 +242,6 @@ export class TwoColumnTimeline {
           : rightCols;
     }
 
-    // TODO Loesung finden fuer Ueberlappungen
-
     // nach Startdatum sortieren: dadurch kommen die spaeteren Boxen ueber die frueheren
     output.sort((a, b) => (isBefore(a.dateStart, b.dateStart) ? -1 : 1));
 
@@ -238,6 +251,105 @@ export class TwoColumnTimeline {
       leftCols: leftCols,
       rightCols: rightCols,
     };
+    /*return {
+      items: this.dummyItems(),
+      rows: 20,
+      leftCols: 1,
+      rightCols: 1,
+    }*/
+  }
+
+  static sortAndMergeRawItems(
+    rawItems: TimelineRawItem[],
+    mode: 'MERGE' | 'NO_MERGE'
+  ) {
+    const inputSorted = [...rawItems].sort((a, b) =>
+      isBefore(a.dateStart, b.dateStart) ? -1 : 1
+    );
+
+    const output: TimelineMergedRawItem[] = [];
+
+    if (!rawItems.length) {
+      return [];
+    }
+
+    console.log('****** merging overlapping items into group ********');
+
+    // ALGORITHM:
+
+    while (inputSorted.length) {
+      console.log('**********************************************************');
+
+      console.log('input: ', JSON.stringify(inputSorted.map((c) => c.label)));
+
+      // start new group: copy the next item
+      const groupdStarterItem = inputSorted[0];
+      inputSorted.splice(0, 1);
+      const group = {
+        ...groupdStarterItem,
+        children: [groupdStarterItem],
+      } as TimelineMergedRawItem;
+      console.log('started groupd with: ', groupdStarterItem.label);
+
+      if (mode === 'MERGE') {
+        // find all input items that overlap this range
+        let overlapping = this.findOverlapping(
+          group.col,
+          group.dateStart,
+          group.dateEnd,
+          inputSorted
+        );
+        while (overlapping.length) {
+          console.log(
+            'found overlapping: ',
+            JSON.stringify(overlapping.map((c) => c.label))
+          );
+
+          for (const eachOverlapping of overlapping) {
+            // move overlapping to group
+            console.log('added child to group: ', eachOverlapping.label);
+            inputSorted.splice(inputSorted.indexOf(eachOverlapping), 1);
+            group.children.push(eachOverlapping);
+
+            // adapt group date range
+            group.dateStart = isBefore(
+              eachOverlapping.dateStart,
+              group.dateStart
+            )
+              ? eachOverlapping.dateStart
+              : group.dateStart;
+            group.dateEnd = isAfter(eachOverlapping.dateEnd, group.dateEnd)
+              ? eachOverlapping.dateEnd
+              : group.dateEnd;
+
+            console.log(
+              'group date range: ',
+              printDateAsMonthYear(group.dateStart),
+              ' ',
+              printDateAsMonthYear(group.dateEnd)
+            );
+          }
+
+          // search for more overlapping items
+          overlapping = this.findOverlapping(
+            group.col,
+            group.dateStart,
+            group.dateEnd,
+            inputSorted
+          );
+        }
+      }
+
+      // move group to output
+      output.push(group);
+
+      console.log(
+        'finished group: ',
+        JSON.stringify(group.children.map((c) => c.label))
+      );
+    }
+
+    return output;
   }
 
   static getEarliestEnddate(list: { dateEnd: Date }[]) {
@@ -271,21 +383,16 @@ export class TwoColumnTimeline {
   }
 
   static findOverlapping(
-    item: TimelineBusyBlock,
-    output: (TimelineBusyBlock | TimelineGapBlock)[]
-  ): TimelineBusyBlock[] {
-    return output
-      .filter((each) => each.col === item.col && isTimelineBusyBlock(each))
-      .map((each) => asBusyBlock(each))
+    col: 'LEFT' | 'RIGHT',
+    dateStart: Date,
+    dateEnd: Date,
+    list: TimelineRawItem[]
+  ): TimelineRawItem[] {
+    return list
+      .filter((each) => each.col === col)
       .filter((each) => {
-        const itemIsCompletelyBeforeEach = !isAfter(
-          item.dateEnd,
-          each.dateStart
-        );
-        const itemIsCompletelyAfterEach = !isAfter(
-          each.dateEnd,
-          item.dateStart
-        );
+        const itemIsCompletelyBeforeEach = !isAfter(dateEnd, each.dateStart);
+        const itemIsCompletelyAfterEach = !isAfter(each.dateEnd, dateStart);
         const itemIsNotOverlapping =
           itemIsCompletelyBeforeEach || itemIsCompletelyAfterEach;
         return !itemIsNotOverlapping;
@@ -306,6 +413,8 @@ export class TwoColumnTimeline {
         dateEnd: new Date(2016, 6),
         positionStartRow: leftIndex,
         positionRowSpan: 1,
+        positionStartCol: 1,
+        positionColSpan: 2,
       } as TimelineGapBlock
     );
     leftIndex += 1;
@@ -314,14 +423,20 @@ export class TwoColumnTimeline {
     items.push(
       // ausbildung
       {
-        id: '1',
         col: 'LEFT',
-        label: 'Informatiker EFZ',
-        dateStart: new Date(2016, 7),
-        dateEnd: new Date(2017, 9),
         positionStartRow: leftIndex,
-        positionRowSpan: 6,
-        editable: true,
+        positionRowSpan: 3,
+        positionStartCol: 1,
+        positionColSpan: 1,
+        children: [
+          {
+            id: '1',
+            label: 'Informatiker EFZ',
+            dateStart: new Date(2016, 7),
+            dateEnd: new Date(2017, 11),
+            editable: true,
+          },
+        ],
       } as TimelineBusyBlock
     );
     leftIndex += 6;
@@ -329,14 +444,20 @@ export class TwoColumnTimeline {
     items.push(
       // job
       {
-        id: '2',
         col: 'RIGHT',
-        label: 'Job A',
-        dateStart: new Date(2016, 7),
-        dateEnd: new Date(2016, 9),
         positionStartRow: rightIndex,
         positionRowSpan: 1,
-        editable: true,
+        positionStartCol: 2,
+        positionColSpan: 1,
+        children: [
+          {
+            id: '2',
+            label: 'Job A',
+            dateStart: new Date(2016, 7),
+            dateEnd: new Date(2016, 9),
+            editable: true,
+          },
+        ],
       } as TimelineBusyBlock
     );
     rightIndex += 1;
@@ -345,14 +466,43 @@ export class TwoColumnTimeline {
     items.push(
       // job
       {
-        id: '2',
+        id: 'group',
         col: 'RIGHT',
-        label: 'Job B',
+        label: 'group',
         dateStart: new Date(2017, 7),
-        dateEnd: new Date(2017, 9),
+        dateEnd: new Date(2017, 11),
+        editable: true,
         positionStartRow: rightIndex,
         positionRowSpan: 1,
-        editable: true,
+        positionStartCol: 2,
+        positionColSpan: 1,
+        children: [
+          {
+            id: '2',
+            col: 'RIGHT',
+            label: 'Job B',
+            dateStart: new Date(2017, 7),
+            dateEnd: new Date(2017, 10),
+            editable: true,
+          },
+          {
+            id: '3',
+            col: 'RIGHT',
+            label: 'Job C',
+            dateStart: new Date(2017, 8),
+            dateEnd: new Date(2017, 8),
+            editable: true,
+          } as TimelineBusyBlock,
+
+          {
+            id: '4',
+            col: 'RIGHT',
+            label: 'Job D',
+            dateStart: new Date(2017, 10),
+            dateEnd: new Date(2017, 11),
+            editable: true,
+          } as TimelineBusyBlock,
+        ],
       } as TimelineBusyBlock
     );
     rightIndex += 1;
