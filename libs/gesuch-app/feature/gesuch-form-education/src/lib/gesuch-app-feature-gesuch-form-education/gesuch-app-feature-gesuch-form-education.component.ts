@@ -140,12 +140,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         if (ausbildung && ausbildungstaettes) {
           this.form.patchValue({
             ...ausbildung,
-            ausbildungBegin: this.convertDateStringToMonthYear(
-              ausbildung.ausbildungBegin
-            ),
-            ausbildungEnd: this.convertDateStringToMonthYear(
-              ausbildung.ausbildungEnd
-            ),
             ausbildungstaette: ausbildungstaettes?.find(
               (ausbildungstaette) =>
                 ausbildungstaette.id === ausbildung.ausbildungstaetteId
@@ -245,12 +239,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ausbildungContainer: {
         ausbildungSB: {
           ...(this.form.getRawValue() as any),
-          ausbildungBegin: this.convertMonthYearToDateString(
-            this.form.controls.ausbildungBegin.value!
-          ),
-          ausbildungEnd: this.convertMonthYearToDateString(
-            this.form.controls.ausbildungEnd.value!
-          ),
           ausbildungstaetteId: this.ausbildungstaetteOptions$()
             .filter(
               (ausbildungstaette) =>
@@ -303,14 +291,4 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
-
-  convertMonthYearToDateString(monthYearValue: string): string {
-    const [month, year] = monthYearValue.split('.').map((value) => value);
-    return year + '-' + month + '-' + '01';
-  }
-
-  convertDateStringToMonthYear(date: string): string {
-    const [year, month, day] = date.split('-').map((value) => value);
-    return month + '.' + year;
-  }
 }
