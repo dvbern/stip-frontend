@@ -39,7 +39,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
   ausbildung$ = computed(() => {
-    return this.view$().gesuch?.ausbildung?.ausbildungSB;
+    return this.view$().gesuch?.ausbildungContainer?.ausbildungSB;
   });
 
   lebenslaufItems$ = computed(() => {
@@ -78,7 +78,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
 
   maxDate$: Signal<Date | null> = computed(() => {
     const ausbildungStart =
-      this.view$().gesuch?.ausbildung?.ausbildungSB?.start;
+      this.view$().gesuch?.ausbildungContainer?.ausbildungSB?.ausbildungBegin;
     if (ausbildungStart) {
       const start = parseMonthYearString(ausbildungStart);
       return new Date(start.year, start.month - 1, 1);
