@@ -1,8 +1,6 @@
 include:
   - local: '.gitlab/common.gitlab-ci.yml'
 
-image: docker-registry.dvbern.ch/devops/docker/buildenvs/node/18
-
 stages:
   - validate
   - build

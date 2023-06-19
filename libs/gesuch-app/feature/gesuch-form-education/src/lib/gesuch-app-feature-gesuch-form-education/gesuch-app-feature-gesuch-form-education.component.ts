@@ -15,7 +15,9 @@ import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-f
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
-  AusbildungsgangStaette,
+  Ausbildungsland,
+  AusbildungsPensum,
+  AusbildungstaetteDTO,
   MASK_MM_YYYY,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
@@ -77,13 +79,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private formUtils = inject(SharedUtilFormService);
   currentYear = getYear(Date.now());
 
+  readonly Ausbildungpensum = AusbildungsPensum;
+
+  readonly Ausbildungsland = Ausbildungsland;
+
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
-    ausbildungsstaette: ['', [Validators.required]],
+    ausbildungstaette: ['', [Validators.required]],
     ausbildungsgang: ['', [Validators.required]],
     fachrichtung: ['', [Validators.required]],
-    manuell: [false, []],
-    start: [
+    ausbildungNichtGefunden: [false, []],
+    ausbildungBegin: [
       '',
       [
         Validators.required,
@@ -91,7 +97,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         sharedUtilValidatorMonthYearMin(this.currentYear),
       ],
     ],
-    ende: ['', [Validators.required, sharedUtilValidatorMonthYearMonth], []],
+    ausbildungEnd: [
+      '',
+      [Validators.required, sharedUtilValidatorMonthYearMonth],
+      [],
+    ],
     pensum: ['', [Validators.required]],
   });
 
@@ -99,38 +109,57 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     selectGesuchAppFeatureGesuchFormEducationView
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
-  ausbildungsstaetteOptions$ = computed(() => {
-    const ausbildungsgangLands = this.view$().ausbildungsgangLands;
-    return (
-      ausbildungsgangLands.find((item) => item.name === this.land$())
-        ?.staettes || []
+  ausbildungstaetteOptions$ = computed(() => {
+    const ausbildungstaettes = this.view$().ausbildungstaettes;
+    return ausbildungstaettes.filter(
+      (item) => item.ausbildungsland === this.land$()
     );
   });
   ausbildungsstaett$ = toSignal(
-    this.form.controls.ausbildungsstaette.valueChanges
+    this.form.controls.ausbildungstaette.valueChanges
   );
   ausbildungsgangOptions$ = computed(() => {
     return (
-      this.ausbildungsstaetteOptions$().find(
+      this.ausbildungstaetteOptions$().find(
         (item) => item.name === this.ausbildungsstaett$()
-      )?.ausbildungsgangs || []
+      )?.ausbildungsgaenge || []
     );
   });
 
-  pensumOptions = ['FULLTIME', 'PARTTIME'];
-
   constructor() {
     // add multi-control validators
-    this.form.controls.ende.addValidators([
-      createValidatorEndAfterStart(this.form.controls.start, false),
+    this.form.controls.ausbildungEnd.addValidators([
+      createValidatorEndAfterStart(this.form.controls.ausbildungBegin, false),
     ]);
 
     // fill form
     effect(
       () => {
         const { ausbildung } = this.view$();
-        if (ausbildung) {
-          this.form.patchValue({ ...ausbildung });
+        const { ausbildungstaettes } = this.view$();
+        if (ausbildung && ausbildungstaettes) {
+          this.form.patchValue({
+            ...ausbildung,
+            ausbildungBegin: this.convertDateStringToMonthYear(
+              ausbildung.ausbildungBegin
+            ),
+            ausbildungEnd: this.convertDateStringToMonthYear(
+              ausbildung.ausbildungEnd
+            ),
+            ausbildungstaette: ausbildungstaettes?.find(
+              (ausbildungstaette) =>
+                ausbildungstaette.id === ausbildung.ausbildungstaetteId
+            )?.name,
+            ausbildungsgang: ausbildungstaettes
+              ?.find(
+                (ausbildungstaette) =>
+                  ausbildungstaette.id === ausbildung.ausbildungstaetteId
+              )
+              ?.ausbildungsgaenge?.find(
+                (ausbildungsgang) =>
+                  ausbildungsgang.id === ausbildung.ausbildungsgangId
+              )?.id,
+          });
         }
       },
       { allowSignalWrites: true }
@@ -146,7 +175,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         // do not enable/disable fields  on signal default value
         this.formUtils.setDisabledState(
-          this.form.controls.ausbildungsstaette,
+          this.form.controls.ausbildungstaette,
           !land$()
         );
       },
@@ -155,8 +184,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
     // When Staette null, disable gang
     const staette$ = toSignal(
-      this.form.controls.ausbildungsstaette.valueChanges.pipe(
-        startWith(this.form.value.ausbildungsstaette)
+      this.form.controls.ausbildungstaette.valueChanges.pipe(
+        startWith(this.form.value.ausbildungstaette)
       )
     );
     effect(
@@ -183,7 +212,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungstaette.reset('');
     this.form.controls.ausbildungsgang.reset('');
   }
 
@@ -192,7 +221,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungsstaette.reset('');
+    this.form.controls.ausbildungstaette.reset('');
     this.form.controls.ausbildungsgang.reset('');
   }
 
@@ -213,31 +242,47 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private buildUpdatedGesuchFromForm() {
     return {
       ...this.view$().gesuch,
-      ausbildung: {
-        ausbildungSB: { ...(this.form.getRawValue() as any) },
+      ausbildungContainer: {
+        ausbildungSB: {
+          ...(this.form.getRawValue() as any),
+          ausbildungBegin: this.convertMonthYearToDateString(
+            this.form.controls.ausbildungBegin.value!
+          ),
+          ausbildungEnd: this.convertMonthYearToDateString(
+            this.form.controls.ausbildungEnd.value!
+          ),
+          ausbildungstaetteId: this.ausbildungstaetteOptions$()
+            .filter(
+              (ausbildungstaette) =>
+                ausbildungstaette.name ===
+                this.form.controls.ausbildungstaette.value
+            )
+            .pop()?.id,
+          ausbildungsgangId: this.form.controls.ausbildungsgang.value,
+        },
       },
     } as Partial<SharedModelGesuch>;
   }
 
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
-  ausbildungsstaetteTypeaheadFn$: Signal<
+  ausbildungstaetteTypeaheadFn$: Signal<
     OperatorFunction<string, readonly any[]>
   > = computed(() => {
-    return this.createAusbildungsstaetteTypeaheadFn(
-      this.ausbildungsstaetteOptions$()
+    return this.createAusbildungstaetteTypeaheadFn(
+      this.ausbildungstaetteOptions$()
     );
   });
 
-  focusAusbildungsstaette$ = new Subject<string>();
+  focusAusbildungstaette$ = new Subject<string>();
 
-  createAusbildungsstaetteTypeaheadFn(list: AusbildungsgangStaette[]) {
+  createAusbildungstaetteTypeaheadFn(list: AusbildungstaetteDTO[]) {
     console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(
         debounceTime(200),
         distinctUntilChanged()
       );
-      const inputFocus$ = this.focusAusbildungsstaette$;
+      const inputFocus$ = this.focusAusbildungstaette$;
       return merge(debouncedText$, inputFocus$).pipe(
         map((term) => {
           console.log('typeaheading term ', term, list);
@@ -258,4 +303,14 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
+
+  convertMonthYearToDateString(monthYearValue: string): string {
+    const [month, year] = monthYearValue.split('.').map((value) => value);
+    return year + '-' + month + '-' + '01';
+  }
+
+  convertDateStringToMonthYear(date: string): string {
+    const [year, month, day] = date.split('-').map((value) => value);
+    return month + '.' + year;
+  }
 }

@@ -29,7 +29,7 @@ export interface GesuchDTO {
   gesuchStatus: Gesuchstatus;
   elternContainers: ElternContainerDTO[];
   gesuchNummer: number;
-  ausbildung: AusbildungContainerDTO;
+  ausbildungContainer: AusbildungContainerDTO;
 
   partnerContainer: PartnerContainerDTO;
   geschwisterContainers: GeschwisterContainerDTO[];

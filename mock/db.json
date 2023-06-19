@@ -115,16 +115,16 @@
       },
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
-      "ausbildung": {
+      "ausbildungContainer": {
         "ausbildungSB": {
-          "ausbildungsland": "ausland",
-          "ausbildungsstaette": "Hochschule für Musik und Theater Leipzig",
-          "ausbildungsgang": "Master",
+          "ausbildungsland": "SCHWEIZ",
+          "ausbildungstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+          "ausbildungsgangId": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
           "fachrichtung": "Die Welt retten",
-          "manuell": false,
-          "start": "10.2023",
-          "ende": "01.2024",
-          "pensum": "FULLTIME"
+          "ausbildungNichtGefunden": false,
+          "ausbildungBegin": "2023-10-01",
+          "ausbildungEnd": "2024-01-01",
+          "pensum": "VOLLZEIT"
         }
       },
       "familiensituationContainer": {
@@ -370,81 +370,105 @@
       "id": "Dx2NYX-"
     }
   ],
-  "ausbildungsgangTree": [
+  "ausbildungstaettes": [
     {
-      "name": "CH",
-      "staettes": [
+      "id": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+      "ausbildungsgaenge": [
         {
-          "name": "Universität Bern",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
+          "id": "3a8c2023-f29e-4466-a2d7-411a7d032f42",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
         },
         {
-          "name": "Universität Basel",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
-        },
-        {
-          "name": "Gymnasium Interlaken",
-          "ausbildungsgangs": [
-            {
-              "name": "Maturität"
-            }
-          ]
-        },
-        {
-          "name": "Haarakademie",
-          "ausbildungsgangs": [
-            {
-              "name": "Berufsvorbereitendes Schuljahr"
-            }
-          ]
-        },
-        {
-          "name": "GIBB Bern",
-          "ausbildungsgangs": [
-            {
-              "name": "Berufsmaturität"
-            }
-          ]
+          "id": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
         }
-      ]
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Universtität Bern"
     },
     {
-      "name": "ausland",
-      "staettes": [
+      "id": "71c1e040-6ed3-4ce6-b90f-176b173c9c20",
+      "ausbildungsgaenge": [
         {
-          "name": "Desingskolen Kolding",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            }
-          ]
+          "id": "b18d06fb-1dd4-4929-8470-e9e44b0bc4a7",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
         },
         {
-          "name": "Hochschule für Musik und Theater Leipzig",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
+          "id": "b319953d-f5a9-4a1a-a0f6-69bd3f745e02",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
         }
-      ]
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Universtität Basel"
+    },
+    {
+      "id": "fdd81cd3-0d93-464a-b5e8-ef4496c9f633",
+      "ausbildungsgaenge": [
+        {
+          "id": "345ef0b1-b62e-4fdd-abf4-cb789d4296ee",
+          "bezeichnungDe": "Maturität",
+          "bezeichnungFr": "Maturität"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Gymnasium Interlaken"
+    },
+    {
+      "id": "d843ba46-2b0c-4c83-997a-2ac80fab303b",
+      "ausbildungsgaenge": [
+        {
+          "id": "44779764-e6d6-455c-8667-0d0b40f05dd9",
+          "bezeichnungDe": "Berufsvorbereitendes Schuljahr",
+          "bezeichnungFr": "Berufsvorbereitendes Schuljahr"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Haarakademie"
+    },
+    {
+      "id": "92fc250e-bcf3-49f5-af20-0854376e8d79",
+      "ausbildungsgaenge": [
+        {
+          "id": "abc07eed-19d4-4e1e-9899-6d5893556b1b",
+          "bezeichnungDe": "Berufsmaturität",
+          "bezeichnungFr": "Berufsmaturität"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "GIBB Bern"
+    },
+    {
+      "id": "0f9820db-b7b3-43af-8dae-15af9601ac10",
+      "ausbildungsgaenge": [
+        {
+          "id": "52e9577c-732a-4f1b-ae74-de2e477c01e9",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
+        }
+      ],
+      "ausbildungsland": "AUSLAND",
+      "name": "Desingskolen Kolding"
+    },
+    {
+      "id": "8da6325b-d65d-4dd2-87ce-f10cab6fb81c",
+      "ausbildungsgaenge": [
+        {
+          "id": "3dac8f59-533c-4b99-9b13-210503c34595",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
+        },
+        {
+          "id": "c69c6712-9bd9-4533-a685-44fddefd5937",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
+        }
+      ],
+      "ausbildungsland": "AUSLAND",
+      "name": "Hochschule für Musik und Theater Leipzig"
     }
   ]
 }
