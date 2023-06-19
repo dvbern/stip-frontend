@@ -7,7 +7,6 @@ import {
   OnInit,
   Signal,
 } from '@angular/core';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
@@ -23,6 +22,7 @@ import { addYears } from 'date-fns';
 import { GesuchAppFeatureGesuchFormLebenslaufEditorComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-editor/gesuch-app-feature-gesuch-form-lebenslauf-editor.component';
 import { TimelineAddCommand } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline';
 import { TwoColumnTimelineComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline.component';
+import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feature-gesuch-form-lebenslauf.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf',
@@ -42,35 +42,9 @@ import { TwoColumnTimelineComponent } from '../gesuch-app-feature-gesuch-form-le
 export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   private store = inject(Store);
 
-  view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
-
-  ausbildung$ = computed(() => {
-    return this.view$().gesuch?.ausbildungContainer?.ausbildungSB;
-  });
-
-  lebenslaufItems$: Signal<LebenslaufItemDTO[]> = computed(() => {
-    console.log(
-      'lebenslauf items: ',
-      this.view$().gesuch?.lebenslaufItemContainers
-    );
-    if (!this.view$().gesuch?.lebenslaufItemContainers) {
-      return [];
-    }
-
-    return (
-      this.view$()
-        .gesuch?.lebenslaufItemContainers.map((each) => each.lebenslaufItemSB)
-        .filter((each) => each?.id) as LebenslaufItemDTO[]
-    ).sort((a, b) => {
-      const monthYearA = parseMonthYearString(a.dateStart!);
-      const monthYearB = parseMonthYearString(b.dateStart!);
-
-      if (monthYearB.year !== monthYearA.year) {
-        return monthYearA.year - monthYearB.year;
-      }
-      return monthYearA.month - monthYearB.month;
-    });
-  });
+  view$ = this.store.selectSignal(
+    selectGesuchAppFeatureGesuchFormLebenslaufVew
+  );
 
   minDate$: Signal<Date | null> = computed(() => {
     const geburtsdatum =

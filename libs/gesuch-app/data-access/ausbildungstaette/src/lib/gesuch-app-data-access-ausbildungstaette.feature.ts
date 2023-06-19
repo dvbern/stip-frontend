@@ -1,3 +1,4 @@
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelError } from '@dv/shared/model/error';
@@ -26,6 +27,7 @@ export const gesuchAppDataAccessAusbildungstaettesFeature = createFeature({
 
     on(
       GesuchAppEventGesuchFormEducation.init,
+      GesuchAppEventGesuchFormLebenslauf.init,
       (state): State => ({
         ...state,
         loading: true,

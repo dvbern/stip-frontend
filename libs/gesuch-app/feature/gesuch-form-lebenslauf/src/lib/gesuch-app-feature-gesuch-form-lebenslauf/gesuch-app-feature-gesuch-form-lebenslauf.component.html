@@ -66,16 +66,19 @@
     </div>
 
     <!-- visual -->
-    <div class="row">
-      <div class="col-12 col-xl-8 my-3" *ngIf="ausbildung$() as ausbildung">
+    <div class="row" *ngIf="view$().lebenslaufItems as items">
+      <div
+        class="col-12 col-xl-8 my-3"
+        *ngIf="view$().ausbildung as ausbildung"
+      >
         <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
-          [lebenslaufItems]="lebenslaufItems$()"
+          [lebenslaufItems]="items"
           [ausbildung]="ausbildung"
-          *ngIf="lebenslaufItems$() as items"
           (addAusbildungTriggered)="handleAddAusbildung($event)"
           (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
           (editItemTriggered)="handleEditItemId($event, items)"
           (deleteItemTriggered)="handleDeleteItem($event)"
+          [ausbildungstaettes]="view$().ausbildungstaettes"
         />
       </div>
     </div>

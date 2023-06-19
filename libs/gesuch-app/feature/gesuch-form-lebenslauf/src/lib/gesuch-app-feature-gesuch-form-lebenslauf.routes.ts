@@ -1,4 +1,10 @@
 import { Route } from '@angular/router';
+import {
+  gesuchAppDataAccessAusbildungstaetteEffects,
+  gesuchAppDataAccessAusbildungstaettesFeature,
+} from '@dv/gesuch-app/data-access/ausbildungstaette';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
 import { GesuchAppFeatureGesuchFormLebenslaufComponent } from './gesuch-app-feature-gesuch-form-lebenslauf/gesuch-app-feature-gesuch-form-lebenslauf.component';
 
 export const gesuchAppFeatureGesuchFormLebenslaufRoutes: Route[] = [
@@ -6,8 +12,9 @@ export const gesuchAppFeatureGesuchFormLebenslaufRoutes: Route[] = [
     path: '',
     pathMatch: 'prefix',
     providers: [
-      // feature specific services and other providers
-      // always remove { providedIn: 'root' } from the feature specific services
+      // ausbildungsstaette needed for the planned ausbildung at the bottom of lebenslauf
+      provideState(gesuchAppDataAccessAusbildungstaettesFeature),
+      provideEffects(gesuchAppDataAccessAusbildungstaetteEffects),
     ],
     children: [
       {

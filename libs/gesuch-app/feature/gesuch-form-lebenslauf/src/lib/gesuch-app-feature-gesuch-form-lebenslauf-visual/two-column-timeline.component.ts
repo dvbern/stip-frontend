@@ -10,7 +10,11 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AusbildungDTO, LebenslaufItemDTO } from '@dv/shared/model/gesuch';
+import {
+  AusbildungDTO,
+  AusbildungstaetteDTO,
+  LebenslaufItemDTO,
+} from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import {
   dateFromMonthYearString,
@@ -45,25 +49,30 @@ export class TwoColumnTimelineComponent implements OnChanges {
   @Output() editItemTriggered = new EventEmitter<string>();
   @Output() deleteItemTriggered = new EventEmitter<string>();
 
-  @Input({ required: true })
-  lebenslaufItems!: LebenslaufItemDTO[];
-
-  @Input({ required: true })
-  ausbildung!: AusbildungDTO;
+  @Input({ required: true }) lebenslaufItems!: LebenslaufItemDTO[];
+  @Input({ required: true }) ausbildung!: AusbildungDTO;
+  @Input({ required: true }) ausbildungstaettes?: AusbildungstaetteDTO[] | null;
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['lebenslaufItems'] && changes['ausbildung']) {
+    if (
+      changes['lebenslaufItems'] &&
+      changes['ausbildung'] &&
+      changes['ausbildungstaettes']
+    ) {
       this.setLebenslaufItems(
         changes['lebenslaufItems'].currentValue,
-        changes['ausbildung'].currentValue
+        changes['ausbildung'].currentValue,
+        changes['ausbildungstaettes'].currentValue
       );
     }
   }
 
   setLebenslaufItems(
     lebenslaufItems: LebenslaufItemDTO[],
-    plannedAusbildung: AusbildungDTO
+    plannedAusbildung: AusbildungDTO,
+    ausbildungstaettes: AusbildungstaetteDTO[]
   ) {
+    console.log('initializing lebenslauf items for timeline');
     const timelineRawItems = lebenslaufItems.map(
       (lebenslaufItem) =>
         ({
@@ -76,15 +85,23 @@ export class TwoColumnTimelineComponent implements OnChanges {
         } as TimelineRawItem)
     );
 
+    // planned ausbildung
+    const ausbildungsstaette = ausbildungstaettes.find(
+      (each) => each.id === plannedAusbildung.ausbildungstaetteId
+    )!;
+    const ausbildungsgang = ausbildungsstaette.ausbildungsgaenge!.find(
+      (each) => each.id === plannedAusbildung.ausbildungsgangId
+    );
+
     timelineRawItems.push({
       id: 'planned-ausbildung',
       col: 'LEFT',
-      dateStart: dateFromMonthYearString(plannedAusbildung.start),
-      dateEnd: dateFromMonthYearString(plannedAusbildung.ende),
+      dateStart: dateFromMonthYearString(plannedAusbildung.ausbildungBegin),
+      dateEnd: dateFromMonthYearString(plannedAusbildung.ausbildungEnd),
       label:
-        plannedAusbildung.ausbildungsstaette +
+        ausbildungsstaette.name +
         ': ' +
-        plannedAusbildung.ausbildungsgang +
+        ausbildungsgang!.bezeichnungDe +
         ' (' +
         plannedAusbildung.fachrichtung +
         ')',

@@ -167,6 +167,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   handleCancel() {
     this.closeTriggered.emit();
   }
+
   handleDelete() {
     if (this.item?.id) {
       this.deleteTriggered.emit(this.item!.id);

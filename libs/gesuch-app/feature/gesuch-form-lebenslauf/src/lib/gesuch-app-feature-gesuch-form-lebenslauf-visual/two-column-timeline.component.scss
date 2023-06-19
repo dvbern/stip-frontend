@@ -78,7 +78,7 @@
     .hiding-wrapper {
       display: block;
       overflow: hidden;
-      border-radius: 40px;
+      padding: 10px 10px; // sonst verschwinden die button shadows
       position: relative;
     }
 

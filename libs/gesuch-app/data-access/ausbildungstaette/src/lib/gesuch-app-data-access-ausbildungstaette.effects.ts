@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
-import { catchError, switchMap, map, of } from 'rxjs';
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, switchMap } from 'rxjs';
+import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
 
 import { GesuchAppDataAccessAusbildungstaetteService } from './gesuch-app-data-access-ausbildungstaette.service';
-import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
-import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 
 export const loadAusbildungstaettes = createEffect(
   (
@@ -15,7 +16,10 @@ export const loadAusbildungstaettes = createEffect(
     )
   ) => {
     return events$.pipe(
-      ofType(GesuchAppEventGesuchFormEducation.init),
+      ofType(
+        GesuchAppEventGesuchFormEducation.init,
+        GesuchAppEventGesuchFormLebenslauf.init
+      ),
       switchMap(() =>
         gesuchAppDataAccessAusbildungstaetteService.getAll().pipe(
           map((ausbildungstaettes) =>
