@@ -17,6 +17,7 @@
     (saveTriggered)="handleEditorSave($event)"
     (autoSaveTriggered)="handleEditorAutoSave($event)"
     (closeTriggered)="handleEditorClose()"
+    (deleteTriggered)="handleDeleteItem($event)"
     [minStartDate]="minDate$()"
     [maxEndDate]="maxDate$()"
   />
@@ -40,7 +41,7 @@
     <div class="row">
       <div class="col-12 col-xl-8 my-3">
         <div class="row add-buttons">
-          <div class="col-6 my-3 ps-0">
+          <div class="col-6 my-3">
             <button
               type="button"
               class="btn btn-outline-primary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
@@ -50,7 +51,7 @@
               {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
             </button>
           </div>
-          <div class="col-6 my-3 pe-0">
+          <div class="col-6 my-3">
             <button
               type="button"
               class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
@@ -74,7 +75,7 @@
           (addAusbildungTriggered)="handleAddAusbildung($event)"
           (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
           (editItemTriggered)="handleEditItemId($event, items)"
-          (deleteItemTriggered)="handleDeleteItemId($event, items)"
+          (deleteItemTriggered)="handleDeleteItem($event)"
         />
       </div>
     </div>

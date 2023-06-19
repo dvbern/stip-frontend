@@ -152,22 +152,22 @@ export class TwoColumnTimeline {
                 each.label
               );
             }
+          }
 
-            // Abstand einfuegen, wenn das letzte Enddatum nicht direkt vorher war
-            if (output.length && current.length) {
-              const latestOutputEnddate = this.getLatestEnddate(output);
-              const expectedNextStart = addMonths(latestOutputEnddate, 1);
-              const gaplessNextBlockFound =
-                inputSorted.length && isEqual(startDate, expectedNextStart);
-              if (!gaplessNextBlockFound) {
-                // alle in current erhalten rowspan++
-                if (current.length) {
-                  console.log('adding abstandHeight');
-                  for (const each of current) {
-                    each.positionRowSpan += abstandHeight;
-                  }
-                  startRow += abstandHeight;
+          // Abstand einfuegen, wenn das letzte Enddatum nicht direkt vorher war
+          if (output.length && current.length) {
+            const latestOutputEnddate = this.getLatestEnddate(output);
+            const expectedNextStart = addMonths(latestOutputEnddate, 1);
+            const gaplessNextBlockFound =
+              inputSorted.length && isEqual(startDate, expectedNextStart);
+            if (!gaplessNextBlockFound) {
+              // alle in current erhalten rowspan++
+              if (current.length) {
+                console.log('adding abstandHeight');
+                for (const each of current) {
+                  each.positionRowSpan += abstandHeight;
                 }
+                startRow += abstandHeight;
               }
             }
           }

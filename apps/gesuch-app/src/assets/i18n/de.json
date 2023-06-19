@@ -7,6 +7,7 @@
   "gesuch-app.form.save-and-continue": "Speichern und weiter",
   "gesuch-app.form.save-and-back": "Speichern und zurück",
   "gesuch-app.form.back": "Abbrechen und zurück",
+  "gesuch-app.form.delete": "Löschen",
   "gesuch-app.form.shared.section.personal-details": "Persönliche Angaben",
   "gesuch-app.form.shared.lastname.label": "Nachname",
   "gesuch-app.form.shared.firstname.label": "Vorname",

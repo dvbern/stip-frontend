@@ -78,6 +78,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Output() saveTriggered = new EventEmitter<LebenslaufItemDTO>();
   @Output() autoSaveTriggered = new EventEmitter<LebenslaufItemDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
+  @Output() deleteTriggered = new EventEmitter<string>();
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -165,6 +166,11 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   handleCancel() {
     this.closeTriggered.emit();
+  }
+  handleDelete() {
+    if (this.item?.id) {
+      this.deleteTriggered.emit(this.item!.id);
+    }
   }
 
   protected readonly Kanton = Kanton;

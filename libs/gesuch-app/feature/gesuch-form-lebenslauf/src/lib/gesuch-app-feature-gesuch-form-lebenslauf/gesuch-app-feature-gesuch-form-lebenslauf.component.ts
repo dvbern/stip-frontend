@@ -143,10 +143,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     this.editedItem = undefined;
   }
 
-  public handleDeleteItem(item: LebenslaufItemDTO) {
+  public handleDeleteItem(itemId: string) {
     this.store.dispatch(
       GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithDeletedItem(item),
+        gesuch: this.buildUpdatedGesuchWithDeletedItem(itemId),
         origin: GesuchFormSteps.LEBENSLAUF,
       })
     );
@@ -171,10 +171,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     this.editedItem = undefined;
   }
 
-  private buildUpdatedGesuchWithDeletedItem(item: LebenslaufItemDTO) {
+  private buildUpdatedGesuchWithDeletedItem(itemId: string) {
     const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
     const updatedItemContainers = gesuch?.lebenslaufItemContainers!.filter(
-      (itemContainer) => itemContainer.lebenslaufItemSB?.id !== item.id
+      (itemContainer) => itemContainer.lebenslaufItemSB?.id !== itemId
     );
 
     return {
@@ -226,13 +226,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     const item = items.find((each) => each.id === id);
     if (item) {
       this.handleEditItem(item);
-    }
-  }
-
-  public handleDeleteItemId(id: string, items: LebenslaufItemDTO[]): void {
-    const item = items.find((each) => each.id === id);
-    if (item) {
-      this.handleDeleteItem(item);
     }
   }
 
