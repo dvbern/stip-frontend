@@ -14,7 +14,6 @@
 
   .box {
     position: relative;
-    opacity: 0.8;
 
     --dv-alert-padding-x: 1rem;
     --dv-alert-padding-y: 1rem;
@@ -28,7 +27,6 @@
     --dv-alert-link-color: var(--dv-info-text-emphasis);
 
     padding: var(--dv-alert-padding-y) var(--dv-alert-padding-x);
-    color: var(--dv-alert-color);
     background-color: var(--dv-alert-bg);
     border: var(--dv-alert-border);
     border-radius: var(--dv-border-radius);
@@ -42,13 +40,14 @@
     }
 
     small {
+      color: #7f7f8b;
       @media screen and (max-width: 992px) {
         font-size: 12px;
       }
     }
 
     a {
-      color: inherit;
+      color: #000;
       text-decoration: none;
       cursor: pointer;
 
@@ -65,7 +64,6 @@
     &.left {
       background-color: var(--dv-primary-bg-subtle);
       border-color: var(--dv-primary);
-      opacity: 0.7;
     }
 
     &.both {
