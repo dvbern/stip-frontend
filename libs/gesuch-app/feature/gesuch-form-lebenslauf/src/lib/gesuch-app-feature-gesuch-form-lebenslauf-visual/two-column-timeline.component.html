@@ -16,6 +16,7 @@
     [class.left]="item.col === 'LEFT'"
     [class.right]="item.col === 'RIGHT'"
     [class.both]="item.col === 'BOTH'"
+    [class.show-contents-on-hover]="isTimelineGapBlock(item)"
     [style]="
       'grid-column: ' +
       item.positionStartCol +
@@ -53,10 +54,7 @@
     </ng-container>
 
     <!-- gap -->
-    <div
-      *ngIf="isTimelineGapBlock(item)"
-      class="show-contents-on-hover position-relative"
-    >
+    <div *ngIf="isTimelineGapBlock(item)" class="position-relative">
       <div class="hide-on-hover">
         <h5>Fehlende Einträge</h5>
         <small>{{
