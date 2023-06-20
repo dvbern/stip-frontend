@@ -41,7 +41,7 @@ deploy:{{ this }}:
   script:
     - git fetch origin $CI_COMMIT_BRANCH
     - cd deploy/$STAGE
-    - kustomize edit set image $IMAGE
+    - kustomize edit set image $IMAGE_PATH
     - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE_PATH [ci skip]"'
     - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@github.com/dvbern/stip-frontend.git HEAD:$CI_COMMIT_BRANCH
   rules:
