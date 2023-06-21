@@ -24,78 +24,89 @@
     </div>
 
     <ng-container *ngIf="!view$().loading">
-      <!-- Infobx -->
-      <div class="row">
-        <div class="col-12 col-xl-8 my-3">
-          <span>{{
-            'gesuch-app.form.lebenslauf.top.info'
-              | translate
-                : {
-                    von: minDate$() ? printDateAsMonthYear(minDate$()!) : '?',
-                    bis: maxDate$() ? printDateAsMonthYear(maxDate$()!) : '?'
-                  }
-          }}</span>
+      <ng-template #missingInfo>
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <ngb-alert type="info" [dismissible]="false">{{
+              'gesuch-app.form.lebenslauf.top.missing-dates' | translate
+            }}</ngb-alert>
+          </div>
         </div>
-      </div>
+      </ng-template>
+      <ng-container *ngIf="minDate$() && maxDate$(); else missingInfo">
+        <!-- Infobx -->
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <span>{{
+              'gesuch-app.form.lebenslauf.top.info'
+                | translate
+                  : {
+                      von: minDate$() ? printDateAsMonthYear(minDate$()!) : '?',
+                      bis: maxDate$() ? printDateAsMonthYear(maxDate$()!) : '?'
+                    }
+            }}</span>
+          </div>
+        </div>
 
-      <!-- ADD -->
-      <div class="row">
-        <div class="col-12 col-xl-8 my-3">
-          <div class="row add-buttons">
-            <div class="col-6 my-3">
-              <button
-                type="button"
-                class="btn btn-outline-primary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
-                (click)="handleAddAusbildung(undefined)"
-              >
-                <i class="material-symbols-rounded fs-1">school</i>
-                {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
-              </button>
-            </div>
-            <div class="col-6 my-3">
-              <button
-                type="button"
-                class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
-                (click)="handleAddTaetigkeit(undefined)"
-              >
-                <i class="material-symbols-rounded fs-1">work</i>
-                {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
-              </button>
+        <!-- ADD -->
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <div class="row add-buttons">
+              <div class="col-6 my-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
+                  (click)="handleAddAusbildung(undefined)"
+                >
+                  <i class="material-symbols-rounded fs-1">school</i>
+                  {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
+                </button>
+              </div>
+              <div class="col-6 my-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
+                  (click)="handleAddTaetigkeit(undefined)"
+                >
+                  <i class="material-symbols-rounded fs-1">work</i>
+                  {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- visual -->
-      <div class="row" *ngIf="view$().lebenslaufItems as items">
-        <div
-          class="col-12 col-xl-8 my-3"
-          *ngIf="view$().ausbildung as ausbildung"
-        >
-          <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
-            [lebenslaufItems]="items"
-            [ausbildung]="ausbildung"
-            (addAusbildungTriggered)="handleAddAusbildung($event)"
-            (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
-            (editItemTriggered)="handleEditItemId($event, items)"
-            (deleteItemTriggered)="handleDeleteItem($event)"
-            [ausbildungstaettes]="view$().ausbildungstaettes"
-          />
+        <!-- visual -->
+        <div class="row" *ngIf="view$().lebenslaufItems as items">
+          <div
+            class="col-12 col-xl-8 my-3"
+            *ngIf="view$().ausbildung as ausbildung"
+          >
+            <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
+              [lebenslaufItems]="items"
+              [ausbildung]="ausbildung"
+              (addAusbildungTriggered)="handleAddAusbildung($event)"
+              (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
+              (editItemTriggered)="handleEditItemId($event, items)"
+              (deleteItemTriggered)="handleDeleteItem($event)"
+              [ausbildungstaettes]="view$().ausbildungstaettes"
+            />
+          </div>
         </div>
-      </div>
 
-      <!-- Buttons -->
-      <div
-        class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
-      >
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="handleContinue()"
+        <!-- Buttons -->
+        <div
+          class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
         >
-          {{ 'gesuch-app.form.gonext' | translate }}
-        </button>
-      </div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="handleContinue()"
+          >
+            {{ 'gesuch-app.form.gonext' | translate }}
+          </button>
+        </div>
+      </ng-container>
     </ng-container>
   </ng-container>
 </dv-gesuch-app-pattern-gesuch-step-layout>

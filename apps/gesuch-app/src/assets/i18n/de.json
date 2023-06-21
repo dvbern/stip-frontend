@@ -115,6 +115,7 @@
   "gesuch-app.form.lebenslauf.add.taetigkeit.short": "Tätigkeit",
   "gesuch-app.form.lebenslauf.title": "Lebenslauf",
   "gesuch-app.form.lebenslauf.top.info": "Es ist eine lückenlose Auflistung aller bisherigen Ausbildung und Tätigkeiten aufzuführen vom {{von}} bis {{bis}} (16. Lebensjahr bis Beginn aktueller Ausbildung).",
+  "gesuch-app.form.lebenslauf.top.missing-dates": "Bitte füllen Sie zuerst die Schritte \"Person in Ausbildung\" und \"Ausbildung\" aus.",
   "gesuch-app.form.lebenslauf.item.name": "Ausbildung oder Tätigkeit",
   "gesuch-app.form.lebenslauf.item.name.ausbildung": "Ausbildung",
   "gesuch-app.form.lebenslauf.item.name.taetigkeit": "Tätigkeit",
