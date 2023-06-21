@@ -357,7 +357,7 @@ Besides that it is also possible to serve desired app in the dev mode (eg `npm r
 and then start e2e tests in GUI mode with `npm run e2e:gesuch-app:open` which will start Cypress GUI.
 (again, these scripts have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
-> When writing E2E tests, always make sure to use `data-test-id="some-id"` attributes instead of
+> When writing E2E tests, always make sure to use `data-testid="some-id"` attributes instead of
 > component selectors, classes or other attributes. This way we can make sure that tests are not
 > brittle and will not break when we change the component structure or styling.
 

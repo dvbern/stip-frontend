@@ -38,7 +38,9 @@
           }}</i>
         </dv-shared-ui-icon-chip>
 
-        <h2 class="fw-bold">{{ step.translationKey | translate }}</h2>
+        <h2 class="fw-bold" data-testid="step-title">
+          {{ step.translationKey | translate }}
+        </h2>
       </div>
 
       <div>
@@ -67,6 +69,7 @@
     <a
       routerLink="/"
       class="btn btn-secondary fw-normal px-2 d-flex align-items-center shadow-none"
+      data-testid="gesuch-step-nav-dashboard"
     >
       <i class="material-symbols-rounded text-white me-2">dashboard</i>
       <span>Dashboard</span>
