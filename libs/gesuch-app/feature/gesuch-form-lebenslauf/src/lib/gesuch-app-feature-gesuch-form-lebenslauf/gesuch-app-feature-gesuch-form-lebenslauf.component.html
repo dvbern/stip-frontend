@@ -83,6 +83,7 @@
             *ngIf="view$().ausbildung as ausbildung"
           >
             <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
+              [startDate]="minDate$()"
               [lebenslaufItems]="items"
               [ausbildung]="ausbildung"
               (addAusbildungTriggered)="handleAddAusbildung($event)"

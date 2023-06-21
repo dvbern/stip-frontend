@@ -71,16 +71,21 @@ export class TwoColumnTimeline {
   leftCols!: number;
   rightCols!: number;
 
-  fillWith(rawItems: TimelineRawItem[]) {
-    const { items, rows, leftCols, rightCols } =
-      TwoColumnTimeline.prepareItems(rawItems);
+  fillWith(expectedStartDate: Date | null, rawItems: TimelineRawItem[]) {
+    const { items, rows, leftCols, rightCols } = TwoColumnTimeline.prepareItems(
+      expectedStartDate,
+      rawItems
+    );
     this.items = items;
     this.rows = rows;
     this.leftCols = leftCols;
     this.rightCols = rightCols;
   }
 
-  static prepareItems(rawItems: TimelineRawItem[]): {
+  static prepareItems(
+    expectedStartDate: Date | null,
+    rawItems: TimelineRawItem[]
+  ): {
     items: (TimelineBusyBlock | TimelineGapBlock)[];
     rows: number;
     leftCols: number;
@@ -99,6 +104,22 @@ export class TwoColumnTimeline {
 
     const abstandHeight = 1;
     const unevenStartHeight = 1;
+
+    // Startluecke falls Startdatum vorhanden
+    if (inputSorted.length && expectedStartDate) {
+      if (isAfter(inputSorted[0].dateStart, expectedStartDate)) {
+        output.push({
+          col: 'BOTH',
+          dateStart: expectedStartDate,
+          dateEnd: subMonths(inputSorted[inputSorted.length - 1].dateStart, 1),
+          positionStartRow: startRow,
+          positionRowSpan: 1,
+        } as TimelineGapBlock);
+        console.log('added start gap to output');
+
+        startRow++;
+      }
+    }
 
     // Loop
     while (inputSorted.length) {

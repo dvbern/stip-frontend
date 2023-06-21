@@ -50,17 +50,20 @@ export class TwoColumnTimelineComponent implements OnChanges {
   @Output() editItemTriggered = new EventEmitter<string>();
   @Output() deleteItemTriggered = new EventEmitter<string>();
 
+  @Input({ required: true }) startDate!: Date | null;
   @Input({ required: true }) lebenslaufItems!: LebenslaufItemDTO[];
   @Input({ required: true }) ausbildung!: AusbildungDTO;
   @Input({ required: true }) ausbildungstaettes?: AusbildungstaetteDTO[] | null;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (
+      changes['startDate'] &&
       changes['lebenslaufItems'] &&
       changes['ausbildung'] &&
       changes['ausbildungstaettes']
     ) {
       this.setLebenslaufItems(
+        changes['startDate'].currentValue,
         changes['lebenslaufItems'].currentValue,
         changes['ausbildung'].currentValue,
         changes['ausbildungstaettes'].currentValue
@@ -69,6 +72,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
   }
 
   setLebenslaufItems(
+    expectedSartDate: Date | null,
     lebenslaufItems: LebenslaufItemDTO[],
     plannedAusbildung: AusbildungDTO,
     ausbildungstaettes: AusbildungstaetteDTO[]
@@ -109,7 +113,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
       editable: false,
     } as TimelineRawItem);
 
-    this.timeline.fillWith(timelineRawItems);
+    this.timeline.fillWith(expectedSartDate, timelineRawItems);
     this.cd.markForCheck();
   }
 
