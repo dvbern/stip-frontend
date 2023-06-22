@@ -9,7 +9,12 @@ import {
   Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -122,7 +127,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   constructor() {
     // add multi-control validators
     this.form.controls.ende.addValidators([
-      createValidatorEndAfterStart(this.form.controls.start, false),
+      createValidatorEndAfterStart(
+        this.form.controls.start as FormControl<string>,
+        false
+      ),
     ]);
 
     // fill form

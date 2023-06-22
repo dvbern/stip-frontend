@@ -29,12 +29,12 @@ import {
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormFieldComponent,
+  SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
-} from '@dv/shared/ui/form-field';
+} from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
@@ -48,7 +48,7 @@ import { extractIBAN, ExtractIBANResult } from 'ibantools';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedUiFormFieldComponent,
+    SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
@@ -69,6 +69,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
   KontoinhaberinType = KontoinhaberinType;
   MASK_IBAN = MASK_IBAN;
   Land = Land;
+  step = GesuchFormSteps.AUSZAHLUNGEN;
 
   form = this.fb.group({
     kontoinhaberin: [<KontoinhaberinType | null>null, [Validators.required]],
