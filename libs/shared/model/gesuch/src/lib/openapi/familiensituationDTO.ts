@@ -15,12 +15,12 @@ import { ElternUnbekanntheitsGrund } from './elternUnbekanntheitsGrund';
 
 export interface FamiliensituationDTO {
   id: string;
-  leiblicheElternVerheiratetKonkubinat?: boolean;
+  elternVerheiratetZusammen?: boolean;
   elternteilVerstorben?: boolean;
-  elternteilVerstorbenUnbekannt?: boolean;
+  elternteilUnbekanntVerstorben?: boolean;
   gerichtlicheAlimentenregelung?: boolean;
   mutterUnbekanntVerstorben?: ElternAbwesenheitsGrund;
-  mutterUnbekanntReason?: ElternUnbekanntheitsGrund;
+  mutterUnbekanntGrund?: ElternUnbekanntheitsGrund;
   mutterWiederverheiratet?: boolean;
   obhut?: Elternschaftsteilung;
   obhutMutter?: number;
@@ -29,7 +29,7 @@ export interface FamiliensituationDTO {
   sorgerechtMutter?: number;
   sorgerechtVater?: number;
   vaterUnbekanntVerstorben?: ElternAbwesenheitsGrund;
-  vaterUnbekanntReason?: ElternUnbekanntheitsGrund;
+  vaterUnbekanntGrund?: ElternUnbekanntheitsGrund;
   vaterWiederverheiratet?: boolean;
   werZahltAlimente?: Elternschaftsteilung;
 }

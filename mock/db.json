@@ -129,9 +129,9 @@
       },
       "familiensituationContainer": {
         "familiensituationSB": {
-          "leiblicheElternVerheiratetKonkubinat": false,
+          "elternVerheiratetZusammen": false,
           "gerichtlicheAlimentenregelung": false,
-          "elternteilVerstorbenUnbekannt": false,
+          "elternteilUnbekanntVerstorben": false,
           "vaterWiederverheiratet": true,
           "mutterWiederverheiratet": false,
           "sorgerecht": "VATER",
