@@ -75,13 +75,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     kontoinhaberin: [<KontoinhaberinType | null>null, [Validators.required]],
     name: [''],
     vorname: [''],
-    addresse: this.fb.group({
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: [<null | Land>null, [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(this.fb),
     iban: ['', [Validators.required, this.ibanValidator()]],
   });
 
