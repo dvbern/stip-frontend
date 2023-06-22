@@ -1,0 +1,109 @@
+<div
+  class="wrapper"
+  *ngIf="timeline.items"
+  [style]="
+    'grid-template-rows: repeat(' +
+    ((timeline.rows || 1) - 1) +
+    ', minmax(35px, auto));' +
+    'grid-template-columns: repeat(' +
+    ((timeline.leftCols || 1) + (timeline.rightCols || 1)) +
+    ', minmax(0, 1fr))'
+  "
+>
+  <div
+    class="box"
+    *ngFor="let item of timeline.items; trackBy: trackByIndex"
+    [class.left]="item.col === 'LEFT'"
+    [class.right]="item.col === 'RIGHT'"
+    [class.both]="item.col === 'BOTH'"
+    [class.show-contents-on-hover]="isTimelineGapBlock(item)"
+    [style]="
+      'grid-column: ' +
+      item.positionStartCol +
+      ' / span ' +
+      item.positionColSpan +
+      ';' +
+      'grid-row: ' +
+      item.positionStartRow +
+      ' / span ' +
+      item.positionRowSpan +
+      ';'
+    "
+  >
+    <!-- busy block -->
+    <ng-container *ngIf="isTimelineBusyBlock(item)">
+      <ng-container *ngIf="asBusyBlock(item) as busyItem">
+        <div
+          class="d-flex flex-column gap-3"
+          *ngIf="busyItem.children as children"
+        >
+          <div *ngFor="let child of children; trackBy: trackByIndex">
+            <h5>
+              <a
+                *ngIf="child.editable"
+                class="w-100 d-block"
+                (click)="handleEditItem(child)"
+              >
+                {{ child.label }}
+              </a>
+              <ng-container *ngIf="!child.editable">
+                {{ child.label }}
+              </ng-container>
+            </h5>
+            <small>{{
+              printDateAsMonthYear(child.dateStart) +
+                ' - ' +
+                printDateAsMonthYear(child.dateEnd)
+            }}</small>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- gap -->
+    <div *ngIf="isTimelineGapBlock(item)" class="position-relative">
+      <div class="hide-on-hover">
+        <h5>Fehlende Einträge</h5>
+        <small>{{
+          printDateAsMonthYear(item.dateStart) +
+            ' - ' +
+            printDateAsMonthYear(item.dateEnd)
+        }}</small>
+      </div>
+      <div
+        class="plus-and-buttons d-flex gap-3 justify-content-end align-items-center"
+      >
+        <div class="hiding-wrapper">
+          <div class="show-on-hover d-flex gap-3 align-items-center">
+            <button
+              type="button"
+              class="btn btn-primary d-flex align-items-center add-button-40"
+              (click)="handleAddAusbildung(asGapBlock(item))"
+            >
+              <i class="material-symbols-rounded">school</i>
+              <span class="d-none d-sm-block ms-2">{{
+                'gesuch-app.form.lebenslauf.add.ausbildung.short' | translate
+              }}</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-dark d-flex align-items-center add-button-40"
+              (click)="handleAddTaetigkeit(asGapBlock(item))"
+            >
+              <i class="material-symbols-rounded">work</i>
+              <span class="d-none d-sm-block ms-2">{{
+                'gesuch-app.form.lebenslauf.add.taetigkeit.short' | translate
+              }}</span>
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn d-flex align-items-center justify-content-center add-chip flex-shrink-0 z-1"
+        >
+          <i class="material-symbols-rounded fs-2 rotate-on-hover">add</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

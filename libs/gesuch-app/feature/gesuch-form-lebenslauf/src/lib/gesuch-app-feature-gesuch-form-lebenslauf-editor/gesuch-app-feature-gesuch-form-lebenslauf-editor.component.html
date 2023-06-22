@@ -181,6 +181,17 @@
 
   <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
     <button
+      *ngIf="item.id"
+      type="button"
+      class="btn btn-outline-primary d-flex align-items-center"
+      (click)="handleDelete()"
+      [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
+    >
+      <i class="material-symbols-rounded me-2">delete</i>
+      {{ 'gesuch-app.form.delete' | translate }}
+    </button>
+
+    <button
       type="button"
       class="btn btn-outline-primary"
       (click)="handleCancel()"

@@ -2,7 +2,7 @@
   [step]="GesuchFormSteps.FAMILIENSITUATION"
 >
   <div
-    data-test-id="form-person-loading"
+    data-testid="form-person-loading"
     *ngIf="view().loading"
     class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
   >
@@ -26,33 +26,27 @@
         }}</dv-shared-ui-form-label>
         <div class="form-check">
           <input
-            formControlName="leiblicheElternVerheiratetKonkubinat"
+            formControlName="elternVerheiratetZusammen"
             [value]="true"
             class="form-check-input"
             type="radio"
-            name="leiblicheElternVerheiratetKonkubinat"
-            id="leiblicheElternVerheiratetKonkubinatJa"
+            name="elternVerheiratetZusammen"
+            id="elternVerheiratetZusammenJa"
           />
-          <label
-            class="form-check-label"
-            for="leiblicheElternVerheiratetKonkubinatJa"
-          >
+          <label class="form-check-label" for="elternVerheiratetZusammenJa">
             {{ 'shared.form.radio.yes' | translate }}
           </label>
         </div>
         <div class="form-check">
           <input
-            formControlName="leiblicheElternVerheiratetKonkubinat"
+            formControlName="elternVerheiratetZusammen"
             [value]="false"
             class="form-check-input"
             type="radio"
-            name="leiblicheElternVerheiratetKonkubinat"
-            id="leiblicheElternVerheiratetKonkubinatNein"
+            name="elternVerheiratetZusammen"
+            id="elternVerheiratetZusammenNein"
           />
-          <label
-            class="form-check-label"
-            for="leiblicheElternVerheiratetKonkubinatNein"
-          >
+          <label class="form-check-label" for="elternVerheiratetZusammenNein">
             {{ 'shared.form.radio.no' | translate }}
           </label>
         </div>
@@ -108,7 +102,7 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.elternteilVerstorbenUnbekannt.disabled"
+      *ngIf="!form.controls.elternteilUnbekanntVerstorben.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
         <dv-shared-ui-form-label>{{
@@ -117,29 +111,29 @@
         }}</dv-shared-ui-form-label>
         <div class="form-check">
           <input
-            formControlName="elternteilVerstorbenUnbekannt"
+            formControlName="elternteilUnbekanntVerstorben"
             [value]="true"
             class="form-check-input"
             type="radio"
-            name="elternteilVerstorbenUnbekannt"
-            id="elternteilVerstorbenUnbekanntJa"
+            name="elternteilUnbekanntVerstorben"
+            id="elternteilUnbekanntVerstorbenJa"
           />
-          <label class="form-check-label" for="elternteilVerstorbenUnbekanntJa">
+          <label class="form-check-label" for="elternteilUnbekanntVerstorbenJa">
             {{ 'shared.form.radio.yes' | translate }}
           </label>
         </div>
         <div class="form-check">
           <input
-            formControlName="elternteilVerstorbenUnbekannt"
+            formControlName="elternteilUnbekanntVerstorben"
             [value]="false"
             class="form-check-input"
             type="radio"
-            name="elternteilVerstorbenUnbekannt"
-            id="elternteilVerstorbenUnbekanntNein"
+            name="elternteilUnbekanntVerstorben"
+            id="elternteilUnbekanntVerstorbenNein"
           />
           <label
             class="form-check-label"
-            for="elternteilVerstorbenUnbekanntNein"
+            for="elternteilUnbekanntVerstorbenNein"
           >
             {{ 'shared.form.radio.no' | translate }}
           </label>
@@ -245,7 +239,7 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.mutterUnbekanntReason.disabled"
+      *ngIf="!form.controls.mutterUnbekanntGrund.disabled"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
         <dv-shared-ui-form-label>{{
@@ -254,15 +248,15 @@
         }}</dv-shared-ui-form-label>
         <div class="form-check">
           <input
-            formControlName="mutterUnbekanntReason"
+            formControlName="mutterUnbekanntGrund"
             [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
             class="form-check-input"
             type="radio"
-            id="mutterUnbekanntReasonAufenthaltsort"
+            id="mutterUnbekanntGrundAufenthaltsort"
           />
           <label
             class="form-check-label"
-            for="mutterUnbekanntReasonAufenthaltsort"
+            for="mutterUnbekanntGrundAufenthaltsort"
           >
             {{
               'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
@@ -272,15 +266,15 @@
         </div>
         <div class="form-check">
           <input
-            formControlName="mutterUnbekanntReason"
+            formControlName="mutterUnbekanntGrund"
             [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
             class="form-check-input"
             type="radio"
-            id="mutterUnbekanntReasonmutterschaftsanerkennung"
+            id="mutterUnbekanntGrundmutterschaftsanerkennung"
           />
           <label
             class="form-check-label"
-            for="mutterUnbekanntReasonmutterschaftsanerkennung"
+            for="mutterUnbekanntGrundmutterschaftsanerkennung"
           >
             {{
               'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
@@ -436,7 +430,7 @@
     </div>
 
     <div
-      *ngIf="!form.controls.vaterUnbekanntReason.disabled"
+      *ngIf="!form.controls.vaterUnbekanntGrund.disabled"
       class="row g-4 mt-3"
     >
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
@@ -446,15 +440,15 @@
         }}</dv-shared-ui-form-label>
         <div class="form-check">
           <input
-            formControlName="vaterUnbekanntReason"
+            formControlName="vaterUnbekanntGrund"
             [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
             class="form-check-input"
             type="radio"
-            id="vaterUnbekanntReasonAufenthaltsort"
+            id="vaterUnbekanntGrundAufenthaltsort"
           />
           <label
             class="form-check-label"
-            for="vaterUnbekanntReasonAufenthaltsort"
+            for="vaterUnbekanntGrundAufenthaltsort"
           >
             {{
               'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
@@ -464,15 +458,15 @@
         </div>
         <div class="form-check">
           <input
-            formControlName="vaterUnbekanntReason"
+            formControlName="vaterUnbekanntGrund"
             [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
             class="form-check-input"
             type="radio"
-            id="vaterUnbekanntReasonVaterschaftsanerkennung"
+            id="vaterUnbekanntGrundVaterschaftsanerkennung"
           />
           <label
             class="form-check-label"
-            for="vaterUnbekanntReasonVaterschaftsanerkennung"
+            for="vaterUnbekanntGrundVaterschaftsanerkennung"
           >
             {{
               'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'

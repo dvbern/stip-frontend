@@ -78,6 +78,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Output() saveTriggered = new EventEmitter<LebenslaufItemDTO>();
   @Output() autoSaveTriggered = new EventEmitter<LebenslaufItemDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
+  @Output() deleteTriggered = new EventEmitter<string>();
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -116,10 +117,14 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         Validators.required,
         sharedUtilValidatorMonthYearMonth,
         createValidatorStartBeforeEnd(this.form.controls.dateEnd, true),
-        sharedUtilValidatorMonthYearMin(
-          getYear(changes['minStartDate'].currentValue)
-        ),
       ]);
+      if (changes['minStartDate'].currentValue) {
+        this.form.controls.dateStart.addValidators([
+          sharedUtilValidatorMonthYearMin(
+            getYear(changes['minStartDate'].currentValue)
+          ),
+        ]);
+      }
     }
     if (changes['maxEndDate']) {
       this.form.controls.dateEnd.clearValidators();
@@ -127,10 +132,14 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         Validators.required,
         sharedUtilValidatorMonthYearMonth,
         createValidatorEndAfterStart(this.form.controls.dateStart, true),
-        sharedUtilValidatorMonthYearMax(
-          getYear(changes['maxEndDate'].currentValue)
-        ),
       ]);
+      if (changes['maxEndDate'].currentValue) {
+        this.form.controls.dateEnd.addValidators([
+          sharedUtilValidatorMonthYearMax(
+            getYear(changes['maxEndDate'].currentValue)
+          ),
+        ]);
+      }
     }
 
     // fill form
@@ -157,6 +166,12 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   handleCancel() {
     this.closeTriggered.emit();
+  }
+
+  handleDelete() {
+    if (this.item?.id) {
+      this.deleteTriggered.emit(this.item!.id);
+    }
   }
 
   protected readonly Kanton = Kanton;

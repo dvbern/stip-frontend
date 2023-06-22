@@ -3,9 +3,9 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 
 import {
-  gesuchAppDataAccessAusbildungsgangEffects,
-  gesuchAppDataAccessAusbildungsgangsFeature,
-} from '@dv/gesuch-app/data-access/ausbildungsgang';
+  gesuchAppDataAccessAusbildungstaetteEffects,
+  gesuchAppDataAccessAusbildungstaettesFeature,
+} from '@dv/gesuch-app/data-access/ausbildungstaette';
 
 import { GesuchAppFeatureGesuchFormEducationComponent } from './gesuch-app-feature-gesuch-form-education/gesuch-app-feature-gesuch-form-education.component';
 
@@ -16,8 +16,8 @@ export const gesuchAppFeatureGesuchFormEducationRoutes: Route[] = [
     providers: [
       // feature specific services and other providers
       // always remove { providedIn: 'root' } from the feature specific services
-      provideState(gesuchAppDataAccessAusbildungsgangsFeature),
-      provideEffects(gesuchAppDataAccessAusbildungsgangEffects),
+      provideState(gesuchAppDataAccessAusbildungstaettesFeature),
+      provideEffects(gesuchAppDataAccessAusbildungstaetteEffects),
     ],
     children: [
       {

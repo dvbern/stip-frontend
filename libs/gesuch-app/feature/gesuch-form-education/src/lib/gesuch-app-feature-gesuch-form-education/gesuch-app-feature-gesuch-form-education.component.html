@@ -1,7 +1,7 @@
 <dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.AUSBILDUNG">
   <!-- loading -->
   <div
-    data-test-id="form-ausbildung-loading"
+    data-testid="form-ausbildung-loading"
     *ngIf="view$().loading"
     class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
   >
@@ -34,18 +34,15 @@
           formControlName="ausbildungsland"
           (change)="handleLandChangedByUser()"
         >
-          <option [ngValue]="''" selected>
+          <option [value]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
-            [value]="l.name"
-            *ngFor="
-              let l of view$().ausbildungsgangLands;
-              trackBy: trackByIndex
-            "
+            [value]="l.value"
+            *ngFor="let l of Ausbildungsland | keyvalue; trackBy: trackByIndex"
           >
             {{
-              'gesuch-app.form.education.ausbildungsland.' + l.name | translate
+              'gesuch-app.form.education.ausbildungsland.' + l.value | translate
             }}
           </option>
         </select>
@@ -57,29 +54,32 @@
       <!-- STAETTE -->
       <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
         <dv-shared-ui-form-label>
-          {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
+          {{ 'gesuch-app.form.education.ausbildungstaette.label' | translate }}
         </dv-shared-ui-form-label>
 
         <!-- Typeahead -->
-        <div class="position-relative" *ngIf="!form.value['manuell']">
+        <div
+          class="position-relative"
+          *ngIf="!form.value['ausbildungNichtGefunden']"
+        >
           <input
             id="typeahead-focus"
             type="text"
             class="form-control form-select"
-            formControlName="ausbildungsstaette"
-            [ngbTypeahead]="ausbildungsstaetteTypeaheadFn$()"
-            (focus)="focusAusbildungsstaette$.next($any($event).target.value)"
+            formControlName="ausbildungstaette"
+            [ngbTypeahead]="ausbildungstaetteTypeaheadFn$()"
+            (focus)="focusAusbildungstaette$.next($any($event).target.value)"
             [editable]="false"
             (change)="handleStaetteChangedByUser()"
             popupClass="dv-typeahead-popup"
             #staetteTypeahead
           />
           <button
-            *ngIf="form.controls.ausbildungsstaette.value"
+            *ngIf="form.controls.ausbildungstaette.value"
             type="button"
             class="btn btn-light dv-typeahead-clear-btn"
             (click)="
-              form.controls.ausbildungsstaette.setValue('');
+              form.controls.ausbildungstaette.setValue('');
               staetteTypeahead.focus();
               handleStaetteChangedByUser()
             "
@@ -93,7 +93,7 @@
           *ngIf="!form.value['manuell']"
           class="form-select"
           dvSharedUiFormLabelTarget
-          formControlName="ausbildungsstaette"
+          formControlName="ausbildungstaette"
           (change)="handleStaetteChangedByUser()"
         >
           <option [ngValue]="''" selected>
@@ -102,7 +102,7 @@
           <option
             [value]="l.name"
             *ngFor="
-              let l of ausbildungsstaetteOptions$();
+              let l of ausbildungstaetteOptions$();
               trackBy: trackByIndex
             "
           >
@@ -111,11 +111,11 @@
         </select> -->
 
         <input
-          *ngIf="form.value['manuell']"
+          *ngIf="form.value['ausbildungNichtGefunden']"
           class="form-control"
           type="text"
           dvSharedUiFormLabelTarget
-          formControlName="ausbildungsstaette"
+          formControlName="alternativeAusbildungstaette"
         />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -131,7 +131,7 @@
         </dv-shared-ui-form-label>
 
         <select
-          *ngIf="!form.value['manuell']"
+          *ngIf="!form.value['ausbildungNichtGefunden']"
           class="form-select"
           dvSharedUiFormLabelTarget
           formControlName="ausbildungsgang"
@@ -140,19 +140,19 @@
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
-            [value]="l.name"
+            [value]="l.id"
             *ngFor="let l of ausbildungsgangOptions$(); trackBy: trackByIndex"
           >
-            {{ l.name }}
+            {{ l.bezeichnungDe }}
           </option>
         </select>
 
         <input
-          *ngIf="form.value['manuell']"
+          *ngIf="form.value['ausbildungNichtGefunden']"
           class="form-control"
           type="text"
           dvSharedUiFormLabelTarget
-          formControlName="ausbildungsgang"
+          formControlName="alternativeAusbildungsgang"
         />
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -187,7 +187,7 @@
             class="form-check-input"
             type="checkbox"
             dvSharedUiFormLabelTarget
-            formControlName="manuell"
+            formControlName="ausbildungNichtGefunden"
             (change)="handleManuellChangedByUser()"
           />
         </div>
@@ -208,7 +208,7 @@
         <input
           class="form-control"
           dvSharedUiFormLabelTarget
-          formControlName="start"
+          formControlName="ausbildungBegin"
           placeholder="MM.YYYY"
           [maskito]="MASK_MM_YYYY"
         />
@@ -239,7 +239,7 @@
         <input
           class="form-control"
           dvSharedUiFormLabelTarget
-          formControlName="ende"
+          formControlName="ausbildungEnd"
           placeholder="MM.YYYY"
           [maskito]="MASK_MM_YYYY"
         />
@@ -275,16 +275,14 @@
           dvSharedUiFormLabelTarget
           formControlName="pensum"
         >
-          <option [ngValue]="''" selected>
+          <option [value]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
-            [value]="l"
-            *ngFor="let l of pensumOptions; trackBy: trackByIndex"
+            [value]="l.value"
+            *ngFor="let l of Ausbildungpensum | keyvalue; trackBy: trackByIndex"
           >
-            {{
-              'gesuch-app.form.education.pensum.' + l.toLowerCase() | translate
-            }}
+            {{ 'gesuch-app.form.education.pensum.' + l.value | translate }}
           </option>
         </select>
 

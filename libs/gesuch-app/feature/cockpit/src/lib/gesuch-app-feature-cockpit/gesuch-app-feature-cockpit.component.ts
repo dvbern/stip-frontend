@@ -13,6 +13,7 @@ import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
+import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
@@ -24,7 +25,6 @@ import {
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
-import { GesuchsperiodeDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
