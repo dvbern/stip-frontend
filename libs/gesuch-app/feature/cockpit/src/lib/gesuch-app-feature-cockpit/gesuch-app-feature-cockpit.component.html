@@ -31,7 +31,7 @@
               <div class="row">
                 <div class="col-md">
                   <!-- Periode titel -->
-                  <h3 class="card-title">
+                  <h3 class="card-title" data-testid="cockpit-periode-title">
                     <span>{{
                       'gesuch-app.cockpit.gesuch.semester.' +
                         periode.semester.toLowerCase() | translate
@@ -80,7 +80,7 @@
                 <div class="col-md">
                   <a
                     class="btn btn-primary mt-3 w-100"
-                    data-test-id="cockpit-gesuch-edit"
+                    data-testid="cockpit-gesuch-edit"
                     [routerLink]="[
                       '/gesuch-app-feature-gesuch-form-person',
                       periode.gesuchId
@@ -93,7 +93,7 @@
                 <div class="col-md">
                   <a
                     class="btn btn-light mt-3 w-100"
-                    data-test-id="cockpit-gesuch-nachfrist"
+                    data-testid="cockpit-gesuch-nachfrist"
                   >
                     {{ 'gesuch-app.cockpit.gesuch.nachfrist' | translate }}
                   </a>
@@ -138,6 +138,7 @@
       <a
         routerLink="/"
         class="btn btn-secondary fw-normal px-2 d-flex align-items-center shadow-none"
+        data-testid="cockpit-nav-dashboard"
       >
         <i class="material-symbols-rounded text-white me-2">dashboard</i>
         <span>Dashboard</span>
