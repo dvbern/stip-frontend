@@ -71,7 +71,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
     ['AnyType', 'object', undefined],
     // ['set', 'FakeSet', typesPath],
     ['date', 'BackendLocalDateTS', undefined],
-    ['Date', 'string', undefined],
+    ['Date', 'BackendLocalDateTS', undefined],
     ['DateTime', 'string', undefined],
     ['iso-date-string', 'IsoDateString', undefined],
     // ['local-time', 'BackendLocalTime', typesPath],
