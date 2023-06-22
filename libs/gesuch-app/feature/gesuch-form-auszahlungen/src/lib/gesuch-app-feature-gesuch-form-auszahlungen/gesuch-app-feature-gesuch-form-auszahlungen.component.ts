@@ -21,6 +21,7 @@ import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
+  Anrede,
   ElternDTO,
   KontoinhaberinType,
   Land,
@@ -35,6 +36,7 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
@@ -57,6 +59,7 @@ import { extractIBAN, ExtractIBANResult } from 'ibantools';
     TranslateModule,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
+    SharedUiFormAddressComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
@@ -109,16 +112,22 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
             );
             this.disableNameAndAdresse();
             break;
-          case KontoinhaberinType.VATER:
-            // replace with actual once implemented
-            this.setValuesFrom({} as ElternDTO);
+          case KontoinhaberinType.VATER: {
+            const vaterContainer = gesuch?.elternContainers.find(
+              (container) => container.elternSB?.geschlecht === Anrede.HERR
+            );
+            this.setValuesFrom(vaterContainer?.elternSB);
             this.disableNameAndAdresse();
             break;
-          case KontoinhaberinType.MUTTER:
-            // replace with actual once implemented
-            this.setValuesFrom({} as ElternDTO);
+          }
+          case KontoinhaberinType.MUTTER: {
+            const mutterContainer = gesuch?.elternContainers.find(
+              (container) => container.elternSB?.geschlecht === Anrede.FRAU
+            );
+            this.setValuesFrom(mutterContainer?.elternSB);
             this.disableNameAndAdresse();
             break;
+          }
           case KontoinhaberinType.ANDERE:
           case KontoinhaberinType.SOZIALDIENST_INSTITUTION:
           default:
@@ -159,13 +168,13 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
   private disableNameAndAdresse(): void {
     this.form.controls.name.disable();
     this.form.controls.vorname.disable();
-    this.form.controls.addresse.disable();
+    this.form.controls.adresse.disable();
   }
 
   private enableNameAndAdresse(): void {
     this.form.controls.name.enable();
     this.form.controls.vorname.enable();
-    this.form.controls.addresse.enable();
+    this.form.controls.adresse.enable();
   }
 
   private ibanValidator(): ValidatorFn {
