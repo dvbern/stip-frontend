@@ -24,7 +24,7 @@
         <select
           class="form-select"
           dvSharedUiFormLabelTarget
-          formControlName="kontoinhaberin"
+          [formControl]="form.controls.kontoinhaberin"
         >
           <option [value]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
@@ -61,7 +61,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            formControlName="name"
+            [formControl]="form.controls.name"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -78,7 +78,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            formControlName="vorname"
+            [formControl]="form.controls.vorname"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -99,7 +99,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            formControlName="iban"
+            [formControl]="form.controls.iban"
             [maskito]="MASK_IBAN"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
