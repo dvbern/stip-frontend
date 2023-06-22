@@ -8,7 +8,12 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Anrede,
   Ausbildungssituation,
@@ -22,8 +27,21 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import {
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  parseableDateValidatorForLocale,
+  parseBackendLocalDateAndPrint,
+  parseStringAndPrintForBackendLocalDate,
+} from '@dv/shared/util/validator-date';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { subYears } from 'date-fns';
+
+const MAX_AGE_ADULT = 120;
+const MIN_AGE_CHILD = 0;
+const MEDIUM_AGE = 20;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-geschwister-editor',
@@ -49,7 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   implements OnChanges
 {
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
 
   @Input({ required: true }) geschwister!: Partial<GeschwisterDTO>;
 
@@ -57,32 +75,54 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   @Output() autoSaveTriggered = new EventEmitter<GeschwisterDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
 
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
+  private store = inject(Store);
+  language = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    geburtsdatum: ['', [Validators.required]],
+    geburtsdatum: [
+      '',
+      [
+        Validators.required,
+        parseableDateValidatorForLocale(this.language()),
+        minDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MAX_AGE_ADULT)
+        ),
+        maxDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MIN_AGE_CHILD)
+        ),
+      ],
+    ],
     wohnsitz: ['', [Validators.required]],
     ausbildungssituation: ['', [Validators.required]],
   });
 
   ngOnChanges() {
-    this.form.patchValue(this.geschwister);
+    this.form.patchValue({
+      ...this.geschwister,
+      geburtsdatum: parseBackendLocalDateAndPrint(
+        this.geschwister.geburtsdatum,
+        this.language()
+      ),
+    });
   }
 
   handleSave() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      // TODO MAKE THE DTO AND FORM MATCH
       this.saveTriggered.emit({
-        ...(this.form.getRawValue() as any),
-        id: this.geschwister?.id,
+        ...this.form.getRawValue(),
+        id: this.geschwister!.id || '',
+
+        geburtsdatum: parseStringAndPrintForBackendLocalDate(
+          this.form.getRawValue().geburtsdatum,
+          this.language(),
+          subYears(new Date(), MEDIUM_AGE)
+        )!,
+        wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
       });
     }
   }

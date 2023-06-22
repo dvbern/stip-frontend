@@ -1,3 +1,4 @@
+import { BackendLocalDateTS } from '../types';
 import { AdresseDTO } from './adresseDTO';
 
 export interface PartnerDTO {
@@ -6,6 +7,6 @@ export interface PartnerDTO {
   sozialversicherungsnummer: string;
   name: string;
   vorname: string;
-  geburtsdatum: string;
+  geburtsdatum: BackendLocalDateTS;
   jahreseinkommen: string;
 }

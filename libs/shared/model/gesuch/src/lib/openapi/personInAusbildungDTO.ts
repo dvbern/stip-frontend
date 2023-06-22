@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BackendLocalDateTS } from '../types';
 import { Niederlassungsstatus } from './niederlassungsstatus';
 import { AdresseDTO } from './adresseDTO';
 import { Zivilstand } from './zivilstand';
@@ -28,7 +29,7 @@ export interface PersonInAusbildungDTO {
   izvPLZ?: string;
   email: string;
   telefonnummer: string;
-  geburtsdatum: string;
+  geburtsdatum: BackendLocalDateTS;
   nationalitaet: Land;
   heimatort?: string;
   niederlassungsstatus?: Niederlassungsstatus;

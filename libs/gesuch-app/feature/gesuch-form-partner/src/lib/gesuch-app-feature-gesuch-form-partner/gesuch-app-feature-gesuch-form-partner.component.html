@@ -213,35 +213,32 @@
       </div>
 
       <div class="row g-1 mt-1">
+        <!-- GEBURTSDATUM -->
         <dv-shared-ui-form-field class="col-12 col-xl-4">
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.shared.birthday.label' | translate
           }}</dv-shared-ui-form-label>
+
           <div class="input-group">
             <input
               class="form-control"
               placeholder="dd.mm.yyyy"
               dvSharedUiFormLabelTarget
               formControlName="geburtsdatum"
-              ngbDatepicker
-              [minDate]="geburtsdatumMinDate"
-              [maxDate]="geburtsdatumMaxDate"
-              #geburtsdatum="ngbDatepicker"
             />
-            <button
-              (click)="geburtsdatum.toggle()"
-              class="btn btn-outline-primary position-relative"
-              type="button"
-            >
-              <span
-                class="material-symbols-rounded position-absolute translate-middle"
-              >
-                calendar_month
-              </span>
-            </button>
           </div>
+
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+            {{ 'shared.form.error.dateFormat' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'minDate'">
+            {{ 'shared.form.error.minDatePast' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
+            {{ 'shared.form.error.maxDatePast' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>

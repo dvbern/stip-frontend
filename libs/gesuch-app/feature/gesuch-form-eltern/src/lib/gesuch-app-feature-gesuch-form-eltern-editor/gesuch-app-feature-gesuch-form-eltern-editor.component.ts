@@ -10,7 +10,16 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import {
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  parseableDateValidatorForLocale,
+  parseBackendLocalDateAndPrint,
+  parseStringAndPrintForBackendLocalDate,
+} from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,12 +31,18 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
+  AdresseDTO,
   Anrede,
   ElternDTO,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import { subYears } from 'date-fns';
+
+const MAX_AGE_ADULT = 120;
+const MIN_AGE_ADULT = 16;
+const MEDIUM_AGE_ADULT = 40;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern-editor',
@@ -54,7 +69,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 {
   private formBuilder = inject(FormBuilder);
 
-  @Input({ required: true }) parent!: Partial<ElternDTO>;
+  @Input({ required: true }) elternteil!: Partial<ElternDTO>;
   @Output() saveTriggered = new EventEmitter<ElternDTO>();
   @Output() autoSaveTriggered = new EventEmitter<ElternDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
@@ -63,12 +78,9 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   readonly Land = Land;
   readonly Anrede = Anrede;
 
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
+  private store = inject(Store);
+
+  language = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -79,21 +91,54 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     identischerZivilrechtlicherWohnsitz: [false, []],
     telefonnummer: ['', [Validators.required]],
     sozialversicherungsnummer: ['', [Validators.required]],
-    geburtsdatum: ['', [Validators.required]],
+    geburtsdatum: [
+      '',
+      [
+        Validators.required,
+        parseableDateValidatorForLocale(this.language()),
+        minDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MAX_AGE_ADULT)
+        ),
+        maxDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MIN_AGE_ADULT)
+        ),
+      ],
+    ],
     sozialhilfebeitraegeAusbezahlt: [false, [Validators.required]],
     ausweisbFluechtling: [false, [Validators.required]],
     ergaenzungsleistungAusbezahlt: [false, [Validators.required]],
   });
 
   ngOnChanges() {
-    this.form.patchValue(this.parent);
+    this.form.patchValue({
+      ...this.elternteil,
+      geburtsdatum: parseBackendLocalDateAndPrint(
+        this.elternteil.geburtsdatum,
+        this.language()
+      ),
+    });
   }
 
   handleSave() {
     this.form.markAsTouched();
     if (this.form.valid) {
-      // TODO MAKE THE DTO AND FORM MATCH
-      this.saveTriggered.emit(this.form.getRawValue() as any);
+      this.saveTriggered.emit({
+        ...this.form.getRawValue(),
+        id: this.elternteil.id!,
+        geschlecht: this.elternteil.geschlecht!,
+        geburtsdatum: parseStringAndPrintForBackendLocalDate(
+          this.form.getRawValue().geburtsdatum,
+          this.language(),
+          subYears(new Date(), MEDIUM_AGE_ADULT)
+        )!,
+        adresse: {
+          ...this.form.getRawValue().adresse,
+          id: this.elternteil.adresse?.id || '', // TODO wie geht das bei neuen entities?
+          land: this.form.getRawValue().adresse.land as Land,
+        } as AdresseDTO,
+      } as ElternDTO);
     }
   }
   trackByIndex(index: number) {

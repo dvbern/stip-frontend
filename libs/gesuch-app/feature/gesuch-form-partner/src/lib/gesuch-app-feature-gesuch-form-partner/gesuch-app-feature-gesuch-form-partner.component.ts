@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,29 +6,43 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
-import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import {
-  SharedModelGesuch,
-  MASK_SOZIALVERSICHERUNGSNUMMER,
   Land,
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+  PartnerDTO,
+  SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormLabelTargetDirective,
   SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import {
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  parseableDateValidatorForLocale,
+  parseBackendLocalDateAndPrint,
+  parseStringAndPrintForBackendLocalDate,
+} from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { subYears } from 'date-fns';
+
+const MAX_AGE_ADULT = 120;
+const MIN_AGE_ADULT = 16;
+const MEDIUM_AGE_ADULT = 40;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-partner',
@@ -43,6 +58,7 @@ import { MaskitoModule } from '@maskito/angular';
     SharedUiFormMessageComponent,
     MaskitoModule,
     NgbInputDatepicker,
+    SharedUiFormMessageErrorDirective,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-partner.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-partner.component.scss'],
@@ -56,12 +72,8 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
   readonly Land = Land;
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
+
+  language = this.store.selectSignal(selectLanguage);
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
@@ -80,7 +92,21 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       ort: ['', [Validators.required]],
       land: ['', [Validators.required]],
     }),
-    geburtsdatum: ['', [Validators.required]],
+    geburtsdatum: [
+      '',
+      [
+        Validators.required,
+        parseableDateValidatorForLocale(this.language()),
+        minDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MAX_AGE_ADULT)
+        ),
+        maxDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MIN_AGE_ADULT)
+        ),
+      ],
+    ],
     jahreseinkommen: ['', [Validators.required]],
   });
 
@@ -93,7 +119,13 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
           ...partner,
           geburtsdatum: partner.geburtsdatum.toString(),
         };
-        this.form.patchValue({ ...partnerForForm });
+        this.form.patchValue({
+          ...partnerForForm,
+          geburtsdatum: parseBackendLocalDateAndPrint(
+            partner.geburtsdatum,
+            this.language()
+          ),
+        });
       }
     });
   }
@@ -138,8 +170,17 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
         ...gesuch?.partnerContainer,
         partnerSB: {
           ...gesuch?.partnerContainer?.partnerSB,
-          ...(this.form.getRawValue() as any),
-        },
+          ...this.form.getRawValue(),
+          adresse: {
+            id: gesuch!.partnerContainer!.partnerSB!.adresse?.id || '', // TODO wie geht das bei neuen entities?
+            ...this.form.getRawValue().adresse,
+          },
+          geburtsdatum: parseStringAndPrintForBackendLocalDate(
+            this.form.getRawValue().geburtsdatum,
+            this.language(),
+            subYears(new Date(), MEDIUM_AGE_ADULT)
+          )!,
+        } as PartnerDTO,
       },
     } as Partial<SharedModelGesuch>;
   }

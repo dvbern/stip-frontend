@@ -12,6 +12,7 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Anrede,
   Land,
@@ -20,6 +21,7 @@ import {
   Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
+import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -28,18 +30,25 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
-import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
-import { MaskitoModule } from '@maskito/angular';
-import {
-  NgbAlert,
-  NgbDateStruct,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import {
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  parseableDateValidatorForLocale,
+  parseBackendLocalDateAndPrint,
+  parseStringAndPrintForBackendLocalDate,
+} from '@dv/shared/util/validator-date';
+import { MaskitoModule } from '@maskito/angular';
+import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { subYears } from 'date-fns';
+
+const MIN_AGE_GESUCHSSTELLER = 15;
+const MAX_AGE_GESUCHSSTELLER = 35;
+const MEDIUM_AGE_GESUCHSSTELLER = 20;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -75,12 +84,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly Zivilstand = Zivilstand;
   readonly Wohnsitz = Wohnsitz;
 
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
+  language = this.store.selectSignal(selectLanguage);
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
@@ -98,7 +102,21 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     identischerZivilrechtlicherWohnsitz: [false, []],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
-    geburtsdatum: ['', [Validators.required]],
+    geburtsdatum: [
+      '',
+      [
+        Validators.required,
+        parseableDateValidatorForLocale(this.language()),
+        minDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MAX_AGE_GESUCHSSTELLER)
+        ),
+        maxDateValidatorForLocale(
+          this.language(),
+          subYears(new Date(), MIN_AGE_GESUCHSSTELLER)
+        ),
+      ],
+    ],
     nationalitaet: ['', [Validators.required]],
     heimatort: ['', [Validators.required]],
     vormundschaft: [false, []],
@@ -117,7 +135,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         const person = gesuch.personInAusbildungContainer.personInAusbildungSB;
         const personForForm = {
           ...person,
-          geburtsdatum: person.geburtsdatum.toString(),
+          geburtsdatum: parseBackendLocalDateAndPrint(
+            person.geburtsdatum,
+            this.language()
+          ),
         };
         this.form.patchValue({ ...personForForm });
       }
@@ -152,10 +173,20 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         ...gesuch?.personInAusbildungContainer,
         personInAusbildungSB: {
           ...gesuch?.personInAusbildungContainer?.personInAusbildungSB,
-          ...(this.form.getRawValue() as any),
+          ...this.form.getRawValue(),
+          geburtsdatum: parseStringAndPrintForBackendLocalDate(
+            this.form.getRawValue().geburtsdatum,
+            this.language(),
+            subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
+          ),
+          adresse: {
+            ...this.form.getRawValue().adresse,
+            id: gesuch?.personInAusbildungContainer?.personInAusbildungSB
+              ?.adresse.id,
+          },
         },
       },
-    } as Partial<SharedModelGesuch>;
+    } as SharedModelGesuch;
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;

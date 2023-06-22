@@ -70,7 +70,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
     // [OpenApi-Name/Format, Typescript-Name, Import-Path]
     ['AnyType', 'object', undefined],
     // ['set', 'FakeSet', typesPath],
-    ['date', 'string', undefined],
+    ['date', 'BackendLocalDateTS', undefined],
     ['Date', 'string', undefined],
     ['DateTime', 'string', undefined],
     ['iso-date-string', 'IsoDateString', undefined],

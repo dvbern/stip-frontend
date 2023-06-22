@@ -30,3 +30,4 @@ export * from './bildungsart';
 export * from './taetigskeitsart';
 export * from './kanton';
 export * from './ausbildungDTO';
+export * from './partnerDTO';

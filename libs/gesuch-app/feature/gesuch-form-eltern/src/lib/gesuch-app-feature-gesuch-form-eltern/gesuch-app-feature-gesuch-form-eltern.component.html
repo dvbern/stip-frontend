@@ -11,7 +11,7 @@
 
   <dv-gesuch-app-feature-gesuch-form-eltern-editor
     *ngIf="editedParent"
-    [parent]="editedParent"
+    [elternteil]="editedParent"
     (saveTriggered)="handleEditorSave($event)"
     (autoSaveTriggered)="handleEditorAutoSave($event)"
     (closeTriggered)="handleEditorClose()"
