@@ -321,5 +321,27 @@
       "ausbildungsland": "AUSLAND",
       "name": "Hochschule für Musik und Theater Leipzig"
     }
+  ],
+  "lands": [
+    {
+      "landCode": "CH",
+      "landDE": "Schweiz",
+      "landFR": "Suisse"
+    },
+    {
+      "landCode": "DE",
+      "landDE": "Deutsch",
+      "landFR": "Allemand"
+    },
+    {
+      "landCode": "FR",
+      "landDE": "Frankreich",
+      "landFR": "France"
+    },
+    {
+      "landCode": "IT",
+      "landDE": "Italien",
+      "landFR": "Italie"
+    }
   ]
 }

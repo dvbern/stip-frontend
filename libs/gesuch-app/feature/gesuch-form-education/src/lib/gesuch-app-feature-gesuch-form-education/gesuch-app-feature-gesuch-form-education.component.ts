@@ -58,6 +58,7 @@ import {
 } from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
+import { sharedDataAccessStammdatensFeature } from '@dv/shared/data-access/stammdaten';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',

@@ -2,21 +2,25 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   OnInit,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Anrede,
-  Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   PersonInAusbildungDTO,
   SharedModelGesuch,
@@ -49,10 +53,12 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
+import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
 const MEDIUM_AGE_GESUCHSSTELLER = 20;
-
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
   standalone: true,
@@ -83,13 +89,14 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly Anrede = Anrede;
-  readonly Land = Land;
   readonly Zivilstand = Zivilstand;
   readonly Wohnsitz = Wohnsitz;
-
-  language = this.store.selectSignal(selectLanguage);
-
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  laenderSig = computed(() => {
+    return this.view().laender;
+  });
+  languageSig = this.store.selectSignal(selectLanguage);
+  language = 'de';
+  view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
@@ -111,14 +118,14 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'date'),
+        parseableDateValidatorForLocale(this.languageSig(), 'date'),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MAX_AGE_GESUCHSSTELLER),
           'date'
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MIN_AGE_GESUCHSSTELLER),
           'date'
         ),
@@ -126,12 +133,12 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ],
     nationalitaet: ['', [Validators.required]],
     heimatort: ['', [Validators.required]],
-    vormundschaft: [false, []],
+    vormundschaft: new FormControl<boolean | null>(null, []),
     zivilstand: ['', [Validators.required]],
     wohnsitz: ['', [Validators.required]],
-    sozialhilfebeitraege: [false, []],
-    quellenbesteuerung: [false, []],
-    digitaleKommunikation: [false, []],
+    sozialhilfebeitraege: new FormControl<boolean | null>(null, []),
+    quellenbesteuerung: new FormControl<boolean | null>(null, []),
+    digitaleKommunikation: [true, []],
   });
 
   constructor() {
@@ -145,7 +152,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
             ...person,
             geburtsdatum: parseBackendLocalDateAndPrint(
               person.geburtsdatum,
-              this.language()
+              this.languageSig()
             ),
           };
           this.form.patchValue({ ...personForForm });
@@ -174,6 +181,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventGesuchFormPerson.init());
+    this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
   }
 
   handleSave() {
@@ -196,7 +204,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER),
-      this.language()
+      this.languageSig()
     );
   }
 
@@ -216,7 +224,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
           },
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
-            this.language(),
+            this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           ),
         } as PersonInAusbildungDTO,

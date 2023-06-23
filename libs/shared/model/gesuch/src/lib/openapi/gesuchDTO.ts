@@ -26,13 +26,12 @@ export interface GesuchDTO {
   fall: FallDTO;
   gesuchsperiode: GesuchsperiodeDTO;
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
+  ausbildungContainer?: AusbildungContainerDTO;
   familiensituationContainer?: FamiliensituationContainerDTO;
   auszahlungContainer?: AuszahlungContainerDTO;
   gesuchStatus: Gesuchstatus;
   elternContainers: ElternContainerDTO[];
   gesuchNummer: number;
-  ausbildungContainer: AusbildungContainerDTO;
-
   partnerContainer: PartnerContainerDTO;
   geschwisterContainers: GeschwisterContainerDTO[];
   lebenslaufItemContainers: LebenslaufItemContainerDTO[];

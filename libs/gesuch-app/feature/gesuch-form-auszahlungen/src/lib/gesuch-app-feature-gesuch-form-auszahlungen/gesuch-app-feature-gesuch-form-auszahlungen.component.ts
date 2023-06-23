@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   OnInit,
@@ -16,7 +17,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
@@ -42,6 +42,9 @@ import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { extractIBAN, ExtractIBANResult } from 'ibantools';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-feature-gesuch-form-auszahlungen.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-auszahlungen',
@@ -71,7 +74,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   KontoinhaberinType = KontoinhaberinType;
   MASK_IBAN = MASK_IBAN;
-  Land = Land;
+  language = 'de';
   step = GesuchFormSteps.AUSZAHLUNGEN;
 
   form = this.fb.group({
@@ -82,7 +85,14 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     iban: ['', [Validators.required, this.ibanValidator()]],
   });
 
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  laenderSig = computed(() => {
+    return this.view().laender;
+  });
+  languageSig = this.store.selectSignal(selectLanguage);
+
+  view = this.store.selectSignal(
+    selectGesuchAppFeatureGesuchFormAuszahlungenView
+  );
 
   constructor() {
     const kontoinhaberin$ = toSignal(
@@ -104,7 +114,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
       () => {
         const kontoinhaberin = kontoinhaberin$();
         const { gesuch } = this.view();
-
+        this.language = this.languageSig();
         switch (kontoinhaberin) {
           case KontoinhaberinType.GESUCHSTELLERIN:
             this.setValuesFrom(
@@ -141,6 +151,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormAuszahlung.init());
+    this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
   }
 
   handleSave(): void {

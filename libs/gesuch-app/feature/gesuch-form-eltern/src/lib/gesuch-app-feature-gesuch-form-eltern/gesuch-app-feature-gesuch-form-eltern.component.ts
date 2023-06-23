@@ -1,6 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   inject,
   OnInit,
 } from '@angular/core';
@@ -15,6 +17,8 @@ import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature
 import { Anrede, ElternDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
@@ -32,12 +36,25 @@ import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   private store = inject(Store);
 
+  laenderSig = computed(() => {
+    return this.view$().laender;
+  });
+  languageSig = this.store.selectSignal(selectLanguage);
+
+  language = 'de';
   view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
   editedParent?: Partial<ElternDTO>;
 
+  constructor() {
+    effect(() => {
+      this.language = this.languageSig();
+    });
+  }
+
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormEltern.init());
+    this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
   }
 
   trackByIndex(index: number) {

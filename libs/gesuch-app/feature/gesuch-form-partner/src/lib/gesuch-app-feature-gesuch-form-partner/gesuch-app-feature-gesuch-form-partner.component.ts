@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -40,6 +40,8 @@ import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-feature-gesuch-form-partner.selector';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -74,9 +76,12 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   readonly Land = Land;
 
-  language = this.store.selectSignal(selectLanguage);
+  laenderSig = computed(() => {
+    return this.view().laender;
+  });
+  languageSig = this.store.selectSignal(selectLanguage);
 
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormPartnerView);
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
@@ -97,14 +102,14 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'date'),
+        parseableDateValidatorForLocale(this.languageSig(), 'date'),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MAX_AGE_ADULT),
           'date'
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MIN_AGE_ADULT),
           'date'
         ),
@@ -126,7 +131,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
           ...partnerForForm,
           geburtsdatum: parseBackendLocalDateAndPrint(
             partner.geburtsdatum,
-            this.language()
+            this.languageSig()
           ),
         });
       }
@@ -135,6 +140,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventGesuchFormPartner.init());
+    this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
   }
 
   handleSaveAndContinue() {
@@ -169,7 +175,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE_ADULT),
-      this.language()
+      this.languageSig()
     );
   }
 
@@ -188,7 +194,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
           },
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
-            this.language(),
+            this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_ADULT)
           )!,
         } as PartnerDTO,

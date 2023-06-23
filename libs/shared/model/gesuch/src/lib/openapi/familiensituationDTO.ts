@@ -10,26 +10,24 @@
  * Do not edit the class manually.
  */
 import { ElternAbwesenheitsGrund } from './elternAbwesenheitsGrund';
-import { Elternschaftsteilung } from './elternschaftsteilung';
 import { ElternUnbekanntheitsGrund } from './elternUnbekanntheitsGrund';
+import { Elternschaftsteilung } from './elternschaftsteilung';
 
 export interface FamiliensituationDTO {
   id: string;
-  elternVerheiratetZusammen?: boolean;
+  elternVerheiratetZusammen: boolean;
   elternteilVerstorben?: boolean;
   elternteilUnbekanntVerstorben?: boolean;
   gerichtlicheAlimentenregelung?: boolean;
   mutterUnbekanntVerstorben?: ElternAbwesenheitsGrund;
   mutterUnbekanntGrund?: ElternUnbekanntheitsGrund;
   mutterWiederverheiratet?: boolean;
-  obhut?: Elternschaftsteilung;
-  obhutMutter?: number;
-  obhutVater?: number;
-  sorgerecht?: Elternschaftsteilung;
-  sorgerechtMutter?: number;
-  sorgerechtVater?: number;
   vaterUnbekanntVerstorben?: ElternAbwesenheitsGrund;
   vaterUnbekanntGrund?: ElternUnbekanntheitsGrund;
   vaterWiederverheiratet?: boolean;
+  sorgerecht?: Elternschaftsteilung;
+  obhut?: Elternschaftsteilung;
+  obhutMutter?: number;
+  obhutVater?: number;
   werZahltAlimente?: Elternschaftsteilung;
 }

@@ -46,6 +46,7 @@
       "@dv/gesuch-app/util/gesuch-form-step-manager": ["libs/gesuch-app/util/gesuch-form-step-manager/src/index.ts"],
       "@dv/shared/data-access/config": ["libs/shared/data-access/config/src/index.ts"],
       "@dv/shared/data-access/language": ["libs/shared/data-access/language/src/index.ts"],
+      "@dv/shared/data-access/stammdaten": ["libs/shared/data-access/stammdaten/src/index.ts"],
       "@dv/shared/model/api": ["libs/shared/model/api/src/index.ts"],
       "@dv/shared/model/config": ["libs/shared/model/config/src/index.ts"],
       "@dv/shared/model/error": ["libs/shared/model/error/src/index.ts"],

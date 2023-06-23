@@ -3,10 +3,12 @@ import { createSelector } from '@ngrx/store';
 import { Anrede } from '@dv/shared/model/gesuch';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+import { selectSharedDataAccessStammdatensView } from '@dv/shared/data-access/stammdaten';
 
 export const selectGesuchAppFeatureGesuchFormElternView = createSelector(
   selectGesuchAppDataAccessGesuchsView,
-  (gesuchView) => {
+  selectSharedDataAccessStammdatensView,
+  (gesuchView, stammdatenView) => {
     // determine from gesuch  from familien situation
     // extract to utils if used in multiple places
     const isVater = !!gesuchView.gesuch;
@@ -31,6 +33,7 @@ export const selectGesuchAppFeatureGesuchFormElternView = createSelector(
           .filter(sharedUtilFnTypeGuardsIsDefined) ?? [],
       isVaterPlaceholder,
       isMutterPlaceholder,
+      laender: stammdatenView.laender,
     };
   }
 );
