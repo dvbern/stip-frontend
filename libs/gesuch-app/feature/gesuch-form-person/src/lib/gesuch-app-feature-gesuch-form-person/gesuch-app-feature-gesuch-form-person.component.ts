@@ -6,7 +6,13 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -97,6 +103,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
+    zivilrechtlicherWohnsitzPlz: ['', []],
+    zivilrechtlicherWohnsitzOrt: ['', []],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     geburtsdatum: ['', [Validators.required]],
@@ -121,6 +129,27 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         };
         this.form.patchValue({ ...personForForm });
       }
+    });
+    const zivilrechtlichChanged$ = toSignal(
+      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    );
+    effect(() => {
+      const zivilrechtlichIdentisch = zivilrechtlichChanged$();
+      if (zivilrechtlichIdentisch) {
+        this.form.controls.zivilrechtlicherWohnsitzPlz.setValidators([]);
+        this.form.controls.zivilrechtlicherWohnsitzOrt.setValidators([]);
+        this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
+        this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
+      } else {
+        this.form.controls.zivilrechtlicherWohnsitzPlz.setValidators([
+          Validators.required,
+        ]);
+        this.form.controls.zivilrechtlicherWohnsitzOrt.setValidators([
+          Validators.required,
+        ]);
+      }
+      this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
+      this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
     });
   }
 
