@@ -16,6 +16,7 @@ import {
   Anrede,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
+  PersonInAusbildungDTO,
   SharedModelGesuch,
   Wohnsitz,
   Zivilstand,
@@ -106,7 +107,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     wohnsitz: ['', [Validators.required]],
     sozialhilfebeitraege: [false, []],
     quellenbesteuerung: [false, []],
-    kinder: [false, []],
     digitaleKommunikation: [false, []],
   });
 
@@ -152,8 +152,12 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         ...gesuch?.personInAusbildungContainer,
         personInAusbildungSB: {
           ...gesuch?.personInAusbildungContainer?.personInAusbildungSB,
-          ...(this.form.getRawValue() as any),
-        },
+          ...this.form.getRawValue(),
+          adresse: {
+            ...gesuch?.personInAusbildungContainer?.personInAusbildungSB
+              ?.adresse,
+          },
+        } as PersonInAusbildungDTO,
       },
     } as Partial<SharedModelGesuch>;
   }
