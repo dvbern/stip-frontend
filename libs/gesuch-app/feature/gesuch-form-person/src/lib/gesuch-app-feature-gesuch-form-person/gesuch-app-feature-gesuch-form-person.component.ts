@@ -40,23 +40,18 @@ import {
   onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
-  parseDateForLocale,
   parseStringAndPrintForBackendLocalDate,
-  printDate,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { isValid, subYears } from 'date-fns';
+import { subYears } from 'date-fns';
 
 const MIN_AGE_GESUCHSSTELLER = 15;
 const MAX_AGE_GESUCHSSTELLER = 35;
 const MEDIUM_AGE_GESUCHSSTELLER = 20;
-import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
-import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 
 @Component({
@@ -91,19 +86,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly Anrede = Anrede;
   readonly Zivilstand = Zivilstand;
   readonly Wohnsitz = Wohnsitz;
-
-  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
-  geburtsdatumMaxDate: NgbDateStruct = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
   laenderSig = computed(() => {
     return this.view().laender;
   });
   languageSig = this.store.selectSignal(selectLanguage);
-  language = this.store.selectSignal(selectLanguage);
-
   language = 'de';
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
 
@@ -127,13 +113,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language()),
+        parseableDateValidatorForLocale(this.languageSig()),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MAX_AGE_GESUCHSSTELLER)
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MIN_AGE_GESUCHSSTELLER)
         ),
       ],
@@ -158,7 +144,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
           ...person,
           geburtsdatum: parseBackendLocalDateAndPrint(
             person.geburtsdatum,
-            this.language()
+            this.languageSig()
           ),
         };
         this.form.patchValue({ ...personForForm });
@@ -208,7 +194,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER),
-      this.language()
+      this.languageSig()
     );
   }
 
@@ -228,7 +214,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
           },
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
-            this.language(),
+            this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           ),
         } as PersonInAusbildungDTO,
