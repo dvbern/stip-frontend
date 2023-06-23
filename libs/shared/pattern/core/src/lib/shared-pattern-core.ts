@@ -44,6 +44,10 @@ import {
 import { provideSharedPatternI18nTitleStrategy } from '@dv/shared/pattern/i18n-title-strategy';
 import { provideSharedPatternNgbDatepickerAdapter } from '@dv/shared/pattern/ngb-datepicker-adapter';
 import { provideSharedPatternRouteReuseStrategyConfigurable } from '@dv/shared/pattern/route-reuse-strategy-configurable';
+import {
+  sharedDataAccessStammdatenEffects,
+  sharedDataAccessStammdatensFeature,
+} from '@dv/shared/data-access/stammdaten';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -98,9 +102,11 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
     ),
     provideState(sharedDataAccessConfigsFeature),
     provideState(sharedDataAccessLanguageFeature),
+    provideState(sharedDataAccessStammdatensFeature),
     provideEffects(
       sharedDataAccessConfigEffects,
-      sharedDataAccessLanguageEffects
+      sharedDataAccessLanguageEffects,
+      sharedDataAccessStammdatenEffects
     ),
     provideRouterStore(),
     ...(isDevMode() ? [provideStoreDevtools({})] : []),
