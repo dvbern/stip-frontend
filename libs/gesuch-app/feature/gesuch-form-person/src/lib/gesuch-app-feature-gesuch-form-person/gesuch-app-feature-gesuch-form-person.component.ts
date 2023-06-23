@@ -136,7 +136,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     wohnsitz: ['', [Validators.required]],
     sozialhilfebeitraege: new FormControl<boolean | null>(null, []),
     quellenbesteuerung: new FormControl<boolean | null>(null, []),
-    digitaleKommunikation: new FormControl<boolean | null>(true, []),
+    digitaleKommunikation: [true, []],
   });
 
   constructor() {
