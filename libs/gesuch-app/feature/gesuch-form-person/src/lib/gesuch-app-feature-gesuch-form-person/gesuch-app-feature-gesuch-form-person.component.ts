@@ -8,7 +8,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -126,12 +131,12 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ],
     nationalitaet: ['', [Validators.required]],
     heimatort: ['', [Validators.required]],
-    vormundschaft: [false, []],
+    vormundschaft: new FormControl<boolean | null>(null, []),
     zivilstand: ['', [Validators.required]],
     wohnsitz: ['', [Validators.required]],
-    sozialhilfebeitraege: [false, []],
-    quellenbesteuerung: [false, []],
-    digitaleKommunikation: [false, []],
+    sozialhilfebeitraege: new FormControl<boolean | null>(null, []),
+    quellenbesteuerung: new FormControl<boolean | null>(null, []),
+    digitaleKommunikation: new FormControl<boolean | null>(null, []),
   });
 
   constructor() {
