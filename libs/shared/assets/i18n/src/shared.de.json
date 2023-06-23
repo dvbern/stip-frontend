@@ -33,6 +33,7 @@
   "shared.form.radio.no": "Nein",
   "shared.form-field.toggle-info-messages": "Info-Meldungen anzeigen",
   "shared.form.error.required": "Dieses Feld ist erforderlich",
+  "shared.form.error.invalidIBAN": "Die eingebene IBAN ist ungültig",
   "shared.form.error.ahv": "Bitte geben Sie eine gültige AHV-Nummer ein",
   "shared.form.error.monthYearMonth": "Bitte geben Sie einen Monat von 01 bis 12 ein",
   "shared.form.error.dateFormat": "Bitte geben Sie ein gültiges Datum ein",

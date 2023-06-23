@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
+import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
 import { FallDTO } from './fallDTO';
 import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
@@ -26,6 +27,7 @@ export interface GesuchDTO {
   gesuchsperiode: GesuchsperiodeDTO;
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
   familiensituationContainer?: FamiliensituationContainerDTO;
+  auszahlungContainer?: AuszahlungContainerDTO;
   gesuchStatus: Gesuchstatus;
   elternContainers: ElternContainerDTO[];
   gesuchNummer: number;

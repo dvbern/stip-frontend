@@ -33,6 +33,37 @@ export const MASK_SOZIALVERSICHERUNGSNUMMER: MaskitoOptions = {
   ],
 };
 
+export const MASK_IBAN: MaskitoOptions = {
+  mask: [
+    'C',
+    'H',
+    /\d/,
+    /\d/,
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    ' ',
+    /\d/,
+  ],
+};
+
 export const MASK_MM_YYYY: MaskitoOptions = {
   mask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/],
 };

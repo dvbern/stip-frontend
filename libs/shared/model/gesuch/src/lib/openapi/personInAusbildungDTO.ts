@@ -25,6 +25,8 @@ export interface PersonInAusbildungDTO {
   vorname: string;
   anrede: Anrede;
   identischerZivilrechtlicherWohnsitz: boolean;
+  zivilrechtlicherWohnsitzPlz: string;
+  zivilrechtlicherWohnsitzOrt: string;
   izvOrt?: string;
   izvPLZ?: string;
   email: string;
@@ -37,6 +39,5 @@ export interface PersonInAusbildungDTO {
   wohnsitz: Wohnsitz;
   sozialhilfebeitraege: boolean;
   quellenbesteuert: boolean;
-  kinder: boolean;
   digitaleKommunikation: boolean;
 }

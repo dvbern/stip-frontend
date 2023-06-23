@@ -49,4 +49,11 @@ export abstract class GesuchFormSteps {
     currentStepNumber: 7,
     iconSymbolName: 'favorite',
   };
+
+  public static readonly AUSZAHLUNGEN: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-auszahlungen',
+    translationKey: 'gesuch-app.auszahlung.title',
+    currentStepNumber: 9,
+    iconSymbolName: 'payments',
+  };
 }

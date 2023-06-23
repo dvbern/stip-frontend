@@ -31,3 +31,6 @@ export * from './taetigskeitsart';
 export * from './kanton';
 export * from './ausbildungDTO';
 export * from './partnerDTO';
+export * from './auszahlungDTO';
+export * from './auszahlungContainerDTO';
+export * from './KontoinhaberinType';

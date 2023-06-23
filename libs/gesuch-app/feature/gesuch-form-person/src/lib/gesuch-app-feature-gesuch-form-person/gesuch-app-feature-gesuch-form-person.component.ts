@@ -6,6 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
@@ -17,6 +18,7 @@ import {
   Anrede,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
+  PersonInAusbildungDTO,
   SharedModelGesuch,
   Wohnsitz,
   Zivilstand,
@@ -102,7 +104,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
       this.formBuilder
     ),
-    identischerZivilrechtlicherWohnsitz: [false, []],
+    identischerZivilrechtlicherWohnsitz: [true, []],
+    zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
+    zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     geburtsdatum: [
@@ -127,7 +131,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     wohnsitz: ['', [Validators.required]],
     sozialhilfebeitraege: [false, []],
     quellenbesteuerung: [false, []],
-    kinder: [false, []],
     digitaleKommunikation: [false, []],
   });
 
@@ -145,6 +148,23 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         };
         this.form.patchValue({ ...personForForm });
       }
+    });
+    const zivilrechtlichChanged$ = toSignal(
+      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    );
+    effect(() => {
+      const zivilrechtlichIdentisch = zivilrechtlichChanged$();
+      if (zivilrechtlichIdentisch) {
+        this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
+        this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
+        this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
+        this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
+      } else {
+        this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
+        this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
+      }
+      this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
+      this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
     });
   }
 
@@ -185,17 +205,17 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         personInAusbildungSB: {
           ...gesuch?.personInAusbildungContainer?.personInAusbildungSB,
           ...this.form.getRawValue(),
+          adresse: {
+            ...gesuch?.personInAusbildungContainer?.personInAusbildungSB
+              ?.adresse,
+            ...this.form.getRawValue().adresse,
+          },
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
             this.language(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           ),
-          adresse: {
-            ...this.form.getRawValue().adresse,
-            id: gesuch?.personInAusbildungContainer?.personInAusbildungSB
-              ?.adresse.id,
-          },
-        },
+        } as PersonInAusbildungDTO,
       },
     } as SharedModelGesuch;
   }

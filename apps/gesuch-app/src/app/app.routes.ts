@@ -17,6 +17,14 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: GesuchFormSteps.AUSZAHLUNGEN.route,
+    title: 'gesuch-app.auszahlung.title',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
+        (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
+      ),
+  },
+  {
     path: GesuchFormSteps.FAMILIENSITUATION.route,
     title: 'gesuch-app.familiensituation.title',
     loadChildren: () =>
