@@ -78,7 +78,6 @@
           "wohnsitz": "ELTERN",
           "sozialhilfebeitraege": true,
           "quellenbesteuerung": true,
-          "kinder": true,
           "digitaleKommunikation": true
         },
         "personInAusbildungSB": {
@@ -108,7 +107,6 @@
           "wohnsitz": "ELTERN",
           "sozialhilfebeitraege": true,
           "quellenbesteuerung": true,
-          "kinder": true,
           "digitaleKommunikation": true,
           "vormundschaft": false
         }
@@ -360,7 +358,6 @@
           "zivilstand": "LEDIG",
           "sozialhilfebeitraege": false,
           "quellenbesteuerung": false,
-          "kinder": false,
           "digitaleKommunikation": true
         }
       }

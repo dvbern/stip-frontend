@@ -36,6 +36,5 @@ export interface PersonInAusbildungDTO {
   wohnsitz: Wohnsitz;
   sozialhilfebeitraege: boolean;
   quellenbesteuert: boolean;
-  kinder: boolean;
   digitaleKommunikation: boolean;
 }
