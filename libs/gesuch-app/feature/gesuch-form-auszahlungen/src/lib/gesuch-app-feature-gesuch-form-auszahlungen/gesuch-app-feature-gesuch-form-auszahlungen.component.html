@@ -92,7 +92,11 @@
 
       <div class="row g-4 my-2">
         <div class="col-12 col-xl-8">
-          <dv-shared-ui-form-address [group]="form.controls.adresse" />
+          <dv-shared-ui-form-address
+            [group]="form.controls.adresse"
+            [laender]="laenderSig()"
+            [language]="language"
+          />
         </div>
       </div>
 
