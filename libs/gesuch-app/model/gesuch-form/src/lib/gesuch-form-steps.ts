@@ -54,6 +54,6 @@ export abstract class GesuchFormSteps {
     route: 'gesuch-app-feature-gesuch-form-auszahlungen',
     translationKey: 'gesuch-app.auszahlung.title',
     currentStepNumber: 9,
-    iconSymbolName: '',
+    iconSymbolName: 'payments',
   };
 }
