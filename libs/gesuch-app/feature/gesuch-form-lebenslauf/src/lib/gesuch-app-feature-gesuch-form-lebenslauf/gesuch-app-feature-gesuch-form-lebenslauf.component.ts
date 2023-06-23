@@ -127,10 +127,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     this.editedItem = undefined;
   }
 
-  handleEditorAutoSave(item: LebenslaufItemDTO) {
-    console.log('TODO save item on blur', item);
-  }
-
   handleContinue() {
     const { gesuch } = this.view$();
     this.store.dispatch(

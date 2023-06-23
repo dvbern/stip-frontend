@@ -64,10 +64,6 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
     this.editedParent = undefined;
   }
 
-  handleEditorAutoSave(parent: ElternDTO) {
-    console.log('TODO save parent on blur', parent);
-  }
-
   handleContinue() {
     const { gesuch } = this.view$();
     this.store.dispatch(

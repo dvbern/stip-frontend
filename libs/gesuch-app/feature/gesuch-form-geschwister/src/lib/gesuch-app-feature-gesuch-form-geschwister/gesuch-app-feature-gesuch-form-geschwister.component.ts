@@ -70,10 +70,6 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
     this.editedGeschwister = undefined;
   }
 
-  handleEditorAutoSave(geschwister: GeschwisterDTO) {
-    console.log('TODO save geschwister on blur', geschwister);
-  }
-
   handleContinue() {
     const { gesuch } = this.view$();
     this.store.dispatch(

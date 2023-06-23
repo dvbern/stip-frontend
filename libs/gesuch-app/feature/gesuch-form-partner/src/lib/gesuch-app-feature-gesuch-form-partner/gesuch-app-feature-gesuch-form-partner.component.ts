@@ -30,9 +30,12 @@ import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
+  onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
+  parseDateForLocale,
   parseStringAndPrintForBackendLocalDate,
+  printDate,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
@@ -160,6 +163,14 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   trackByIndex(index: number) {
     return index;
+  }
+
+  onGeburtsdatumBlur(_: any) {
+    return onDateInputBlur(
+      this.form.controls.geburtsdatum,
+      subYears(new Date(), MEDIUM_AGE_ADULT),
+      this.language()
+    );
   }
 
   private buildUpdatedGesuchFromForm() {

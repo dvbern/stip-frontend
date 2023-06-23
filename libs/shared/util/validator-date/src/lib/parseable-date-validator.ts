@@ -1,25 +1,41 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { Language } from '@dv/shared/model/language';
-import { inputParseDateFormatsDe, parseInputDateString } from './date-util';
 import { isValid } from 'date-fns';
+import {
+  acceptedDateInputFormatsDe,
+  parseInputDateString,
+  printDate,
+} from './date-util';
 
 export function parseableDateValidatorForLocale(locale: Language) {
-  return parseableDateValidator(inputParseDateFormatsDe, new Date());
+  return parseableDateValidator(locale, new Date());
 }
 
-export function parseableDateValidator(
-  inputFormats: string[],
-  referenceDate: Date
-) {
+export function parseDateForLocale(
+  val: string | null | undefined,
+  referenceDate: Date,
+  locale: Language
+): Date | null {
+  if (!val) {
+    return null;
+  }
+  const parsed = parseInputDateString(
+    val,
+    acceptedDateInputFormatsDe,
+    referenceDate
+  );
+  if (!!parsed && isValid(parsed)) {
+    return parsed;
+  }
+  return null;
+}
+
+export function parseableDateValidator(locale: Language, referenceDate: Date) {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
-      const parsed = parseInputDateString(
-        control.value,
-        inputFormats,
-        referenceDate
-      );
+      const parsed = parseDateForLocale(control.value, referenceDate, locale);
       if (!!parsed && isValid(parsed)) {
         return null;
       } else {
@@ -29,4 +45,16 @@ export function parseableDateValidator(
       }
     }
   };
+}
+
+export function onDateInputBlur(
+  control: FormControl,
+  referenceDate: Date,
+  locale: Language
+) {
+  const val = control.value;
+  const date = parseDateForLocale(val, referenceDate, locale);
+  if (date) {
+    control.patchValue(printDate(date, locale));
+  }
 }

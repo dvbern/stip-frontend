@@ -1,18 +1,18 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Language } from '@dv/shared/model/language';
 import {
-  inputParseDateFormatsDe,
-  inputPrintDateFormatDe,
+  acceptedDateInputFormatsDe,
+  niceDateInputFormatDe,
   parseInputDateString,
 } from '../index';
 import { format, isAfter, isBefore, isValid } from 'date-fns';
 
 export function minDateValidatorForLocale(locale: Language, minDate: Date) {
   return minDateValidator(
-    inputParseDateFormatsDe,
+    acceptedDateInputFormatsDe,
     new Date(),
     minDate,
-    inputPrintDateFormatDe
+    niceDateInputFormatDe
   );
 }
 export function minDateValidator(

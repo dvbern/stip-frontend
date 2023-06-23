@@ -2,17 +2,17 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Language } from '@dv/shared/model/language';
 import { format, isAfter, isBefore, isValid } from 'date-fns';
 import {
-  inputParseDateFormatsDe,
-  inputPrintDateFormatDe,
+  acceptedDateInputFormatsDe,
+  niceDateInputFormatDe,
   parseInputDateString,
 } from './date-util';
 
 export function maxDateValidatorForLocale(locale: Language, maxDate: Date) {
   return maxDateValidator(
-    inputParseDateFormatsDe,
+    acceptedDateInputFormatsDe,
     new Date(),
     maxDate,
-    inputPrintDateFormatDe
+    niceDateInputFormatDe
   );
 }
 export function maxDateValidator(

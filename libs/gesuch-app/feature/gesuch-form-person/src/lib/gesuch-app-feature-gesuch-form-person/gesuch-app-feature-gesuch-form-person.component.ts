@@ -36,15 +36,18 @@ import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
+  onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
+  parseDateForLocale,
   parseStringAndPrintForBackendLocalDate,
+  printDate,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { subYears } from 'date-fns';
+import { isValid, subYears } from 'date-fns';
 
 const MIN_AGE_GESUCHSSTELLER = 15;
 const MAX_AGE_GESUCHSSTELLER = 35;
@@ -163,6 +166,14 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   trackByIndex(index: number) {
     return index;
+  }
+
+  onGeburtsdatumBlur(_: any) {
+    return onDateInputBlur(
+      this.form.controls.geburtsdatum,
+      subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER),
+      this.language()
+    );
   }
 
   private buildUpdatedGesuchFromForm() {

@@ -76,7 +76,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Input({ required: true }) maxEndDate?: Date | null;
 
   @Output() saveTriggered = new EventEmitter<LebenslaufItemDTO>();
-  @Output() autoSaveTriggered = new EventEmitter<LebenslaufItemDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
 

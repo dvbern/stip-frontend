@@ -4,7 +4,6 @@
     *ngIf="editedItem"
     [item]="editedItem"
     (saveTriggered)="handleEditorSave($event)"
-    (autoSaveTriggered)="handleEditorAutoSave($event)"
     (closeTriggered)="handleEditorClose()"
     (deleteTriggered)="handleDeleteItem($event)"
     [minStartDate]="minDate$()"

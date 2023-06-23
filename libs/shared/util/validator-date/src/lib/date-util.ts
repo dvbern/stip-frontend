@@ -7,19 +7,28 @@ import { Language } from '@dv/shared/model/language';
 import { format, formatISO, isValid, Locale, parse } from 'date-fns';
 
 // TODO language dependent input formats?
-export const inputParseDateFormatsDe = ['dd.MM.yy', 'dd.MM.yyyy']; // order matters! try it by entering 1.1.99 and 1.1.1999
-export const inputPrintDateFormatDe = 'dd.MM.yyyy';
+export const acceptedDateInputFormatsDe = [
+  'dd.MM.yy',
+  'dd.MM.yyyy',
+  'ddMMyy',
+  'ddMMyyyy',
+]; // order matters! try it by entering 1.1.99 and 1.1.1999 and 31199
+export const niceDateInputFormatDe = 'dd.MM.yyyy';
 
 export function parseBackendLocalDateAndPrint(
   value: BackendLocalDateTS | null | undefined,
   locale: Language
 ) {
-  return formatBackendLocalDate(value, inputPrintDateFormatDe);
+  return formatBackendLocalDate(value, locale);
+}
+
+export function printDate(date: Date, locale: Language) {
+  return format(date, niceDateInputFormatDe);
 }
 
 export function formatBackendLocalDate(
   value: BackendLocalDateTS | null | undefined,
-  formt: string
+  locale: Language
 ) {
   if (value === null || value === undefined) {
     return undefined;
@@ -28,7 +37,7 @@ export function formatBackendLocalDate(
   if (date === undefined) {
     return undefined;
   }
-  return format(date, formt);
+  return printDate(date, locale);
 }
 
 export function parseStringAndPrintForBackendLocalDate(
@@ -36,7 +45,7 @@ export function parseStringAndPrintForBackendLocalDate(
   locale: Language,
   referenceDate: Date
 ) {
-  return asBackendLocalDate(value, inputParseDateFormatsDe, referenceDate);
+  return asBackendLocalDate(value, acceptedDateInputFormatsDe, referenceDate);
 }
 
 export function parseInputDateStringVariants(

@@ -30,6 +30,7 @@ import {
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
+  onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
   parseStringAndPrintForBackendLocalDate,
@@ -72,7 +73,6 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   @Input({ required: true }) geschwister!: Partial<GeschwisterDTO>;
 
   @Output() saveTriggered = new EventEmitter<GeschwisterDTO>();
-  @Output() autoSaveTriggered = new EventEmitter<GeschwisterDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
 
   private store = inject(Store);
@@ -133,6 +133,14 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
   handleCancel() {
     this.closeTriggered.emit();
+  }
+
+  onGeburtsdatumBlur(_: any) {
+    return onDateInputBlur(
+      this.form.controls.geburtsdatum,
+      subYears(new Date(), MEDIUM_AGE),
+      this.language()
+    );
   }
 
   protected readonly Anrede = Anrede;

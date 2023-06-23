@@ -1,27 +1,22 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   EventEmitter,
   inject,
   Input,
   OnChanges,
   Output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
-  maxDateValidatorForLocale,
-  minDateValidatorForLocale,
-  parseableDateValidatorForLocale,
-  parseBackendLocalDateAndPrint,
-  parseStringAndPrintForBackendLocalDate,
-} from '@dv/shared/util/validator-date';
-import { MaskitoModule } from '@maskito/angular';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+  AdresseDTO,
+  Anrede,
+  ElternDTO,
+  Land,
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+} from '@dv/shared/model/gesuch';
 
 import {
   SharedUiFormComponent,
@@ -30,14 +25,19 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import {
-  AdresseDTO,
-  Anrede,
-  ElternDTO,
-  Land,
-  MASK_SOZIALVERSICHERUNGSNUMMER,
-} from '@dv/shared/model/gesuch';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import {
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  onDateInputBlur,
+  parseableDateValidatorForLocale,
+  parseBackendLocalDateAndPrint,
+  parseStringAndPrintForBackendLocalDate,
+} from '@dv/shared/util/validator-date';
+import { MaskitoModule } from '@maskito/angular';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 const MAX_AGE_ADULT = 120;
@@ -71,7 +71,6 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   @Input({ required: true }) elternteil!: Partial<ElternDTO>;
   @Output() saveTriggered = new EventEmitter<ElternDTO>();
-  @Output() autoSaveTriggered = new EventEmitter<ElternDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
@@ -141,11 +140,20 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       } as ElternDTO);
     }
   }
+
   trackByIndex(index: number) {
     return index;
   }
 
   handleCancel() {
     this.closeTriggered.emit();
+  }
+
+  onGeburtsdatumBlur(_: any) {
+    return onDateInputBlur(
+      this.form.controls.geburtsdatum,
+      subYears(new Date(), MEDIUM_AGE_ADULT),
+      this.language()
+    );
   }
 }
