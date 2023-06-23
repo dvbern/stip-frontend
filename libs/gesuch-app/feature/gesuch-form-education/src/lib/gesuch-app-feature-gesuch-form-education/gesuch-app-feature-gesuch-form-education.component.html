@@ -210,23 +210,30 @@
           dvSharedUiFormLabelTarget
           formControlName="ausbildungBegin"
           placeholder="MM.YYYY"
-          [maskito]="MASK_MM_YYYY"
+          (blur)="onDateBlur(form.controls.ausbildungBegin)"
         />
 
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
-        >
-          {{ 'shared.form.error.monthYearMonth' | translate }}
+        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+          {{ 'shared.form.error.dateFormat' | translate }}
         </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearYearMin'"
-        >
+        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'minDate'">
           {{
             'gesuch-app.form.education.form.error.monthYearNotPast' | translate
           }}
+        </dv-shared-ui-form-message>
+        <dv-shared-ui-form-message
+          *dvSharedUiFormMessageError="'endDateAfterStart'"
+        >
+          {{
+            'gesuch-app.form.education.form.error.monthYearAfterStart'
+              | translate
+          }}
+        </dv-shared-ui-form-message>
+        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
+          {{ 'shared.form.error.maxDateFuture' | translate }}
         </dv-shared-ui-form-message>
       </dv-shared-ui-form-field>
 
@@ -241,16 +248,14 @@
           dvSharedUiFormLabelTarget
           formControlName="ausbildungEnd"
           placeholder="MM.YYYY"
-          [maskito]="MASK_MM_YYYY"
+          (blur)="onDateBlur(form.controls.ausbildungEnd)"
         />
 
         <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
-        >
-          {{ 'shared.form.error.monthYearMonth' | translate }}
+        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+          {{ 'shared.form.error.dateFormat' | translate }}
         </dv-shared-ui-form-message>
         <dv-shared-ui-form-message
           *dvSharedUiFormMessageError="'endDateAfterStart'"
@@ -259,6 +264,9 @@
             'gesuch-app.form.education.form.error.monthYearAfterStart'
               | translate
           }}
+        </dv-shared-ui-form-message>
+        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
+          {{ 'shared.form.error.maxDateFuture' | translate }}
         </dv-shared-ui-form-message>
       </dv-shared-ui-form-field>
     </div>

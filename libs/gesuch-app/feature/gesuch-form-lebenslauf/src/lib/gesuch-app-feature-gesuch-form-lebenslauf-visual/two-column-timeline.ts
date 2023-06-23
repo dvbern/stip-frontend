@@ -111,7 +111,7 @@ export class TwoColumnTimeline {
         output.push({
           col: 'BOTH',
           dateStart: expectedStartDate,
-          dateEnd: subMonths(inputSorted[inputSorted.length - 1].dateStart, 1),
+          dateEnd: subMonths(inputSorted[0].dateStart, 1),
           positionStartRow: startRow,
           positionRowSpan: 1,
         } as TimelineGapBlock);

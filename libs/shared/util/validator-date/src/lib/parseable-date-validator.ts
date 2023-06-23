@@ -1,27 +1,27 @@
 import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { Language } from '@dv/shared/model/language';
 import { isValid } from 'date-fns';
-import {
-  acceptedDateInputFormatsDe,
-  parseInputDateString,
-  printDate,
-} from './date-util';
+import { DateFormatVariant, getFormatDef } from './date-format-util';
+import { parseInputDateString, printDate } from './date-util';
 
-export function parseableDateValidatorForLocale(locale: Language) {
-  return parseableDateValidator(locale, new Date());
+export function parseableDateValidatorForLocale(
+  locale: Language,
+  dateFormatVariant: DateFormatVariant
+) {
+  return parseableDateValidator(locale, new Date(), dateFormatVariant);
 }
 
-export function parseDateForLocale(
+export function parseDateForVariant(
   val: string | null | undefined,
   referenceDate: Date,
-  locale: Language
+  dateFormatVariant: DateFormatVariant
 ): Date | null {
   if (!val) {
     return null;
   }
   const parsed = parseInputDateString(
     val,
-    acceptedDateInputFormatsDe,
+    getFormatDef('de', dateFormatVariant).acceptedInputs,
     referenceDate
   );
   if (!!parsed && isValid(parsed)) {
@@ -30,12 +30,20 @@ export function parseDateForLocale(
   return null;
 }
 
-export function parseableDateValidator(locale: Language, referenceDate: Date) {
+function parseableDateValidator(
+  locale: Language,
+  referenceDate: Date,
+  dateFormatVariant: DateFormatVariant
+) {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
-      const parsed = parseDateForLocale(control.value, referenceDate, locale);
+      const parsed = parseDateForVariant(
+        control.value,
+        referenceDate,
+        dateFormatVariant
+      );
       if (!!parsed && isValid(parsed)) {
         return null;
       } else {
@@ -52,9 +60,26 @@ export function onDateInputBlur(
   referenceDate: Date,
   locale: Language
 ) {
+  onDateInputBlurBasic(control, referenceDate, locale, 'date');
+}
+
+export function onMonthYearInputBlur(
+  control: FormControl,
+  referenceDate: Date,
+  locale: Language
+) {
+  onDateInputBlurBasic(control, referenceDate, locale, 'monthYear');
+}
+
+export function onDateInputBlurBasic(
+  control: FormControl,
+  referenceDate: Date,
+  locale: Language,
+  dateFormatVariant: DateFormatVariant
+) {
   const val = control.value;
-  const date = parseDateForLocale(val, referenceDate, locale);
+  const date = parseDateForVariant(val, referenceDate, dateFormatVariant);
   if (date) {
-    control.patchValue(printDate(date, locale));
+    control.patchValue(printDate(date, locale, dateFormatVariant));
   }
 }

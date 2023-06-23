@@ -19,11 +19,11 @@ import {
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungsland,
   AusbildungsPensum,
   AusbildungstaetteDTO,
-  MASK_MM_YYYY,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
@@ -35,15 +35,17 @@ import {
 } from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
-  createValidatorEndAfterStart,
-  sharedUtilValidatorMonthYearMin,
-  sharedUtilValidatorMonthYearMonth,
+  createDateDependencyValidator,
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  onMonthYearInputBlur,
+  parseableDateValidatorForLocale,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { getYear } from 'date-fns';
+import { addYears, getYear, subMonths } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -88,6 +90,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   readonly Ausbildungsland = Ausbildungsland;
 
+  language = this.store.selectSignal(selectLanguage);
+
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
     ausbildungstaette: ['', [Validators.required]],
@@ -98,13 +102,30 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       '',
       [
         Validators.required,
-        sharedUtilValidatorMonthYearMonth,
-        sharedUtilValidatorMonthYearMin(this.currentYear),
+        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        minDateValidatorForLocale(
+          this.language(),
+          subMonths(new Date(), 1),
+          'monthYear'
+        ),
+        maxDateValidatorForLocale(
+          this.language(),
+          addYears(new Date(), 100),
+          'monthYear'
+        ),
       ],
     ],
     ausbildungEnd: [
       '',
-      [Validators.required, sharedUtilValidatorMonthYearMonth],
+      [
+        Validators.required,
+        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        maxDateValidatorForLocale(
+          this.language(),
+          addYears(new Date(), 100),
+          'monthYear'
+        ),
+      ],
       [],
     ],
     pensum: ['', [Validators.required]],
@@ -130,12 +151,47 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       )?.ausbildungsgaenge || []
     );
   });
+  startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
+  endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
 
   constructor() {
     // add multi-control validators
     this.form.controls.ausbildungEnd.addValidators([
-      createValidatorEndAfterStart(this.form.controls.ausbildungBegin, false),
+      createDateDependencyValidator(
+        'after',
+        this.form.controls.ausbildungBegin,
+        true,
+        new Date(),
+        this.language(),
+        'monthYear'
+      ),
     ]);
+    this.form.controls.ausbildungBegin.addValidators([
+      createDateDependencyValidator(
+        'before',
+        this.form.controls.ausbildungEnd,
+        true,
+        new Date(),
+        this.language(),
+        'monthYear'
+      ),
+    ]);
+
+    // abhaengige Validierung zuruecksetzen on valueChanges
+    effect(
+      () => {
+        this.startChanged$();
+        this.form.controls.ausbildungEnd.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        this.endChanged$();
+        this.form.controls.ausbildungBegin.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
 
     // fill form
     effect(
@@ -239,6 +295,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // TODO we should clean up this logic once we have final data structure
   // eg extract to util service (for every form step)
   private buildUpdatedGesuchFromForm() {
+    this.onDateBlur(this.form.controls.ausbildungBegin);
+    this.onDateBlur(this.form.controls.ausbildungEnd);
     return {
       ...this.view$().gesuch,
       ausbildungContainer: {
@@ -293,7 +351,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     };
   }
 
-  protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
+  onDateBlur(ctrl: FormControl) {
+    return onMonthYearInputBlur(ctrl, new Date(), this.language());
+  }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
 }

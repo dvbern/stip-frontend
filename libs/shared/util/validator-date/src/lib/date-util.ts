@@ -4,16 +4,8 @@ import {
   toBackendLocalDate,
 } from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
-import { format, formatISO, isValid, Locale, parse } from 'date-fns';
-
-// TODO language dependent input formats?
-export const acceptedDateInputFormatsDe = [
-  'dd.MM.yy',
-  'dd.MM.yyyy',
-  'ddMMyy',
-  'ddMMyyyy',
-]; // order matters! try it by entering 1.1.99 and 1.1.1999 and 31199
-export const niceDateInputFormatDe = 'dd.MM.yyyy';
+import { DateFormatVariant, getFormatDef, parseDateForVariant } from '../index';
+import { format, isValid, parse } from 'date-fns';
 
 export function parseBackendLocalDateAndPrint(
   value: BackendLocalDateTS | null | undefined,
@@ -22,8 +14,12 @@ export function parseBackendLocalDateAndPrint(
   return formatBackendLocalDate(value, locale);
 }
 
-export function printDate(date: Date, locale: Language) {
-  return format(date, niceDateInputFormatDe);
+export function printDate(
+  date: Date,
+  locale: Language,
+  dateFormatVariant: DateFormatVariant
+) {
+  return format(date, getFormatDef(locale, dateFormatVariant).niceInput);
 }
 
 export function formatBackendLocalDate(
@@ -37,7 +33,7 @@ export function formatBackendLocalDate(
   if (date === undefined) {
     return undefined;
   }
-  return printDate(date, locale);
+  return printDate(date, locale, 'date');
 }
 
 export function parseStringAndPrintForBackendLocalDate(
@@ -45,7 +41,11 @@ export function parseStringAndPrintForBackendLocalDate(
   locale: Language,
   referenceDate: Date
 ) {
-  return asBackendLocalDate(value, acceptedDateInputFormatsDe, referenceDate);
+  return asBackendLocalDate(
+    value,
+    getFormatDef(locale, 'date').acceptedInputs,
+    referenceDate
+  );
 }
 
 export function parseInputDateStringVariants(
@@ -79,6 +79,7 @@ export function parseInputDateString(
   }
   return undefined;
 }
+
 export function asBackendLocalDate(
   value: string | null | undefined,
   srcFormats: string[],
@@ -89,4 +90,12 @@ export function asBackendLocalDate(
     return undefined;
   }
   return toBackendLocalDate(date);
+}
+
+export function dateFromMonthYearString(monthYearString: string) {
+  return parseDateForVariant(monthYearString, new Date(), 'monthYear');
+}
+
+export function printDateAsMonthYear(date: Date) {
+  return printDate(date, 'de', 'monthYear');
 }

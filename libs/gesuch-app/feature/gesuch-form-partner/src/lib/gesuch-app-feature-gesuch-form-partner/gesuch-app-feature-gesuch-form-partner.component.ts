@@ -33,9 +33,7 @@ import {
   onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
-  parseDateForLocale,
   parseStringAndPrintForBackendLocalDate,
-  printDate,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
@@ -43,9 +41,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
-const MAX_AGE_ADULT = 120;
-const MIN_AGE_ADULT = 16;
-const MEDIUM_AGE_ADULT = 40;
+const MAX_AGE_ADULT = 130;
+const MIN_AGE_ADULT = 10;
+const MEDIUM_AGE_ADULT = 30;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-partner',
@@ -99,14 +97,16 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language()),
+        parseableDateValidatorForLocale(this.language(), 'date'),
         minDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MAX_AGE_ADULT)
+          subYears(new Date(), MAX_AGE_ADULT),
+          'date'
         ),
         maxDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MIN_AGE_ADULT)
+          subYears(new Date(), MIN_AGE_ADULT),
+          'date'
         ),
       ],
     ],

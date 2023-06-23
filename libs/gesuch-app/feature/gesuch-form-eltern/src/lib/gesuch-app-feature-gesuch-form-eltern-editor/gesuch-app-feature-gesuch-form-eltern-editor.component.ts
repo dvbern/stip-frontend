@@ -40,8 +40,8 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
-const MAX_AGE_ADULT = 120;
-const MIN_AGE_ADULT = 16;
+const MAX_AGE_ADULT = 130;
+const MIN_AGE_ADULT = 10;
 const MEDIUM_AGE_ADULT = 40;
 
 @Component({
@@ -94,14 +94,16 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language()),
+        parseableDateValidatorForLocale(this.language(), 'date'),
         minDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MAX_AGE_ADULT)
+          subYears(new Date(), MAX_AGE_ADULT),
+          'date'
         ),
         maxDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MIN_AGE_ADULT)
+          subYears(new Date(), MIN_AGE_ADULT),
+          'date'
         ),
       ],
     ],

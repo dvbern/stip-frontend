@@ -10,15 +10,16 @@ import {
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import { LebenslaufItemDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import {
-  parseMonthYearString,
+  dateFromMonthYearString,
   printDateAsMonthYear,
 } from '@dv/shared/util/validator-date';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears } from 'date-fns';
+import { addYears, subMonths } from 'date-fns';
 import { GesuchAppFeatureGesuchFormLebenslaufEditorComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-editor/gesuch-app-feature-gesuch-form-lebenslauf-editor.component';
 import { TimelineAddCommand } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline';
 import { TwoColumnTimelineComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline.component';
@@ -41,6 +42,7 @@ import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feat
 })
 export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   private store = inject(Store);
+  language = this.store.selectSignal(selectLanguage);
 
   view$ = this.store.selectSignal(
     selectGesuchAppFeatureGesuchFormLebenslaufVew
@@ -65,8 +67,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     const ausbildungStart =
       this.view$().gesuch?.ausbildungContainer?.ausbildungSB?.ausbildungBegin;
     if (ausbildungStart) {
-      const start = parseMonthYearString(ausbildungStart);
-      return new Date(start.year, start.month - 1, 1);
+      const start = dateFromMonthYearString(ausbildungStart);
+      console.log('ausbildung start parsed: ', start);
+      return start ? subMonths(start, 1) : null;
     }
     return null;
   });

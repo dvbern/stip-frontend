@@ -41,18 +41,16 @@ import {
   onDateInputBlur,
   parseableDateValidatorForLocale,
   parseBackendLocalDateAndPrint,
-  parseDateForLocale,
   parseStringAndPrintForBackendLocalDate,
-  printDate,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { isValid, subYears } from 'date-fns';
+import { subYears } from 'date-fns';
 
-const MIN_AGE_GESUCHSSTELLER = 15;
-const MAX_AGE_GESUCHSSTELLER = 35;
+const MIN_AGE_GESUCHSSTELLER = 10;
+const MAX_AGE_GESUCHSSTELLER = 130;
 const MEDIUM_AGE_GESUCHSSTELLER = 20;
 
 @Component({
@@ -113,14 +111,16 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language()),
+        parseableDateValidatorForLocale(this.language(), 'date'),
         minDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MAX_AGE_GESUCHSSTELLER)
+          subYears(new Date(), MAX_AGE_GESUCHSSTELLER),
+          'date'
         ),
         maxDateValidatorForLocale(
           this.language(),
-          subYears(new Date(), MIN_AGE_GESUCHSSTELLER)
+          subYears(new Date(), MIN_AGE_GESUCHSSTELLER),
+          'date'
         ),
       ],
     ],
@@ -135,20 +135,24 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
 
   constructor() {
-    effect(() => {
-      const { gesuch } = this.view();
-      if (gesuch?.personInAusbildungContainer?.personInAusbildungSB) {
-        const person = gesuch.personInAusbildungContainer.personInAusbildungSB;
-        const personForForm = {
-          ...person,
-          geburtsdatum: parseBackendLocalDateAndPrint(
-            person.geburtsdatum,
-            this.language()
-          ),
-        };
-        this.form.patchValue({ ...personForForm });
-      }
-    });
+    effect(
+      () => {
+        const { gesuch } = this.view();
+        if (gesuch?.personInAusbildungContainer?.personInAusbildungSB) {
+          const person =
+            gesuch.personInAusbildungContainer.personInAusbildungSB;
+          const personForForm = {
+            ...person,
+            geburtsdatum: parseBackendLocalDateAndPrint(
+              person.geburtsdatum,
+              this.language()
+            ),
+          };
+          this.form.patchValue({ ...personForForm });
+        }
+      },
+      { allowSignalWrites: true }
+    );
     const zivilrechtlichChanged$ = toSignal(
       this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
     );

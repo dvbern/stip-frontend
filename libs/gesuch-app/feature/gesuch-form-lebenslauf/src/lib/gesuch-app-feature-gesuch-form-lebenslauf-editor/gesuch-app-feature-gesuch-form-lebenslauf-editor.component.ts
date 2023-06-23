@@ -13,15 +13,16 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
+  FormControl,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Bildungsart,
   Kanton,
   LebenslaufItemDTO,
-  MASK_MM_YYYY,
   Taetigskeitsart,
 } from '@dv/shared/model/gesuch';
 import {
@@ -32,16 +33,16 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
-  createValidatorEndAfterStart,
-  createValidatorStartBeforeEnd,
-  sharedUtilValidatorMonthYearMax,
-  sharedUtilValidatorMonthYearMin,
-  sharedUtilValidatorMonthYearMonth,
+  createDateDependencyValidator,
+  maxDateValidatorForLocale,
+  minDateValidatorForLocale,
+  onMonthYearInputBlur,
+  parseableDateValidatorForLocale,
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { getYear } from 'date-fns';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf-editor',
@@ -79,6 +80,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
 
+  private store = inject(Store);
+  language = this.store.selectSignal(selectLanguage);
+
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     subtype: ['', [Validators.required]],
@@ -114,13 +118,22 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateStart.clearValidators();
       this.form.controls.dateStart.addValidators([
         Validators.required,
-        sharedUtilValidatorMonthYearMonth,
-        createValidatorStartBeforeEnd(this.form.controls.dateEnd, true),
+        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        createDateDependencyValidator(
+          'before',
+          this.form.controls.dateEnd,
+          false,
+          new Date(),
+          this.language(),
+          'monthYear'
+        ),
       ]);
       if (changes['minStartDate'].currentValue) {
         this.form.controls.dateStart.addValidators([
-          sharedUtilValidatorMonthYearMin(
-            getYear(changes['minStartDate'].currentValue)
+          minDateValidatorForLocale(
+            this.language(),
+            changes['minStartDate'].currentValue,
+            'monthYear'
           ),
         ]);
       }
@@ -129,13 +142,22 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateEnd.clearValidators();
       this.form.controls.dateEnd.addValidators([
         Validators.required,
-        sharedUtilValidatorMonthYearMonth,
-        createValidatorEndAfterStart(this.form.controls.dateStart, true),
+        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        createDateDependencyValidator(
+          'after',
+          this.form.controls.dateStart,
+          false,
+          new Date(),
+          this.language(),
+          'monthYear'
+        ),
       ]);
       if (changes['maxEndDate'].currentValue) {
         this.form.controls.dateEnd.addValidators([
-          sharedUtilValidatorMonthYearMax(
-            getYear(changes['maxEndDate'].currentValue)
+          maxDateValidatorForLocale(
+            this.language(),
+            changes['maxEndDate'].currentValue,
+            'monthYear'
           ),
         ]);
       }
@@ -149,8 +171,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     /* this.form.controls.dateStart.updateValueAndValidity(); // TODO oder in effect
      this.form.controls.dateEnd.updateValueAndValidity();*/
     this.form.markAllAsTouched();
+    this.onDateBlur(this.form.controls.dateStart);
+    this.onDateBlur(this.form.controls.dateEnd);
     if (this.form.valid) {
-      // TODO MAKE THE DTO AND FORM MATCH
       this.saveTriggered.emit({
         id: this.item?.id,
         type: this.item?.type,
@@ -173,8 +196,15 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     }
   }
 
+  onDateBlur(ctrl: FormControl) {
+    return onMonthYearInputBlur(
+      ctrl,
+      this.minStartDate || new Date(),
+      this.language()
+    );
+  }
+
   protected readonly Kanton = Kanton;
   protected readonly Bildungsart = Bildungsart;
   protected readonly Taetigskeitsart = Taetigskeitsart;
-  protected readonly MASK_MM_YYYY = MASK_MM_YYYY;
 }

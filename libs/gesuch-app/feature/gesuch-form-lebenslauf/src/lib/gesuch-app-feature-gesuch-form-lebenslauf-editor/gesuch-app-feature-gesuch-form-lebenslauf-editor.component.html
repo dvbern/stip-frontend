@@ -78,23 +78,21 @@
         dvSharedUiFormLabelTarget
         formControlName="dateStart"
         placeholder="MM.YYYY"
-        [maskito]="MASK_MM_YYYY"
+        (blur)="onDateBlur(form.controls.dateStart)"
       />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
       </dv-shared-ui-form-message>
-      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYearMonth'">
-        {{ 'shared.form.error.monthYearMonth' | translate }}
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+        {{ 'shared.form.error.dateFormat' | translate }}
       </dv-shared-ui-form-message>
-      <dv-shared-ui-form-message
-        *dvSharedUiFormMessageError="'monthYearYearMin'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'minDate'">
         {{
           'gesuch-app.form.lebenslauf.form.error.monthYearMin'
             | translate
               : {
-                  min: form.controls.dateStart.errors!['monthYearYearMin']!.min
+                  min: form.controls.dateStart.errors!['minDate']!.minDate
                 }
         }}
       </dv-shared-ui-form-message>
@@ -120,14 +118,14 @@
         dvSharedUiFormLabelTarget
         formControlName="dateEnd"
         placeholder="MM.YYYY"
-        [maskito]="MASK_MM_YYYY"
+        (blur)="onDateBlur(form.controls.dateEnd)"
       />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
       </dv-shared-ui-form-message>
-      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'monthYearMonth'">
-        {{ 'shared.form.error.monthYearMonth' | translate }}
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+        {{ 'shared.form.error.dateFormat' | translate }}
       </dv-shared-ui-form-message>
       <dv-shared-ui-form-message
         *dvSharedUiFormMessageError="'endDateAfterStart'"
@@ -137,13 +135,11 @@
             | translate
         }}
       </dv-shared-ui-form-message>
-      <dv-shared-ui-form-message
-        *dvSharedUiFormMessageError="'monthYearYearMax'"
-      >
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
         {{
           'gesuch-app.form.lebenslauf.form.error.monthYearMax'
             | translate
-              : { max: form.controls.dateEnd.errors!['monthYearYearMax']!.max }
+              : { max: form.controls.dateEnd.errors!['maxDate']!.maxDate }
         }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
