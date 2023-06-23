@@ -96,7 +96,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
       this.formBuilder
     ),
-    identischerZivilrechtlicherWohnsitz: [false, []],
+    identischerZivilrechtlicherWohnsitz: [true, []],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     geburtsdatum: ['', [Validators.required]],
