@@ -39,7 +39,12 @@
   </div>
 
   <div class="row g-4 mt-1">
-    <dv-shared-ui-form-address class="col-12" [group]="form.controls.adresse" />
+    <dv-shared-ui-form-address
+      class="col-12"
+      [group]="form.controls.adresse"
+      [laender]="laender"
+      [language]="language"
+    />
   </div>
 
   <div class="row">

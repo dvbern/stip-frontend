@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,7 +7,12 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   AdresseDTO,
@@ -17,7 +21,6 @@ import {
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
-
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -26,6 +29,13 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import {
+  Anrede,
+  ElternDTO,
+  Land,
+  LandDTO,
+  MASK_SOZIALVERSICHERUNGSNUMMER,
+} from '@dv/shared/model/gesuch';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -72,9 +82,12 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   @Input({ required: true }) elternteil!: Partial<ElternDTO>;
   @Output() saveTriggered = new EventEmitter<ElternDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
+  @Input({ required: true }) laender!: LandDTO[];
+
+  @Input({ required: true }) language!: string;
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
-  readonly Land = Land;
+
   readonly Anrede = Anrede;
 
   private store = inject(Store);

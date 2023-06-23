@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   OnInit,
@@ -9,14 +10,12 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Anrede,
-  Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   PersonInAusbildungDTO,
   SharedModelGesuch,
@@ -54,6 +53,11 @@ import { isValid, subYears } from 'date-fns';
 const MIN_AGE_GESUCHSSTELLER = 15;
 const MAX_AGE_GESUCHSSTELLER = 35;
 const MEDIUM_AGE_GESUCHSSTELLER = 20;
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
+import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -85,13 +89,23 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly Anrede = Anrede;
-  readonly Land = Land;
   readonly Zivilstand = Zivilstand;
   readonly Wohnsitz = Wohnsitz;
 
+  geburtsdatumMinDate: NgbDateStruct = { year: 1900, month: 1, day: 1 };
+  geburtsdatumMaxDate: NgbDateStruct = {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+    day: new Date().getDate(),
+  };
+  laenderSig = computed(() => {
+    return this.view().laender;
+  });
+  languageSig = this.store.selectSignal(selectLanguage);
   language = this.store.selectSignal(selectLanguage);
 
-  view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  language = 'de';
+  view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
@@ -137,6 +151,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   constructor() {
     effect(() => {
       const { gesuch } = this.view();
+      this.language = this.languageSig();
       if (gesuch?.personInAusbildungContainer?.personInAusbildungSB) {
         const person = gesuch.personInAusbildungContainer.personInAusbildungSB;
         const personForForm = {
@@ -170,6 +185,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventGesuchFormPerson.init());
+    this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
   }
 
   handleSave() {

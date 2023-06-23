@@ -10,10 +10,8 @@
  * Do not edit the class manually.
  */
 
-export type ElternAbwesenheitsGrund = 'VERSTORBEN' | 'UNBEKANNT' | 'WEDER_NOCH';
-
-export const ElternAbwesenheitsGrund = {
-  VERSTORBEN: 'VERSTORBEN' as ElternAbwesenheitsGrund,
-  UNBEKANNT: 'UNBEKANNT' as ElternAbwesenheitsGrund,
-  WEDER_NOCH: 'WEDER_NOCH' as ElternAbwesenheitsGrund,
-};
+export interface LandDTO {
+  landCode?: string;
+  landDE?: string;
+  landFR?: string;
+}

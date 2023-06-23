@@ -12,6 +12,8 @@
   <dv-gesuch-app-feature-gesuch-form-eltern-editor
     *ngIf="editedParent"
     [elternteil]="editedParent"
+    [laender]="laenderSig()"
+    [language]="language"
     (saveTriggered)="handleEditorSave($event)"
     (closeTriggered)="handleEditorClose()"
   />

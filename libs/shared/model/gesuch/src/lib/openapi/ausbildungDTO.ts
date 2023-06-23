@@ -20,7 +20,7 @@ export interface AusbildungDTO {
   alternativeAusbildungsgang?: string;
   alternativeAusbildungstaette?: string;
   fachrichtung: string;
-  ausbildungNichtGefunden: boolean;
+  ausbildungNichtGefunden?: boolean;
   ausbildungBegin: string;
   ausbildungEnd: string;
   pensum: AusbildungsPensum;

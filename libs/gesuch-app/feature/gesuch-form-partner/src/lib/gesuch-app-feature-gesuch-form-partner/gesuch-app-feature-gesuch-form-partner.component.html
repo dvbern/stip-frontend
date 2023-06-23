@@ -203,7 +203,7 @@
               [value]="l.value"
               *ngFor="let l of Land | keyvalue; trackBy: trackByIndex"
             >
-              {{ l.value }}
+              {{ l.value | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

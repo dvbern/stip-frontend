@@ -17,7 +17,7 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
-import { Land } from '@dv/shared/model/gesuch';
+import { Land, LandDTO } from '@dv/shared/model/gesuch';
 
 @Component({
   selector: 'dv-shared-ui-form-address',
@@ -41,7 +41,9 @@ import { Land } from '@dv/shared/model/gesuch';
 export class SharedUiFormAddressComponent {
   @Input({ required: true }) group!: FormGroup;
 
-  protected readonly Land = Land;
+  @Input({ required: true }) laender!: LandDTO[];
+
+  @Input({ required: true }) language!: string;
 
   static buildAddressFormGroup(fb: FormBuilder) {
     return fb.group({
