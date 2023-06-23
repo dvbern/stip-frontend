@@ -7,12 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -27,6 +22,7 @@ import {
   Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
+import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -35,6 +31,8 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
+
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { MaskitoModule } from '@maskito/angular';
 import {
@@ -44,9 +42,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
@@ -103,8 +98,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    zivilrechtlicherWohnsitzPlz: ['', []],
-    zivilrechtlicherWohnsitzOrt: ['', []],
+    zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
+    zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
     email: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     geburtsdatum: ['', [Validators.required]],
@@ -136,17 +131,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     effect(() => {
       const zivilrechtlichIdentisch = zivilrechtlichChanged$();
       if (zivilrechtlichIdentisch) {
-        this.form.controls.zivilrechtlicherWohnsitzPlz.setValidators([]);
-        this.form.controls.zivilrechtlicherWohnsitzOrt.setValidators([]);
         this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
         this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
+        this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
+        this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
       } else {
-        this.form.controls.zivilrechtlicherWohnsitzPlz.setValidators([
-          Validators.required,
-        ]);
-        this.form.controls.zivilrechtlicherWohnsitzOrt.setValidators([
-          Validators.required,
-        ]);
+        this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
+        this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
       }
       this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
       this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
