@@ -95,7 +95,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     return this.view().laender;
   });
   languageSig = this.store.selectSignal(selectLanguage);
-  language = 'de';
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
 
   form = this.formBuilder.group({

@@ -42,7 +42,7 @@ import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feat
 })
 export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   private store = inject(Store);
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   view$ = this.store.selectSignal(
     selectGesuchAppFeatureGesuchFormLebenslaufVew

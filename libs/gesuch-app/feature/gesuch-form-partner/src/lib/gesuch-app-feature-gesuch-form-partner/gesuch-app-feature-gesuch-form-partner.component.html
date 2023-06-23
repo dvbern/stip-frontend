@@ -203,7 +203,7 @@
               [value]="l.landCode"
               *ngFor="let l of laenderSig(); trackBy: trackByIndex"
             >
-              {{ language === 'de' ? l.landDE : l.landFR }}
+              {{ languageSig() === 'de' ? l.landDE : l.landFR }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

@@ -91,7 +91,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   readonly Ausbildungsland = Ausbildungsland;
 
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     ausbildungsland: ['', [Validators.required]],
@@ -103,14 +103,14 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subMonths(new Date(), 1),
           'monthYear'
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           addYears(new Date(), 100),
           'monthYear'
         ),
@@ -120,9 +120,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           addYears(new Date(), 100),
           'monthYear'
         ),
@@ -163,7 +163,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         this.form.controls.ausbildungBegin,
         true,
         new Date(),
-        this.language(),
+        this.languageSig(),
         'monthYear'
       ),
     ]);
@@ -173,7 +173,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         this.form.controls.ausbildungEnd,
         true,
         new Date(),
-        this.language(),
+        this.languageSig(),
         'monthYear'
       ),
     ]);
@@ -353,7 +353,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   onDateBlur(ctrl: FormControl) {
-    return onMonthYearInputBlur(ctrl, new Date(), this.language());
+    return onMonthYearInputBlur(ctrl, new Date(), this.languageSig());
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;

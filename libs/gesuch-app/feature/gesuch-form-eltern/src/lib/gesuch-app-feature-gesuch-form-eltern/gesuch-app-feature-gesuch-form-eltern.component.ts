@@ -41,16 +41,9 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   });
   languageSig = this.store.selectSignal(selectLanguage);
 
-  language = 'de';
   view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
   editedParent?: Partial<ElternDTO>;
-
-  constructor() {
-    effect(() => {
-      this.language = this.languageSig();
-    });
-  }
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormEltern.init());

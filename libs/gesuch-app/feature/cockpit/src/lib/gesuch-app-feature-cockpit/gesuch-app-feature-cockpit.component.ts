@@ -51,7 +51,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
 
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventCockpit.init());

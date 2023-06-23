@@ -13,7 +13,6 @@
     *ngIf="editedParent"
     [elternteil]="editedParent"
     [laender]="laenderSig()"
-    [language]="language"
     (saveTriggered)="handleEditorSave($event)"
     (closeTriggered)="handleEditorClose()"
   />

@@ -76,7 +76,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   @Output() closeTriggered = new EventEmitter<void>();
 
   private store = inject(Store);
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -85,14 +85,14 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'date'),
+        parseableDateValidatorForLocale(this.languageSig(), 'date'),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MAX_AGE_ADULT),
           'date'
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MIN_AGE_CHILD),
           'date'
         ),
@@ -107,7 +107,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
       ...this.geschwister,
       geburtsdatum: parseBackendLocalDateAndPrint(
         this.geschwister.geburtsdatum,
-        this.language()
+        this.languageSig()
       ),
     });
   }
@@ -121,7 +121,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
         geburtsdatum: parseStringAndPrintForBackendLocalDate(
           this.form.getRawValue().geburtsdatum,
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MEDIUM_AGE)
         )!,
         wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
@@ -141,7 +141,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE),
-      this.language()
+      this.languageSig()
     );
   }
 

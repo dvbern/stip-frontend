@@ -81,7 +81,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Output() deleteTriggered = new EventEmitter<string>();
 
   private store = inject(Store);
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -118,20 +118,20 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateStart.clearValidators();
       this.form.controls.dateStart.addValidators([
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
         createDateDependencyValidator(
           'before',
           this.form.controls.dateEnd,
           false,
           new Date(),
-          this.language(),
+          this.languageSig(),
           'monthYear'
         ),
       ]);
       if (changes['minStartDate'].currentValue) {
         this.form.controls.dateStart.addValidators([
           minDateValidatorForLocale(
-            this.language(),
+            this.languageSig(),
             changes['minStartDate'].currentValue,
             'monthYear'
           ),
@@ -142,20 +142,20 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateEnd.clearValidators();
       this.form.controls.dateEnd.addValidators([
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'monthYear'),
+        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
         createDateDependencyValidator(
           'after',
           this.form.controls.dateStart,
           false,
           new Date(),
-          this.language(),
+          this.languageSig(),
           'monthYear'
         ),
       ]);
       if (changes['maxEndDate'].currentValue) {
         this.form.controls.dateEnd.addValidators([
           maxDateValidatorForLocale(
-            this.language(),
+            this.languageSig(),
             changes['maxEndDate'].currentValue,
             'monthYear'
           ),
@@ -200,7 +200,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     return onMonthYearInputBlur(
       ctrl,
       this.minStartDate || new Date(),
-      this.language()
+      this.languageSig()
     );
   }
 

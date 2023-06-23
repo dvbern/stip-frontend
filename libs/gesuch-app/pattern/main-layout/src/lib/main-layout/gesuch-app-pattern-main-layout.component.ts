@@ -62,7 +62,7 @@ export class GesuchAppPatternMainLayoutComponent {
   compactHeader = false;
   cd = inject(ChangeDetectorRef);
 
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   @ViewChild('menu') menu!: ElementRef;
 

@@ -128,7 +128,7 @@
 
   <div class="mobile-nav-content">
     <dv-shared-ui-language-selector
-      [language]="language()"
+      [language]="languageSig()"
       (languageChange)="handleLanguageChangeHeader($event)"
     />
   </div>
@@ -172,7 +172,7 @@
       <div ngbDropdownMenu aria-labelledby="userMenu">
         <dv-shared-ui-language-selector
           class="p-3"
-          [language]="language()"
+          [language]="languageSig()"
           (languageChange)="handleLanguageChangeHeader($event)"
         />
       </div>

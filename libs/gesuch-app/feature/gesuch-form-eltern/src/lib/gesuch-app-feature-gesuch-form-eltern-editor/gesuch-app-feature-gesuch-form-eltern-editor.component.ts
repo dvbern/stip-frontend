@@ -8,7 +8,6 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -81,7 +80,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   private store = inject(Store);
 
-  language = this.store.selectSignal(selectLanguage);
+  languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -96,14 +95,14 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       '',
       [
         Validators.required,
-        parseableDateValidatorForLocale(this.language(), 'date'),
+        parseableDateValidatorForLocale(this.languageSig(), 'date'),
         minDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MAX_AGE_ADULT),
           'date'
         ),
         maxDateValidatorForLocale(
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MIN_AGE_ADULT),
           'date'
         ),
@@ -119,7 +118,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       ...this.elternteil,
       geburtsdatum: parseBackendLocalDateAndPrint(
         this.elternteil.geburtsdatum,
-        this.language()
+        this.languageSig()
       ),
     });
   }
@@ -133,7 +132,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
         geschlecht: this.elternteil.geschlecht!,
         geburtsdatum: parseStringAndPrintForBackendLocalDate(
           this.form.getRawValue().geburtsdatum,
-          this.language(),
+          this.languageSig(),
           subYears(new Date(), MEDIUM_AGE_ADULT)
         )!,
         adresse: {
@@ -157,7 +156,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE_ADULT),
-      this.language()
+      this.languageSig()
     );
   }
 }
