@@ -56,10 +56,12 @@ import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
 const MEDIUM_AGE_GESUCHSSTELLER = 20;
+
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-person',
   standalone: true,
@@ -121,7 +123,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         Validators.pattern('[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}'),
       ],
     ],
-    telefonnummer: ['', [Validators.required]],
+    telefonnummer: [
+      '',
+      [Validators.required, sharedUtilValidatorTelefonNummer()],
+    ],
     geburtsdatum: [
       '',
       [

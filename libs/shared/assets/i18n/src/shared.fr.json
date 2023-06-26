@@ -34,5 +34,6 @@
   "shared.form-field.toggle-info-messages": "Toggle info messages",
   "shared.form.error.required": "This field is required, please provide a value",
   "shared.form.error.ahv": "Please provide valid social security number",
-  "shared.form.error.email": "L'adresse e-mail est invalide"
+  "shared.form.error.email": "L'adresse e-mail est invalide",
+  "shared.form.error.telefonnummer": "Le numéro de téléphone est invalide"
 }
