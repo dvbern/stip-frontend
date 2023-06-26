@@ -373,12 +373,12 @@
             </option>
             <option
               [value]="z.value"
-              *ngFor="let z of Zivilstand | keyvalue; trackBy: trackByIndex"
+              *ngFor="
+                let z of zivilstandValues | keyvalue;
+                trackBy: trackByIndex
+              "
             >
-              {{
-                'gesuch-app.form.person.zivilstand.' + (z.value | lowercase)
-                  | translate
-              }}
+              {{ 'gesuch-app.form.person.zivilstand.' + z.value | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

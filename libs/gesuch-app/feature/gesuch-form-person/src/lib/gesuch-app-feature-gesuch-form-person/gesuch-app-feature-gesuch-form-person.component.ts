@@ -95,6 +95,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly Anrede = Anrede;
   readonly Zivilstand = Zivilstand;
+  readonly zivilstandValues = Object.values(Zivilstand);
   readonly Wohnsitz = Wohnsitz;
   laenderSig = computed(() => {
     return this.view().laender;
@@ -155,6 +156,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
 
   constructor() {
+    console.log(this.zivilstandValues);
+    console.log(this.zivilstandValues[0]);
     effect(
       () => {
         const { gesuch } = this.view();
