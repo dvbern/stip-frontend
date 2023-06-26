@@ -1,1 +1,1 @@
-export * from './lib/shared-util-validator-telefon-nummer.service';
+export * from './lib/shared-util-validator-telefon-nummer';
