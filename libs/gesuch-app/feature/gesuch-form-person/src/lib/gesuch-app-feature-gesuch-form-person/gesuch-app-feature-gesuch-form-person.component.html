@@ -235,9 +235,13 @@
             type="text"
             dvSharedUiFormLabelTarget
             formControlName="email"
+            [pattern]="PATTERN_EMAIL"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'pattern'">
+            {{ 'shared.form.error.email' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
 

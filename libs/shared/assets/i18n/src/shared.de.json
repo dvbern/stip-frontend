@@ -39,6 +39,7 @@
   "shared.form.error.minDatePast": "Das Datum liegt zu weit in der Vergangenheit",
   "shared.form.error.maxDatePast": "Das Datum muss weiter in der Vergangenheit liegen",
   "shared.form.error.maxDateFuture": "Das Datum liegt zu weit in der Zukunft",
+  "shared.form.error.email": "Die eingegebene E-Mail ist ungültig",
   "shared.weiterangaben": "Weitere Angaben",
 
   "shared.kanton.ag": "Aargau",

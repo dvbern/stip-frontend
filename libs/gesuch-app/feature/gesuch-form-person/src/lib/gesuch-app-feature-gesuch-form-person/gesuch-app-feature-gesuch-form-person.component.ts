@@ -22,6 +22,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Anrede,
   MASK_SOZIALVERSICHERUNGSNUMMER,
+  PATTERN_EMAIL,
   PersonInAusbildungDTO,
   SharedModelGesuch,
   Wohnsitz,
@@ -88,6 +89,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
+
+  readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly Anrede = Anrede;
   readonly Zivilstand = Zivilstand;
   readonly Wohnsitz = Wohnsitz;
@@ -111,7 +114,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     identischerZivilrechtlicherWohnsitz: [true, []],
     zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
     zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
-    email: ['', [Validators.required]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern('[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}'),
+      ],
+    ],
     telefonnummer: ['', [Validators.required]],
     geburtsdatum: [
       '',
