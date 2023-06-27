@@ -17,11 +17,11 @@
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="a.value"
-          *ngFor="let a of bildungsart | keyvalue; trackBy: trackByIndex"
+          [value]="b"
+          *ngFor="let b of bildungsart; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' + a.value
+            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' + b
               | translate
           }}
         </option>
@@ -36,11 +36,11 @@
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="a.value"
-          *ngFor="let a of taetigskeitsart | keyvalue; trackBy: trackByIndex"
+          [value]="t"
+          *ngFor="let t of taetigskeitsart; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' + a.value
+            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' + t
               | translate
           }}
         </option>
@@ -159,12 +159,8 @@
         <option [value]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
-        <!-- TODO Werte sollten alle Kantone plus Ausland sein -->
-        <option
-          [value]="a.value"
-          *ngFor="let a of Kanton | keyvalue; trackBy: trackByIndex"
-        >
-          {{ 'shared.kanton.' + (a.value | lowercase) | translate }}
+        <option [value]="k" *ngFor="let k of kanton; trackBy: trackByIndex">
+          {{ 'shared.kanton.' + k | translate }}
         </option>
       </select>
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

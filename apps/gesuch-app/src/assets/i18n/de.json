@@ -150,7 +150,7 @@
 
   "gesuch-app.form.lebenslauf.item.dateStart": "Von",
   "gesuch-app.form.lebenslauf.item.dateEnd": "Bis",
-  "gesuch-app.form.lebenslauf.item.wohnsitz": "Zivilrechtlicher Wohnsitz",
+  "gesuch-app.form.lebenslauf.item.wohnsitz": "Wohnsitz",
   "gesuch-app.form.lebenslauf.form.error.monthYearMin": "Das Jahr darf nicht vor {{min}} liegen",
   "gesuch-app.form.lebenslauf.form.error.monthYearMax": "Das Jahr darf nicht nach {{max}} liegen",
   "gesuch-app.form.lebenslauf.form.error.monthYearAfterStart": "Das Ende muss nach dem Beginn sein",
