@@ -29,7 +29,10 @@ import {
   Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
-import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
+import {
+  DocumentOptions,
+  SharedPatternDocumentUploadComponent,
+} from '@dv/shared/pattern/document-upload';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -105,13 +108,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
-    return this.view().gesuch
-      ? {
-          resource: 'gesuch',
-          resourceId: this.view().gesuch.id!,
-          type: 'person',
-        }
-      : {};
+    return {
+      resource: 'gesuch',
+      resourceId: this.view().gesuch ? this.view().gesuch!.id! : null,
+      type: 'person',
+    } as DocumentOptions;
   });
 
   form = this.formBuilder.group({
