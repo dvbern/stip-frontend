@@ -30,6 +30,7 @@
   "gesuch-app.form.person.salutation.label": "Anrede",
   "gesuch-app.form.person.email.label": "E-Mail",
   "gesuch-app.form.person.nationality.label": "Nationalität",
+  "gesuch-app.form.person.auslaenderausweis": "Ausländerausweis benötigt",
   "gesuch-app.form.person.origin.label": "Heimatort",
   "gesuch-app.form.person.marital-status.label": "Zivilstand",
   "gesuch-app.form.person.marital-status.ledig.info": "Sofern Sie sich seit 5 Jahre oder länger in einer Beziehung befinden, wählen Sie bitte \"Konkubinat\" aus.",
