@@ -39,7 +39,7 @@
           </option>
           <option
             [value]="l.value"
-            *ngFor="let l of Ausbildungsland | keyvalue; trackBy: trackByIndex"
+            *ngFor="let l of ausbildungsland | keyvalue; trackBy: trackByIndex"
           >
             {{
               'gesuch-app.form.education.ausbildungsland.' + l.value | translate

@@ -89,7 +89,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   readonly Ausbildungpensum = AusbildungsPensum;
 
-  readonly Ausbildungsland = Ausbildungsland;
+  readonly ausbildungsland = Object.values(Ausbildungsland);
 
   languageSig = this.store.selectSignal(selectLanguage);
 
