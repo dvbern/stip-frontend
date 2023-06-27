@@ -91,8 +91,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     obhut: ['', [Validators.required]],
     obhutMutter: [<number | null>null, [Validators.required]],
     obhutVater: [<number | null>null, [Validators.required]],
-    sorgerechtMutter: [<number | null>null, [Validators.required]],
-    sorgerechtVater: [<number | null>null, [Validators.required]],
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -123,7 +121,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       this.form.controls.mutterUnbekanntVerstorben.valueChanges
     );
     const obhut$ = toSignal(this.form.controls.obhut.valueChanges);
-    const sorgerecht$ = toSignal(this.form.controls.sorgerecht.valueChanges);
 
     effect(
       () => {
@@ -235,21 +232,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
         } else {
           this.setInvisible(this.form.controls.obhutVater);
           this.setInvisible(this.form.controls.obhutMutter);
-        }
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
-        const sorgerecht = sorgerecht$();
-
-        if (sorgerecht === Elternschaftsteilung.GEMEINSAM) {
-          this.setVisible(this.form.controls.sorgerechtVater);
-          this.setVisible(this.form.controls.sorgerechtMutter);
-        } else {
-          this.setInvisible(this.form.controls.sorgerechtVater);
-          this.setInvisible(this.form.controls.sorgerechtMutter);
         }
       },
       { allowSignalWrites: true }
