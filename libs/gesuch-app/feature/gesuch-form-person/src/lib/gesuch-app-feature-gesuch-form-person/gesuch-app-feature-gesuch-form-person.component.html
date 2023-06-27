@@ -400,12 +400,9 @@
             </option>
             <option
               [value]="z.value"
-              *ngFor="let z of Wohnsitz | keyvalue; trackBy: trackByIndex"
+              *ngFor="let z of wohnsitz | keyvalue; trackBy: trackByIndex"
             >
-              {{
-                'gesuch-app.form.person.wohnsitz.' + (z.value | lowercase)
-                  | translate
-              }}
+              {{ 'gesuch-app.form.person.wohnsitz.' + z.value | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
