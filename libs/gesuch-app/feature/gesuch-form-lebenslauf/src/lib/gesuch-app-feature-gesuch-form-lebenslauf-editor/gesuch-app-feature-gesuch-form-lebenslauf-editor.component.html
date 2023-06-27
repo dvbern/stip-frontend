@@ -18,11 +18,11 @@
         </option>
         <option
           [value]="a.value"
-          *ngFor="let a of Bildungsart | keyvalue; trackBy: trackByIndex"
+          *ngFor="let a of bildungsart | keyvalue; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' +
-              (a.value | lowercase) | translate
+            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' + a.value
+              | translate
           }}
         </option>
       </select>
@@ -37,11 +37,11 @@
         </option>
         <option
           [value]="a.value"
-          *ngFor="let a of Taetigskeitsart | keyvalue; trackBy: trackByIndex"
+          *ngFor="let a of taetigskeitsart | keyvalue; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' +
-              (a.value | lowercase) | translate
+            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' + a.value
+              | translate
           }}
         </option>
       </select>

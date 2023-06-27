@@ -205,6 +205,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   protected readonly Kanton = Kanton;
-  protected readonly Bildungsart = Bildungsart;
-  protected readonly Taetigskeitsart = Taetigskeitsart;
+  protected readonly bildungsart = Object.values(Bildungsart);
+  protected readonly taetigskeitsart = Object.values(Taetigskeitsart);
 }
