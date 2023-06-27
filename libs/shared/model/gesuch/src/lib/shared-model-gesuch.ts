@@ -73,4 +73,4 @@ export enum GesuchsperiodeSemester {
   FRUEHLING = 'FRUEHLING',
 }
 
-export const PATTERN_EMAIL = '[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}';
+export const PATTERN_EMAIL = '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$';
