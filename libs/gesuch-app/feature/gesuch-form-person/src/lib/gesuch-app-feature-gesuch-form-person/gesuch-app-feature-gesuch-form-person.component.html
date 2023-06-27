@@ -323,22 +323,56 @@
         </dv-shared-ui-form-field>
       </div>
       <div class="row g-4 mt-1">
-        <!-- HEIMATORT -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.origin.label' | translate
-          }}</dv-shared-ui-form-label>
-          <input
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            formControlName="heimatort"
-          />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+        <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
+        <div *ngIf="form.controls.niederlassungsstatus.enabled">
+          <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+            <dv-shared-ui-form-label>{{
+              'gesuch-app.form.person.niederlassungsstatus.label' | translate
+            }}</dv-shared-ui-form-label>
 
+            <select
+              class="form-select"
+              dvSharedUiFormLabelTarget
+              formControlName="niederlassungsstatus"
+            >
+              <option [value]="null" disabled selected>
+                {{ 'shared.form.select.empty' | translate }}
+              </option>
+              <option
+                [value]="n.value"
+                *ngFor="
+                  let n of niederlassungStatus | keyvalue;
+                  trackBy: trackByIndex
+                "
+              >
+                {{
+                  'gesuch-app.form.person.niederlassungsstatus.' + n.value
+                    | translate
+                }}
+              </option>
+            </select>
+
+            <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field>
+        </div>
+        <div *ngIf="form.controls.heimatort.enabled">
+          <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+            <dv-shared-ui-form-label>{{
+              'gesuch-app.form.person.origin.label' | translate
+            }}</dv-shared-ui-form-label>
+            <input
+              class="form-control"
+              type="text"
+              dvSharedUiFormLabelTarget
+              formControlName="heimatort"
+            />
+            <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </dv-shared-ui-form-message>
+          </dv-shared-ui-form-field>
+        </div>
         <!-- VORMUNDSCHAFT -->
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
