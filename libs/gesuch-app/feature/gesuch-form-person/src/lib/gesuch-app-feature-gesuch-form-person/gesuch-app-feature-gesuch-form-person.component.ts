@@ -19,6 +19,7 @@ import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { selectLanguage } from '@dv/shared/data-access/language';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
   Anrede,
   MASK_SOZIALVERSICHERUNGSNUMMER,
@@ -29,7 +30,10 @@ import {
   Wohnsitz,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
-import { SharedPatternDocumentUploadComponent } from '@dv/shared/pattern/document-upload';
+import {
+  DocumentOptions,
+  SharedPatternDocumentUploadComponent,
+} from '@dv/shared/pattern/document-upload';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -49,6 +53,7 @@ import {
   parseBackendLocalDateAndPrint,
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
+import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -56,8 +61,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
-import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
-import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -102,6 +105,15 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
+
+  nationalitaetCH = 'CH';
+  auslaenderausweisDocumentOptions = computed(() => {
+    return {
+      resource: 'gesuch',
+      resourceId: this.view().gesuch ? this.view().gesuch!.id! : null,
+      type: 'person',
+    } as DocumentOptions;
+  });
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
@@ -157,6 +169,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
 
   constructor() {
+    // patch form value
     effect(
       () => {
         const { gesuch } = this.view();
@@ -178,20 +191,23 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     const zivilrechtlichChanged$ = toSignal(
       this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
     );
-    effect(() => {
-      const zivilrechtlichIdentisch = zivilrechtlichChanged$();
-      if (zivilrechtlichIdentisch) {
-        this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
-        this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
-        this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
-        this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
-      } else {
-        this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
-        this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
-      }
-      this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
-      this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
-    });
+    effect(
+      () => {
+        const zivilrechtlichIdentisch = zivilrechtlichChanged$();
+        if (zivilrechtlichIdentisch) {
+          this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
+          this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
+          this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
+          this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
+        } else {
+          this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
+          this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
+        }
+        this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
+        this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
 
     const nationalitaetChanged$ = toSignal(
       this.form.controls.nationalitaet.valueChanges

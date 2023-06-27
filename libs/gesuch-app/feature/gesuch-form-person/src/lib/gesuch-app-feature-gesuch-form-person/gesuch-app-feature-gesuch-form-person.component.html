@@ -125,25 +125,6 @@
       </div>
 
       <div class="row g-4 mt-1">
-        <!-- Auslaenderausweis -->
-        <div class="col-12 col-md-6 col-xl-4">
-          <div
-            class="border-2 border rounded-3 bg-white p-4"
-            style="border-style: dashed !important"
-          >
-            <h4>Ausländerausweis benötigt</h4>
-            <div>
-              Datei(en) hineinziehen<br />
-              oder
-            </div>
-            <button type="button" class="btn btn-outline-primary">
-              Dateien durchsuchen
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-4 mt-1">
         <!-- Wohnsitz -->
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
@@ -266,6 +247,7 @@
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
+
       <div class="row g-4 mt-1">
         <!-- GEBURTSDATUM -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
@@ -321,7 +303,24 @@
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
+
+        <!-- Auslaenderausweis -->
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          *ngIf="form.controls.nationalitaet.value !== nationalitaetCH"
+        >
+          <div class="rounded-3 bg-white shadow p-4">
+            <h4>
+              {{ 'gesuch-app.form.person.auslaenderausweis' | translate }}
+            </h4>
+            <dv-shared-pattern-document-upload
+              *ngIf="view().gesuch"
+              [options]="auslaenderausweisDocumentOptions()"
+            />
+          </div>
+        </div>
       </div>
+
       <div class="row g-4 mt-1">
         <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
         <div *ngIf="form.controls.niederlassungsstatus.enabled">
@@ -565,12 +564,4 @@
       </div>
     </form>
   </div>
-  <dv-shared-pattern-document-upload
-    *ngIf="view().gesuch"
-    [options]="{
-      resource: 'gesuch',
-      resourceId: view().gesuch?.id!,
-      type: 'person'
-    }"
-  />
 </dv-gesuch-app-pattern-gesuch-step-layout>
