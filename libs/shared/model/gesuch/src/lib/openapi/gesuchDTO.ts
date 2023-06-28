@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AusbildungContainerDTO } from './ausbildungContainerDTO';
-import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
-import { FallDTO } from './fallDTO';
-import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
-import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
-import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
-import { PartnerContainerDTO } from './partnerContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
-import { ElternContainerDTO } from './elternContainerDTO';
+import { FallDTO } from './fallDTO';
+import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
+import { AusbildungContainerDTO } from './ausbildungContainerDTO';
 
 export interface GesuchDTO {
   id?: string;
@@ -28,11 +23,6 @@ export interface GesuchDTO {
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
   ausbildungContainer?: AusbildungContainerDTO;
   familiensituationContainer?: FamiliensituationContainerDTO;
-  auszahlungContainer?: AuszahlungContainerDTO;
   gesuchStatus: Gesuchstatus;
-  elternContainers: ElternContainerDTO[];
   gesuchNummer: number;
-  partnerContainer: PartnerContainerDTO;
-  geschwisterContainers: GeschwisterContainerDTO[];
-  lebenslaufItemContainers: LebenslaufItemContainerDTO[];
 }

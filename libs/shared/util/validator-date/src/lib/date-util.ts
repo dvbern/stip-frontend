@@ -1,14 +1,9 @@
-import {
-  BackendLocalDateTS,
-  fromBackendLocalDate,
-  toBackendLocalDate,
-} from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
 import { DateFormatVariant, getFormatDef, parseDateForVariant } from '../index';
 import { format, isValid, parse } from 'date-fns';
 
 export function parseBackendLocalDateAndPrint(
-  value: BackendLocalDateTS | null | undefined,
+  value: string | null | undefined,
   locale: Language
 ) {
   return formatBackendLocalDate(value, locale);
@@ -23,13 +18,13 @@ export function printDate(
 }
 
 export function formatBackendLocalDate(
-  value: BackendLocalDateTS | null | undefined,
+  value: string | null | undefined,
   locale: Language
 ) {
   if (value === null || value === undefined) {
     return undefined;
   }
-  const date = fromBackendLocalDate(value);
+  const date = new Date(value);
   if (date === undefined) {
     return undefined;
   }
@@ -37,7 +32,7 @@ export function formatBackendLocalDate(
 }
 
 export function parseStringAndPrintForBackendLocalDate(
-  value: BackendLocalDateTS | null | undefined,
+  value: string | null | undefined,
   locale: Language,
   referenceDate: Date
 ) {
@@ -89,7 +84,7 @@ export function asBackendLocalDate(
   if (date === undefined || !isValid(date)) {
     return undefined;
   }
-  return toBackendLocalDate(date);
+  return date.toDateString();
 }
 
 export function dateFromMonthYearString(monthYearString: string) {
