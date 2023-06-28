@@ -28,6 +28,7 @@ import {
   SharedModelGesuch,
   Wohnsitz,
   Zivilstand,
+  Sprache,
 } from '@dv/shared/model/gesuch';
 import {
   DocumentOptions,
@@ -98,6 +99,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly Anrede = Anrede;
   readonly Zivilstand = Zivilstand;
+  readonly Sprache = Sprache;
   readonly zivilstandValues = Object.values(Zivilstand);
   readonly wohnsitz = Object.values(Wohnsitz);
   laenderSig = computed(() => {
@@ -165,6 +167,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     sozialhilfebeitraege: new FormControl<boolean | null>(null, []),
     quellenbesteuerung: new FormControl<boolean | null>(null, []),
     digitaleKommunikation: [true, []],
+    korrespondenzSprache: ['', [Validators.required]],
   });
 
   constructor() {

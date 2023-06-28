@@ -15,6 +15,11 @@ import { Gesuchstatus } from './gesuchstatus';
 import { FallDTO } from './fallDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
+import { PartnerContainerDTO } from './partnerContainerDTO';
+import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
+import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
+import { ElternContainerDTO } from './elternContainerDTO';
+import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
 
 export interface GesuchDTO {
   id?: string;
@@ -25,4 +30,9 @@ export interface GesuchDTO {
   familiensituationContainer?: FamiliensituationContainerDTO;
   gesuchStatus: Gesuchstatus;
   gesuchNummer: number;
+  partnerContainer: PartnerContainerDTO;
+  geschwisterContainers: GeschwisterContainerDTO[];
+  lebenslaufItemContainers: LebenslaufItemContainerDTO[];
+  auszahlungContainer?: AuszahlungContainerDTO;
+  elternContainers: ElternContainerDTO[];
 }

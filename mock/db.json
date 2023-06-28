@@ -221,7 +221,8 @@
           "wohnsitz": "ELTERN",
           "sozialhilfebeitraege": false,
           "quellenbesteuerung": true,
-          "digitaleKommunikation": false
+          "digitaleKommunikation": false,
+          "korrespondenzSprache": "DEUTSCH"
         }
       }
     },
