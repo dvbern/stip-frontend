@@ -1,10 +1,10 @@
 :host {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  > span {
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    background-color: #eaf4fe;
-  }
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  background-color: #eaf4fe;
 }

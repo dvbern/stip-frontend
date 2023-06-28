@@ -1,4 +1,4 @@
-<h2>
+<h2 class="mt-4">
   {{
     'gesuch-app.form.eltern.' +
       (elternteil.geschlecht === Anrede.FRAU ? 'mutter' : 'vater') +
@@ -7,8 +7,8 @@
 </h2>
 
 <form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
-  <div class="row g-2">
-    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-6">
+  <div class="row g-4 my-2">
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.lastname.label' | translate
       }}</dv-shared-ui-form-label>
@@ -22,7 +22,7 @@
         {{ 'shared.form.error.required' | translate }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
-    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-6">
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.firstname.label' | translate
       }}</dv-shared-ui-form-label>
@@ -38,17 +38,17 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <div class="row g-4 mt-1">
+  <div class="row g-4 my-2">
     <dv-shared-ui-form-address
-      class="col-12"
+      class="col-12 col-xl-8"
       [group]="form.controls.adresse"
       [laender]="laender"
       [language]="languageSig()"
     />
   </div>
 
-  <div class="row">
-    <dv-shared-ui-form-field class="col-12" [isCheckbox]="true">
+  <div class="row g-4 my-2">
+    <dv-shared-ui-form-field class="col-12 col-xl-8" [isCheckbox]="true">
       <dv-shared-ui-form-label
         >{{
           'gesuch-app.form.shared.identical-civil-residence.label' | translate
@@ -65,13 +65,14 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <div class="row mt-2">
-    <dv-shared-ui-form-field class="col-12">
+  <div class="row g-4 my-2">
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.social-insurance-number.label' | translate
       }}</dv-shared-ui-form-label>
       <input
         formControlName="sozialversicherungsnummer"
+        dvSharedUiFormLabelTarget
         class="form-control"
         placeholder="756.xxxx.xxxx.xx"
         [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
@@ -85,11 +86,11 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <h3 class="py-4">{{ 'shared.weiterangaben' | translate }}</h3>
+  <h3 class="pt-4">{{ 'shared.weiterangaben' | translate }}</h3>
 
-  <div class="row g-2">
+  <div class="row g-4 my-2">
     <!-- GEBURTSDATUM -->
-    <dv-shared-ui-form-field class="col-12 col-xl-6">
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.birthday.label' | translate
       }}</dv-shared-ui-form-label>
@@ -117,7 +118,7 @@
         {{ 'shared.form.error.maxDatePast' | translate }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
-    <dv-shared-ui-form-field class="col-12 col-xl-6">
+    <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.shared.phone.label' | translate
       }}</dv-shared-ui-form-label>
@@ -128,7 +129,7 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <div class="row mt-2">
+  <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.eltern.ausweisbFluechtling.label' | translate
@@ -161,7 +162,7 @@
       </div>
     </dv-shared-ui-form-field>
   </div>
-  <div class="row mt-2">
+  <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.eltern.ergaenzungsleistungAusbezahlt.label' | translate
@@ -194,7 +195,7 @@
       </div>
     </dv-shared-ui-form-field>
   </div>
-  <div class="row g-4 mt-2">
+  <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12">
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.eltern.sozialhilfebeitraegeAusbezahlt.label'
@@ -232,7 +233,19 @@
     </dv-shared-ui-form-field>
   </div>
 
+  <!-- buttons -->
   <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <button
+      *ngIf="elternteil.id"
+      type="button"
+      class="btn btn-outline-primary d-flex align-items-center"
+      (click)="handleDelete()"
+      [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
+    >
+      <i class="material-symbols-rounded me-2">delete</i>
+      {{ 'gesuch-app.form.delete' | translate }}
+    </button>
+
     <button
       type="button"
       class="btn btn-outline-primary"

@@ -1,4 +1,5 @@
 <dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.ELTERN">
+  <!-- LOADING -->
   <div
     data-testid="form-person-loading"
     *ngIf="view$().loading"
@@ -9,63 +10,44 @@
     </div>
   </div>
 
+  <!-- EDITOR -->
   <dv-gesuch-app-feature-gesuch-form-eltern-editor
-    *ngIf="editedParent"
-    [elternteil]="editedParent"
+    *ngIf="editedElternteil"
+    [elternteil]="editedElternteil"
     [laender]="laenderSig()"
     (saveTriggered)="handleEditorSave($event)"
     (closeTriggered)="handleEditorClose()"
+    (deleteTriggered)="handleDeleteElternteil($event)"
   />
 
-  <ng-container *ngIf="!editedParent">
-    <div class="row g-4">
-      <div class="col-12 col-md-6">
-        <div
-          class="card border-2 justify-content-center align-items-center"
-          *ngIf="view$().isVaterPlaceholder"
-        >
-          <div class="card-body">
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="handleAddVater()"
-            >
-              Add vater
-            </button>
-          </div>
-        </div>
-      </div>
+  <!-- OVERVIEW -->
+  <ng-container *ngIf="!editedElternteil && !view$().loading">
+    <div class="row g-4 mt-4">
+      <dv-gesuch-app-feature-gesuch-form-eltern-card
+        *ngIf="view$().expectVater"
+        class="col-12 col-md-6 col-xl-4"
+        [elternteil]="view$().vater"
+        [geschlecht]="Anrede.HERR"
+        [translationkey]="'vater'"
+        (addTriggered)="handleAddElternteil($event)"
+        (editTriggered)="handleEdit($event)"
+      />
 
-      <div class="col-12 col-md-6">
-        <div
-          class="card border-2 justify-content-center align-items-center"
-          *ngIf="view$().isMutterPlaceholder"
-        >
-          <div class="card-body">
-            <button type="button" class="btn btn-primary">Add mutter</button>
-          </div>
-        </div>
-      </div>
+      <dv-gesuch-app-feature-gesuch-form-eltern-card
+        *ngIf="view$().expectMutter"
+        class="col-12 col-md-6 col-xl-4"
+        [elternteil]="view$().mutter"
+        [geschlecht]="Anrede.FRAU"
+        [translationkey]="'mutter'"
+        (addTriggered)="handleAddElternteil($event)"
+        (editTriggered)="handleEdit($event)"
+      />
 
-      <div
-        class="col-12 col-md-6"
-        *ngFor="let parent of view$().elterns; trackBy: trackByIndex"
-      >
-        <div class="card border-2">
-          <div class="card-body">
-            {{ parent.name }} {{ parent.vorname }}
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="handleEdit(parent)"
-            >
-              Edit
-            </button>
-            <button type="button" class="btn btn-danger">Remove</button>
-          </div>
-        </div>
+      <div *ngIf="!view$().expectVater && !view$().expectMutter">
+        {{ 'gesuch-app.form.eltern.none' | translate }}
       </div>
     </div>
+
     <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
       <button type="button" class="btn btn-primary" (click)="handleContinue()">
         {{ 'gesuch-app.form.gonext' | translate }}

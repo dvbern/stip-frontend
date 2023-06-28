@@ -1,0 +1,45 @@
+<button
+  type="button"
+  class="card shadow-sm border-1 w-100"
+  (click)="handleClick()"
+>
+  <div class="card-body text-start w-100">
+    <!-- placeholder -->
+    <div *ngIf="!elternteil as parent">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h4 class="d-flex align-items-center m-0">
+          <i class="material-symbols-rounded me-3 fs-1">{{
+            geschlecht === 'FRAU' ? 'woman' : 'man'
+          }}</i>
+          {{
+            'gesuch-app.form.eltern.' + translationkey + '.title' | translate
+          }}
+        </h4>
+        <i class="material-symbols-rounded fs-2">edit</i>
+      </div>
+    </div>
+
+    <!-- display Elternteil -->
+    <div *ngIf="elternteil as parent">
+      <div class="d-flex justify-content-between align-items-center w-100 mb-4">
+        <h4 class="d-flex align-items-center m-0">
+          {{ parent.name }} {{ parent.vorname }}
+        </h4>
+        <span class="flex-grow-1"></span>
+        <dv-shared-ui-icon-chip style="background-color: var(--dv-green)">
+          <i class="material-symbols-rounded fs-2 text-white">check</i>
+        </dv-shared-ui-icon-chip>
+      </div>
+      <div class="d-flex justify-content-between align-items-end w-100">
+        <small *ngIf="parent.adresse as adresse">
+          <span *ngIf="adresse.coAdresse">{{ adresse.coAdresse }}<br /></span>
+          {{ adresse.strasse }} {{ adresse.hausnummer }}<br />
+          {{ adresse.plz }} {{ adresse.ort }}<br />
+          {{ adresse.land }}
+          <!-- TODO land translate -->
+        </small>
+        <i class="material-symbols-rounded me-2 fs-2">edit</i>
+      </div>
+    </div>
+  </div>
+</button>

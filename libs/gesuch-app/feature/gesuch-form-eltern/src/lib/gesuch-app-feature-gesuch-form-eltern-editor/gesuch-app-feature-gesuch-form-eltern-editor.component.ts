@@ -72,6 +72,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   @Input({ required: true }) elternteil!: Partial<ElternDTO>;
   @Output() saveTriggered = new EventEmitter<ElternDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
+  @Output() deleteTriggered = new EventEmitter<string>();
   @Input({ required: true }) laender!: LandDTO[];
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
@@ -141,6 +142,12 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
           land: this.form.getRawValue().adresse.land as Land,
         } as AdresseDTO,
       } as ElternDTO);
+    }
+  }
+
+  handleDelete() {
+    if (this.elternteil?.id) {
+      this.deleteTriggered.emit(this.elternteil!.id);
     }
   }
 
