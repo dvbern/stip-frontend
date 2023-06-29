@@ -95,11 +95,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
-  readonly Anrede = Anrede;
+  readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
   readonly zivilstandValues = Object.values(Zivilstand);
-  readonly wohnsitz = Object.values(Wohnsitz);
-  readonly niederlassungsStatusValue = Object.values(Niederlassungsstatus);
+  readonly wohnsitzValues = Object.values(Wohnsitz);
+  readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
   laenderSig = computed(() => {
     return this.view().laender;
   });

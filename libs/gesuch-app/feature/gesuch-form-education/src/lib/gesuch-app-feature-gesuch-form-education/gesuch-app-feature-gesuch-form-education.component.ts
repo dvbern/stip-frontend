@@ -87,9 +87,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private formUtils = inject(SharedUtilFormService);
   currentYear = getYear(Date.now());
 
-  readonly Ausbildungpensum = AusbildungsPensum;
-
-  readonly ausbildungsland = Object.values(Ausbildungsland);
+  readonly ausbildungslandValues = Object.values(Ausbildungsland);
+  readonly ausbildungspensumValues = Object.values(AusbildungsPensum);
 
   languageSig = this.store.selectSignal(selectLanguage);
 

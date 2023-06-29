@@ -65,12 +65,11 @@
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="a.value"
-              *ngFor="let a of Anrede | keyvalue; trackBy: trackByIndex"
+              [value]="a"
+              *ngFor="let a of anredeValues; trackBy: trackByIndex"
             >
               {{
-                'shared.form.select.salutation.' + (a.value | lowercase)
-                  | translate
+                'shared.form.select.salutation.' + (a | lowercase) | translate
               }}
             </option>
           </select>
@@ -338,15 +337,14 @@
                 {{ 'shared.form.select.empty' | translate }}
               </option>
               <option
-                [value]="n.value"
+                [value]="n"
                 *ngFor="
-                  let n of niederlassungsStatusValue | keyvalue;
+                  let n of niederlassungsStatusValues;
                   trackBy: trackByIndex
                 "
               >
                 {{
-                  'gesuch-app.form.person.niederlassungsstatus.' + n.value
-                    | translate
+                  'gesuch-app.form.person.niederlassungsstatus.' + n | translate
                 }}
               </option>
             </select>
@@ -431,7 +429,7 @@
             </option>
             <option
               [value]="z"
-              *ngFor="let z of wohnsitz; trackBy: trackByIndex"
+              *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
             >
               {{ 'gesuch-app.form.person.wohnsitz.' + z | translate }}
             </option>
