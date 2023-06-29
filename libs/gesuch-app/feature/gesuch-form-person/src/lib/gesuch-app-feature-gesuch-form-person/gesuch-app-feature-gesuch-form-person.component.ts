@@ -215,7 +215,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     effect(
       () => {
         const nationalitaetChanged = nationalitaetChanged$();
-        if (this.form.controls.nationalitaet.value === 'CH') {
+        if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
           this.form.controls.heimatort.enable();
           this.form.controls.niederlassungsstatus.patchValue('');
           this.form.controls.niederlassungsstatus.disable();
