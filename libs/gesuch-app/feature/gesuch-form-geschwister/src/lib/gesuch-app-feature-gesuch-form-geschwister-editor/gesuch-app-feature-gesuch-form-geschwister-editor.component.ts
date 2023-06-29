@@ -146,6 +146,6 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   }
 
   protected readonly Anrede = Anrede;
-  protected readonly Wohnsitz = Wohnsitz;
-  protected readonly Ausbildungssituation = Ausbildungssituation;
+  protected readonly wohnsitz = Object.values(Wohnsitz);
+  protected readonly ausbildungssituation = Object.values(Ausbildungssituation);
 }

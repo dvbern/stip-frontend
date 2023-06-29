@@ -405,13 +405,10 @@
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="z.value"
-              *ngFor="
-                let z of zivilstandValues | keyvalue;
-                trackBy: trackByIndex
-              "
+              [value]="z"
+              *ngFor="let z of zivilstandValues; trackBy: trackByIndex"
             >
-              {{ 'gesuch-app.form.person.zivilstand.' + z.value | translate }}
+              {{ 'gesuch-app.form.person.zivilstand.' + z | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -433,13 +430,10 @@
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="z.value"
-              *ngFor="let z of Wohnsitz | keyvalue; trackBy: trackByIndex"
+              [value]="z"
+              *ngFor="let z of wohnsitz; trackBy: trackByIndex"
             >
-              {{
-                'gesuch-app.form.person.wohnsitz.' + (z.value | lowercase)
-                  | translate
-              }}
+              {{ 'gesuch-app.form.person.wohnsitz.' + z | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

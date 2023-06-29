@@ -74,14 +74,8 @@
         <option [value]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
-        <option
-          [value]="a.value"
-          *ngFor="let a of Wohnsitz | keyvalue; trackBy: trackByIndex"
-        >
-          {{
-            'gesuch-app.form.geschwister.wohnsitz.select.' +
-              (a.value | lowercase) | translate
-          }}
+        <option [value]="a" *ngFor="let a of wohnsitz; trackBy: trackByIndex">
+          {{ 'gesuch-app.form.geschwister.wohnsitz.select.' + a | translate }}
         </option>
       </select>
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -98,23 +92,20 @@
       }}</dv-shared-ui-form-label>
       <div
         class="form-check"
-        *ngFor="let a of Ausbildungssituation | keyvalue; trackBy: trackByIndex"
+        *ngFor="let a of ausbildungssituation; trackBy: trackByIndex"
       >
         <input
           formControlName="ausbildungssituation"
-          [value]="a.value"
+          [value]="a"
           class="form-check-input"
           type="radio"
           name="ausbildungssituation"
-          [id]="'elternVerheiratetZusammen' + a.key"
+          [id]="'elternVerheiratetZusammen' + a"
         />
-        <label
-          class="form-check-label"
-          [for]="'elternVerheiratetZusammen' + a.key"
-        >
+        <label class="form-check-label" [for]="'elternVerheiratetZusammen' + a">
           {{
-            'gesuch-app.form.geschwister.ausbildungssituation.select.' +
-              a.key.toLowerCase() | translate
+            'gesuch-app.form.geschwister.ausbildungssituation.select.' + a
+              | translate
           }}
         </label>
       </div>
