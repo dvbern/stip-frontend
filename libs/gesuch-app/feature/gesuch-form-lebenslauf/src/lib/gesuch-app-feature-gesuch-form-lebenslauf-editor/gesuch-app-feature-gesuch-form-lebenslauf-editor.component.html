@@ -18,7 +18,7 @@
         </option>
         <option
           [value]="b"
-          *ngFor="let b of bildungsart; trackBy: trackByIndex"
+          *ngFor="let b of bildungsartValues; trackBy: trackByIndex"
         >
           {{
             'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' + b
@@ -37,7 +37,7 @@
         </option>
         <option
           [value]="t"
-          *ngFor="let t of taetigskeitsart; trackBy: trackByIndex"
+          *ngFor="let t of taetigskeitsartValues; trackBy: trackByIndex"
         >
           {{
             'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' + t
@@ -159,7 +159,10 @@
         <option [value]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
-        <option [value]="k" *ngFor="let k of kanton; trackBy: trackByIndex">
+        <option
+          [value]="k"
+          *ngFor="let k of kantonValues; trackBy: trackByIndex"
+        >
           {{ 'shared.kanton.' + k | translate }}
         </option>
       </select>

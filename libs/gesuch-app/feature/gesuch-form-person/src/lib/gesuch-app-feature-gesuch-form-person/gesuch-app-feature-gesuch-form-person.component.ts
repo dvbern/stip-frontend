@@ -23,6 +23,7 @@ import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stam
 import {
   Anrede,
   MASK_SOZIALVERSICHERUNGSNUMMER,
+  Niederlassungsstatus,
   PATTERN_EMAIL,
   PersonInAusbildungDTO,
   SharedModelGesuch,
@@ -92,14 +93,13 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
-
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
-
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
-  readonly Anrede = Anrede;
+  readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
   readonly zivilstandValues = Object.values(Zivilstand);
-  readonly wohnsitz = Object.values(Wohnsitz);
+  readonly wohnsitzValues = Object.values(Wohnsitz);
+  readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
   laenderSig = computed(() => {
     return this.view().laender;
   });
@@ -159,6 +159,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ],
     nationalitaet: ['', [Validators.required]],
     heimatort: ['', [Validators.required]],
+    niederlassungsstatus: ['', [Validators.required]],
     vormundschaft: new FormControl<boolean | null>(null, []),
     zivilstand: ['', [Validators.required]],
     wohnsitz: ['', [Validators.required]],
@@ -187,8 +188,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-
-    // identischer zivilrechtilicher Wohnsitz -> enable/disable additional fields
     const zivilrechtlichChanged$ = toSignal(
       this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
     );
@@ -206,6 +205,30 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         }
         this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
         this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
+
+    const nationalitaetChanged$ = toSignal(
+      this.form.controls.nationalitaet.valueChanges
+    );
+    effect(
+      () => {
+        const nationalitaetChanged = nationalitaetChanged$();
+        if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
+          this.form.controls.heimatort.enable();
+          this.form.controls.niederlassungsstatus.patchValue('');
+          this.form.controls.niederlassungsstatus.disable();
+        } else if (nationalitaetChanged === undefined) {
+          this.form.controls.niederlassungsstatus.patchValue('');
+          this.form.controls.niederlassungsstatus.disable();
+          this.form.controls.heimatort.patchValue('');
+          this.form.controls.heimatort.disable();
+        } else {
+          this.form.controls.heimatort.patchValue('');
+          this.form.controls.heimatort.disable();
+          this.form.controls.niederlassungsstatus.enable();
+        }
       },
       { allowSignalWrites: true }
     );

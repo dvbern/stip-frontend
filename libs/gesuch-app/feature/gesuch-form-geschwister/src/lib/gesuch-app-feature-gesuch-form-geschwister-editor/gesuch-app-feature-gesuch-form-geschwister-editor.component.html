@@ -74,7 +74,10 @@
         <option [value]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
-        <option [value]="a" *ngFor="let a of wohnsitz; trackBy: trackByIndex">
+        <option
+          [value]="a"
+          *ngFor="let a of wohnsitzValues; trackBy: trackByIndex"
+        >
           {{ 'gesuch-app.form.geschwister.wohnsitz.select.' + a | translate }}
         </option>
       </select>
@@ -92,7 +95,7 @@
       }}</dv-shared-ui-form-label>
       <div
         class="form-check"
-        *ngFor="let a of ausbildungssituation; trackBy: trackByIndex"
+        *ngFor="let a of ausbildungssituationValues; trackBy: trackByIndex"
       >
         <input
           formControlName="ausbildungssituation"
