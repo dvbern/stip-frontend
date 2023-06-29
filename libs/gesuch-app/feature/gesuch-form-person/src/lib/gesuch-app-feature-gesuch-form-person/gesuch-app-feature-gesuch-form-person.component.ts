@@ -99,7 +99,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly Zivilstand = Zivilstand;
   readonly zivilstandValues = Object.values(Zivilstand);
   readonly wohnsitz = Object.values(Wohnsitz);
-  readonly niederlassungStatus = Object.values(Niederlassungsstatus);
+  readonly niederlassungsStatusValue = Object.values(Niederlassungsstatus);
   laenderSig = computed(() => {
     return this.view().laender;
   });
