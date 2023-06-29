@@ -247,19 +247,25 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       { allowSignalWrites: true }
     );
 
-    effect(() => {
-      const obhutMutter = obhutMutterSig();
-      if (obhutMutter !== undefined && obhutMutter !== null) {
-        this.form.controls.obhutVater.setValue(100 - obhutMutter);
-      }
-    });
+    effect(
+      () => {
+        const obhutMutter = obhutMutterSig();
+        if (obhutMutter !== undefined && obhutMutter !== null) {
+          this.form.controls.obhutVater.setValue(100 - obhutMutter);
+        }
+      },
+      { allowSignalWrites: true }
+    );
 
-    effect(() => {
-      const obhutVater = obhutVaterSig();
-      if (obhutVater !== undefined && obhutVater !== null) {
-        this.form.controls.obhutMutter.setValue(100 - obhutVater);
-      }
-    });
+    effect(
+      () => {
+        const obhutVater = obhutVaterSig();
+        if (obhutVater !== undefined && obhutVater !== null) {
+          this.form.controls.obhutMutter.setValue(100 - obhutVater);
+        }
+      },
+      { allowSignalWrites: true }
+    );
 
     effect(
       () => {
