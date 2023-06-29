@@ -15,7 +15,6 @@ import {
 } from '@angular/forms';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
-  Anrede,
   Ausbildungssituation,
   GeschwisterDTO,
   Wohnsitz,
@@ -145,7 +144,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
     );
   }
 
-  protected readonly Anrede = Anrede;
-  protected readonly wohnsitz = Object.values(Wohnsitz);
-  protected readonly ausbildungssituation = Object.values(Ausbildungssituation);
+  protected readonly wohnsitzValues = Object.values(Wohnsitz);
+  protected readonly ausbildungssituationValues =
+    Object.values(Ausbildungssituation);
 }
