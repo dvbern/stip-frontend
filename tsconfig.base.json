@@ -66,6 +66,7 @@
       "@dv/shared/util-fn/error-transformer": ["libs/shared/util-fn/error-transformer/src/index.ts"],
       "@dv/shared/util-fn/type-guards": ["libs/shared/util-fn/type-guards/src/index.ts"],
       "@dv/shared/util/form": ["libs/shared/util/form/src/index.ts"],
+      "@dv/shared/util/maskito-util": ["libs/shared/util/maskito-util/src/index.ts"],
       "@dv/shared/util/validator-ahv": ["libs/shared/util/validator-ahv/src/index.ts"],
       "@dv/shared/util/validator-date": ["libs/shared/util/validator-date/src/index.ts"],
       "@dv/shared/util/validator-telefon-nummer": ["libs/shared/util/validator-telefon-nummer/src/index.ts"],

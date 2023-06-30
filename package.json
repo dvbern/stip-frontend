@@ -47,6 +47,7 @@
     "@angular/router": "~16.0.0",
     "@maskito/angular": "^0.12.1",
     "@maskito/core": "^0.12.1",
+    "@maskito/kit": "^0.12.1",
     "@ng-bootstrap/ng-bootstrap": "^15.0.0",
     "@ngrx/component-store": "^16.0.1",
     "@ngrx/effects": "^16.0.0",
