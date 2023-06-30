@@ -84,15 +84,15 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
     this.editedKind = undefined;
   }
 
-  private buildUpdatedGesuchWithDeletedKinder(kinder: KindDTO) {
+  private buildUpdatedGesuchWithDeletedKinder(kind: KindDTO) {
     const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
     const updatedKinderContainers = gesuch?.kindContainers!.filter(
-      (kinderContainer) => kinderContainer.kindSB?.id !== kinder.id
+      (kinderContainer) => kinderContainer.kindSB?.id !== kind.id
     );
 
     return {
       ...gesuch,
-      kinderContainers: updatedKinderContainers,
+      kindContainers: updatedKinderContainers,
     };
   }
 

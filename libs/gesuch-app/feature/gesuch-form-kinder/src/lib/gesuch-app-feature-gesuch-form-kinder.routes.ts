@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { GesuchAppFeatureGesuchFormKinderComponent } from './gesuch-app-feature-gesuch-form-kinder/gesuch-app-feature-gesuch-form-kinder.component';
+import { GesuchAppFeatureGesuchFormKinderComponent } from './gesuch-app-feature-gesuch-form-kind/gesuch-app-feature-gesuch-form-kinder.component';
 
 export const gesuchAppFeatureGesuchFormKinderRoutes: Route[] = [
   {
