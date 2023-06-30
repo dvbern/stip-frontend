@@ -15,6 +15,7 @@ import { FallDTO } from './fallDTO';
 import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
+import { KindContainerDTO } from './kindContainerDTO';
 import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
 import { PartnerContainerDTO } from './partnerContainerDTO';
@@ -34,5 +35,6 @@ export interface GesuchDTO {
   gesuchNummer: number;
   partnerContainer: PartnerContainerDTO;
   geschwisterContainers: GeschwisterContainerDTO[];
+  kindContainers: KindContainerDTO[];
   lebenslaufItemContainers: LebenslaufItemContainerDTO[];
 }

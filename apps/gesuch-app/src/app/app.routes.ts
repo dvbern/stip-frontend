@@ -3,6 +3,13 @@ import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [
   {
+    path: 'gesuch-app-feature-gesuch-form-kinder',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-kinder').then(
+        (m) => m.gesuchAppFeatureGesuchFormKinderRoutes
+      ),
+  },
+  {
     path: 'gesuch-app-feature-gesuch-form-lebenslauf',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-lebenslauf').then(

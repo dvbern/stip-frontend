@@ -1,0 +1,16 @@
+{
+  "name": "gesuch-app-event-gesuch-form-kinder",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gesuch-app/event/gesuch-form-kinder/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gesuch-app/event/gesuch-form-kinder/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["type:event", "scope:gesuch-app"]
+}
