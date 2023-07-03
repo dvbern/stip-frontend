@@ -85,14 +85,16 @@
         {{ 'shared.form.error.required' | translate }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
+  </div>
 
-    <div
-      class="col-12 col-md-6 col-xl-4"
-      *ngIf="
-        !form.controls.wohnsitzAnteilVater.disabled &&
-        !form.controls.wohnsitzAnteilMutter.disabled
-      "
-    >
+  <div
+    class="row g-4 my-2"
+    *ngIf="
+      !form.controls.wohnsitzAnteilVater.disabled &&
+      !form.controls.wohnsitzAnteilMutter.disabled
+    "
+  >
+    <div class="col-12 col-md-6 col-xl-4">
       <!-- WOHNSITZ AUFTEILUNG -->
       <dv-shared-ui-form-label>{{
         'gesuch-app.form.geschwister.wohnsitzanteil.label' | translate
