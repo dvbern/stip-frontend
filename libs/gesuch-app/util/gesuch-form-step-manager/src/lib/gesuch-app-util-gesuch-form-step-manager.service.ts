@@ -27,6 +27,8 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.GESCHWISTER:
         return GesuchFormSteps.PARTNER;
       case GesuchFormSteps.PARTNER:
+        return GesuchFormSteps.KINDER;
+      case GesuchFormSteps.KINDER:
         return GesuchFormSteps.AUSZAHLUNGEN;
       case GesuchFormSteps.AUSZAHLUNGEN:
         return GesuchFormSteps.AUSZAHLUNGEN;

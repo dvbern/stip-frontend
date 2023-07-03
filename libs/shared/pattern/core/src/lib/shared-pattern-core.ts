@@ -53,7 +53,7 @@ export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
 {
   handle(params: MissingTranslationHandlerParams) {
-    return `⚠️ ${params.key}`;
+    return `${params.key}`;
   }
 }
 

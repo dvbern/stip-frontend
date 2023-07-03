@@ -85,7 +85,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
   private formUtils = inject(SharedUtilFormService);
-  currentYear = getYear(Date.now());
 
   readonly ausbildungslandValues = Object.values(Ausbildungsland);
   readonly ausbildungspensumValues = Object.values(AusbildungsPensum);
@@ -231,7 +230,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         // do not enable/disable fields  on signal default value
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungstaette,
-          !land$()
+          !land$(),
+          true
         );
       },
       { allowSignalWrites: true }
@@ -247,7 +247,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungsgang,
-          !staette$()
+          !staette$(),
+          true
         );
       },
       { allowSignalWrites: true }

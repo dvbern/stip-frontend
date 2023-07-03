@@ -15,6 +15,8 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { GesuchAppFeatureGesuchFormGeschwisterEditorComponent } from '../gesuch-app-feature-gesuch-form-geschwister-editor/gesuch-app-feature-gesuch-form-geschwister-editor.component';
+import { parseBackendLocalDateAndPrint } from '@dv/shared/util/validator-date';
+import { selectLanguage } from '@dv/shared/data-access/language';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-geschwister',
@@ -34,6 +36,10 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
   private store = inject(Store);
 
   view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+
+  languageSig = this.store.selectSignal(selectLanguage);
+
+  parseBackendLocalDateAndPrint = parseBackendLocalDateAndPrint;
 
   sortedGeschwistersSig = computed(() => {
     const originalList = this.view$().gesuch?.geschwisterContainers;

@@ -8,9 +8,13 @@ export class SharedUtilFormService {
   setDisabledState(
     control: FormControl,
     isDisabled: boolean,
+    clearOnDisable: boolean,
     options: { emitEvent: boolean } = { emitEvent: false }
   ) {
     if (isDisabled) {
+      if (clearOnDisable) {
+        control.patchValue(null);
+      }
       control.disable(options);
     } else {
       control.enable(options);

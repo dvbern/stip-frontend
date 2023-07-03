@@ -11,6 +11,7 @@ import { SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
+import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
 
 export interface State {
   gesuch: SharedModelGesuch | undefined;
@@ -46,6 +47,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormFamiliensituation.init,
       GesuchAppEventGesuchFormEltern.init,
       GesuchAppEventGesuchFormGeschwister.init,
+      GesuchAppEventGesuchFormKinder.init,
       GesuchAppEventGesuchFormLebenslauf.init,
       (state): State => ({
         ...state,
@@ -61,6 +63,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormEltern.saveTriggered,
       GesuchAppEventGesuchFormEltern.saveSubformTriggered,
       GesuchAppEventGesuchFormGeschwister.saveTriggered,
+      GesuchAppEventGesuchFormKinder.saveTriggered,
+      GesuchAppEventGesuchFormKinder.saveSubformTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered,
       GesuchAppEventCockpit.removeTriggered,

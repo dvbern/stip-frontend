@@ -10,10 +10,11 @@
  * Do not edit the class manually.
  */
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
+import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
+import { KindContainerDTO } from './kindContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
 import { FallDTO } from './fallDTO';
-import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { AusbildungContainerDTO } from './ausbildungContainerDTO';
 import { PartnerContainerDTO } from './partnerContainerDTO';
 import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
@@ -32,6 +33,7 @@ export interface GesuchDTO {
   gesuchNummer: number;
   partnerContainer: PartnerContainerDTO;
   geschwisterContainers: GeschwisterContainerDTO[];
+  kindContainers: KindContainerDTO[];
   lebenslaufItemContainers: LebenslaufItemContainerDTO[];
   auszahlungContainer?: AuszahlungContainerDTO;
   elternContainers: ElternContainerDTO[];

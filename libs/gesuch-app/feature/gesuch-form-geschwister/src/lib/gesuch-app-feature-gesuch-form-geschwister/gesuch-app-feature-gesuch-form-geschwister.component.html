@@ -68,7 +68,14 @@
                   <i class="material-symbols-rounded">done</i>
                 </th>
                 <td>{{ geschwister.vorname }} {{ geschwister.name }}</td>
-                <td>{{ geschwister.geburtsdatum }}</td>
+                <td>
+                  {{
+                    parseBackendLocalDateAndPrint(
+                      geschwister.geburtsdatum,
+                      languageSig()
+                    )
+                  }}
+                </td>
                 <td>
                   <button
                     type="button"

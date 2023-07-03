@@ -1,0 +1,39 @@
+<div *ngIf="!controlA.disabled && !controlB.disabled">
+  <!-- WOHNSITZ AUFTEILUNG -->
+
+  <!-- label -->
+  <ng-content></ng-content>
+
+  <div class="row gy-0 mt-2">
+    <!-- LEFT -->
+    <dv-shared-ui-form-field class="col-6">
+      <ng-content select=".label-a"></ng-content>
+
+      <input
+        class="form-control"
+        type="text"
+        dvSharedUiFormLabelTarget
+        [formControl]="controlA"
+        [maskito]="maskitoOptionsPercent"
+      />
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+
+    <!-- RIGHT -->
+    <dv-shared-ui-form-field class="col-6">
+      <ng-content select=".label-b"></ng-content>
+      <input
+        class="form-control"
+        type="text"
+        dvSharedUiFormLabelTarget
+        [formControl]="controlB"
+        [maskito]="maskitoOptionsPercent"
+      />
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+    </dv-shared-ui-form-field>
+  </div>
+</div>

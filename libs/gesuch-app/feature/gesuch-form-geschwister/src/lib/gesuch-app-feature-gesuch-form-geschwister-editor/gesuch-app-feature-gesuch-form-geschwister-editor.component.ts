@@ -11,16 +11,15 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  AbstractControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungssituation,
   GeschwisterDTO,
-  Wohnsitz,
   WohnsitzGeschwister,
 } from '@dv/shared/model/gesuch';
 import {
@@ -30,7 +29,7 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { maskitoPercent } from '@dv/shared/util/maskito-util';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -63,6 +62,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
     MaskitoModule,
+    GesuchAppUiPercentageSplitterComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-geschwister-editor.component.html',
@@ -80,6 +80,8 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
   @Output() saveTriggered = new EventEmitter<GeschwisterDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
+
+  private formUtils = inject(SharedUtilFormService);
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
@@ -111,55 +113,29 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   });
 
   wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
-  wohnsitzAnteilVaterChangedSig = toSignal(
-    this.form.controls.wohnsitzAnteilVater.valueChanges
-  );
-  wohnsitzAnteilMutterChangedSig = toSignal(
-    this.form.controls.wohnsitzAnteilMutter.valueChanges
-  );
 
   constructor() {
     effect(
       () => {
         const wohnsitzChanged = this.wohnsitzChangedSig();
 
-        if (wohnsitzChanged === WohnsitzGeschwister.MUTTER_VATER) {
-          this.setVisible(this.form.controls.wohnsitzAnteilMutter);
-          this.setVisible(this.form.controls.wohnsitzAnteilVater);
-        } else {
-          this.setInvisible(this.form.controls.wohnsitzAnteilMutter);
-          this.setInvisible(this.form.controls.wohnsitzAnteilVater);
-        }
+        this.formUtils.setDisabledState(
+          this.form.controls.wohnsitzAnteilMutter,
+          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.wohnsitzAnteilVater,
+          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          true
+        );
       },
       { allowSignalWrites: true }
     );
 
-    effect(
-      () => {
-        const anteilMutter = this.percentStringToNumber(
-          this.wohnsitzAnteilMutterChangedSig()
-        );
-        if (anteilMutter !== undefined && anteilMutter !== null) {
-          this.form.controls.wohnsitzAnteilVater.setValue(
-            (100 - anteilMutter)?.toString()
-          );
-        }
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
-        const anteilVater = this.percentStringToNumber(
-          this.wohnsitzAnteilVaterChangedSig()
-        );
-        if (anteilVater !== undefined && anteilVater !== null) {
-          this.form.controls.wohnsitzAnteilMutter.setValue(
-            (100 - anteilVater)?.toString()
-          );
-        }
-      },
-      { allowSignalWrites: true }
+    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
+      this.form.controls.wohnsitzAnteilMutter,
+      this.form.controls.wohnsitzAnteilVater
     );
   }
 
@@ -170,8 +146,14 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         this.geschwister.geburtsdatum,
         this.languageSig()
       ),
-      wohnsitzAnteilMutter: this.geschwister.wohnsitzAnteilMutter?.toString(),
-      wohnsitzAnteilVater: this.geschwister.wohnsitzAnteilVater?.toString(),
+      wohnsitzAnteilMutter:
+        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+          this.geschwister.wohnsitzAnteilMutter
+        ),
+      wohnsitzAnteilVater:
+        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+          this.geschwister.wohnsitzAnteilVater
+        ),
     });
   }
 
@@ -187,23 +169,16 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
           this.languageSig(),
           subYears(new Date(), MEDIUM_AGE)
         )!,
-        wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
-        wohnsitzAnteilMutter: this.percentStringToNumber(
-          this.form.getRawValue().wohnsitzAnteilMutter
-        ),
-        wohnsitzAnteilVater: this.percentStringToNumber(
-          this.form.getRawValue().wohnsitzAnteilVater
-        ),
+        wohnsitz: this.form.getRawValue().wohnsitz as WohnsitzGeschwister,
+        wohnsitzAnteilMutter:
+          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+            this.form.getRawValue().wohnsitzAnteilMutter
+          ),
+        wohnsitzAnteilVater:
+          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+            this.form.getRawValue().wohnsitzAnteilVater
+          ),
       });
-    }
-  }
-
-  percentStringToNumber(value?: string): number | undefined {
-    const parsed = parseInt(value || '');
-    if (isNaN(parsed)) {
-      return undefined;
-    } else {
-      return parsed;
     }
   }
 
@@ -226,15 +201,4 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   protected readonly wohnsitzValues = Object.values(WohnsitzGeschwister);
   protected readonly ausbildungssituationValues =
     Object.values(Ausbildungssituation);
-
-  maskitoOptionsPercent = maskitoPercent;
-
-  private setInvisible(control: AbstractControl): void {
-    control.patchValue(null);
-    control.disable();
-  }
-
-  private setVisible(control: AbstractControl): void {
-    control.enable();
-  }
 }

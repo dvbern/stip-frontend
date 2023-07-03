@@ -37,6 +37,4 @@ export class GesuchAppPatternGesuchStepLayoutComponent {
   step!: GesuchAppModelGesuchFormStep;
 
   stepManager = inject(GesuchAppUtilGesuchFormStepManagerService);
-
-  // TODO nextStep computed?? Oder in set step als zweite Variable speichern?
 }

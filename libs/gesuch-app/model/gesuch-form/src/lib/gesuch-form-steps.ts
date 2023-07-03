@@ -50,6 +50,13 @@ export abstract class GesuchFormSteps {
     iconSymbolName: 'favorite',
   };
 
+  public static readonly KINDER: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-kinder',
+    translationKey: 'gesuch-app.form.kinder.title',
+    currentStepNumber: 8,
+    iconSymbolName: 'emoji_people',
+  };
+
   public static readonly AUSZAHLUNGEN: GesuchAppModelGesuchFormStep = {
     route: 'gesuch-app-feature-gesuch-form-auszahlungen',
     translationKey: 'gesuch-app.auszahlung.title',

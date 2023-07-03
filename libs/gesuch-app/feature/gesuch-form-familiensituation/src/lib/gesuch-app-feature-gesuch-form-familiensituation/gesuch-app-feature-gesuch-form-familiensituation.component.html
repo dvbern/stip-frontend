@@ -544,43 +544,26 @@
       "
       class="row g-4 mt-3"
     >
-      <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
-          'gesuch-app.form.familiensituation.mutter' | translate
-        }}</dv-shared-ui-form-label>
-        <div class="form-check">
-          <input
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            formControlName="obhutMutter"
-          />
-        </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
-      <div class="col-6 col-md-8 col-xl-8">
-        <span>{{
-          'gesuch-app.form.familiensituation.obhutsauteilung.label' | translate
-        }}</span>
+      <div class="col-12 col-md-6 col-xl-4">
+        <!-- OBHUT AUFTEILUNG -->
+        <dv-gesuch-app-ui-percentage-splitter
+          [controlA]="form.controls.obhutMutter"
+          [controlB]="form.controls.obhutVater"
+        >
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.familiensituation.obhutsaufteilung.label'
+              | translate
+          }}</dv-shared-ui-form-label>
+          <dv-shared-ui-form-label class="label-a">{{
+            'gesuch-app.form.familiensituation.obhutsaufteilung.mutter'
+              | translate
+          }}</dv-shared-ui-form-label>
+          <dv-shared-ui-form-label class="label-b">{{
+            'gesuch-app.form.familiensituation.obhutsaufteilung.vater'
+              | translate
+          }}</dv-shared-ui-form-label>
+        </dv-gesuch-app-ui-percentage-splitter>
       </div>
-      <dv-shared-ui-form-field class="col-2 col-md-2 col-xl-2">
-        <dv-shared-ui-form-label>{{
-          'gesuch-app.form.familiensituation.vater' | translate
-        }}</dv-shared-ui-form-label>
-        <div class="form-check">
-          <input
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            formControlName="obhutVater"
-          />
-        </div>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
     </div>
 
     <!-- buttons -->
