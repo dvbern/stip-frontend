@@ -15,6 +15,8 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { GesuchAppFeatureGesuchFormKinderEditorComponent } from '../gesuch-app-feature-gesuch-form-kind-editor/gesuch-app-feature-gesuch-form-kind-editor.component';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import { parseBackendLocalDateAndPrint } from '@dv/shared/util/validator-date';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-kinder',
@@ -34,6 +36,10 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
   private store = inject(Store);
 
   view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+
+  languageSig = this.store.selectSignal(selectLanguage);
+
+  parseBackendLocalDateAndPrint = parseBackendLocalDateAndPrint;
 
   sortedKinderSig = computed(() => {
     const originalList = this.view$().gesuch?.kindContainers;
