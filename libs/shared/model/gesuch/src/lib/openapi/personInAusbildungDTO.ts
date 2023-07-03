@@ -9,8 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BackendLocalDateTS } from '../types';
 import { Niederlassungsstatus } from './niederlassungsstatus';
+import { Sprache } from './sprache';
 import { AdresseDTO } from './adresseDTO';
 import { Zivilstand } from './zivilstand';
 import { Anrede } from './anrede';
@@ -25,13 +25,11 @@ export interface PersonInAusbildungDTO {
   vorname: string;
   anrede: Anrede;
   identischerZivilrechtlicherWohnsitz: boolean;
-  zivilrechtlicherWohnsitzPlz: string;
-  zivilrechtlicherWohnsitzOrt: string;
   izvOrt?: string;
   izvPLZ?: string;
   email: string;
   telefonnummer: string;
-  geburtsdatum: BackendLocalDateTS;
+  geburtsdatum: string;
   nationalitaet: Land;
   heimatort?: string;
   niederlassungsstatus?: Niederlassungsstatus;
@@ -39,5 +37,7 @@ export interface PersonInAusbildungDTO {
   wohnsitz: Wohnsitz;
   sozialhilfebeitraege: boolean;
   quellenbesteuert: boolean;
+  kinder: boolean;
   digitaleKommunikation: boolean;
+  korrespondenzSprache: Sprache;
 }

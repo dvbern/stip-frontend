@@ -9,18 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AusbildungContainerDTO } from './ausbildungContainerDTO';
-import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
-import { FallDTO } from './fallDTO';
-import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
 import { GesuchsperiodeDTO } from './gesuchsperiodeDTO';
 import { FamiliensituationContainerDTO } from './familiensituationContainerDTO';
 import { KindContainerDTO } from './kindContainerDTO';
-import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
 import { PersonInAusbildungContainerDTO } from './personInAusbildungContainerDTO';
-import { PartnerContainerDTO } from './partnerContainerDTO';
 import { Gesuchstatus } from './gesuchstatus';
+import { FallDTO } from './fallDTO';
+import { AusbildungContainerDTO } from './ausbildungContainerDTO';
+import { PartnerContainerDTO } from './partnerContainerDTO';
+import { GeschwisterContainerDTO } from './geschwisterContainerDTO';
+import { LebenslaufItemContainerDTO } from './lebenslaufItemContainerDTO';
 import { ElternContainerDTO } from './elternContainerDTO';
+import { AuszahlungContainerDTO } from './auszahlungContainerDTO';
 
 export interface GesuchDTO {
   id?: string;
@@ -29,12 +29,12 @@ export interface GesuchDTO {
   personInAusbildungContainer?: PersonInAusbildungContainerDTO;
   ausbildungContainer?: AusbildungContainerDTO;
   familiensituationContainer?: FamiliensituationContainerDTO;
-  auszahlungContainer?: AuszahlungContainerDTO;
   gesuchStatus: Gesuchstatus;
-  elternContainers: ElternContainerDTO[];
   gesuchNummer: number;
   partnerContainer: PartnerContainerDTO;
   geschwisterContainers: GeschwisterContainerDTO[];
   kindContainers: KindContainerDTO[];
   lebenslaufItemContainers: LebenslaufItemContainerDTO[];
+  auszahlungContainer?: AuszahlungContainerDTO;
+  elternContainers: ElternContainerDTO[];
 }

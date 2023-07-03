@@ -523,6 +523,35 @@
           </div>
         </dv-shared-ui-form-field>
       </div>
+      <div class="row g-4 mt-1">
+        <!-- KorrespondenzSprache -->
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.person.korrespondenzSprache.label' | translate
+          }}</dv-shared-ui-form-label>
+          <div
+            class="form-check"
+            *ngFor="let s of spracheValues; trackBy: trackByIndex"
+          >
+            <input
+              formControlName="korrespondenzSprache"
+              [value]="s"
+              class="form-check-input"
+              type="radio"
+              name="korrespondenzSprache"
+              [id]="'korrespondenzSprache' + s"
+            />
+            <label class="form-check-label" [for]="'korrespondenzSprache' + s">
+              {{
+                'gesuch-app.form.person.korrespondenzSprache.' + s | translate
+              }}
+            </label>
+          </div>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+      </div>
 
       <div class="row g-4 mt-1">
         <!-- digitale Kommunikation -->

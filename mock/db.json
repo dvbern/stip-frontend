@@ -240,22 +240,24 @@
             "hausnummer": "588",
             "plz": "3535",
             "ort": "Zürich",
-            "land": "ZW"
+            "land": "CH"
           },
           "identischerZivilrechtlicherWohnsitz": true,
           "zivilrechtlicherWohnsitzPlz": "",
           "zivilrechtlicherWohnsitzOrt": "",
           "email": "mypyrew@mailbucket.dvbern.ch",
           "telefonnummer": "+41 78 868 59 53",
-          "geburtsdatum": "1990-02-02",
+          "geburtsdatum": "1990-03-03",
           "nationalitaet": "FR",
-          "heimatort": "Bern",
+          "heimatort": "",
           "vormundschaft": true,
           "zivilstand": "VERHEIRATET",
           "wohnsitz": "ELTERN",
           "sozialhilfebeitraege": false,
           "quellenbesteuerung": true,
-          "digitaleKommunikation": false
+          "digitaleKommunikation": false,
+          "korrespondenzSprache": "DEUTSCH",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B"
         }
       }
     },
@@ -292,6 +294,24 @@
     {
       "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "id": "Dx2NYX-"
+    },
+    {
+      "fall": {
+        "id": "",
+        "fallNummer": 1,
+        "mandant": "bern"
+      },
+      "gesuchsperiode": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+        "gueltigAb": "2023-08-01",
+        "gueltigBis": "2024-07-31",
+        "einreichfrist": "2023-12-31",
+        "aufschaltdatum": "2023-06-01",
+        "semester": "HERBST",
+        "yearsLabel": "2023/2024",
+        "gesuchLoading": false
+      },
+      "id": "uZwfxjt"
     }
   ],
   "ausbildungstaettes": [

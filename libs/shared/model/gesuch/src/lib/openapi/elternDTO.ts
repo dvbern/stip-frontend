@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BackendLocalDateTS } from '../types';
 import { Anrede } from './anrede';
 import { AdresseDTO } from './adresseDTO';
 
@@ -20,7 +19,7 @@ export interface ElternDTO {
   vorname: string;
   geschlecht: Anrede;
   telefonnummer: string;
-  geburtsdatum: BackendLocalDateTS;
+  geburtsdatum: string;
   identischerZivilrechtlicherWohnsitz: boolean;
   sozialhilfebeitraegeAusbezahlt: boolean;
   ausweisbFluechtling: boolean;
