@@ -1,6 +1,6 @@
 import { Language } from '@dv/shared/model/language';
 import { DateFormatVariant, getFormatDef, parseDateForVariant } from '../index';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid, parse, parseISO } from 'date-fns';
 
 export function parseBackendLocalDateAndPrint(
   value: string | null | undefined,
@@ -24,7 +24,7 @@ export function formatBackendLocalDate(
   if (value === null || value === undefined) {
     return undefined;
   }
-  const date = new Date(value);
+  const date = parseISO(value);
   if (date === undefined) {
     return undefined;
   }
@@ -84,7 +84,7 @@ export function asBackendLocalDate(
   if (date === undefined || !isValid(date)) {
     return undefined;
   }
-  return date.toDateString();
+  return format(date, 'yyyy-MM-dd');
 }
 
 export function dateFromMonthYearString(monthYearString: string) {

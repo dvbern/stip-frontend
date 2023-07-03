@@ -531,26 +531,25 @@
           }}</dv-shared-ui-form-label>
           <div
             class="form-check"
-            *ngFor="let s of Sprache | keyvalue; trackBy: trackByIndex"
+            *ngFor="let s of spracheValues; trackBy: trackByIndex"
           >
             <input
               formControlName="korrespondenzSprache"
-              [value]="s.value"
+              [value]="s"
               class="form-check-input"
               type="radio"
               name="korrespondenzSprache"
-              [id]="'korrespondenzSprache' + s.value"
+              [id]="'korrespondenzSprache' + s"
             />
-            <label
-              class="form-check-label"
-              [for]="'korrespondenzSprache' + s.value"
-            >
+            <label class="form-check-label" [for]="'korrespondenzSprache' + s">
               {{
-                'gesuch-app.form.person.korrespondenzSprache.' + s.value
-                  | translate
+                'gesuch-app.form.person.korrespondenzSprache.' + s | translate
               }}
             </label>
           </div>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
 

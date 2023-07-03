@@ -98,7 +98,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
-  readonly Sprache = Sprache;
+  readonly spracheValues = Object.values(Sprache);
   readonly zivilstandValues = Object.values(Zivilstand);
   readonly wohnsitzValues = Object.values(Wohnsitz);
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
