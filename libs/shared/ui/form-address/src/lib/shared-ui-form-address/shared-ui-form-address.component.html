@@ -1,4 +1,6 @@
-<div class="row g-4" [formGroup]="group">
+<div class="row g-4" [formGroup]="group" [class.touched]="touchedSig()">
+  <!-- touchedSig muessen wir irgendwo lesen, damit die change detection funktioniert, deshalb hier im html -->
+
   <!-- Strasse -->
   <dv-shared-ui-form-field class="col-8 col-xl-9">
     <dv-shared-ui-form-label
