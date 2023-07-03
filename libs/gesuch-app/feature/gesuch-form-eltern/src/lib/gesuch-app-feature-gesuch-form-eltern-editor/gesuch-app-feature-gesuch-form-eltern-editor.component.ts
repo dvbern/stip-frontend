@@ -125,7 +125,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   }
 
   handleSave() {
-    this.form.markAsTouched();
+    this.form.markAllAsTouched();
     if (this.form.valid) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
