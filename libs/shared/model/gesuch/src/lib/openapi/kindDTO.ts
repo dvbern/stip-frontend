@@ -7,5 +7,7 @@ export interface KindDTO {
   vorname: string;
   geburtsdatum: BackendLocalDateTS;
   wohnsitz: WohnsitzGeschwister;
+  wohnsitzAnteilMutter?: number;
+  wohnsitzAnteilVater?: number;
   ausbildungssituation: string;
 }

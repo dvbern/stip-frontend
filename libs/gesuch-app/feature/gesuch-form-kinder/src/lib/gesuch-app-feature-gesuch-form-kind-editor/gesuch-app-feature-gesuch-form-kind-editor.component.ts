@@ -2,17 +2,20 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
   OnChanges,
   Output,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungssituation,
@@ -26,6 +29,7 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -56,6 +60,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelTargetDirective,
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
+    GesuchAppUiPercentageSplitterComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kind-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-kind-editor.component.scss'],
@@ -66,7 +71,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 {
   private formBuilder = inject(NonNullableFormBuilder);
 
-  @Input({ required: true }) kinder!: Partial<KindDTO>;
+  @Input({ required: true }) kind!: Partial<KindDTO>;
 
   @Output() saveTriggered = new EventEmitter<KindDTO>();
   @Output() closeTriggered = new EventEmitter<void>();
@@ -95,16 +100,55 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
       ],
     ],
     wohnsitz: ['', [Validators.required]],
+    wohnsitzAnteilMutter: ['', [Validators.required]],
+    wohnsitzAnteilVater: ['', [Validators.required]],
     ausbildungssituation: ['', [Validators.required]],
   });
 
+  wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
+
+  private formUtils = inject(SharedUtilFormService);
+
+  constructor() {
+    effect(
+      () => {
+        const wohnsitzChanged = this.wohnsitzChangedSig();
+
+        this.formUtils.setDisabledState(
+          this.form.controls.wohnsitzAnteilMutter,
+          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.wohnsitzAnteilVater,
+          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          true
+        );
+      },
+      { allowSignalWrites: true }
+    );
+
+    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
+      this.form.controls.wohnsitzAnteilMutter,
+      this.form.controls.wohnsitzAnteilVater
+    );
+  }
+
   ngOnChanges() {
     this.form.patchValue({
-      ...this.kinder,
+      ...this.kind,
       geburtsdatum: parseBackendLocalDateAndPrint(
-        this.kinder.geburtsdatum,
+        this.kind.geburtsdatum,
         this.languageSig()
       ),
+      wohnsitzAnteilMutter:
+        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+          this.kind.wohnsitzAnteilMutter
+        ),
+      wohnsitzAnteilVater:
+        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+          this.kind.wohnsitzAnteilVater
+        ),
     });
   }
 
@@ -113,7 +157,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
     if (this.form.valid) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
-        id: this.kinder!.id || '',
+        id: this.kind!.id || '',
 
         geburtsdatum: parseStringAndPrintForBackendLocalDate(
           this.form.getRawValue().geburtsdatum,
@@ -121,6 +165,14 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
           subYears(new Date(), MEDIUM_AGE)
         )!,
         wohnsitz: this.form.getRawValue().wohnsitz as WohnsitzGeschwister,
+        wohnsitzAnteilMutter:
+          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+            this.form.getRawValue().wohnsitzAnteilMutter
+          ),
+        wohnsitzAnteilVater:
+          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+            this.form.getRawValue().wohnsitzAnteilVater
+          ),
       });
     }
   }

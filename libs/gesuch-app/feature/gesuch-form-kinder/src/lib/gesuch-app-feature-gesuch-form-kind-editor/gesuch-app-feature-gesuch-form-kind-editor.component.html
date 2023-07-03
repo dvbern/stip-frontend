@@ -87,6 +87,26 @@
     </dv-shared-ui-form-field>
   </div>
 
+  <div
+    class="row g-4 my-2"
+    *ngIf="
+      !form.controls.wohnsitzAnteilVater.disabled &&
+      !form.controls.wohnsitzAnteilMutter.disabled
+    "
+  >
+    <div class="col-12 col-md-6 col-xl-4">
+      <!-- WOHNSITZ AUFTEILUNG -->
+      <dv-gesuch-app-ui-percentage-splitter
+        [controlA]="form.controls.wohnsitzAnteilMutter"
+        [controlB]="form.controls.wohnsitzAnteilVater"
+      >
+        <dv-shared-ui-form-label>{{
+          'gesuch-app.form.geschwister.wohnsitzanteil.label' | translate
+        }}</dv-shared-ui-form-label>
+      </dv-gesuch-app-ui-percentage-splitter>
+    </div>
+  </div>
+
   <div class="row g-4 my-2">
     <!-- Ausbildungssituation -->
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">

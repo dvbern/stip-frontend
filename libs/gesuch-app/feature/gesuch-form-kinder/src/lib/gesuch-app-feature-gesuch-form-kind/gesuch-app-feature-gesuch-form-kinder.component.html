@@ -13,7 +13,7 @@
   <!-- kinder editor -->
   <dv-gesuch-app-feature-gesuch-form-kinder-editor
     *ngIf="editedKind"
-    [kinder]="editedKind"
+    [kind]="editedKind"
     (saveTriggered)="handleEditorSave($event)"
     (closeTriggered)="handleEditorClose()"
   />
