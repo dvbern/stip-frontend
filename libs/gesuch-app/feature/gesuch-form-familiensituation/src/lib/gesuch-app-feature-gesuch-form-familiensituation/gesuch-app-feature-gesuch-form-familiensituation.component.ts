@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,27 +6,22 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   FormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
-import { MaskitoModule } from '@maskito/angular';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
   ElternUnbekanntheitsGrund,
-  FamiliensituationDTO,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
@@ -36,6 +32,9 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { MaskitoModule } from '@maskito/angular';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-familiensituation',
@@ -322,20 +321,20 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     }
   }
 
-  private buildSharedModelDTOFromForm(): Partial<SharedModelGesuch> {
+  private buildSharedModelDTOFromForm(): SharedModelGesuch {
     const { gesuch } = this.view();
-    const formPart = {} as FamiliensituationDTO;
-    return {
+    const updatedGesuch = {
       ...gesuch,
       familiensituationContainer: {
         ...gesuch?.familiensituationContainer,
         familiensituationSB: {
-          ...formPart,
           ...gesuch?.familiensituationContainer?.familiensituationSB,
-          ...this.form.value,
+          ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
         },
       },
-    } as Partial<SharedModelGesuch>;
+    } as SharedModelGesuch;
+
+    return updatedGesuch;
   }
 
   private setInvisible(control: AbstractControl): void {
