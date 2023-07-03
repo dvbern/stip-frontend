@@ -1,11 +1,11 @@
 import { BackendLocalDateTS } from '../types';
-import { Wohnsitz } from './wohnsitz';
+import { WohnsitzGeschwister } from './wohnsitzGeschwister';
 
 export interface KindDTO {
   id: string;
   name: string;
   vorname: string;
   geburtsdatum: BackendLocalDateTS;
-  wohnsitz: Wohnsitz;
+  wohnsitz: WohnsitzGeschwister;
   ausbildungssituation: string;
 }

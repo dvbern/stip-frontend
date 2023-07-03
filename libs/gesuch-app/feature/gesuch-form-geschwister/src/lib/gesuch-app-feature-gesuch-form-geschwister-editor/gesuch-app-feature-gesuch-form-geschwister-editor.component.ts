@@ -187,7 +187,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
           this.languageSig(),
           subYears(new Date(), MEDIUM_AGE)
         )!,
-        wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
+        wohnsitz: this.form.getRawValue().wohnsitz as WohnsitzGeschwister,
         wohnsitzAnteilMutter: this.percentStringToNumber(
           this.form.getRawValue().wohnsitzAnteilMutter
         ),

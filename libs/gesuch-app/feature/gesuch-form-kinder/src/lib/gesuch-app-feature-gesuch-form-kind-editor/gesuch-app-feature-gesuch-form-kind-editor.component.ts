@@ -17,7 +17,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungssituation,
   KindDTO,
-  Wohnsitz,
+  WohnsitzGeschwister,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -120,7 +120,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
           this.languageSig(),
           subYears(new Date(), MEDIUM_AGE)
         )!,
-        wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
+        wohnsitz: this.form.getRawValue().wohnsitz as WohnsitzGeschwister,
       });
     }
   }
@@ -141,7 +141,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
     );
   }
 
-  protected readonly wohnsitzValues = Object.values(Wohnsitz);
+  protected readonly wohnsitzValues = Object.values(WohnsitzGeschwister);
   protected readonly ausbildungssituationValues =
     Object.values(Ausbildungssituation);
 }
