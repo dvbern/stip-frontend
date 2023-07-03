@@ -95,6 +95,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   startChanged$ = toSignal(this.form.controls.dateStart.valueChanges);
   endChanged$ = toSignal(this.form.controls.dateEnd.valueChanges);
+  kantonValues = this.prepareKantonValues();
 
   constructor() {
     // abhaengige Validierung zuruecksetzen on valueChanges
@@ -112,18 +113,24 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       },
       { allowSignalWrites: true }
     );
+  }
+
+  private prepareKantonValues() {
+    const kantonValues = Object.values(Kanton);
+
     // remove Ausland befor sort
-    const indexAusland = this.kantonValues.indexOf(Kanton.AUSLAND);
+    const indexAusland = kantonValues.indexOf(Kanton.AUSLAND);
     if (indexAusland != -1) {
-      this.kantonValues.splice(indexAusland, 1);
+      kantonValues.splice(indexAusland, 1);
     }
-    this.kantonValues.sort((a, b) =>
+    kantonValues.sort((a, b) =>
       this.translateService
         .instant('shared.kanton.' + a)
         .localeCompare(this.translateService.instant('shared.kanton.' + b))
     );
     //add Ausland after sort
-    this.kantonValues.push(Kanton.AUSLAND);
+    kantonValues.push(Kanton.AUSLAND);
+    return kantonValues;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -218,7 +225,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     );
   }
 
-  protected readonly kantonValues = Object.values(Kanton);
   protected readonly bildungsartValues = Object.values(Bildungsart);
   protected readonly taetigskeitsartValues = Object.values(Taetigskeitsart);
 }
