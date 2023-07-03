@@ -42,7 +42,7 @@ import {
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf-editor',
@@ -72,6 +72,8 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 {
   private formBuilder = inject(FormBuilder);
 
+  private translateService = inject(TranslateService);
+
   @Input({ required: true }) item!: Partial<LebenslaufItemDTO>;
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
@@ -93,6 +95,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   startChanged$ = toSignal(this.form.controls.dateStart.valueChanges);
   endChanged$ = toSignal(this.form.controls.dateEnd.valueChanges);
+  kantonValues = this.prepareKantonValues();
 
   constructor() {
     // abhaengige Validierung zuruecksetzen on valueChanges
@@ -110,7 +113,24 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       },
       { allowSignalWrites: true }
     );
-    console.log(Object.values(Kanton));
+  }
+
+  private prepareKantonValues() {
+    const kantonValues = Object.values(Kanton);
+
+    // remove Ausland befor sort
+    const indexAusland = kantonValues.indexOf(Kanton.AUSLAND);
+    if (indexAusland != -1) {
+      kantonValues.splice(indexAusland, 1);
+    }
+    kantonValues.sort((a, b) =>
+      this.translateService
+        .instant('shared.kanton.' + a)
+        .localeCompare(this.translateService.instant('shared.kanton.' + b))
+    );
+    //add Ausland after sort
+    kantonValues.push(Kanton.AUSLAND);
+    return kantonValues;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -205,7 +225,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     );
   }
 
-  protected readonly kantonValues = Object.values(Kanton);
   protected readonly bildungsartValues = Object.values(Bildungsart);
   protected readonly taetigskeitsartValues = Object.values(Taetigskeitsart);
 }
