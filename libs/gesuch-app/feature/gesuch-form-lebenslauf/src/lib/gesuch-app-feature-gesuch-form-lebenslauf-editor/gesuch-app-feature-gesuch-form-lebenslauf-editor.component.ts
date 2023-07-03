@@ -110,6 +110,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       },
       { allowSignalWrites: true }
     );
+    console.log(Object.values(Kanton));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -204,7 +205,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     );
   }
 
-  protected readonly Kanton = Kanton;
-  protected readonly Bildungsart = Bildungsart;
-  protected readonly Taetigskeitsart = Taetigskeitsart;
+  protected readonly kantonValues = Object.values(Kanton);
+  protected readonly bildungsartValues = Object.values(Bildungsart);
+  protected readonly taetigskeitsartValues = Object.values(Taetigskeitsart);
 }

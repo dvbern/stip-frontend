@@ -75,19 +75,65 @@
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="a.value"
-          *ngFor="let a of Wohnsitz | keyvalue; trackBy: trackByIndex"
+          [value]="a"
+          *ngFor="let a of wohnsitzValues; trackBy: trackByIndex"
         >
-          {{
-            'gesuch-app.form.geschwister.wohnsitz.select.' +
-              (a.value | lowercase) | translate
-          }}
+          {{ 'gesuch-app.form.geschwister.wohnsitz.select.' + a | translate }}
         </option>
       </select>
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
+  </div>
+
+  <div
+    class="row g-4 my-2"
+    *ngIf="
+      !form.controls.wohnsitzAnteilVater.disabled &&
+      !form.controls.wohnsitzAnteilMutter.disabled
+    "
+  >
+    <div class="col-12 col-md-6 col-xl-4">
+      <!-- WOHNSITZ AUFTEILUNG -->
+      <dv-shared-ui-form-label>{{
+        'gesuch-app.form.geschwister.wohnsitzanteil.label' | translate
+      }}</dv-shared-ui-form-label>
+
+      <div class="row gy-0 my-0 mt-2">
+        <dv-shared-ui-form-field class="col-6">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.geschwister.wohnsitzanteil.mutter' | translate
+          }}</dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="wohnsitzAnteilMutter"
+            [maskito]="maskitoOptionsPercent"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+
+        <dv-shared-ui-form-field class="col-6">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.geschwister.wohnsitzanteil.vater' | translate
+          }}</dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="wohnsitzAnteilVater"
+            [maskito]="maskitoOptionsPercent"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+      </div>
+    </div>
   </div>
 
   <div class="row g-4 my-2">
@@ -98,23 +144,20 @@
       }}</dv-shared-ui-form-label>
       <div
         class="form-check"
-        *ngFor="let a of Ausbildungssituation | keyvalue; trackBy: trackByIndex"
+        *ngFor="let a of ausbildungssituationValues; trackBy: trackByIndex"
       >
         <input
           formControlName="ausbildungssituation"
-          [value]="a.value"
+          [value]="a"
           class="form-check-input"
           type="radio"
           name="ausbildungssituation"
-          [id]="'elternVerheiratetZusammen' + a.key"
+          [id]="'elternVerheiratetZusammen' + a"
         />
-        <label
-          class="form-check-label"
-          [for]="'elternVerheiratetZusammen' + a.key"
-        >
+        <label class="form-check-label" [for]="'elternVerheiratetZusammen' + a">
           {{
-            'gesuch-app.form.geschwister.ausbildungssituation.select.' +
-              a.key.toLowerCase() | translate
+            'gesuch-app.form.geschwister.ausbildungssituation.select.' + a
+              | translate
           }}
         </label>
       </div>
