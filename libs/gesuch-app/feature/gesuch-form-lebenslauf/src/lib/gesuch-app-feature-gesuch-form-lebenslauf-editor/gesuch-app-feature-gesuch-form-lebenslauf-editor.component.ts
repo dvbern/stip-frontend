@@ -42,7 +42,7 @@ import {
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf-editor',
@@ -71,6 +71,8 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   implements OnChanges
 {
   private formBuilder = inject(FormBuilder);
+
+  private translateService = inject(TranslateService);
 
   @Input({ required: true }) item!: Partial<LebenslaufItemDTO>;
   @Input({ required: true }) minStartDate?: Date | null;
@@ -110,7 +112,18 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       },
       { allowSignalWrites: true }
     );
-    console.log(Object.values(Kanton));
+    // remove Ausland befor sort
+    const indexAusland = this.kantonValues.indexOf(Kanton.AUSLAND);
+    if (indexAusland != -1) {
+      this.kantonValues.splice(indexAusland, 1);
+    }
+    this.kantonValues.sort((a, b) =>
+      this.translateService
+        .instant('shared.kanton.' + a)
+        .localeCompare(this.translateService.instant('shared.kanton.' + b))
+    );
+    //add Ausland after sort
+    this.kantonValues.push(Kanton.AUSLAND);
   }
 
   ngOnChanges(changes: SimpleChanges) {
