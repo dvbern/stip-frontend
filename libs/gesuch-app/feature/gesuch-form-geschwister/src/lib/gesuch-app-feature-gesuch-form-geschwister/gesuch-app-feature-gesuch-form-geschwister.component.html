@@ -37,7 +37,7 @@
       <!-- Table -->
       <div
         class="col-12 col-xl-8"
-        *ngIf="this.view$().gesuch?.geschwisterContainers as geschwisters"
+        *ngIf="sortedGeschwistersSig() as geschwisters"
       >
         <table class="table" *ngIf="geschwisters.length">
           <thead>
