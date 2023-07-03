@@ -31,6 +31,7 @@ export * from './personInAusbildungContainerDTO';
 export * from './personInAusbildungDTO';
 export * from './sprache';
 export * from './wohnsitz';
+export * from './wohnsitzGeschwister';
 export * from './zivilstand';
 export * from './familiensituationDTO';
 export * from './elternAbwesenheitsGrund';

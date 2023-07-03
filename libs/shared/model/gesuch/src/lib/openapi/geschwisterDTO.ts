@@ -6,5 +6,7 @@ export interface GeschwisterDTO {
   vorname: string;
   geburtsdatum: string;
   wohnsitz: Wohnsitz;
+  wohnsitzAnteilMutter?: number;
+  wohnsitzAnteilVater?: number;
   ausbildungssituation: string;
 }
