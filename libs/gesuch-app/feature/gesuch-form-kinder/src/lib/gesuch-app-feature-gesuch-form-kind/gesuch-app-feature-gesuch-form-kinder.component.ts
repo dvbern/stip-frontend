@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
 } from '@angular/core';
@@ -34,6 +35,16 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
 
   view$ = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
 
+  sortedKinderSig = computed(() => {
+    const originalList = this.view$().gesuch?.kindContainers;
+    return originalList
+      ? [...originalList].sort((a, b) =>
+          (a.kindSB!.vorname + ' ' + a.kindSB!.name).localeCompare(
+            b.kindSB!.vorname + ' ' + b.kindSB!.name
+          )
+        )
+      : undefined;
+  });
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
   editedKind?: Partial<KindDTO>;

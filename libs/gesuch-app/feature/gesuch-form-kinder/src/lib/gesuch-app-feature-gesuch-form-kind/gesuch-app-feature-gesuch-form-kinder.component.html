@@ -21,10 +21,7 @@
   <ng-container *ngIf="!editedKind">
     <div class="row g-4 my-2">
       <!-- Table -->
-      <div
-        class="col-12 col-xl-8"
-        *ngIf="this.view$().gesuch?.kindContainers as kinder"
-      >
+      <div class="col-12 col-xl-8" *ngIf="sortedKinderSig() as kinder">
         <table class="table" *ngIf="kinder.length">
           <thead>
             <tr>

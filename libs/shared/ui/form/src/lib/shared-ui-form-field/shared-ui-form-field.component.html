@@ -16,7 +16,7 @@
     <pre>is-invalid: {{ formFieldControl?.invalid && (touched$ | async) === true}}</pre>
     <pre>touchedAndInvalid$: {{ touchedAndInvalid$ | async}}</pre> -->
 
-    <label [attr.for]="controlId" [class.pt-2]="isCheckbox">
+    <label [attr.for]="controlId" [class.pt-2]="isCheckbox" class="d-block">
       <ng-content select="dv-shared-ui-form-label"></ng-content>
     </label>
     <div>

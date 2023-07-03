@@ -18,6 +18,7 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
 import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
@@ -51,6 +52,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
+    GesuchAppUiPercentageSplitterComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',
@@ -88,8 +90,8 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
     sorgerecht: ['', [Validators.required]],
     obhut: ['', [Validators.required]],
-    obhutMutter: [<number | null>null, [Validators.required]],
-    obhutVater: [<number | null>null, [Validators.required]],
+    obhutMutter: ['', [Validators.required]],
+    obhutVater: ['', [Validators.required]],
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
@@ -121,19 +123,26 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     );
     const obhutSig = toSignal(this.form.controls.obhut.valueChanges);
 
-    const obhutMutterSig = toSignal(
-      this.form.controls.obhutMutter.valueChanges
-    );
-
-    const obhutVaterSig = toSignal(this.form.controls.obhutVater.valueChanges);
-
     effect(
       () => {
         const { gesuch } = this.view();
         if (gesuch !== undefined) {
           const initialFormFamSit =
             gesuch?.familiensituationContainer?.familiensituationSB || {};
-          this.form.patchValue({ ...initialFormFamSit });
+          this.form.patchValue({
+            ...initialFormFamSit,
+
+            obhutMutter:
+              GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+                gesuch?.familiensituationContainer?.familiensituationSB
+                  ?.obhutMutter
+              ),
+            obhutVater:
+              GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+                gesuch?.familiensituationContainer?.familiensituationSB
+                  ?.obhutVater
+              ),
+          });
         }
       },
       { allowSignalWrites: true }
@@ -246,24 +255,9 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       { allowSignalWrites: true }
     );
 
-    effect(
-      () => {
-        const obhutMutter = obhutMutterSig();
-        if (obhutMutter !== undefined && obhutMutter !== null) {
-          this.form.controls.obhutVater.setValue(100 - obhutMutter);
-        }
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
-        const obhutVater = obhutVaterSig();
-        if (obhutVater !== undefined && obhutVater !== null) {
-          this.form.controls.obhutMutter.setValue(100 - obhutVater);
-        }
-      },
-      { allowSignalWrites: true }
+    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
+      this.form.controls.obhutMutter,
+      this.form.controls.obhutVater
     );
 
     effect(
@@ -330,6 +324,14 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
         familiensituationSB: {
           ...gesuch?.familiensituationContainer?.familiensituationSB,
           ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
+          obhutVater:
+            GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+              this.form.getRawValue().obhutVater
+            ),
+          obhutMutter:
+            GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+              this.form.getRawValue().obhutMutter
+            ),
         },
       },
     } as SharedModelGesuch;

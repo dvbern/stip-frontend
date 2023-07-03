@@ -45,10 +45,10 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
   @Input({ required: true })
-  controlA!: FormControl<string>;
+  controlA!: FormControl<string | null>;
 
   @Input({ required: true })
-  controlB!: FormControl<string>;
+  controlB!: FormControl<string | null>;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible']) {
@@ -63,8 +63,8 @@ export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
   }
 
   static setupPercentDependencies(
-    controlA: FormControl<string>,
-    controlB: FormControl<string>
+    controlA: FormControl<string | null>,
+    controlB: FormControl<string | null>
   ) {
     const controlAChangedSig = toSignal(controlA.valueChanges);
     const controlBChangedSig = toSignal(controlB.valueChanges);
@@ -90,7 +90,7 @@ export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
     );
   }
 
-  static percentStringToNumber(value?: string): number | undefined {
+  static percentStringToNumber(value?: string | null): number | undefined {
     const parsed = parseInt(value || '');
     if (isNaN(parsed)) {
       return undefined;
@@ -98,8 +98,8 @@ export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
       return parsed;
     }
   }
-  static numberToPercentString(value?: number): string | undefined {
-    return value?.toString();
+  static numberToPercentString(value?: number): string {
+    return value?.toString() || '';
   }
 
   private setInvisible(control: AbstractControl): void {
