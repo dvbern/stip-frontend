@@ -3,8 +3,17 @@ import {
   ElternContainerDTO,
   ElternDTO,
   FamiliensituationDTO,
+  SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 
+export function calculateElternSituationGesuch(
+  gesuch: SharedModelGesuch | undefined
+) {
+  return calculateElternSituation(
+    gesuch?.familiensituationContainer?.familiensituationSB,
+    gesuch?.elternContainers
+  );
+}
 export function calculateElternSituation(
   familienSituation: FamiliensituationDTO | undefined,
   elternContainers: ElternContainerDTO[] | undefined
