@@ -6,23 +6,26 @@ import {
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 
+export interface ElternSituation {
+  expectVater: boolean;
+  expectMutter: boolean;
+  vater?: ElternDTO;
+  mutter?: ElternDTO;
+}
+
 export function calculateElternSituationGesuch(
   gesuch: SharedModelGesuch | undefined
-) {
+): ElternSituation {
   return calculateElternSituation(
     gesuch?.familiensituationContainer?.familiensituationSB,
     gesuch?.elternContainers
   );
 }
-export function calculateElternSituation(
+
+function calculateElternSituation(
   familienSituation: FamiliensituationDTO | undefined,
   elternContainers: ElternContainerDTO[] | undefined
-): {
-  expectVater: boolean;
-  expectMutter: boolean;
-  vater?: ElternDTO;
-  mutter?: ElternDTO;
-} {
+): ElternSituation {
   const vater = elternContainers?.find(
     (elternContainer) => elternContainer.elternSB?.geschlecht === Anrede.HERR
   )?.elternSB;
