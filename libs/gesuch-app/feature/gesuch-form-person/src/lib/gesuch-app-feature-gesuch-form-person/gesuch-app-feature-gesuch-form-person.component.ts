@@ -220,17 +220,21 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         const nationalitaetChanged = nationalitaetChanged$();
         if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
           this.form.controls.heimatort.enable();
+          this.form.controls.vormundschaft.enable();
           this.form.controls.niederlassungsstatus.patchValue('');
           this.form.controls.niederlassungsstatus.disable();
-        } else if (nationalitaetChanged === undefined) {
-          this.form.controls.niederlassungsstatus.patchValue('');
-          this.form.controls.niederlassungsstatus.disable();
-          this.form.controls.heimatort.patchValue('');
-          this.form.controls.heimatort.disable();
         } else {
           this.form.controls.heimatort.patchValue('');
           this.form.controls.heimatort.disable();
-          this.form.controls.niederlassungsstatus.enable();
+          this.form.controls.vormundschaft.patchValue(false);
+          this.form.controls.vormundschaft.disable();
+
+          if (nationalitaetChanged === undefined) {
+            this.form.controls.niederlassungsstatus.patchValue('');
+            this.form.controls.niederlassungsstatus.disable();
+          } else {
+            this.form.controls.niederlassungsstatus.enable();
+          }
         }
       },
       { allowSignalWrites: true }

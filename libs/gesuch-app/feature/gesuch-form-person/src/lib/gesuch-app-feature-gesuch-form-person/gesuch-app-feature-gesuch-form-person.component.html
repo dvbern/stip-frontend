@@ -374,6 +374,7 @@
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
           [isCheckbox]="true"
+          *ngIf="form.controls.nationalitaet.value === nationalitaetCH"
         >
           <dv-shared-ui-form-label
             >{{ 'gesuch-app.form.person.guardianship.label' | translate }}
