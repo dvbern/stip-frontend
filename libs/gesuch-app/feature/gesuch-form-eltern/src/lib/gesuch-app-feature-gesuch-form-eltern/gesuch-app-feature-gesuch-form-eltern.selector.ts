@@ -19,10 +19,9 @@ export const selectGesuchAppFeatureGesuchFormElternView = createSelector(
 
     return {
       ...gesuchView,
-      elterns:
-        gesuchView.gesuch?.elternContainers
-          .map((c) => c.elternSB)
-          .filter(sharedUtilFnTypeGuardsIsDefined) ?? [],
+      elterns: (gesuchView.gesuch?.elternContainers || [])
+        .map((c) => c.elternSB)
+        .filter(sharedUtilFnTypeGuardsIsDefined),
       expectVater: elternSituation.expectVater,
       expectMutter: elternSituation.expectMutter,
       vater: elternSituation.vater,
