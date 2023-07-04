@@ -62,6 +62,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -94,6 +95,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
+  private formUtils = inject(SharedUtilFormService);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly anredeValues = Object.values(Anrede);
@@ -218,23 +220,44 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     effect(
       () => {
         const nationalitaetChanged = nationalitaetChanged$();
+        // If nationality is Switzerland
         if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
           this.form.controls.heimatort.enable();
           this.form.controls.vormundschaft.enable();
+          this.formUtils.setDisabledState(
+            this.form.controls.niederlassungsstatus,
+            true,
+            true
+          );
+        }
+        // No nationality was selected
+        else if (nationalitaetChanged === undefined) {
           this.form.controls.niederlassungsstatus.patchValue('');
           this.form.controls.niederlassungsstatus.disable();
-        } else {
-          this.form.controls.heimatort.patchValue('');
-          this.form.controls.heimatort.disable();
-          this.form.controls.vormundschaft.patchValue(false);
-          this.form.controls.vormundschaft.disable();
-
-          if (nationalitaetChanged === undefined) {
-            this.form.controls.niederlassungsstatus.patchValue('');
-            this.form.controls.niederlassungsstatus.disable();
-          } else {
-            this.form.controls.niederlassungsstatus.enable();
-          }
+          this.formUtils.setDisabledState(
+            this.form.controls.heimatort,
+            true,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.vormundschaft,
+            true,
+            true
+          );
+        }
+        // Any other nationality was selected
+        else {
+          this.form.controls.niederlassungsstatus.enable();
+          this.formUtils.setDisabledState(
+            this.form.controls.heimatort,
+            true,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.vormundschaft,
+            true,
+            true
+          );
         }
       },
       { allowSignalWrites: true }
