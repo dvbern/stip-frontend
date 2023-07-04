@@ -31,7 +31,7 @@ export class GesuchAppUtilGesuchFormStepManagerService {
       case GesuchFormSteps.KINDER:
         return GesuchFormSteps.AUSZAHLUNGEN;
       case GesuchFormSteps.AUSZAHLUNGEN:
-        return GesuchFormSteps.AUSZAHLUNGEN;
+        return GesuchFormSteps.EINNAHMEN_KOSTEN;
       default:
         throw new Error('Step not defined');
     }

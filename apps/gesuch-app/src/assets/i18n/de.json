@@ -194,5 +194,7 @@
   "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr",
   "gesuch-app.cockpit.gesuch.img.alt": "Person am Schreibtisch",
   "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
-  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen"
+  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen",
+
+  "gesuch-app.einnahmenkosten.title": "Einnahmen & Kosten"
 }

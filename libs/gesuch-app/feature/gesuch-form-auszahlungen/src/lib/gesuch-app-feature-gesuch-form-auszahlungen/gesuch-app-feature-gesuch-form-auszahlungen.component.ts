@@ -178,6 +178,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     this.form.controls.name.reset('');
     this.form.controls.vorname.reset('');
     this.form.controls.adresse.reset({});
+    this.form.controls.iban.reset('');
   }
 
   private enableNameAndAdresse(): void {
