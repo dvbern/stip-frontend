@@ -66,6 +66,7 @@
             class="form-control form-select"
             formControlName="ausbildungstaette"
             [ngbTypeahead]="ausbildungstaetteTypeaheadFn$()"
+            [placeholder]="'shared.form.select.empty' | translate"
             (focus)="focusAusbildungstaette$.next($any($event).target.value)"
             [editable]="false"
             (change)="handleStaetteChangedByUser()"
