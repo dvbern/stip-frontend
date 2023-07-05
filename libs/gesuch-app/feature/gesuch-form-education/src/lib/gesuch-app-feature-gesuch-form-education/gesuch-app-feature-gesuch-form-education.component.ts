@@ -279,6 +279,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   handleManuellChangedByUser() {
     this.form.controls.ausbildungstaette.reset(null);
     this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.fachrichtung.reset(null);
   }
 
   handleSave() {
