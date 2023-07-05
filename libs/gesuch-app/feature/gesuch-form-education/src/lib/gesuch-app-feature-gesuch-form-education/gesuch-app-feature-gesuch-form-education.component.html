@@ -34,11 +34,11 @@
           formControlName="ausbildungsland"
           (change)="handleLandChangedByUser()"
         >
-          <option [value]="null" selected>
+          <option [ngValue]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
-            [value]="l"
+            [ngValue]="l"
             *ngFor="let l of ausbildungslandValues; trackBy: trackByIndex"
           >
             {{ 'gesuch-app.form.education.ausbildungsland.' + l | translate }}
@@ -134,7 +134,7 @@
           dvSharedUiFormLabelTarget
           formControlName="ausbildungsgang"
         >
-          <option [ngValue]="''" selected>
+          <option [ngValue]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
@@ -281,11 +281,11 @@
           dvSharedUiFormLabelTarget
           formControlName="pensum"
         >
-          <option [value]="null" selected>
+          <option [ngValue]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
           <option
-            [value]="l"
+            [ngValue]="l"
             *ngFor="let l of ausbildungspensumValues; trackBy: trackByIndex"
           >
             {{ 'gesuch-app.form.education.pensum.' + l | translate }}
