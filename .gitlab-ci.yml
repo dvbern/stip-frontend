@@ -32,11 +32,15 @@ test:
   extends: .base
   stage: test
   script:
-    - npm run test -- --coverage
+    - npm run test:ci
   allow_failure: true
   artifacts:
+    when: always
     paths:
       - coverage
+    reports:
+      junit:
+        - junit.xml
     expire_in: 1 day
 
 sonarqube-check:
