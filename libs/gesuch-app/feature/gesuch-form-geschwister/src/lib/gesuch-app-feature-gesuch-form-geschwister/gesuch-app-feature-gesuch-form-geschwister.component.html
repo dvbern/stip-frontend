@@ -104,13 +104,15 @@
     </div>
 
     <!-- ADD -->
-    <button
-      type="button"
-      class="btn btn-outline-primary"
-      (click)="handleAddGeschwister()"
-    >
-      {{ 'gesuch-app.form.geschwister.add' | translate }}
-    </button>
+    <div class="d-flex flex-column flex-md-row">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="handleAddGeschwister()"
+      >
+        {{ 'gesuch-app.form.geschwister.add' | translate }}
+      </button>
+    </div>
 
     <!-- Buttons -->
     <dv-gesuch-app-ui-step-form-buttons>
