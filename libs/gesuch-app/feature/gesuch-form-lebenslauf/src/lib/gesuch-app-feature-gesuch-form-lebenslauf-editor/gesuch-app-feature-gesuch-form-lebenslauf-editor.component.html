@@ -13,11 +13,11 @@
         dvSharedUiFormLabelTarget
         formControlName="subtype"
       >
-        <option [value]="null" disabled selected>
+        <option [ngValue]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="b"
+          [ngValue]="b"
           *ngFor="let b of bildungsartValues; trackBy: trackByIndex"
         >
           {{
@@ -32,11 +32,11 @@
         dvSharedUiFormLabelTarget
         formControlName="subtype"
       >
-        <option [value]="null" disabled selected>
+        <option [ngValue]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="t"
+          [ngValue]="t"
           *ngFor="let t of taetigskeitsartValues; trackBy: trackByIndex"
         >
           {{
@@ -156,11 +156,11 @@
         dvSharedUiFormLabelTarget
         formControlName="wohnsitz"
       >
-        <option [value]="null" disabled selected>
+        <option [ngValue]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="k"
+          [ngValue]="k"
           *ngFor="let k of kantonValues; trackBy: trackByIndex"
         >
           {{ 'shared.kanton.' + k | translate }}

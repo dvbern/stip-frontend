@@ -87,10 +87,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
-    subtype: ['', [Validators.required]],
+    subtype: [<string | null>null, [Validators.required]],
     dateStart: ['', []],
     dateEnd: ['', []],
-    wohnsitz: ['', [Validators.required]],
+    wohnsitz: [<string | null>null, [Validators.required]],
   });
 
   startChanged$ = toSignal(this.form.controls.dateStart.valueChanges);
