@@ -6,8 +6,7 @@ info:
     name: GNU AGPLv3
     url: 'https://www.gnu.org/licenses/agpl.txt'
 servers:
-  -
-    url: 'http://localhost:{port}/api/v1'
+  - url: 'http://localhost:{port}/api/v1'
     description: ''
     variables:
       port:
@@ -61,8 +60,7 @@ paths:
       tags:
         - Gesuch
       parameters:
-        -
-          name: gesuchId
+        - name: gesuchId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -94,8 +92,7 @@ paths:
       tags:
         - Gesuch
       parameters:
-        -
-          name: gesuchId
+        - name: gesuchId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -118,14 +115,12 @@ paths:
       tags:
         - Gesuch
       parameters:
-        -
-          name: dokumentTyp
+        - name: dokumentTyp
           schema:
             $ref: '#/components/schemas/DokumentTyp'
           in: path
           required: true
-        -
-          name: gesuchId
+        - name: gesuchId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -159,14 +154,12 @@ paths:
       tags:
         - Gesuch
       parameters:
-        -
-          name: dokumentTyp
+        - name: dokumentTyp
           schema:
             $ref: '#/components/schemas/DokumentTyp'
           in: path
           required: true
-        -
-          name: gesuchId
+        - name: gesuchId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -200,8 +193,7 @@ paths:
       tags:
         - Fall
       parameters:
-        -
-          name: fallId
+        - name: fallId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -311,6 +303,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Gesuchsperiode'
+                example:
+                  - id: 3fa85f64-5717-4562-b3fc-2c963f66afa3
+                    gueltigAb: '2022-02-01'
+                    gueltigBis: '2023-01-31'
+                    einreichfrist: '2022-06-30'
+                    aufschaltdatum: '2022-06-01'
+                  - id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    gueltigAb: '2023-02-01'
+                    gueltigBis: '2024-01-31'
+                    einreichfrist: '2023-06-30'
+                    aufschaltdatum: '2023-06-01'
+                  - id: 3fa85f64-5717-4562-b3fc-2c963f66afa7
+                    gueltigAb: '2023-08-01'
+                    gueltigBis: '2024-07-31'
+                    einreichfrist: '2023-12-31'
+                    aufschaltdatum: '2023-06-01'
           description: OK
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -327,8 +335,7 @@ paths:
       tags:
         - Gesuchsperiode
       parameters:
-        -
-          name: gesuchsperiodeId
+        - name: gesuchsperiodeId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -395,14 +402,12 @@ paths:
       tags:
         - Gesuch
       parameters:
-        -
-          name: dokumentTyp
+        - name: dokumentTyp
           schema:
             $ref: '#/components/schemas/DokumentTyp'
           in: path
           required: true
-        -
-          name: gesuchId
+        - name: gesuchId
           schema:
             $ref: '#/components/schemas/UUID'
           in: path
@@ -422,20 +427,17 @@ paths:
       operationId: deleteDokument
       summary: deletes a Dokument
     parameters:
-      -
-        name: gesuchId
+      - name: gesuchId
         schema:
           $ref: '#/components/schemas/UUID'
         in: path
         required: true
-      -
-        name: dokumentTyp
+      - name: dokumentTyp
         schema:
           $ref: '#/components/schemas/DokumentTyp'
         in: path
         required: true
-      -
-        name: dokumentId
+      - name: dokumentId
         schema:
           $ref: '#/components/schemas/UUID'
         in: path
@@ -626,8 +628,10 @@ components:
       properties:
         environment:
           type: string
+          example: dev
         version:
           type: string
+          example: '0.1'
     Dokument:
       required:
         - id
@@ -732,6 +736,7 @@ components:
         gesuchNummer:
           format: int32
           type: integer
+          example: 0
     Gesuchsperiode:
       required:
         - id
@@ -929,17 +934,10 @@ components:
       type: http
       description: Authentication
 tags:
-  -
-    name: Ausbildungstaette
-  -
-    name: Auth
-  -
-    name: Configuration
-  -
-    name: Fall
-  -
-    name: Gesuch
-  -
-    name: Gesuchsperiode
-  -
-    name: Stammdaten
+  - name: Ausbildungstaette
+  - name: Auth
+  - name: Configuration
+  - name: Fall
+  - name: Gesuch
+  - name: Gesuchsperiode
+  - name: Stammdaten
