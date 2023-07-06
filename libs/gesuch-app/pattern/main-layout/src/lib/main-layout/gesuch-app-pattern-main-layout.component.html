@@ -52,7 +52,10 @@
   </div>
 
   <ng-template #menu let-offcanvas>
-    <div class="offcanvas-header justify-content-end">
+    <div class="offcanvas-header justify-content-between">
+      <div>
+        <ng-content select=".mobile-nav-header"></ng-content>
+      </div>
       <button
         type="button"
         class="btn-close"
