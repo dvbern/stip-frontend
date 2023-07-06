@@ -95,7 +95,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(FormBuilder);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
-  readonly PATTERN_EMAIL = PATTERN_EMAIL;
   readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
   readonly spracheValues = Object.values(Sprache);
@@ -131,13 +130,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     identischerZivilrechtlicherWohnsitz: [true, []],
     zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
     zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern('[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}'),
-      ],
-    ],
+    email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
     telefonnummer: [
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
