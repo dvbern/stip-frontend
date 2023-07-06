@@ -97,6 +97,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungsgang: [<string | null>null, [Validators.required]],
     fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
+    alternativeAusbildungsgang: [<string | null>null],
+    alternativeAusbildungstaette: [<string | null>null],
     ausbildungBegin: [
       '',
       [
