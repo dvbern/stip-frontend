@@ -4,7 +4,11 @@
   </div>
 
   <div class="container mt-5 mb-5">
-    <h1 class="text-white mb-4">Guten Morgen, Anja Muster</h1>
+    <h1 class="text-white mb-4">
+      {{
+        'gesuch-app.cockpit.welcome.titel' | translate : { name: 'Anja Muster' }
+      }}
+    </h1>
 
     <div class="row">
       <!-- main column -->
@@ -39,10 +43,10 @@
                     <span>&nbsp;</span>
                     <span>{{ periode.yearsLabel }}</span>
                   </h3>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">
-                    <span>{{ periode.gueltigAb | date }}</span>
+                  <h6 class="card-subtitle fw-medium mt-2 mb-2 small">
+                    <span>{{ periode.gueltigAb | date : 'dd.MM.yyyy' }}</span>
                     <span> - </span>
-                    <span>{{ periode.gueltigBis | date }}</span>
+                    <span>{{ periode.gueltigBis | date : 'dd.MM.yyyy' }}</span>
                   </h6>
 
                   <!-- loading Gesuch -->
@@ -59,8 +63,20 @@
                     class="d-flex flex-column align-items-start"
                     *ngIf="periode.gesuchId"
                   >
-                    <span>Status des Antrags</span>
-                    <span>Nicht komplett eingereicht</span>
+                    <span class="mt-4 fw-normal small">{{
+                      'gesuch-app.cockpit.periode.status.titel' | translate
+                    }}</span>
+                    <span class="fw-medium">{{
+                      'gesuch-app.cockpit.periode.status.nicht_komplett'
+                        | translate
+                    }}</span>
+
+                    <ng-container
+                      *ngTemplateOutlet="
+                        einreichefrist;
+                        context: { periode: periode }
+                      "
+                    ></ng-container>
                   </div>
                 </div>
 
@@ -105,12 +121,17 @@
                 *ngIf="!periode.gesuchId && !periode.gesuchLoading"
                 class="d-flex flex-column align-items-start"
               >
-                <span>Einreichefrist</span>
-                <span>Bis spätestens {{ periode.einreichfrist | date }}</span>
+                <ng-container
+                  *ngTemplateOutlet="
+                    einreichefrist;
+                    context: { periode: periode }
+                  "
+                ></ng-container>
+                <div class="mb-3"></div>
 
                 <button
                   type="button"
-                  class="btn btn-primary mt-3 w-100"
+                  class="btn btn-primary mt-4 w-100"
                   (click)="handleCreate(periode)"
                 >
                   {{ 'gesuch-app.cockpit.gesuch.new' | translate }}
@@ -120,6 +141,18 @@
           </div>
         </div>
       </div>
+
+      <ng-template #einreichefrist let-periode="periode">
+        <span class="mt-4 fw-normal small">{{
+          'gesuch-app.cockpit.periode.einreichfrist.titel' | translate
+        }}</span>
+        <span class="fw-medium" *ngIf="periode.einreichfrist">
+          {{
+            'gesuch-app.cockpit.periode.einreichfrist.spaetestens' | translate
+          }}
+          {{ periode.einreichfrist | date : 'dd.MM.yyyy' }}
+        </span>
+      </ng-template>
 
       <!-- side column -->
       <div class="col-lg-4 mb-lg-5"></div>
