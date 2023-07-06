@@ -175,6 +175,12 @@
   "gesuch-app.form.familiensituation.obhutsaufteilung.mutter": "Mutter",
   "gesuch-app.form.familiensituation.obhutsaufteilung.vater": "Vater",
   "gesuch-app.form.auszahlung.kontoinhaberin": "Kontoinhaber:in",
+  "gesuch-app.form.auszahlung.kontoinhaber.GESUCHSTELLERIN": "Gesuchsteller:in",
+  "gesuch-app.form.auszahlung.kontoinhaber.VATER": "Vater",
+  "gesuch-app.form.auszahlung.kontoinhaber.MUTTER": "Mutter",
+  "gesuch-app.form.auszahlung.kontoinhaber.SOZIALDIENST_INSTITUTION": "Sozialdienst / Institution",
+  "gesuch-app.form.auszahlung.kontoinhaber.ANDERE": "Andere",
+  "gesuch-app.form.auszahlung.top.missing-eltern": "Bitte füllen Sie zuerst die Schritte \"Familiensituation\" und \"Eltern\" aus.",
   "gesuch-app.auszahlung.title": "Auszahlung",
   "gesuch-app.auszahlung.einnahmen-kosten": "Einnahmen & Kosten",
   "gesuch-app.form.auszahlung.sozialdienst-institution.label": "Sozialdienst / Institution",
@@ -188,5 +194,7 @@
   "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr",
   "gesuch-app.cockpit.gesuch.img.alt": "Person am Schreibtisch",
   "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
-  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen"
+  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen",
+
+  "gesuch-app.einnahmenkosten.title": "Einnahmen & Kosten"
 }

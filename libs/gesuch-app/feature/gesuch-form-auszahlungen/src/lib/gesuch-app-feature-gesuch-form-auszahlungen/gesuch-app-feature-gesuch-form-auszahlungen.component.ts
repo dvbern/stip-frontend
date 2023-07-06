@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,7 +7,6 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
@@ -20,11 +20,12 @@ import {
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { calculateElternSituationGesuch } from '@dv/gesuch-app/util-fn/gesuch-util';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
-  Anrede,
   ElternDTO,
   KontoinhaberinType,
-  Land,
   MASK_IBAN,
   PersonInAusbildungDTO,
   SharedModelGesuch,
@@ -39,11 +40,10 @@ import {
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import { MaskitoModule } from '@maskito/angular';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { extractIBAN, ExtractIBANResult } from 'ibantools';
-import { selectLanguage } from '@dv/shared/data-access/language';
-import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-feature-gesuch-form-auszahlungen.selector';
 
 @Component({
@@ -63,6 +63,7 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
+    NgbAlert,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
@@ -72,7 +73,6 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
 
-  KontoinhaberinType = KontoinhaberinType;
   MASK_IBAN = MASK_IBAN;
   language = 'de';
   step = GesuchFormSteps.AUSZAHLUNGEN;
@@ -95,7 +95,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
   );
 
   constructor() {
-    const kontoinhaberin$ = toSignal(
+    const kontoinhaberinChanges$ = toSignal(
       this.form.controls.kontoinhaberin.valueChanges
     );
 
@@ -112,7 +112,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
     effect(
       () => {
-        const kontoinhaberin = kontoinhaberin$();
+        const kontoinhaberin = kontoinhaberinChanges$();
         const { gesuch } = this.view();
         this.language = this.languageSig();
         switch (kontoinhaberin) {
@@ -122,22 +122,14 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
             );
             this.disableNameAndAdresse();
             break;
-          case KontoinhaberinType.VATER: {
-            const vaterContainer = gesuch?.elternContainers.find(
-              (container) => container.elternSB?.geschlecht === Anrede.HERR
-            );
-            this.setValuesFrom(vaterContainer?.elternSB);
+          case KontoinhaberinType.VATER:
+            this.setValuesFrom(calculateElternSituationGesuch(gesuch).vater);
             this.disableNameAndAdresse();
             break;
-          }
-          case KontoinhaberinType.MUTTER: {
-            const mutterContainer = gesuch?.elternContainers.find(
-              (container) => container.elternSB?.geschlecht === Anrede.FRAU
-            );
-            this.setValuesFrom(mutterContainer?.elternSB);
+          case KontoinhaberinType.MUTTER:
+            this.setValuesFrom(calculateElternSituationGesuch(gesuch).mutter);
             this.disableNameAndAdresse();
             break;
-          }
           case KontoinhaberinType.ANDERE:
           case KontoinhaberinType.SOZIALDIENST_INSTITUTION:
           default:
@@ -180,6 +172,13 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     this.form.controls.name.disable();
     this.form.controls.vorname.disable();
     this.form.controls.adresse.disable();
+  }
+
+  handleKontoinhaberinChangedByUser(): void {
+    this.form.controls.name.reset('');
+    this.form.controls.vorname.reset('');
+    this.form.controls.adresse.reset({});
+    this.form.controls.iban.reset('');
   }
 
   private enableNameAndAdresse(): void {

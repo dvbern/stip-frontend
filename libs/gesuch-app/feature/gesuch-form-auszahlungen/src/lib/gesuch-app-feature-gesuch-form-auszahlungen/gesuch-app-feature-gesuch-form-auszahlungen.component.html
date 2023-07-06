@@ -10,11 +10,20 @@
       </div>
     </div>
 
+    <!-- missing info -->
+    <div class="row" *ngIf="!view().loading && !view().hasNecessaryPreSteps">
+      <div class="col-12 col-xl-8 my-3">
+        <ngb-alert type="info" [dismissible]="false">{{
+          'gesuch-app.form.auszahlung.top.missing-eltern' | translate
+        }}</ngb-alert>
+      </div>
+    </div>
+
     <form
       [formGroup]="form"
       novalidate
       class="mt-4"
-      *ngIf="!view().loading"
+      *ngIf="!view().loading && view().hasNecessaryPreSteps"
       (ngSubmit)="handleSave()"
     >
       <div class="row g-4 my-2">
@@ -27,27 +36,21 @@
             class="form-select"
             dvSharedUiFormLabelTarget
             [formControl]="form.controls.kontoinhaberin"
+            (change)="handleKontoinhaberinChangedByUser()"
           >
             <option [value]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
-            <option [value]="KontoinhaberinType.GESUCHSTELLERIN">
-              {{ 'gesuch-app.form.shared.gesuchstellerin.label' | translate }}
-            </option>
-            <option [value]="KontoinhaberinType.VATER">
-              {{ 'gesuch-app.form.person.wohnsitz.vater' | translate }}
-            </option>
-            <option [value]="KontoinhaberinType.MUTTER">
-              {{ 'gesuch-app.form.person.wohnsitz.mutter' | translate }}
-            </option>
-            <option [value]="KontoinhaberinType.SOZIALDIENST_INSTITUTION">
+            <option
+              *ngFor="
+                let each of view().kontoinhaberValues;
+                trackBy: trackByIndex
+              "
+              [value]="each"
+            >
               {{
-                'gesuch-app.form.auszahlung.sozialdienst-institution.label'
-                  | translate
+                'gesuch-app.form.auszahlung.kontoinhaber.' + each | translate
               }}
-            </option>
-            <option [value]="KontoinhaberinType.ANDERE">
-              {{ 'gesuch-app.form.shared.andere.label' | translate }}
             </option>
           </select>
         </dv-shared-ui-form-field>

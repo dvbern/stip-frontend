@@ -3,17 +3,29 @@ import {
   ElternContainerDTO,
   ElternDTO,
   FamiliensituationDTO,
+  SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 
-export function calculateElternSituation(
-  familienSituation: FamiliensituationDTO | undefined,
-  elternContainers: ElternContainerDTO[] | undefined
-): {
+export interface ElternSituation {
   expectVater: boolean;
   expectMutter: boolean;
   vater?: ElternDTO;
   mutter?: ElternDTO;
-} {
+}
+
+export function calculateElternSituationGesuch(
+  gesuch: SharedModelGesuch | undefined
+): ElternSituation {
+  return calculateElternSituation(
+    gesuch?.familiensituationContainer?.familiensituationSB,
+    gesuch?.elternContainers
+  );
+}
+
+function calculateElternSituation(
+  familienSituation: FamiliensituationDTO | undefined,
+  elternContainers: ElternContainerDTO[] | undefined
+): ElternSituation {
   const vater = elternContainers?.find(
     (elternContainer) => elternContainer.elternSB?.geschlecht === Anrede.HERR
   )?.elternSB;
