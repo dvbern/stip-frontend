@@ -10,6 +10,7 @@ import {
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { LebenslaufItemDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import {
@@ -35,6 +36,7 @@ import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feat
     NgbAlert,
     TranslateModule,
     TwoColumnTimelineComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-lebenslauf.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-lebenslauf.component.scss'],

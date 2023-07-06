@@ -6,10 +6,12 @@
 $black: #000;
 $red: #fe5454;
 $blue: #298bef;
+$darkgray: #4e4e4e;
 
-$primary: #298bef;
-$secondary: #fe5454;
+$primary: $darkgray;
+$secondary: $blue;
 $info: #298bef;
+$warning: $red;
 
 $body-bg: #fafbfd;
 $min-contrast-ratio: 3; // default 4.5 leads to black text on primary red background
@@ -65,3 +67,8 @@ $card-border-radius: 8px;
 $card-border-width: 0;
 $card-spacer-y: 1.5rem;
 $card-spacer-x: 1.5rem;
+
+body {
+  --dv-blue-bg-subtle: #d4e8fc;
+  --dv-red-bg-subtle: #ffdddd;
+}

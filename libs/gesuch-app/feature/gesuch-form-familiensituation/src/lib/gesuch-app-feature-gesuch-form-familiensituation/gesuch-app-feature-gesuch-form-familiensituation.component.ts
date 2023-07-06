@@ -19,6 +19,7 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
@@ -53,6 +54,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
     GesuchAppUiPercentageSplitterComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',

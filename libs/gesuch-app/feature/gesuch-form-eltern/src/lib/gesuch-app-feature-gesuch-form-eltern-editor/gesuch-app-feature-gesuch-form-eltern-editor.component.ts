@@ -9,6 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   SharedUiFormComponent,
@@ -59,6 +60,7 @@ const MEDIUM_AGE_ADULT = 40;
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormAddressComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern-editor.component.scss'],

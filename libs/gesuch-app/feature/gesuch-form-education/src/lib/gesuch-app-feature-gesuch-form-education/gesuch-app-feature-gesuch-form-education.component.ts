@@ -19,6 +19,7 @@ import {
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungsland,
@@ -76,6 +77,7 @@ import { sharedDataAccessStammdatensFeature } from '@dv/shared/data-access/stamm
     SharedUiFormLabelTargetDirective,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],

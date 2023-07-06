@@ -10,6 +10,7 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { KindDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ import { parseBackendLocalDateAndPrint } from '@dv/shared/util/validator-date';
     TranslateModule,
     NgbAlert,
     GesuchAppFeatureGesuchFormKinderEditorComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kinder.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-kinder.component.scss'],

@@ -19,6 +19,7 @@ import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 import {
   NgbDropdown,
+  NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
 } from '@ng-bootstrap/ng-bootstrap';
@@ -41,6 +42,7 @@ import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.
     NgbDropdownMenu,
     NgbDropdownToggle,
     SharedUiIconChipComponent,
+    NgbDropdownItem,
   ],
   templateUrl: './gesuch-app-feature-cockpit.component.html',
   styleUrls: ['./gesuch-app-feature-cockpit.component.scss'],
