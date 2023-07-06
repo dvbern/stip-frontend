@@ -16,6 +16,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungssituation,
@@ -61,6 +62,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
     GesuchAppUiPercentageSplitterComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kind-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-kind-editor.component.scss'],

@@ -20,6 +20,7 @@ import {
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { calculateElternSituationGesuch } from '@dv/gesuch-app/util-fn/gesuch-util';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
@@ -64,6 +65,7 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     NgbAlert,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],

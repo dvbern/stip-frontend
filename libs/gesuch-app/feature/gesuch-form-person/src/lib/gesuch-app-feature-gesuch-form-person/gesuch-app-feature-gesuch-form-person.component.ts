@@ -18,6 +18,7 @@ import {
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
@@ -86,6 +87,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     SharedPatternDocumentUploadComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],

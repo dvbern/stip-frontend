@@ -173,12 +173,11 @@
   </div>
 
   <!-- buttons -->
-
-  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+  <dv-gesuch-app-ui-step-form-buttons>
     <button
       *ngIf="item.id"
       type="button"
-      class="btn btn-outline-primary d-flex align-items-center"
+      class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
       [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
     >
@@ -196,5 +195,5 @@
     <button type="submit" class="btn btn-primary">
       {{ 'gesuch-app.form.save-and-back' | translate }}
     </button>
-  </div>
+  </dv-gesuch-app-ui-step-form-buttons>
 </form>
