@@ -30,7 +30,8 @@ format-check:
 
 test:
   extends: .base
-  stage:
+  stage: test
+  script:
     - npm run test -- --coverage
   allow_failure: true
   artifacts:
