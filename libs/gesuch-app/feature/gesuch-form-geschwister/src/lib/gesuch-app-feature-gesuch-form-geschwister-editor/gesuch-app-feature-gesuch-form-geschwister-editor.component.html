@@ -71,11 +71,11 @@
         dvSharedUiFormLabelTarget
         formControlName="wohnsitz"
       >
-        <option [value]="null" disabled selected>
+        <option [ngValue]="null" disabled selected>
           {{ 'shared.form.select.empty' | translate }}
         </option>
         <option
-          [value]="a"
+          [ngValue]="a"
           *ngFor="let a of wohnsitzValues; trackBy: trackByIndex"
         >
           {{ 'gesuch-app.form.geschwister.wohnsitz.select.' + a | translate }}

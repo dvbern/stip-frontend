@@ -20,6 +20,11 @@
   padding-bottom: 0;
 }
 
+// Typeahead "Bitte wählen" soll gleich aussehen wie bei Dropdowns
+.form-control[role='combobox']::placeholder {
+  color: #000;
+}
+
 .dv-typeahead-clear-btn.btn {
   position: absolute;
   top: var(--dv-border-width);

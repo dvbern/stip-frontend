@@ -196,11 +196,11 @@
             dvSharedUiFormLabelTarget
             formControlName="land"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="l.landCode"
+              [ngValue]="l.landCode"
               *ngFor="let l of laenderSig(); trackBy: trackByIndex"
             >
               {{ languageSig() === 'de' ? l.landDE : l.landFR }}
