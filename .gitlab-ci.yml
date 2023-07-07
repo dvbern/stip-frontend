@@ -3,6 +3,8 @@ include:
 
 stages:
   - validate
+  - test
+  - analyze
   - build
   - deploy
 
@@ -25,6 +27,44 @@ format-check:
   extends: .base
   script:
     - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+
+test:
+  extends: .base
+  stage: test
+  script:
+    - npm run test:ci
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - coverage
+    reports:
+      junit:
+        - junit.xml
+    expire_in: 1 day
+
+sonarqube-check:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: ['']
+  stage: analyze
+  tags: ['os:linux', 'type:docker', 'zone:tz']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
+    GIT_DEPTH: '0'
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: test
+      artifacts: true
 
 build:pipeline:
   stage: build

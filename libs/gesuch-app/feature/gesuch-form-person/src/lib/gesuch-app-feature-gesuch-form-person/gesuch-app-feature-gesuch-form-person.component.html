@@ -212,10 +212,9 @@
           }}</dv-shared-ui-form-label>
           <input
             class="form-control"
-            type="text"
+            type="email"
             dvSharedUiFormLabelTarget
             formControlName="email"
-            [pattern]="PATTERN_EMAIL"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -374,6 +373,7 @@
         <dv-shared-ui-form-field
           class="col-12 col-md-6 col-xl-4"
           [isCheckbox]="true"
+          *ngIf="form.controls.nationalitaet.value === nationalitaetCH"
         >
           <dv-shared-ui-form-label
             >{{ 'gesuch-app.form.person.guardianship.label' | translate }}

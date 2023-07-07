@@ -63,4 +63,11 @@ export abstract class GesuchFormSteps {
     currentStepNumber: 9,
     iconSymbolName: 'payments',
   };
+
+  public static readonly EINNAHMEN_KOSTEN: GesuchAppModelGesuchFormStep = {
+    route: 'gesuch-app-feature-gesuch-form-einnahmenkosten',
+    translationKey: 'gesuch-app.einnahmenkosten.title',
+    currentStepNumber: 10,
+    iconSymbolName: 'call_missed_outgoing',
+  };
 }
