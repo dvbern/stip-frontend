@@ -92,10 +92,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: ['', [Validators.required]],
-    ausbildungstaette: ['', [Validators.required]],
-    ausbildungsgang: ['', [Validators.required]],
-    fachrichtung: ['', [Validators.required]],
+    ausbildungsland: [<string | null>null, [Validators.required]],
+    ausbildungstaette: [<string | null>null, [Validators.required]],
+    ausbildungsgang: [<string | null>null, [Validators.required]],
+    fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
       '',
@@ -127,7 +127,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: ['', [Validators.required]],
+    pensum: [<string | null>null, [Validators.required]],
   });
 
   view$ = this.store.selectSignal(
@@ -268,17 +268,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungstaette.reset('');
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleStaetteChangedByUser() {
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungstaette.reset('');
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleSave() {
