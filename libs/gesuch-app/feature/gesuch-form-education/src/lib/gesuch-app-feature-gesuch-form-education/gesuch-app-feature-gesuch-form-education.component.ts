@@ -7,6 +7,7 @@ import {
   inject,
   OnInit,
   Signal,
+  ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -43,12 +44,14 @@ import {
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap/typeahead/typeahead';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears, getYear, subMonths } from 'date-fns';
+import { addYears, subMonths } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   merge,
   Observable,
@@ -58,7 +61,6 @@ import {
 } from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
-import { sharedDataAccessStammdatensFeature } from '@dv/shared/data-access/stammdaten';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -270,10 +272,26 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   handleLandChangedByUser() {
     this.form.controls.ausbildungstaette.reset(null);
     this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.fachrichtung.reset(null);
+  }
+
+  @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead?: NgbTypeahead;
+
+  clearStaetteTypeahead(inputField: HTMLInputElement) {
+    this.form.controls.ausbildungstaette.setValue('');
+    this.handleStaetteChangedByUser();
+    this.ausbildungsstaetteTypeahead!.dismissPopup();
+    this.focusAusbildungstaette$.next(''); // damit das "Dropdown" geoeffnet wird
+    inputField.focus();
   }
 
   handleStaetteChangedByUser() {
     this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.fachrichtung.reset(null);
+  }
+
+  handleGangChangedByUser() {
+    this.form.controls.fachrichtung.reset(null);
   }
 
   handleManuellChangedByUser() {
@@ -327,6 +345,15 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   });
 
   focusAusbildungstaette$ = new Subject<string>();
+  clickAusbildungstaette$ = new Subject<string>();
+
+  onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
+    // Grund wieso wir (selectItem) verwenden und nicht (change): change wird nicht immer ausgeloest. Dafuer muessen
+    // wir hier noch selber pruefen, ob der Wert geaendert hat.
+    if (event.item !== this.form.getRawValue().ausbildungstaette) {
+      this.handleStaetteChangedByUser();
+    }
+  }
 
   createAusbildungstaetteTypeaheadFn(list: AusbildungstaetteDTO[]) {
     console.log('computing typeaheading function for list ', list);
@@ -335,8 +362,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         debounceTime(200),
         distinctUntilChanged()
       );
-      const inputFocus$ = this.focusAusbildungstaette$;
-      return merge(debouncedText$, inputFocus$).pipe(
+      const click$ = this.clickAusbildungstaette$;
+      const clicksWithClosedPopup$ = click$.pipe(
+        filter(() => !this.ausbildungsstaetteTypeahead!.isPopupOpen())
+      );
+      const focus$ = this.focusAusbildungstaette$;
+      return merge(debouncedText$, focus$, clicksWithClosedPopup$).pipe(
         map((term) => {
           console.log('typeaheading term ', term, list);
           return (

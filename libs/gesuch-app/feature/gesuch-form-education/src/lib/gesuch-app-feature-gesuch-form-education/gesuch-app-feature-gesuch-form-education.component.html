@@ -55,7 +55,7 @@
           {{ 'gesuch-app.form.education.ausbildungstaette.label' | translate }}
         </dv-shared-ui-form-label>
 
-        <!-- Typeahead -->
+        <!-- Ausbildungsstaette Typeahead -->
         <div
           class="position-relative"
           *ngIf="!form.value['ausbildungNichtGefunden']"
@@ -68,26 +68,25 @@
             [ngbTypeahead]="ausbildungstaetteTypeaheadFn$()"
             [placeholder]="'shared.form.select.empty' | translate"
             (focus)="focusAusbildungstaette$.next($any($event).target.value)"
+            (click)="clickAusbildungstaette$.next($any($event).target.value)"
             [editable]="false"
-            (change)="handleStaetteChangedByUser()"
+            (selectItem)="onAusbildungsstaetteTypeaheadSelect($event)"
             popupClass="dv-typeahead-popup"
             #staetteTypeahead
           />
+          <!-- clear button -->
           <button
             *ngIf="form.controls.ausbildungstaette.value"
             type="button"
             class="btn btn-light dv-typeahead-clear-btn"
-            (click)="
-              form.controls.ausbildungstaette.setValue('');
-              staetteTypeahead.focus();
-              handleStaetteChangedByUser()
-            "
+            (click)="clearStaetteTypeahead(staetteTypeahead)"
             [tabIndex]="-1"
           >
             <span class="material-symbols-rounded align-middle">clear</span>
           </button>
         </div>
 
+        <!-- alternative Ausbildungsstaette -->
         <input
           *ngIf="form.value['ausbildungNichtGefunden']"
           class="form-control"
@@ -108,11 +107,13 @@
           {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
         </dv-shared-ui-form-label>
 
+        <!-- AUsbildungsgang Select -->
         <select
           *ngIf="!form.value['ausbildungNichtGefunden']"
           class="form-select"
           dvSharedUiFormLabelTarget
           formControlName="ausbildungsgang"
+          (change)="handleGangChangedByUser()"
         >
           <option [ngValue]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
@@ -125,6 +126,7 @@
           </option>
         </select>
 
+        <!-- alternativer Ausbildungsgang -->
         <input
           *ngIf="form.value['ausbildungNichtGefunden']"
           class="form-control"
