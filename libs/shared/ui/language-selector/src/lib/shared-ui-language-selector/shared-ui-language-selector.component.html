@@ -1,15 +1,11 @@
-<div
-  class="btn-group"
-  role="group"
-  [attr.aria-label]="'shared.language-selector.aria-label' | translate"
->
-  <button
-    *ngFor="let lang of languages; trackBy: trackByIndex"
-    type="button"
-    class="btn"
-    (click)="handleLanguageChange(lang)"
-    [class.btn-primary]="language === lang"
-  >
-    {{ lang | uppercase }}
-  </button>
-</div>
+<ul class="nav">
+  <li class="nav-item" *ngFor="let lang of languages; trackBy: trackByIndex">
+    <a
+      class="nav-link"
+      (click)="handleLanguageChange(lang)"
+      [class.active]="language === lang"
+    >
+      {{ lang | uppercase }}
+    </a>
+  </li>
+</ul>

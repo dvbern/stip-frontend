@@ -1,10 +1,10 @@
-<h2 class="mt-4">
+<h3 class="mt-4">
   {{
     'gesuch-app.form.eltern.' +
       (elternteil.geschlecht === Anrede.FRAU ? 'mutter' : 'vater') +
       '.title' | translate
   }}
-</h2>
+</h3>
 
 <form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
   <div class="row g-4 my-2">
@@ -86,7 +86,7 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <h3 class="pt-4">{{ 'shared.weiterangaben' | translate }}</h3>
+  <h3 class="pt-5">{{ 'shared.weiterangaben' | translate }}</h3>
 
   <div class="row g-4 my-2">
     <!-- GEBURTSDATUM -->
@@ -233,12 +233,12 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <!-- buttons -->
-  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+  <!-- Buttons -->
+  <dv-gesuch-app-ui-step-form-buttons>
     <button
       *ngIf="elternteil.id"
       type="button"
-      class="btn btn-outline-primary d-flex align-items-center"
+      class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
       [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
     >
@@ -256,5 +256,5 @@
     <button type="submit" class="btn btn-primary">
       {{ 'gesuch-app.form.save-and-back' | translate }}
     </button>
-  </div>
+  </dv-gesuch-app-ui-step-form-buttons>
 </form>

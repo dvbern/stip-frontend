@@ -7,6 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -30,6 +31,7 @@ import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stam
     GesuchAppPatternGesuchStepLayoutComponent,
     GesuchAppFeatureGesuchFormElternEditorComponent,
     ElternteilCardComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],
