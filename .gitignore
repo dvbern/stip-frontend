@@ -2,6 +2,8 @@
 
 # compiled output
 dist
+coverage
+junit.xml
 tmp
 /out-tsc
 /dv-example/

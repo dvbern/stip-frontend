@@ -5,7 +5,13 @@ $dv-size-unit: 0.25rem;
 // order matters
 @import 'bootstrap-variables';
 
-:root {
-  // expose DV sass variables to as css variables
-  --#{$prefix}size-unit: #{$dv-size-unit}; // bad. this will be overridden from bootstrap
+@mixin dv-variables {
+  :root {
+    // expose DV sass variables to as css variables
+    --#{$prefix}size-unit: #{$dv-size-unit}; // bad. this will be overridden from bootstrap
+  }
+  body {
+    --dv-blue-bg-subtle: #d4e8fc;
+    --dv-red-bg-subtle: #ffdddd;
+  }
 }

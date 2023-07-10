@@ -95,15 +95,13 @@
         'gesuch-app.form.shared.birthday.label' | translate
       }}</dv-shared-ui-form-label>
 
-      <div class="input-group">
-        <input
-          class="form-control"
-          placeholder="dd.mm.yyyy"
-          dvSharedUiFormLabelTarget
-          formControlName="geburtsdatum"
-          (blur)="onGeburtsdatumBlur($event)"
-        />
-      </div>
+      <input
+        class="form-control"
+        placeholder="dd.mm.yyyy"
+        dvSharedUiFormLabelTarget
+        formControlName="geburtsdatum"
+        (blur)="onGeburtsdatumBlur($event)"
+      />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}

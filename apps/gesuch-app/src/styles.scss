@@ -1,5 +1,7 @@
 // override boostrap variables + add custom
 @import 'theme';
+@include dv-variables;
+
 @import 'components';
 
 @import 'bootstrap/scss/bootstrap';
@@ -18,6 +20,11 @@
   overflow: hidden;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+// Typeahead "Bitte wählen" soll gleich aussehen wie bei Dropdowns
+.form-control[role='combobox']::placeholder {
+  color: #000;
 }
 
 .dv-typeahead-clear-btn.btn {
