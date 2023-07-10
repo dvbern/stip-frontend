@@ -23,8 +23,6 @@ export const MASK_SOZIALVERSICHERUNGSNUMMER: MaskitoOptions = {
 
 export const MASK_IBAN: MaskitoOptions = {
   mask: [
-    'C',
-    'H',
     /\d/,
     /\d/,
     ' ',

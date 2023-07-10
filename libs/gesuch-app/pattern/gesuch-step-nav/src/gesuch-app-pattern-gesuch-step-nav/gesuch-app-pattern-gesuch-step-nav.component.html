@@ -4,7 +4,7 @@
   <ng-container
     *ngIf="{ active: route.isActive(step.route, false) } as stepRoute"
   >
-    <button
+    <a
       type="button"
       class="btn btn-nav btn-warning mb-3 w-100 d-flex justify-content-start align-items-center fw-normal"
       [class.btn-light]="!stepRoute.active"
@@ -17,6 +17,6 @@
       <span class="text-start">
         {{ step.translationKey | translate }}
       </span>
-    </button>
+    </a>
   </ng-container>
 </ng-container>
