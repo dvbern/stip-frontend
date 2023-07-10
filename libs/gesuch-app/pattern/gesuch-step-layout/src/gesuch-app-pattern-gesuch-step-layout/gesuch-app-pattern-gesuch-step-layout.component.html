@@ -1,4 +1,4 @@
-<dv-gesuch-app-pattern-main-layout>
+<dv-gesuch-app-pattern-main-layout [closeMenu]="navClicked | async">
   <div class="d-flex h-100">
     <!-- left step nav (Desktop) -->
     <div class="d-none d-lg-block border-end bg-white h-100">
@@ -61,6 +61,7 @@
 
   <div class="mobile-nav-content">
     <dv-gesuch-app-pattern-gesuch-step-nav
+      (navClicked)="navClicked.emit()"
       class="mobile-nav-content"
     ></dv-gesuch-app-pattern-gesuch-step-nav>
   </div>

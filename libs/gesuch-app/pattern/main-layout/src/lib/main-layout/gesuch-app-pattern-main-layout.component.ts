@@ -7,6 +7,9 @@ import {
   ElementRef,
   HostListener,
   inject,
+  Input,
+  OnChanges,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -52,10 +55,12 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./gesuch-app-pattern-main-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppPatternMainLayoutComponent {
+export class GesuchAppPatternMainLayoutComponent implements OnChanges {
   private store = inject(Store);
   private offCanvasService = inject(NgbOffcanvas);
   protected breakpointObserver = inject(BreakpointObserver);
+
+  @Input() closeMenu: { value?: unknown } | null = null;
 
   isScroll = false;
   breakpointCompactHeader = '(max-width: 992px)';
@@ -94,6 +99,12 @@ export class GesuchAppPatternMainLayoutComponent {
 
   openMenu() {
     this.offCanvasService.open(this.menu, { position: 'end', scroll: true });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['closeMenu']) {
+      this.offCanvasService.dismiss(changes['closeMenu'].currentValue);
+    }
   }
 
   protected readonly Breakpoints = Breakpoints;
