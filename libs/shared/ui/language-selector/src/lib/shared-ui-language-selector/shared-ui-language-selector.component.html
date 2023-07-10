@@ -1,5 +1,6 @@
 <ul class="nav">
   <li class="nav-item" *ngFor="let lang of languages; trackBy: trackByIndex">
+    <!-- TODO: check if a language change should update the url, if not, use button again -->
     <a
       class="nav-link"
       (click)="handleLanguageChange(lang)"
