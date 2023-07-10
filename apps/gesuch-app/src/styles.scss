@@ -1,6 +1,6 @@
 // override boostrap variables + add custom
-@use 'theme' as t;
-@include t.dv-variables;
+@import 'theme';
+@include dv-variables;
 
 @import 'components';
 
