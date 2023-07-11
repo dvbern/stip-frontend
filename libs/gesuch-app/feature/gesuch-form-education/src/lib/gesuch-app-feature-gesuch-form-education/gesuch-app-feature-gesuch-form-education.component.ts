@@ -167,16 +167,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         'monthYear'
       ),
     ]);
-    this.form.controls.ausbildungBegin.addValidators([
-      createDateDependencyValidator(
-        'before',
-        this.form.controls.ausbildungEnd,
-        true,
-        new Date(),
-        this.languageSig(),
-        'monthYear'
-      ),
-    ]);
 
     // abhaengige Validierung zuruecksetzen on valueChanges
     effect(

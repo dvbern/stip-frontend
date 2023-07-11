@@ -142,14 +142,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateStart.addValidators([
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
-        createDateDependencyValidator(
-          'before',
-          this.form.controls.dateEnd,
-          false,
-          new Date(),
-          this.languageSig(),
-          'monthYear'
-        ),
       ]);
       if (changes['minStartDate'].currentValue) {
         this.form.controls.dateStart.addValidators([
