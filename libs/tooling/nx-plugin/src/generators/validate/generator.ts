@@ -37,8 +37,8 @@ export default async function validate(
         !n.startsWith('shared-assets')
     );
 
-  const aggregateViolations = [];
-  const aggregateFixes = [];
+  const aggregateViolations: string[] = [];
+  const aggregateFixes: string[] = [];
 
   for (const project of projects) {
     const { violations, fixes } = await validateProjectTagsMatchProjectLocation(
@@ -86,7 +86,7 @@ async function validateSelectors(tree: Tree, project: Project) {
     return [];
   }
 
-  const incorrectSelectors = [];
+  const incorrectSelectors: { filePath: string; selector: string }[] = [];
   const { name: projectName, path: projectPath } = project;
   const [, scope, type, name] = projectPath.split(path.sep);
   const projectJson = await readJson(tree, projectPath);
@@ -101,14 +101,14 @@ async function validateSelectors(tree: Tree, project: Project) {
   ).forEach((filePath) => {
     const fileContent = tree.read(filePath, 'utf-8');
     const selectors = Array.from(
-      fileContent.matchAll(/selector:\s*'(?<selector>.*)'/g)
+      fileContent?.matchAll(/selector:\s*'(?<selector>.*)'/g) ?? []
     ).map((match) => match.groups?.selector);
     selectors.forEach((selector) => {
-      const normalizedSelector = selector.replace(/-/g, '').toLowerCase();
+      const normalizedSelector = selector?.replace(/-/g, '').toLowerCase();
       const normalizedNamespace = `${scope}${type}${name}`
         .replace(/-/g, '')
         .toLowerCase();
-      if (!normalizedSelector.includes(normalizedNamespace)) {
+      if (!normalizedSelector?.includes(normalizedNamespace) && selector) {
         incorrectSelectors.push({
           filePath,
           selector,
@@ -146,7 +146,7 @@ async function validateProjectTagsMatchProjectLocation(
   const [appsOrLibs, scopeOrName, type] = projectPath.split(path.sep);
   const projectJson: any = await readJson(tree, projectPath);
   const tags: string[] = projectJson?.tags ?? [];
-  const expectedTags = [];
+  const expectedTags: string[] = [];
   if (appsOrLibs === 'apps') {
     if (!scopeOrName.endsWith('-e2e')) {
       expectedTags.push(`type:app`, `scope:${scopeOrName}`);
@@ -187,14 +187,14 @@ async function validateEslintEnforceModuleBoundariesMatchesFolderStructure(
 ): Promise<string[]> {
   const violations = [];
   const moduleBoundaries = await getModuleBoundaries(tree);
-  const relevantBoundaries = moduleBoundaries.filter((item) =>
+  const relevantBoundaries = moduleBoundaries.filter((item: any) =>
     ['scope:'].some((prefix) => item.sourceTag.startsWith(prefix))
   );
   const scopes = Array.from(
     new Set(
       relevantBoundaries
-        .filter((item) => item.sourceTag.startsWith('scope:'))
-        .map((item) => item.sourceTag.split(':')[1])
+        .filter((item: any) => item.sourceTag.startsWith('scope:'))
+        .map((item: any) => item.sourceTag.split(':')[1])
     )
   ).filter((scope) => scope !== 'tooling');
 
@@ -202,7 +202,7 @@ async function validateEslintEnforceModuleBoundariesMatchesFolderStructure(
     tree,
     'libs/tooling/nx-plugin/src/generators/lib/schema.json'
   )
-    .properties.scope['x-prompt'].items.map((i) => i.value)
+    .properties.scope['x-prompt'].items.map((i: any) => i.value)
     .sort();
   const scopeApps = getFoldersFromTree(tree, './apps').sort();
   const scopeLibs = getFoldersFromTree(tree, './libs')
@@ -284,7 +284,7 @@ async function getModuleBoundaries(tree: Tree) {
   const ENFORCE_MODULE_BOUNDARIES = '@nx/enforce-module-boundaries';
   const eslintJson = await readJson(tree, './.eslintrc.json');
   const boundaries = eslintJson?.overrides.find(
-    (o) => o?.rules?.[ENFORCE_MODULE_BOUNDARIES]
+    (o: any) => o?.rules?.[ENFORCE_MODULE_BOUNDARIES]
   )?.rules?.[ENFORCE_MODULE_BOUNDARIES]?.[1]?.depConstraints;
   if (!boundaries) {
     throw new Error(

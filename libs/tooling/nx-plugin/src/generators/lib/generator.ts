@@ -76,7 +76,7 @@ export default async function (tree: Tree, options: LibGeneratorSchema) {
     await generator(tree, {
       ...defaultOptions,
       name: normalizedOptions.name,
-      project: normalizedOptions.projectName,
+      parent: normalizedOptions.projectName,
     });
   }
 
