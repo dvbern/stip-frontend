@@ -9,10 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Adresse } from './adresse';
+import { Kontoinhaberin } from './kontoinhaberin';
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
-
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
-};
+/**
+ *
+ */
+export interface Auszahlung {
+  id: string;
+  kontoinhaberin: Kontoinhaberin;
+  vorname: string;
+  adresse: Adresse;
+  iban: string;
+  nachname: string;
+}

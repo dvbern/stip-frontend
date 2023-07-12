@@ -9,10 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Adresse } from './adresse';
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
-
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
-};
+export interface PartnerUpdate {
+  adresse: Adresse;
+  vorname: string;
+  geburtsdatum: string;
+  /**
+   *
+   */
+  jahreseinkommen: number;
+  /**
+   *
+   */
+  sozialversicherungsnummer: string;
+  nachname: string;
+}

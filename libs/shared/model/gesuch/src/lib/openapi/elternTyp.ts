@@ -10,9 +10,12 @@
  * Do not edit the class manually.
  */
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
+/**
+ *
+ */
+export type ElternTyp = 'VATER' | 'MUTTER';
 
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
+export const ElternTyp = {
+  VATER: 'VATER' as ElternTyp,
+  MUTTER: 'MUTTER' as ElternTyp,
 };

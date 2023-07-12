@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Land } from './land';
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
-
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
-};
+export interface Adresse {
+  id?: string;
+  land: Land;
+  coAdresse?: string;
+  strasse: string;
+  hausnummer?: string;
+  plz: string;
+  ort: string;
+}

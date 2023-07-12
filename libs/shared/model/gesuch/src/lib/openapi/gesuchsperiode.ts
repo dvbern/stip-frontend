@@ -10,9 +10,10 @@
  * Do not edit the class manually.
  */
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
-
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
-};
+export interface Gesuchsperiode {
+  id: string;
+  gueltigAb: string;
+  gueltigBis: string;
+  einreichfrist?: string;
+  aufschaltdatum?: string;
+}

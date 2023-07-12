@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Ausbildungsgang } from './ausbildungsgang';
+import { Ausbildungsland } from './ausbildungsland';
 
-export type Taetigskeitsart = 'ERWERBSTAETIGKEIT' | 'ANDERE_TAETIGKEIT';
-
-export const Taetigskeitsart = {
-  ERWERBSTAETIGKEIT: 'ERWERBSTAETIGKEIT' as Taetigskeitsart,
-  ANDERE_TAETIGKEIT: 'ANDERE_TAETIGKEIT' as Taetigskeitsart,
-};
+export interface Ausbildungsstaette {
+  id: string;
+  ausbildungsgaenge?: Array<Ausbildungsgang>;
+  ausbildungsland: Ausbildungsland;
+  name: string;
+}
