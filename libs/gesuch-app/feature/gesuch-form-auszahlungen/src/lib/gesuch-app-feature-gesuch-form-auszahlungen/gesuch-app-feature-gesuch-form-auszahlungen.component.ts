@@ -20,10 +20,12 @@ import {
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { calculateElternSituationGesuch } from '@dv/gesuch-app/util-fn/gesuch-util';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
+  AuszahlungDTO,
   ElternDTO,
   KontoinhaberinType,
   MASK_IBAN,
@@ -64,6 +66,7 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     NgbAlert,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
@@ -79,8 +82,8 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   form = this.fb.group({
     kontoinhaberin: [<KontoinhaberinType | null>null, [Validators.required]],
-    name: [''],
-    vorname: [''],
+    name: ['', [Validators.required]],
+    vorname: ['', [Validators.required]],
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(this.fb),
     iban: ['', [Validators.required, this.ibanValidator()]],
   });
@@ -104,7 +107,10 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
         const { gesuch } = this.view();
         if (gesuch !== undefined) {
           const initalValue = gesuch.auszahlungContainer?.auszahlungSB || {};
-          this.form.patchValue({ ...initalValue });
+          this.form.patchValue({
+            ...initalValue,
+            iban: initalValue.iban?.substring(2), // Land-Prefix loeschen
+          });
         }
       },
       { allowSignalWrites: true }
@@ -151,7 +157,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     if (this.form.valid) {
       this.store.dispatch(
         GesuchAppEventGesuchFormAuszahlung.saveTriggered({
-          gesuch: this.buildBackGesuch(),
+          gesuch: this.buildUpdatedGesuchFromForm(),
           origin: GesuchFormSteps.AUSZAHLUNGEN,
         })
       );
@@ -192,46 +198,39 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
       if (control.value === null || control.value === '') {
         return null;
       }
-      const extractIBANResult = extractIBAN(control.value);
+      const extractIBANResult = extractIBAN('CH' + control.value);
       if (extractIBANResult.valid && extractIBANResult.countryCode === 'CH') {
         return null;
       }
-      return this.constructIBANValidationErrors(extractIBANResult, control);
+      return this.constructIBANValidationErrors(extractIBANResult);
     };
   }
 
-  private constructIBANValidationErrors(
-    extractIBANResult: ExtractIBANResult,
-    control: AbstractControl
-  ): {
+  private constructIBANValidationErrors(extractIBANResult: ExtractIBANResult): {
     invalidIBAN?: boolean;
-    invalidCountry?: string;
   } {
-    const errorObject: { invalidIBAN?: boolean; invalidCountry?: string } =
-      {} as ValidationErrors;
+    const errorObject: { invalidIBAN?: boolean } = {} as ValidationErrors;
 
     if (!extractIBANResult.valid) {
       errorObject.invalidIBAN = true;
       return errorObject;
     }
 
-    if (extractIBANResult.countryCode !== 'CH') {
-      errorObject.invalidCountry = control.value;
-    }
-
     return errorObject;
   }
 
-  private buildBackGesuch(): Partial<SharedModelGesuch> {
+  private buildUpdatedGesuchFromForm(): Partial<SharedModelGesuch> {
     const gesuch = this.view().gesuch;
+    const auszahlungSB = gesuch?.auszahlungContainer?.auszahlungSB;
     return {
       ...gesuch,
       auszahlungContainer: {
         ...gesuch?.auszahlungContainer,
         auszahlungSB: {
-          ...gesuch?.auszahlungContainer?.auszahlungSB,
-          ...(this.form.getRawValue() as any),
-        },
+          id: auszahlungSB?.id,
+          ...this.form.getRawValue(),
+          iban: 'CH' + this.form.getRawValue().iban,
+        } as AuszahlungDTO,
       },
     };
   }

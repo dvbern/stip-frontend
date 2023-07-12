@@ -38,7 +38,7 @@
             [formControl]="form.controls.kontoinhaberin"
             (change)="handleKontoinhaberinChangedByUser()"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
@@ -109,14 +109,17 @@
           <dv-shared-ui-form-label>{{
             'gesuch-app.form.auszahlung.iban.label' | translate
           }}</dv-shared-ui-form-label>
-          <input
-            data-test-id="form-person-name"
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            [formControl]="form.controls.iban"
-            [maskito]="MASK_IBAN"
-          />
+          <div class="input-group">
+            <span class="input-group-text">CH</span>
+            <input
+              data-test-id="form-person-name"
+              class="form-control"
+              type="text"
+              dvSharedUiFormLabelTarget
+              [formControl]="form.controls.iban"
+              [maskito]="MASK_IBAN"
+            />
+          </div>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
           </dv-shared-ui-form-message>
@@ -125,21 +128,15 @@
           >
             {{ 'shared.form.error.invalidIBAN' | translate }}
           </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message
-            *dvSharedUiFormMessageError="'invalidCountry'"
-          >
-            {{ 'shared.form.error.invalidCountry' | translate }}
-          </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
+
       <!-- Buttons -->
-      <div
-        class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
-      >
+      <dv-gesuch-app-ui-step-form-buttons>
         <button type="submit" class="btn btn-primary">
           {{ 'gesuch-app.form.save-and-continue' | translate }}
         </button>
-      </div>
+      </dv-gesuch-app-ui-step-form-buttons>
     </form>
   </div>
 </dv-gesuch-app-pattern-gesuch-step-layout>

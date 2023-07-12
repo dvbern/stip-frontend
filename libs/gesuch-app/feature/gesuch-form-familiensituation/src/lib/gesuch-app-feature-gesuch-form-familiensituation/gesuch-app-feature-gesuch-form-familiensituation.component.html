@@ -154,16 +154,16 @@
           dvSharedUiFormLabelTarget
           formControlName="werZahltAlimente"
         >
-          <option [value]="null" disabled selected>
+          <option [ngValue]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.VATER">
             {{ 'gesuch-app.form.familiensituation.vater' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.MUTTER">
             {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
@@ -489,16 +489,16 @@
           dvSharedUiFormLabelTarget
           formControlName="sorgerecht"
         >
-          <option [value]="null" disabled selected>
+          <option [ngValue]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.VATER">
             {{ 'gesuch-app.form.familiensituation.vater' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.MUTTER">
             {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
@@ -518,16 +518,16 @@
           dvSharedUiFormLabelTarget
           formControlName="obhut"
         >
-          <option [value]="null" disabled selected>
+          <option [ngValue]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.VATER">
             {{ 'gesuch-app.form.familiensituation.vater' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.MUTTER">
             {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
           </option>
-          <option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+          <option [ngValue]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
             {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
           </option>
         </select>
@@ -567,10 +567,10 @@
     </div>
 
     <!-- buttons -->
-    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <dv-gesuch-app-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
       </button>
-    </div>
+    </dv-gesuch-app-ui-step-form-buttons>
   </form>
 </dv-gesuch-app-pattern-gesuch-step-layout>

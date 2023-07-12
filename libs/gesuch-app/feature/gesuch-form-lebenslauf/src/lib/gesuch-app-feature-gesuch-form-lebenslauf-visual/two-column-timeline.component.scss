@@ -62,13 +62,13 @@
     }
 
     &.left {
-      background-color: var(--dv-primary-bg-subtle);
-      border-color: var(--dv-primary);
+      background-color: var(--dv-secondary-bg-subtle);
+      border-color: var(--dv-secondary);
     }
 
     &.both {
-      background-color: var(--dv-secondary-bg-subtle);
-      border-color: var(--dv-secondary);
+      background-color: var(--dv-red-bg-subtle);
+      border-color: var(--dv-red);
     }
   }
 
@@ -125,7 +125,7 @@
     border-radius: 100%;
     width: 40px;
     height: 40px;
-    background-color: var(--dv-secondary);
+    background-color: var(--dv-red);
     color: #fff;
   }
   .add-button-40 {

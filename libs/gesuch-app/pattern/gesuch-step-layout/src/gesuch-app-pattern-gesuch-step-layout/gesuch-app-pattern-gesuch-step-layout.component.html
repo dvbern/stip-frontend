@@ -1,4 +1,4 @@
-<dv-gesuch-app-pattern-main-layout>
+<dv-gesuch-app-pattern-main-layout [closeMenu]="navClicked | async">
   <div class="d-flex h-100">
     <!-- left step nav (Desktop) -->
     <div class="d-none d-lg-block border-end bg-white h-100">
@@ -7,7 +7,7 @@
         <span class="fw-medium">Eva Mendes</span>
       </p>
 
-      <dv-gesuch-app-pattern-gesuch-step-nav class="p-4" style="width: 296px" />
+      <dv-gesuch-app-pattern-gesuch-step-nav class="sidenav p-4" />
     </div>
 
     <div class="container mb-5 pt-lg-4 px-lg-4">
@@ -20,7 +20,7 @@
           [total]="stepManager.getTotalSteps()"
         ></dv-shared-ui-progress-bar>
         <div class="text-end">
-          <h5 style="letter-spacing: 1.13px; margin-bottom: 4px">
+          <h5 class="step-title">
             {{ step.translationKey | translate }}
           </h5>
           <p class="fst-italic mb-0">
@@ -33,7 +33,7 @@
       <!-- title (desktop) -->
       <div class="d-none d-lg-flex justify-content-start">
         <dv-shared-ui-icon-chip class="step-icon me-3">
-          <i class="material-symbols-rounded text-primary">{{
+          <i class="material-symbols-rounded title-icon">{{
             step.iconSymbolName
           }}</i>
         </dv-shared-ui-icon-chip>
@@ -61,6 +61,7 @@
 
   <div class="mobile-nav-content">
     <dv-gesuch-app-pattern-gesuch-step-nav
+      (navClicked)="navClicked.emit()"
       class="mobile-nav-content"
     ></dv-gesuch-app-pattern-gesuch-step-nav>
   </div>
@@ -68,7 +69,7 @@
   <div class="header-desktop-left d-flex gap-3 align-items-center">
     <a
       routerLink="/"
-      class="btn btn-secondary fw-normal px-2 d-flex align-items-center shadow-none"
+      class="btn btn-warning fw-normal px-2 d-flex align-items-center shadow-none"
       data-testid="gesuch-step-nav-dashboard"
     >
       <i class="material-symbols-rounded text-white me-2">dashboard</i>

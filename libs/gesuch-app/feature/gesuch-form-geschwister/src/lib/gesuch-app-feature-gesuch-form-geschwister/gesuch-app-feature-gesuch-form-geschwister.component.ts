@@ -10,6 +10,7 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { GeschwisterDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
     TranslateModule,
     NgbAlert,
     GesuchAppFeatureGesuchFormGeschwisterEditorComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-geschwister.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-geschwister.component.scss'],

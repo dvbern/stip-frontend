@@ -18,6 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Bildungsart,
@@ -59,6 +60,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     SharedUiFormMessageErrorDirective,
     TranslateModule,
     MaskitoModule,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-lebenslauf-editor.component.html',
@@ -140,14 +142,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       this.form.controls.dateStart.addValidators([
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
-        createDateDependencyValidator(
-          'before',
-          this.form.controls.dateEnd,
-          false,
-          new Date(),
-          this.languageSig(),
-          'monthYear'
-        ),
       ]);
       if (changes['minStartDate'].currentValue) {
         this.form.controls.dateStart.addValidators([

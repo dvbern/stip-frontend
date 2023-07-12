@@ -153,12 +153,15 @@
         }
       ],
       "personInAusbildungContainer": {
+        "id": "abc",
         "personInAusbildungSB": {
+          "id": "abc",
           "sozialversicherungsnummer": "756.1234.5678.97",
           "anrede": "HERR",
           "name": "Conner",
           "vorname": "Ivan",
           "adresse": {
+            "id": "iuiu",
             "coAdresse": "Perferendis voluptat",
             "strasse": "Qui id sint assume",
             "hausnummer": "588",
@@ -166,14 +169,15 @@
             "ort": "Zürich",
             "land": "CH"
           },
-          "identischerZivilrechtlicherWohnsitz": true,
-          "zivilrechtlicherWohnsitzPlz": "",
-          "zivilrechtlicherWohnsitzOrt": "",
+          "identischerZivilrechtlicherWohnsitz": false,
+          "izvPLZ": "1234",
+          "izvOrt": "Vessy",
           "email": "mypyrew@mailbucket.dvbern.ch",
           "telefonnummer": "+41 78 868 59 53",
           "geburtsdatum": "1990-03-03",
           "nationalitaet": "FR",
           "heimatort": "",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B",
           "vormundschaft": true,
           "zivilstand": "VERHEIRATET",
           "wohnsitz": "ELTERN",
@@ -181,7 +185,8 @@
           "quellenbesteuerung": true,
           "digitaleKommunikation": false,
           "korrespondenzSprache": "DEUTSCH",
-          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B"
+          "quellenbesteuert": false,
+          "kinder": false
         }
       },
       "kindContainers": [

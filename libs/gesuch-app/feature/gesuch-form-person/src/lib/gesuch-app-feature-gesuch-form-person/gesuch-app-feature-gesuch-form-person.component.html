@@ -61,11 +61,11 @@
             dvSharedUiFormLabelTarget
             formControlName="anrede"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="a"
+              [ngValue]="a"
               *ngFor="let a of anredeValues; trackBy: trackByIndex"
             >
               {{
@@ -167,7 +167,7 @@
                 class="form-control"
                 type="text"
                 dvSharedUiFormLabelTarget
-                formControlName="zivilrechtlicherWohnsitzPlz"
+                formControlName="izvPLZ"
               />
               <dv-shared-ui-form-message
                 *dvSharedUiFormMessageError="'required'"
@@ -185,7 +185,7 @@
                 class="form-control"
                 type="text"
                 dvSharedUiFormLabelTarget
-                formControlName="zivilrechtlicherWohnsitzOrt"
+                formControlName="izvOrt"
               />
               <dv-shared-ui-form-message
                 *dvSharedUiFormMessageError="'required'"
@@ -253,15 +253,13 @@
             'gesuch-app.form.shared.birthday.label' | translate
           }}</dv-shared-ui-form-label>
 
-          <div class="input-group">
-            <input
-              class="form-control"
-              placeholder="dd.mm.yyyy"
-              dvSharedUiFormLabelTarget
-              formControlName="geburtsdatum"
-              (blur)="onGeburtsdatumBlur($event)"
-            />
-          </div>
+          <input
+            class="form-control"
+            placeholder="dd.mm.yyyy"
+            dvSharedUiFormLabelTarget
+            formControlName="geburtsdatum"
+            (blur)="onGeburtsdatumBlur($event)"
+          />
 
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -287,11 +285,11 @@
             dvSharedUiFormLabelTarget
             formControlName="nationalitaet"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="l.landCode"
+              [ngValue]="l.landCode"
               *ngFor="let l of laenderSig(); trackBy: trackByIndex"
             >
               {{ languageSig() === 'de' ? l.landDE : l.landFR }}
@@ -332,11 +330,11 @@
               dvSharedUiFormLabelTarget
               formControlName="niederlassungsstatus"
             >
-              <option [value]="null" disabled selected>
+              <option [ngValue]="null" disabled selected>
                 {{ 'shared.form.select.empty' | translate }}
               </option>
               <option
-                [value]="n"
+                [ngValue]="n"
                 *ngFor="
                   let n of niederlassungsStatusValues;
                   trackBy: trackByIndex
@@ -399,11 +397,11 @@
             dvSharedUiFormLabelTarget
             formControlName="zivilstand"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="z"
+              [ngValue]="z"
               *ngFor="let z of zivilstandValues; trackBy: trackByIndex"
             >
               {{ 'gesuch-app.form.person.zivilstand.' + z | translate }}
@@ -424,11 +422,11 @@
             dvSharedUiFormLabelTarget
             formControlName="wohnsitz"
           >
-            <option [value]="null" disabled selected>
+            <option [ngValue]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [value]="z"
+              [ngValue]="z"
               *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
             >
               {{ 'gesuch-app.form.person.wohnsitz.' + z | translate }}
@@ -576,13 +574,11 @@
       </div>
 
       <!-- Buttons -->
-      <div
-        class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
-      >
+      <dv-gesuch-app-ui-step-form-buttons>
         <button type="submit" class="btn btn-primary">
           {{ 'gesuch-app.form.save-and-continue' | translate }}
         </button>
-      </div>
+      </dv-gesuch-app-ui-step-form-buttons>
     </form>
   </div>
 </dv-gesuch-app-pattern-gesuch-step-layout>

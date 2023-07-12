@@ -2,13 +2,16 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
   OnChanges,
   Output,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   SharedUiFormComponent,
@@ -26,6 +29,7 @@ import {
   LandDTO,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -59,6 +63,7 @@ const MEDIUM_AGE_ADULT = 40;
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormAddressComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern-editor.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-eltern-editor.component.scss'],
@@ -68,6 +73,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   implements OnChanges
 {
   private formBuilder = inject(FormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   @Input({ required: true }) elternteil!: Partial<ElternDTO>;
   @Output() saveTriggered = new EventEmitter<ElternDTO>();
@@ -89,7 +95,9 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
       this.formBuilder
     ),
-    identischerZivilrechtlicherWohnsitz: [false, []],
+    identischerZivilrechtlicherWohnsitz: [true, []],
+    izvPLZ: ['', [Validators.required]],
+    izvOrt: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     sozialversicherungsnummer: ['', [Validators.required]],
     geburtsdatum: [
@@ -113,6 +121,31 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     ausweisbFluechtling: [false, [Validators.required]],
     ergaenzungsleistungAusbezahlt: [false, [Validators.required]],
   });
+
+  constructor() {
+    // zivilrechtlicher Wohnsitz -> PLZ/Ort enable/disable
+    const zivilrechtlichChanged$ = toSignal(
+      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    );
+    effect(
+      () => {
+        const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
+        this.formUtils.setDisabledState(
+          this.form.controls.izvPLZ,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.izvOrt,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.form.controls.izvPLZ.updateValueAndValidity();
+        this.form.controls.izvOrt.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   ngOnChanges() {
     this.form.patchValue({

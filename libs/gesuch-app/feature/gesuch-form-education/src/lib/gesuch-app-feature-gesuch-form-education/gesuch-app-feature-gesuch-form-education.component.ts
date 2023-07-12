@@ -19,6 +19,7 @@ import {
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungsland,
@@ -76,6 +77,7 @@ import { sharedDataAccessStammdatensFeature } from '@dv/shared/data-access/stamm
     SharedUiFormLabelTargetDirective,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -92,10 +94,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: ['', [Validators.required]],
-    ausbildungstaette: ['', [Validators.required]],
-    ausbildungsgang: ['', [Validators.required]],
-    fachrichtung: ['', [Validators.required]],
+    ausbildungsland: [<string | null>null, [Validators.required]],
+    ausbildungstaette: [<string | null>null, [Validators.required]],
+    ausbildungsgang: [<string | null>null, [Validators.required]],
+    fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
       '',
@@ -127,7 +129,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: ['', [Validators.required]],
+    pensum: [<string | null>null, [Validators.required]],
   });
 
   view$ = this.store.selectSignal(
@@ -159,16 +161,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       createDateDependencyValidator(
         'after',
         this.form.controls.ausbildungBegin,
-        true,
-        new Date(),
-        this.languageSig(),
-        'monthYear'
-      ),
-    ]);
-    this.form.controls.ausbildungBegin.addValidators([
-      createDateDependencyValidator(
-        'before',
-        this.form.controls.ausbildungEnd,
         true,
         new Date(),
         this.languageSig(),
@@ -268,17 +260,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungstaette.reset('');
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleStaetteChangedByUser() {
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungstaette.reset('');
-    this.form.controls.ausbildungsgang.reset('');
+    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsgang.reset(null);
   }
 
   handleSave() {

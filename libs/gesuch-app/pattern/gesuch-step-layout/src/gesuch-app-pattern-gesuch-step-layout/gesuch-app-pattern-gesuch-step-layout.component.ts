@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   Input,
 } from '@angular/core';
@@ -35,6 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class GesuchAppPatternGesuchStepLayoutComponent {
   @Input({ required: true })
   step!: GesuchAppModelGesuchFormStep;
+
+  navClicked = new EventEmitter();
 
   stepManager = inject(GesuchAppUtilGesuchFormStepManagerService);
 }

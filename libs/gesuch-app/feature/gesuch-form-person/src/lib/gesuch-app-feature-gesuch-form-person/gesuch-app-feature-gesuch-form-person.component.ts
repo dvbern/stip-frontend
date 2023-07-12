@@ -18,18 +18,21 @@ import {
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
+  AdresseDTO,
   Anrede,
+  Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   Niederlassungsstatus,
   PATTERN_EMAIL,
   PersonInAusbildungDTO,
   SharedModelGesuch,
+  Sprache,
   Wohnsitz,
   Zivilstand,
-  Sprache,
 } from '@dv/shared/model/gesuch';
 import {
   DocumentOptions,
@@ -45,6 +48,7 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -62,7 +66,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
-import { SharedUtilFormService } from '@dv/shared/util/form';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -87,6 +90,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     SharedPatternDocumentUploadComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
@@ -130,8 +134,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
-    zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    izvPLZ: ['', [Validators.required]],
+    izvOrt: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
     telefonnummer: [
       '',
@@ -191,18 +195,19 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     );
     effect(
       () => {
-        const zivilrechtlichIdentisch = zivilrechtlichChanged$();
-        if (zivilrechtlichIdentisch) {
-          this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
-          this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
-          this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
-          this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
-        } else {
-          this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
-          this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
-        }
-        this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
-        this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
+        const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
+        this.formUtils.setDisabledState(
+          this.form.controls.izvPLZ,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.izvOrt,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.form.controls.izvPLZ.updateValueAndValidity();
+        this.form.controls.izvOrt.updateValueAndValidity();
       },
       { allowSignalWrites: true }
     );
@@ -225,8 +230,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         }
         // No nationality was selected
         else if (nationalitaetChanged === undefined) {
-          this.form.controls.niederlassungsstatus.patchValue('');
-          this.form.controls.niederlassungsstatus.disable();
+          this.formUtils.setDisabledState(
+            this.form.controls.niederlassungsstatus,
+            true,
+            true
+          );
           this.formUtils.setDisabledState(
             this.form.controls.heimatort,
             true,
@@ -286,26 +294,32 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     );
   }
 
-  private buildUpdatedGesuchFromForm() {
+  private buildUpdatedGesuchFromForm(): SharedModelGesuch {
     const gesuch = this.view().gesuch;
     return {
       ...gesuch,
       personInAusbildungContainer: {
-        ...gesuch?.personInAusbildungContainer,
+        id: gesuch?.personInAusbildungContainer?.id || '', // TODO wie geht das bei neuen entities?,
         personInAusbildungSB: {
-          ...gesuch?.personInAusbildungContainer?.personInAusbildungSB,
+          id:
+            gesuch?.personInAusbildungContainer?.personInAusbildungSB?.id || '', // TODO wie geht das bei neuen entities?,
           ...this.form.getRawValue(),
           adresse: {
-            ...gesuch?.personInAusbildungContainer?.personInAusbildungSB
-              ?.adresse,
+            id:
+              gesuch?.personInAusbildungContainer?.personInAusbildungSB?.adresse
+                ?.id || '', // TODO wie geht das bei neuen entities?,
             ...this.form.getRawValue().adresse,
-          },
+          } as AdresseDTO, // TODO as entfernen...
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
             this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
-          ),
-        } as PersonInAusbildungDTO,
+          )!,
+
+          // TODO missing fields that exist on the DTO:
+          quellenbesteuert: false,
+          kinder: false,
+        } as PersonInAusbildungDTO, // TODO as entfernen...
       },
     } as SharedModelGesuch;
   }
