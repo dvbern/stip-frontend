@@ -246,7 +246,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Ausbildungstaette'
+                  $ref: '#/components/schemas/Ausbildungsstaette'
           description: OK
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -320,6 +320,7 @@ paths:
                     einreichfrist: '2023-12-31'
                     aufschaltdatum: '2023-06-01'
           description: OK
+
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -518,7 +519,6 @@ components:
       type: string
     Adresse:
       required:
-        - id
         - land
         - strasse
         - plz
@@ -539,51 +539,6 @@ components:
           type: string
         ort:
           type: string
-    AusbildungContainer:
-      required:
-        - id
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        ausbildungGS:
-          $ref: '#/components/schemas/Ausbildung'
-        ausbildungSB:
-          $ref: '#/components/schemas/Ausbildung'
-    Ausbildung:
-      required:
-        - id
-        - ausbildungsgangId
-        - ausbildungstaetteId
-        - ausbildungsland
-        - fachrichtung
-        - ausbildungBegin
-        - ausbildungEnd
-        - pensum
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        ausbildungsgangId:
-          $ref: '#/components/schemas/UUID'
-        ausbildungstaetteId:
-          $ref: '#/components/schemas/UUID'
-        ausbildungsland:
-          $ref: '#/components/schemas/Ausbildungsland'
-        alternativeAusbildungsgang:
-          type: string
-        alternativeAusbildungstaette:
-          type: string
-        fachrichtung:
-          type: string
-        ausbildungNichtGefunden:
-          type: boolean
-        ausbildungBegin:
-          type: string
-        ausbildungEnd:
-          type: string
-        pensum:
-          $ref: '#/components/schemas/AusbildungsPensum'
     Ausbildungsgang:
       required:
         - id
@@ -595,23 +550,6 @@ components:
         bezeichnungDe:
           type: string
         bezeichnungFr:
-          type: string
-    Ausbildungstaette:
-      required:
-        - id
-        - ausbildungsland
-        - name
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        ausbildungsgaenge:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ausbildungsgang'
-        ausbildungsland:
-          $ref: '#/components/schemas/Ausbildungsland'
-        name:
           type: string
     BenutzerLogin:
       required:
@@ -662,28 +600,103 @@ components:
           type: integer
         mandant:
           type: string
-    FamiliensituationContainer:
-      required:
-        - id
+    GesuchsperiodeCreate:
       type: object
       properties:
+        gueltigAb:
+          $ref: '#/components/schemas/LocalDate'
+        gueltigBis:
+          $ref: '#/components/schemas/LocalDate'
+        einreichfrist:
+          $ref: '#/components/schemas/LocalDate'
+        aufschaltdatum:
+          $ref: '#/components/schemas/LocalDate'
+    DokumentCreate:
+      required:
+        - file
+      type: object
+      properties:
+        file:
+          $ref: '#/components/schemas/FileUpload'
+    FileUpload:
+      format: binary
+      type: string
+    UUID:
+      format: uuid
+      type: string
+    AusbildungUpdate:
+      required:
+        - ausbildungsland
+        - fachrichtung
+        - ausbildungBegin
+        - ausbildungEnd
+        - pensum
+      type: object
+      properties:
+        ausbildungsgangId:
+          $ref: '#/components/schemas/UUID'
+          description: |
+            Required wenn andere ausbildungNichtGefunden = false
+        ausbildungstaetteId:
+          $ref: '#/components/schemas/UUID'
+          description: |
+            Required wenn andere ausbildungNichtGefunden = false
+        ausbildungsland:
+          $ref: '#/components/schemas/Ausbildungsland'
+        alternativeAusbildungsgang:
+          description: |
+            Required wenn andere ausbildungNichtGefunden = true
+          type: string
+        alternativeAusbildungstaette:
+          description: Required wenn andere ausbildungNichtGefunden = true
+          type: string
+        fachrichtung:
+          type: string
+        ausbildungNichtGefunden:
+          type: boolean
+        ausbildungBegin:
+          description: Datum im Format mm.YYYY
+          type: string
+        ausbildungEnd:
+          description: Datum im Format mm.YYYY
+          type: string
+        pensum:
+          $ref: '#/components/schemas/AusbildungsPensum'
+    LebenslaufItemUpdate:
+      title: Root Type for Lebenslauf
+      description: ''
+      required:
+        - beschreibung
+        - bis
+        - von
+        - wohnsitz
+      type: object
+      properties:
+        wohnsitz:
+          $ref: '#/components/schemas/WohnsitzKanton'
         id:
           $ref: '#/components/schemas/UUID'
-        familiensituationGS:
-          $ref: '#/components/schemas/Familiensituation'
-        familiensituationSB:
-          $ref: '#/components/schemas/Familiensituation'
-    Familiensituation:
+          description: ''
+        beschreibung:
+          type: string
+        bildungsart:
+          $ref: '#/components/schemas/Bildungsart'
+          description: Required wenn taetigkeitsart = null
+        taetigskeitsart:
+          $ref: '#/components/schemas/Taetigskeitsart'
+          description: Required wenn bildungsart = null
+        von:
+          description: Datum im Format mm.YYYY
+          type: string
+        bis:
+          description: Datum im Format mm.YYYY
+          type: string
+    FamiliensituationUpdate:
       required:
-        - id
         - elternVerheiratetZusammen
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/UUID'
         elternVerheiratetZusammen:
-          type: boolean
-        elternteilVerstorben:
           type: boolean
         elternteilUnbekanntVerstorben:
           type: boolean
@@ -706,37 +719,452 @@ components:
         obhut:
           $ref: '#/components/schemas/Elternschaftsteilung'
         obhutMutter:
+          description: Required nur wenn obhut = GEMEINSAM
           type: number
         obhutVater:
+          description: Required nur wenn obhut = GEMEINSAM
           type: number
         werZahltAlimente:
           $ref: '#/components/schemas/Elternschaftsteilung'
+          description: Required nur wenn gerichtlicheAlimentenregelung = true
+    Ausbildungssituation:
+      description: ''
+      enum:
+        - VORSCHULPFLICHTIG
+        - SCHULPFLICHTIG
+        - IN_AUSBILDUNG
+        - KEINE
+      type: string
+    GeschwisterUpdate:
+      title: Root Type for Geschwister
+      description: ''
+      required:
+        - wohnsitz
+        - vorname
+        - nachname
+        - geburtsdatum
+        - ausbildungssituation
+      type: object
+      properties:
+        vorname:
+          type: string
+        geburtsdatum:
+          format: date
+          description: dd.MM.YYYY
+          type: string
+        wohnsitz:
+          $ref: '#/components/schemas/Wohnsitz'
+        ausbildungssituation:
+          $ref: '#/components/schemas/Ausbildungssituation'
+        id:
+          $ref: '#/components/schemas/UUID'
+        wohnsitzAnteilMutter:
+          description: Required wenn Wohnsitz.MUTTER_VATER.
+          type: number
+        wohnsitzAnteilVater:
+          description: Required wenn Wohnsitz.MUTTER_VATER.
+          type: number
+        nachname:
+          type: string
+    PartnerUpdate:
+      required:
+        - adresse
+        - nachname
+        - vorname
+        - geburtsdatum
+        - jahreseinkommen
+        - sozialversicherungsnummer
+      type: object
+      properties:
+        adresse:
+          $ref: '#/components/schemas/Adresse'
+        vorname:
+          type: string
+        geburtsdatum:
+          $ref: '#/components/schemas/LocalDate'
+          description: dd.MM.YYYY
+        jahreseinkommen:
+          description: ''
+          type: number
+        sozialversicherungsnummer:
+          description: ''
+          type: string
+        nachname:
+          type: string
+    KindUpdate:
+      title: Root Type for Geschwister
+      description: ''
+      required:
+        - wohnsitz
+        - vorname
+        - nachname
+        - geburtsdatum
+        - ausbildungssituation
+      type: object
+      properties:
+        vorname:
+          type: string
+        geburtsdatum:
+          format: date
+          description: dd.MM.YYYY
+          type: string
+        wohnsitz:
+          $ref: '#/components/schemas/Wohnsitz'
+        ausbildungssituation:
+          $ref: '#/components/schemas/Ausbildungssituation'
+        id:
+          $ref: '#/components/schemas/UUID'
+        wohnsitzAnteilMutter:
+          description: Required wenn Wohnsitz.MUTTER_VATER.
+          type: number
+        wohnsitzAnteilVater:
+          description: Required wenn Wohnsitz.MUTTER_VATER.
+          type: number
+        nachname:
+          type: string
+    Auszahlung:
+      title: Root Type for Auszahlung
+      description: ''
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+              description: ''
+        - $ref: '#/components/schemas/AuszahlungUpdate'
+    Kontoinhaberin:
+      description: ''
+      enum:
+        - GESUCHSTELLER
+        - VATER
+        - MUTTER
+        - SOZIALDIENST_INSTITUTION
+        - ANDERE
+      type: string
+    AuszahlungUpdate:
+      title: Root Type for Auszahlung
+      description: ''
+      required:
+        - adresse
+        - iban
+        - nachname
+        - vorname
+        - kontoinhaberin
+      type: object
+      properties:
+        kontoinhaberin:
+          $ref: '#/components/schemas/Kontoinhaberin'
+        vorname:
+          type: string
+        adresse:
+          $ref: '#/components/schemas/Adresse'
+          properties:
+            coAdresse:
+              type: string
+            strasse:
+              type: string
+            hausnummer:
+              type: string
+            plz:
+              type: string
+            ort:
+              type: string
+            land:
+              type: string
+        iban:
+          type: string
+        nachname:
+          type: string
+    GesuchFormular:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        ausbildung:
+          $ref: '#/components/schemas/Ausbildung'
+        auzahlung:
+          $ref: '#/components/schemas/Auszahlung'
+          description: ''
+        familiensituation:
+          $ref: '#/components/schemas/Familiensituation'
+        elterns:
+          description: ''
+          maxItems: 2
+          type: array
+          items:
+            $ref: '#/components/schemas/Eltern'
+        kinds:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/Kind'
+        lebenslaufItems:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/LebenslaufItem'
+        partner:
+          $ref: '#/components/schemas/Partner'
+          description: ''
+        personInAusbildung:
+          $ref: '#/components/schemas/PersonInAusbildung'
+        geschwisters:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/Geschwister'
+    GesuchFormularUpdate:
+      required: []
+      type: object
+      properties:
+        ausbildung:
+          $ref: '#/components/schemas/AusbildungUpdate'
+          description: ''
+        personInAusbildung:
+          $ref: '#/components/schemas/PersonInAusbildungUpdate'
+          description: ''
+        familiensituation:
+          $ref: '#/components/schemas/FamiliensituationUpdate'
+        partner:
+          $ref: '#/components/schemas/PartnerUpdate'
+          description: ''
+        auszahlung:
+          $ref: '#/components/schemas/AuszahlungUpdate'
+          description: ''
+        elterns:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/ElternUpdate'
+        geschwisters:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/GeschwisterUpdate'
+        lebenslaufItems:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/LebenslaufItemUpdate'
+        kinds:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/KindUpdate'
     Gesuch:
+      description: ''
       required:
         - fall
         - gesuchsperiode
         - gesuchStatus
         - gesuchNummer
+        - id
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/UUID'
         fall:
           $ref: '#/components/schemas/Fall'
+          description: ''
         gesuchsperiode:
           $ref: '#/components/schemas/Gesuchsperiode'
-        personInAusbildungContainer:
-          $ref: '#/components/schemas/PersonInAusbildungContainer'
-        ausbildungContainer:
-          $ref: '#/components/schemas/AusbildungContainer'
-        familiensituationContainer:
-          $ref: '#/components/schemas/FamiliensituationContainer'
+          description: ''
         gesuchStatus:
           $ref: '#/components/schemas/Gesuchstatus'
+          description: ''
         gesuchNummer:
           format: int32
+          description: ''
           type: integer
-          example: 0
+        id:
+          $ref: '#/components/schemas/UUID'
+          description: ''
+        gesuch_formular_freigabe_copy:
+          $ref: '#/components/schemas/GesuchFormular'
+          description: ''
+        gesuch_formular_to_work_with:
+          $ref: '#/components/schemas/GesuchFormular'
+          description: ''
+    GesuchCreate:
+      required:
+        - fallId
+        - gesuchsperiodeId
+      type: object
+      properties:
+        fallId:
+          $ref: '#/components/schemas/UUID'
+        gesuchsperiodeId:
+          $ref: '#/components/schemas/UUID'
+    GesuchUpdate:
+      description: ''
+      type: object
+      properties:
+        gesuch_formular_to_work_with:
+          $ref: '#/components/schemas/GesuchFormularUpdate'
+          description: ''
+    Land:
+      enum:
+        - CH
+        - DE
+        - FR
+        - IT
+      type: string
+    Sprache:
+      description: ''
+      enum:
+        - DEUTSCH
+        - FRANZOESISCH
+      type: string
+    PersonInAusbildungUpdate:
+      required:
+        - adresse
+        - sozialversicherungsnummer
+        - nachname
+        - vorname
+        - anrede
+        - identischerZivilrechtlicherWohnsitz
+        - email
+        - telefonnummer
+        - geburtsdatum
+        - nationalitaet
+        - wohnsitz
+        - sozialhilfebeitraege
+        - quellenbesteuert
+        - digitaleKommunikation
+        - korrespondenzSprache
+      type: object
+      properties:
+        adresse:
+          $ref: '#/components/schemas/Adresse'
+        sozialversicherungsnummer:
+          type: string
+        vorname:
+          type: string
+        anrede:
+          $ref: '#/components/schemas/Anrede'
+        identischerZivilrechtlicherWohnsitz:
+          type: boolean
+        email:
+          type: string
+        telefonnummer:
+          type: string
+        geburtsdatum:
+          $ref: '#/components/schemas/LocalDate'
+        nationalitaet:
+          $ref: '#/components/schemas/Land'
+        heimatort:
+          description: Required nur wenn Land = CH
+          type: string
+        niederlassungsstatus:
+          $ref: '#/components/schemas/Niederlassungsstatus'
+          description: Required wenn Nationalitaet != CH
+        zivilstand:
+          $ref: '#/components/schemas/Zivilstand'
+        wohnsitz:
+          $ref: '#/components/schemas/Wohnsitz'
+        sozialhilfebeitraege:
+          type: boolean
+        quellenbesteuert:
+          type: boolean
+        digitaleKommunikation:
+          type: boolean
+        vormundschaft:
+          description: Required nur wenn Land = CH
+          type: boolean
+        nachname:
+          type: string
+        identischerZivilrechtlicherWohnsitzOrt:
+          description: Required wenn identischerZivilrechtlicherWohnsitz = false
+          type: string
+        identischerZivilrechtlicherWohnsitzPLZ:
+          description: Required wenn identischerZivilrechtlicherWohnsitz = false
+          type: string
+        korrespondenzSprache:
+          $ref: '#/components/schemas/Sprache'
+          description: ''
+    WohnsitzKanton:
+      description: ''
+      enum:
+        - AG
+        - AI
+        - AR
+        - BL
+        - BS
+        - BE
+        - FR
+        - GE
+        - GL
+        - GR
+        - JU
+        - LU
+        - NE
+        - NW
+        - OW
+        - SG
+        - SH
+        - SZ
+        - SO
+        - TI
+        - TG
+        - UR
+        - VD
+        - VS
+        - ZG
+        - ZH
+        - AUSLAND
+      type: string
+    Ausbildung:
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        - $ref: '#/components/schemas/AusbildungUpdate'
+    Familiensituation:
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        - $ref: '#/components/schemas/FamiliensituationUpdate'
+    Taetigskeitsart:
+      enum:
+        - ERWERBSTAETIGKEIT
+        - ANDERE_TAETIGKEIT
+      type: string
+    Bildungsart:
+      description: ''
+      enum:
+        - BERUFSVORBEREITENDES_SCHULJAHR_VORLEHRE
+        - GYMNASIALE_MATURITAETSSCHULEN
+        - SCHULEN_FUER_ALLGEMEINBILDUNG
+        - VOLLZEITBERUFSSCHULEN
+        - LEHREN_ANLEHREN
+        - BERUFSMATURITAET_NACH_LEHRE
+        - HOEHERE_BERUFSBILDUNG
+        - FACHHOCHSCHULEN
+        - UNIVERSITAETEN_ETH
+      type: string
+    PersonInAusbildung:
+      type: object
+      allOf:
+        - required:
+            - id
+            - adresse.id
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        - $ref: '#/components/schemas/PersonInAusbildungUpdate'
     Gesuchsperiode:
       required:
         - id
@@ -754,163 +1182,165 @@ components:
           $ref: '#/components/schemas/LocalDate'
         aufschaltdatum:
           $ref: '#/components/schemas/LocalDate'
-    Land:
-      type: object
-      properties:
-        landCode:
-          type: string
-        landDE:
-          type: string
-        landFR:
-          type: string
-    PersonInAusbildungContainer:
+          example: '2022-12-12'
+      example:
+        - id: 3fa85f64-5717-4562-b3fc-2c963f66afa3
+          gueltigAb: '2022-02-01'
+          gueltigBis: '2023-01-31'
+          einreichfrist: '2022-06-30'
+          aufschaltdatum: '2022-06-01'
+        - id: 3fa85f64-5717-4562-b3fc-2c963f66afa3
+          gueltigAb: '2022-02-01'
+          gueltigBis: '2023-01-31'
+          einreichfrist: '2022-06-30'
+          aufschaltdatum: '2022-06-01'
+    ElternTyp:
+      description: ''
+      enum:
+        - VATER
+        - MUTTER
+      type: string
+    ElternUpdate:
+      title: Root Type for Eltern
+      description: ''
       required:
-        - id
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        personInAusbildungGS:
-          $ref: '#/components/schemas/PersonInAusbildung'
-        personInAusbildungSB:
-          $ref: '#/components/schemas/PersonInAusbildung'
-    PersonInAusbildung:
-      required:
-        - id
         - adresse
-        - sozialversicherungsnummer
-        - name
-        - vorname
-        - anrede
-        - identischerZivilrechtlicherWohnsitz
-        - email
-        - telefonnummer
+        - ausweisbFluechtling
+        - ergaenzungsleistungAusbezahlt
         - geburtsdatum
-        - nationalitaet
-        - wohnsitz
-        - sozialhilfebeitraege
-        - quellenbesteuert
-        - kinder
-        - digitaleKommunikation
+        - identischerZivilrechtlicherWohnsitz
+        - nachname
+        - sozialhilfebeitraegeAusbezahlt
+        - sozialversicherungsnummer
+        - telefonnummer
+        - vorname
+        - elternTyp
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        adresse:
-          $ref: '#/components/schemas/Adresse'
-        sozialversicherungsnummer:
-          type: string
-        name:
-          type: string
         vorname:
           type: string
-        anrede:
-          $ref: '#/components/schemas/Anrede'
+        adresse:
+          $ref: '#/components/schemas/Adresse'
+          properties:
+            coAdresse:
+              type: string
+            strasse:
+              type: string
+            hausnummer:
+              type: string
+            plz:
+              type: string
+            ort:
+              type: string
+            land:
+              type: string
+            id:
+              type: string
         identischerZivilrechtlicherWohnsitz:
           type: boolean
-        izvOrt:
+        identischerZivilrechtlicherWohnsitzOrt:
+          description: Required wenn identischerZivilrechtlicherWohnsitz = false
           type: string
-        izvPLZ:
-          type: string
-        email:
+        identischerZivilrechtlicherWohnsitzPLZ:
+          description: Required wenn identischerZivilrechtlicherWohnsitz = false
           type: string
         telefonnummer:
           type: string
-        geburtsdatum:
-          $ref: '#/components/schemas/LocalDate'
-        nationalitaet:
-          $ref: '#/components/schemas/Land'
-        heimatort:
+        sozialversicherungsnummer:
           type: string
-        niederlassungsstatus:
-          $ref: '#/components/schemas/Niederlassungsstatus'
-        zivilstand:
-          $ref: '#/components/schemas/Zivilstand'
-        wohnsitz:
-          $ref: '#/components/schemas/Wohnsitz'
-        sozialhilfebeitraege:
+        geburtsdatum:
+          format: date
+          description: dd.MM.YYYY
+          type: string
+        sozialhilfebeitraegeAusbezahlt:
           type: boolean
-        quellenbesteuert:
+        ausweisbFluechtling:
           type: boolean
-        kinder:
+        ergaenzungsleistungAusbezahlt:
           type: boolean
-        digitaleKommunikation:
-          type: boolean
-    GesuchsperiodeCreate:
-      type: object
-      properties:
-        gueltigAb:
-          $ref: '#/components/schemas/LocalDate'
-        gueltigBis:
-          $ref: '#/components/schemas/LocalDate'
-        einreichfrist:
-          $ref: '#/components/schemas/LocalDate'
-        aufschaltdatum:
-          $ref: '#/components/schemas/LocalDate'
-    GesuchCreate:
-      required:
-        - fallId
-        - gesuchsperiodeId
-      type: object
-      properties:
-        fallId:
+        id:
           $ref: '#/components/schemas/UUID'
-        gesuchsperiodeId:
-          $ref: '#/components/schemas/UUID'
-    GesuchUpdate:
-      type: object
-      properties:
-        personInAusbildungContainer:
-          $ref: '#/components/schemas/PersonInAusbildungContainer'
-        familiensituationContainer:
-          $ref: '#/components/schemas/FamiliensituationContainer'
-        ausbildung:
-          $ref: '#/components/schemas/AusbildungUpdate'
           description: ''
-    DokumentCreate:
+        elternTyp:
+          $ref: '#/components/schemas/ElternTyp'
+        nachname:
+          type: string
+    Eltern:
+      title: Root Type for Eltern
+      description: ''
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            copyOfId:
+              $ref: '#/components/schemas/UUID'
+              description: ''
+        - $ref: '#/components/schemas/ElternUpdate'
+    Geschwister:
+      title: Root Type for Geschwister
+      description: ''
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            copyOfId:
+              $ref: '#/components/schemas/UUID'
+              description: ''
+        - $ref: '#/components/schemas/GeschwisterUpdate'
+    Kind:
+      title: Root Type for Geschwister
+      description: ''
       required:
-        - file
+        - id
       type: object
       properties:
-        file:
-          $ref: '#/components/schemas/FileUpload'
-    FileUpload:
-      format: binary
-      type: string
-    UUID:
-      format: uuid
-      type: string
-    AusbildungUpdate:
+        copyOfId:
+          $ref: '#/components/schemas/UUID'
+          description: ''
+    LebenslaufItem:
+      title: Root Type for Lebenslauf
+      description: ''
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            copyOfId:
+              $ref: '#/components/schemas/UUID'
+              description: ''
+        - $ref: '#/components/schemas/LebenslaufItemUpdate'
+    Partner:
+      type: object
+      allOf:
+        - required:
+            - id
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        - $ref: '#/components/schemas/PartnerUpdate'
+    Ausbildungsstaette:
       required:
-        - ausbildungsgangId
-        - ausbildungstaetteId
+        - id
         - ausbildungsland
-        - fachrichtung
-        - ausbildungBegin
-        - ausbildungEnd
-        - pensum
+        - name
       type: object
       properties:
-        ausbildungsgangId:
+        id:
           $ref: '#/components/schemas/UUID'
-        ausbildungstaetteId:
-          $ref: '#/components/schemas/UUID'
+        ausbildungsgaenge:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ausbildungsgang'
         ausbildungsland:
           $ref: '#/components/schemas/Ausbildungsland'
-        alternativeAusbildungsgang:
+        name:
           type: string
-        alternativeAusbildungstaette:
-          type: string
-        fachrichtung:
-          type: string
-        ausbildungNichtGefunden:
-          type: boolean
-        ausbildungBegin:
-          type: string
-        ausbildungEnd:
-          type: string
-        pensum:
-          $ref: '#/components/schemas/AusbildungsPensum'
   responses:
     Unauthorized:
       content:
