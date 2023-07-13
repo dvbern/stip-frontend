@@ -51,9 +51,9 @@
               </ng-container>
             </h5>
             <small>{{
-              printDateAsMonthYear(child.dateStart) +
+              printDateAsMonthYear(child.von) +
                 ' - ' +
-                printDateAsMonthYear(child.dateEnd)
+                printDateAsMonthYear(child.bis)
             }}</small>
           </div>
         </div>
@@ -65,9 +65,9 @@
       <div class="hide-on-hover">
         <h5>Fehlende Einträge</h5>
         <small>{{
-          printDateAsMonthYear(item.dateStart) +
+          printDateAsMonthYear(item.von) +
             ' - ' +
-            printDateAsMonthYear(item.dateEnd)
+            printDateAsMonthYear(item.bis)
         }}</small>
       </div>
       <div

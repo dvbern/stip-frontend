@@ -7,7 +7,10 @@ import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 
 import { SharedModelError } from '@dv/shared/model/error';
-import { SharedModelGesuch } from '@dv/shared/model/gesuch';
+import {
+  SharedModelGesuch,
+  SharedModelGesuchFormular,
+} from '@dv/shared/model/gesuch';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
@@ -15,6 +18,7 @@ import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form
 
 export interface State {
   gesuch: SharedModelGesuch | undefined;
+  gesuchFormular: SharedModelGesuchFormular | undefined;
   gesuchs: SharedModelGesuch[];
   loading: boolean;
   error: SharedModelError | undefined;
@@ -22,6 +26,7 @@ export interface State {
 
 const initialState: State = {
   gesuch: undefined,
+  gesuchFormular: undefined,
   gesuchs: [],
   loading: false,
   error: undefined,
@@ -52,6 +57,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       (state): State => ({
         ...state,
         gesuch: undefined,
+        gesuchFormular: undefined,
         loading: true,
       })
     ),
@@ -79,10 +85,10 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       (state): State => ({
         ...state,
         loading: true,
-        gesuch: state.gesuch
+        gesuchFormular: state.gesuchFormular
           ? {
-              ...state.gesuch,
-              geschwisterContainers: [],
+              ...state.gesuchFormular,
+              geschwisters: [],
             }
           : undefined,
       })
@@ -103,6 +109,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       (state, { gesuch }): State => ({
         ...state,
         gesuch,
+        gesuchFormular: getGesuchFormular(gesuch),
         loading: false,
         error: undefined,
       })
@@ -152,3 +159,13 @@ export const {
   selectLoading,
   selectError,
 } = gesuchAppDataAccessGesuchsFeature;
+
+const getGesuchFormular = (
+  gesuch: SharedModelGesuch
+): SharedModelGesuchFormular | undefined => {
+  const formular =
+    gesuch.gesuch_formular_freigabe_copy ?? gesuch.gesuch_formular_to_work_with;
+  return formular
+    ? { ...formular, freigegeben: !!gesuch.gesuch_formular_freigabe_copy }
+    : undefined;
+};

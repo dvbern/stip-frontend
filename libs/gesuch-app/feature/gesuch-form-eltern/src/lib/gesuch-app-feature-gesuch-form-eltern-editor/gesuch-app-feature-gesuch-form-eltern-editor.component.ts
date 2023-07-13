@@ -10,7 +10,11 @@ import {
   Output,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -22,11 +26,9 @@ import {
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import {
-  AdresseDTO,
-  Anrede,
-  ElternDTO,
+  ElternTyp,
   Land,
-  LandDTO,
+  ElternUpdate,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import { SharedUtilFormService } from '@dv/shared/util/form';
@@ -72,25 +74,29 @@ const MEDIUM_AGE_ADULT = 40;
 export class GesuchAppFeatureGesuchFormElternEditorComponent
   implements OnChanges
 {
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
 
-  @Input({ required: true }) elternteil!: Partial<ElternDTO>;
-  @Output() saveTriggered = new EventEmitter<ElternDTO>();
+  @Input({ required: true }) elternteil!: Omit<
+    Partial<ElternUpdate>,
+    'elternTyp'
+  > &
+    Required<Pick<ElternUpdate, 'elternTyp'>>;
+  @Output() saveTriggered = new EventEmitter<ElternUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
-  @Input({ required: true }) laender!: LandDTO[];
+  @Input({ required: true }) laender!: Land[];
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
-  readonly Anrede = Anrede;
+  readonly ElternTyp = ElternTyp;
 
   private store = inject(Store);
 
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    name: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
       this.formBuilder
@@ -159,28 +165,26 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const geburtsdatum = parseStringAndPrintForBackendLocalDate(
+      this.form.getRawValue().geburtsdatum,
+      this.languageSig(),
+      subYears(new Date(), MEDIUM_AGE_ADULT)
+    );
+    if (!geburtsdatum) {
+      this.form.controls.geburtsdatum.setErrors({ invalid: true });
+    } else if (this.form.valid) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
-        id: this.elternteil.id!,
-        geschlecht: this.elternteil.geschlecht!,
-        geburtsdatum: parseStringAndPrintForBackendLocalDate(
-          this.form.getRawValue().geburtsdatum,
-          this.languageSig(),
-          subYears(new Date(), MEDIUM_AGE_ADULT)
-        )!,
-        adresse: {
-          ...this.form.getRawValue().adresse,
-          id: this.elternteil.adresse?.id || '', // TODO wie geht das bei neuen entities?
-          land: this.form.getRawValue().adresse.land as Land,
-        } as AdresseDTO,
-      } as ElternDTO);
+        id: this.elternteil.id,
+        elternTyp: this.elternteil.elternTyp,
+        geburtsdatum,
+      });
     }
   }
 
   handleDelete() {
     if (this.elternteil?.id) {
-      this.deleteTriggered.emit(this.elternteil!.id);
+      this.deleteTriggered.emit(this.elternteil.id);
     }
   }
 

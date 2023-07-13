@@ -22,10 +22,11 @@ import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Bildungsart,
-  Kanton,
-  LebenslaufItemDTO,
+  WohnsitzKanton,
+  LebenslaufItem,
   Taetigskeitsart,
 } from '@dv/shared/model/gesuch';
+import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -76,11 +77,11 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   private translateService = inject(TranslateService);
 
-  @Input({ required: true }) item!: Partial<LebenslaufItemDTO>;
+  @Input({ required: true }) item!: Partial<SharedModelLebenslauf>;
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
 
-  @Output() saveTriggered = new EventEmitter<LebenslaufItemDTO>();
+  @Output() saveTriggered = new EventEmitter<LebenslaufItem>();
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
 
@@ -118,10 +119,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   private prepareKantonValues() {
-    const kantonValues = Object.values(Kanton);
+    const kantonValues = Object.values(WohnsitzKanton);
 
     // remove Ausland befor sort
-    const indexAusland = kantonValues.indexOf(Kanton.AUSLAND);
+    const indexAusland = kantonValues.indexOf(WohnsitzKanton.AUSLAND);
     if (indexAusland != -1) {
       kantonValues.splice(indexAusland, 1);
     }
@@ -131,7 +132,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         .localeCompare(this.translateService.instant('shared.kanton.' + b))
     );
     //add Ausland after sort
-    kantonValues.push(Kanton.AUSLAND);
+    kantonValues.push(WohnsitzKanton.AUSLAND);
     return kantonValues;
   }
 
@@ -191,7 +192,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     if (this.form.valid) {
       this.saveTriggered.emit({
         id: this.item?.id,
-        type: this.item?.type,
         ...(this.form.getRawValue() as any),
       });
     }

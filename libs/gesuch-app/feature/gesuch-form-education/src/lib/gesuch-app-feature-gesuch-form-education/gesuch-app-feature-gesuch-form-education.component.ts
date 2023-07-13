@@ -24,8 +24,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungsland,
   AusbildungsPensum,
-  AusbildungstaetteDTO,
-  SharedModelGesuch,
+  Ausbildungsstaette,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -46,7 +45,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears, getYear, subMonths } from 'date-fns';
+import { addYears, subMonths } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -59,7 +58,6 @@ import {
 } from 'rxjs';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-education.selector';
-import { sharedDataAccessStammdatensFeature } from '@dv/shared/data-access/stammdaten';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-education',
@@ -194,12 +192,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
             ...ausbildung,
             ausbildungstaette: ausbildungstaettes?.find(
               (ausbildungstaette) =>
-                ausbildungstaette.id === ausbildung.ausbildungstaetteId
+                ausbildungstaette.id === ausbildung.ausbildungsstaetteId
             )?.name,
             ausbildungsgang: ausbildungstaettes
               ?.find(
                 (ausbildungstaette) =>
-                  ausbildungstaette.id === ausbildung.ausbildungstaetteId
+                  ausbildungstaette.id === ausbildung.ausbildungsstaetteId
               )
               ?.ausbildungsgaenge?.find(
                 (ausbildungsgang) =>
@@ -275,11 +273,13 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   handleSave() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
-          gesuch: this.buildUpdatedGesuchFromForm(),
+          gesuchId,
+          gesuchFormular,
         })
       );
     }
@@ -290,22 +290,26 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private buildUpdatedGesuchFromForm() {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
+    const { gesuch, gesuchFormular } = this.view$();
     return {
-      ...this.view$().gesuch,
-      ausbildungContainer: {
-        ausbildungSB: {
-          ...(this.form.getRawValue() as any),
-          ausbildungstaetteId: this.ausbildungstaetteOptions$()
-            .filter(
-              (ausbildungstaette) =>
-                ausbildungstaette.name ===
-                this.form.controls.ausbildungstaette.value
-            )
-            .pop()?.id,
-          ausbildungsgangId: this.form.controls.ausbildungsgang.value,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        ausbildungContainer: {
+          ausbildungSB: {
+            ...(this.form.getRawValue() as any),
+            ausbildungstaetteId: this.ausbildungstaetteOptions$()
+              .filter(
+                (ausbildungstaette) =>
+                  ausbildungstaette.name ===
+                  this.form.controls.ausbildungstaette.value
+              )
+              .pop()?.id,
+            ausbildungsgangId: this.form.controls.ausbildungsgang.value,
+          },
         },
       },
-    } as Partial<SharedModelGesuch>;
+    };
   }
 
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
@@ -319,7 +323,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   focusAusbildungstaette$ = new Subject<string>();
 
-  createAusbildungstaetteTypeaheadFn(list: AusbildungstaetteDTO[]) {
+  createAusbildungstaetteTypeaheadFn(list: Ausbildungsstaette[]) {
     console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(

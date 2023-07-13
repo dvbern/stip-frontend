@@ -20,8 +20,8 @@ import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungssituation,
-  GeschwisterDTO,
-  WohnsitzGeschwister,
+  GeschwisterUpdate,
+  Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -78,9 +78,9 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 {
   private formBuilder = inject(NonNullableFormBuilder);
 
-  @Input({ required: true }) geschwister!: Partial<GeschwisterDTO>;
+  @Input({ required: true }) geschwister!: Partial<GeschwisterUpdate>;
 
-  @Output() saveTriggered = new EventEmitter<GeschwisterDTO>();
+  @Output() saveTriggered = new EventEmitter<GeschwisterUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
 
   private formUtils = inject(SharedUtilFormService);
@@ -89,7 +89,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    name: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
     geburtsdatum: [
       '',
@@ -108,10 +108,15 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         ),
       ],
     ],
-    wohnsitz: ['', [Validators.required]],
+    wohnsitz: this.formBuilder.control<Wohnsitz>('' as Wohnsitz, [
+      Validators.required,
+    ]),
     wohnsitzAnteilMutter: ['', [Validators.required]],
     wohnsitzAnteilVater: ['', [Validators.required]],
-    ausbildungssituation: ['', [Validators.required]],
+    ausbildungssituation: this.formBuilder.control<Ausbildungssituation>(
+      '' as Ausbildungssituation,
+      [Validators.required]
+    ),
   });
 
   wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
@@ -123,12 +128,12 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
         this.formUtils.setDisabledState(
           this.form.controls.wohnsitzAnteilMutter,
-          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          wohnsitzChanged !== Wohnsitz.ELTERN,
           true
         );
         this.formUtils.setDisabledState(
           this.form.controls.wohnsitzAnteilVater,
-          wohnsitzChanged !== WohnsitzGeschwister.MUTTER_VATER,
+          wohnsitzChanged !== Wohnsitz.ELTERN,
           true
         );
       },
@@ -161,17 +166,19 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const geburtsdatum = parseStringAndPrintForBackendLocalDate(
+      this.form.getRawValue().geburtsdatum,
+      this.languageSig(),
+      subYears(new Date(), MEDIUM_AGE)
+    );
+    if (!geburtsdatum) {
+      this.form.controls.geburtsdatum.setErrors({ invalid: true });
+    } else if (this.form.valid) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
-        id: this.geschwister!.id || '',
-
-        geburtsdatum: parseStringAndPrintForBackendLocalDate(
-          this.form.getRawValue().geburtsdatum,
-          this.languageSig(),
-          subYears(new Date(), MEDIUM_AGE)
-        )!,
-        wohnsitz: this.form.getRawValue().wohnsitz as WohnsitzGeschwister,
+        id: this.geschwister.id,
+        geburtsdatum,
+        wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
         wohnsitzAnteilMutter:
           GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
             this.form.getRawValue().wohnsitzAnteilMutter
@@ -200,7 +207,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
     );
   }
 
-  protected readonly wohnsitzValues = Object.values(WohnsitzGeschwister);
+  protected readonly wohnsitzValues = Object.values(Wohnsitz);
   protected readonly ausbildungssituationValues =
     Object.values(Ausbildungssituation);
 }

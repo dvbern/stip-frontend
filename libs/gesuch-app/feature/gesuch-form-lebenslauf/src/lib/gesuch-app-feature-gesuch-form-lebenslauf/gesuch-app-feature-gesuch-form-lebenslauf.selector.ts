@@ -1,6 +1,5 @@
 import { selectGesuchAppDataAccessAusbildungstaettesView } from '@dv/gesuch-app/data-access/ausbildungstaette';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { LebenslaufItemDTO } from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 
 export const selectGesuchAppFeatureGesuchFormLebenslaufVew = createSelector(
@@ -9,10 +8,11 @@ export const selectGesuchAppFeatureGesuchFormLebenslaufVew = createSelector(
   (gesuchsView, ausbildungstaettesView) => ({
     loading: gesuchsView.loading || ausbildungstaettesView.loading,
     gesuch: gesuchsView.gesuch,
-    ausbildung: gesuchsView.gesuch?.ausbildungContainer?.ausbildungSB,
+    gesuchFormular: gesuchsView.gesuchFormular,
+    ausbildung: gesuchsView.gesuchFormular?.ausbildung,
     ausbildungstaettes: ausbildungstaettesView.ausbildungstaettes,
-    lebenslaufItems: (gesuchsView.gesuch?.lebenslaufItemContainers || [])
-      .map((each) => each.lebenslaufItemSB)
-      .filter((each) => each?.id) as LebenslaufItemDTO[],
+    lebenslaufItems: (gesuchsView.gesuchFormular?.lebenslaufItems ?? []).filter(
+      (each) => each?.id
+    ),
   })
 );

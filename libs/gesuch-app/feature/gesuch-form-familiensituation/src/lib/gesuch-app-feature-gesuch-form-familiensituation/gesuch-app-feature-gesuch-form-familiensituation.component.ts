@@ -9,7 +9,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
-  FormBuilder,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -24,7 +24,6 @@ import {
   ElternAbwesenheitsGrund,
   Elternschaftsteilung,
   ElternUnbekanntheitsGrund,
-  SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -67,31 +66,47 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   implements OnInit
 {
   private store = inject(Store);
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
 
   readonly ELTERNSCHAFTSTEILUNG = Elternschaftsteilung;
   readonly ELTERN_ABWESENHEITS_GRUND = ElternAbwesenheitsGrund;
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
   form = this.formBuilder.group({
-    elternVerheiratetZusammen: [<boolean | null>null, [Validators.required]],
-    gerichtlicheAlimentenregelung: [
-      <boolean | null>null,
-      [Validators.required],
-    ],
-    werZahltAlimente: ['', [Validators.required]],
-    elternteilUnbekanntVerstorben: [
-      <boolean | null>null,
-      [Validators.required],
-    ],
-    mutterUnbekanntVerstorben: ['', [Validators.required]],
-    vaterUnbekanntVerstorben: ['', [Validators.required]],
-    mutterUnbekanntGrund: ['', [Validators.required]],
-    vaterUnbekanntGrund: ['', [Validators.required]],
-    vaterWiederverheiratet: [<boolean | null>null, [Validators.required]],
-    mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
-    sorgerecht: ['', [Validators.required]],
-    obhut: ['', [Validators.required]],
+    elternVerheiratetZusammen: [false, [Validators.required]],
+    gerichtlicheAlimentenregelung: [false, [Validators.required]],
+    werZahltAlimente: this.formBuilder.control<Elternschaftsteilung>(
+      '' as Elternschaftsteilung,
+      { validators: Validators.required }
+    ),
+    elternteilUnbekanntVerstorben: [false, [Validators.required]],
+    mutterUnbekanntVerstorben:
+      this.formBuilder.control<ElternAbwesenheitsGrund>(
+        '' as ElternAbwesenheitsGrund,
+        { validators: Validators.required }
+      ),
+    vaterUnbekanntVerstorben: this.formBuilder.control<ElternAbwesenheitsGrund>(
+      '' as ElternAbwesenheitsGrund,
+      { validators: Validators.required }
+    ),
+    mutterUnbekanntGrund: this.formBuilder.control<ElternUnbekanntheitsGrund>(
+      '' as ElternUnbekanntheitsGrund,
+      { validators: Validators.required }
+    ),
+    vaterUnbekanntGrund: this.formBuilder.control<ElternUnbekanntheitsGrund>(
+      '' as ElternUnbekanntheitsGrund,
+      { validators: Validators.required }
+    ),
+    vaterWiederverheiratet: [false, [Validators.required]],
+    mutterWiederverheiratet: [false, [Validators.required]],
+    sorgerecht: this.formBuilder.control<Elternschaftsteilung>(
+      '' as Elternschaftsteilung,
+      { validators: Validators.required }
+    ),
+    obhut: this.formBuilder.control<Elternschaftsteilung>(
+      '' as Elternschaftsteilung,
+      { validators: Validators.required }
+    ),
     obhutMutter: ['', [Validators.required]],
     obhutVater: ['', [Validators.required]],
   });
@@ -127,22 +142,19 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
     effect(
       () => {
-        const { gesuch } = this.view();
-        if (gesuch !== undefined) {
-          const initialFormFamSit =
-            gesuch?.familiensituationContainer?.familiensituationSB || {};
+        const { gesuchFormular } = this.view();
+        if (gesuchFormular !== undefined) {
+          const initialFormFamSit = gesuchFormular?.familiensituation ?? {};
           this.form.patchValue({
             ...initialFormFamSit,
 
             obhutMutter:
               GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-                gesuch?.familiensituationContainer?.familiensituationSB
-                  ?.obhutMutter
+                gesuchFormular?.familiensituation?.obhutMutter
               ),
             obhutVater:
               GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-                gesuch?.familiensituationContainer?.familiensituationSB
-                  ?.obhutVater
+                gesuchFormular?.familiensituation?.obhutVater
               ),
           });
         }
@@ -307,24 +319,26 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   handleSave(): void {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildSharedModelAdresseFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered({
-          gesuch: this.buildSharedModelDTOFromForm(),
+          gesuchId,
+          gesuchFormular,
           origin: GesuchFormSteps.FAMILIENSITUATION,
         })
       );
     }
   }
 
-  private buildSharedModelDTOFromForm(): SharedModelGesuch {
-    const { gesuch } = this.view();
-    const updatedGesuch = {
-      ...gesuch,
-      familiensituationContainer: {
-        ...gesuch?.familiensituationContainer,
-        familiensituationSB: {
-          ...gesuch?.familiensituationContainer?.familiensituationSB,
+  private buildSharedModelAdresseFromForm() {
+    const { gesuch, gesuchFormular } = this.view();
+    return {
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...(gesuchFormular ?? {}),
+        familiensituation: {
+          ...gesuchFormular?.familiensituation,
           ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
           obhutVater:
             GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
@@ -336,9 +350,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
             ),
         },
       },
-    } as SharedModelGesuch;
-
-    return updatedGesuch;
+    };
   }
 
   private setInvisible(control: AbstractControl): void {

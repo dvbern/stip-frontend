@@ -6,10 +6,10 @@ import { SharedModelError } from '@dv/shared/model/error';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
 import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
-import { AusbildungstaetteDTO } from '@dv/shared/model/gesuch';
+import { Ausbildungsstaette } from '@dv/shared/model/gesuch';
 
 export interface State {
-  ausbildungstaettes: AusbildungstaetteDTO[];
+  ausbildungstaettes: Ausbildungsstaette[];
   loading: boolean;
   error: SharedModelError | undefined;
 }

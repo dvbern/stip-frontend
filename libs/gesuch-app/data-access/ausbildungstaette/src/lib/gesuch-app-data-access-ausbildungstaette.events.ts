@@ -1,13 +1,13 @@
 import { createActionGroup, props } from '@ngrx/store';
 
 import { SharedModelError } from '@dv/shared/model/error';
-import { AusbildungstaetteDTO } from '@dv/shared/model/gesuch';
+import { Ausbildungsstaette } from '@dv/shared/model/gesuch';
 
 export const GesuchAppDataAccessAusbildungstaetteApiEvents = createActionGroup({
   source: 'Ausbildungstaette API',
   events: {
     ausbildungstaettesLoadedSuccess: props<{
-      ausbildungstaettes: AusbildungstaetteDTO[];
+      ausbildungstaettes: Ausbildungsstaette[];
     }>(),
     ausbildungstaettesLoadedFailure: props<{ error: SharedModelError }>(),
   },

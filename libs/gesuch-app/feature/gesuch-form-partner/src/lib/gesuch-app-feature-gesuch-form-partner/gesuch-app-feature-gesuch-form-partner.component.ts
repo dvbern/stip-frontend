@@ -7,7 +7,11 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -17,7 +21,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
-  PartnerDTO,
+  Partner,
   SharedModelGesuch,
 } from '@dv/shared/model/gesuch';
 import {
@@ -72,7 +76,7 @@ const MEDIUM_AGE_ADULT = 30;
 export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   private store = inject(Store);
 
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
@@ -122,9 +126,9 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      const { gesuch } = this.view();
-      if (gesuch?.partnerContainer?.partnerSB) {
-        const partner = gesuch.partnerContainer.partnerSB;
+      const { gesuchFormular } = this.view();
+      if (gesuchFormular?.partner) {
+        const partner = gesuchFormular.partner;
         const partnerForForm = {
           ...partner,
           geburtsdatum: partner.geburtsdatum.toString(),
@@ -135,6 +139,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
             partner.geburtsdatum,
             this.languageSig()
           ),
+          jahreseinkommen: partnerForForm.jahreseinkommen.toString(),
         });
       }
     });
@@ -147,11 +152,13 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPartner.nextStepTriggered({
           origin: GesuchFormSteps.PARTNER,
-          gesuch: this.buildUpdatedGesuchFromForm(),
+          gesuchId,
+          gesuchFormular,
         })
       );
     }
@@ -159,11 +166,13 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndBack() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPartner.prevStepTriggered({
+          gesuchId,
+          gesuchFormular,
           origin: GesuchFormSteps.PARTNER,
-          gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );
     }
@@ -182,26 +191,29 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view().gesuch;
+    const { gesuch, gesuchFormular } = this.view();
     return {
-      ...gesuch,
-      partnerContainer: {
-        ...gesuch?.partnerContainer,
-        partnerSB: {
-          ...gesuch?.partnerContainer?.partnerSB,
-          ...this.form.getRawValue(),
-          adresse: {
-            id: gesuch!.partnerContainer!.partnerSB!.adresse?.id || '', // TODO wie geht das bei neuen entities?
-            ...this.form.getRawValue().adresse,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        partnerContainer: {
+          ...gesuchFormular?.partner,
+          partnerSB: {
+            ...gesuchFormular?.partner,
+            ...this.form.getRawValue(),
+            adresse: {
+              id: gesuchFormular?.partner?.adresse?.id || '', // TODO wie geht das bei neuen entities?
+              ...this.form.getRawValue().adresse,
+            },
+            geburtsdatum: parseStringAndPrintForBackendLocalDate(
+              this.form.getRawValue().geburtsdatum,
+              this.languageSig(),
+              subYears(new Date(), MEDIUM_AGE_ADULT)
+            ),
           },
-          geburtsdatum: parseStringAndPrintForBackendLocalDate(
-            this.form.getRawValue().geburtsdatum,
-            this.languageSig(),
-            subYears(new Date(), MEDIUM_AGE_ADULT)
-          )!,
-        } as PartnerDTO,
+        },
       },
-    } as Partial<SharedModelGesuch>;
+    };
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;

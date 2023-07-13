@@ -8,13 +8,15 @@ export const selectGesuchAppFeatureGesuchFormElternView = createSelector(
   selectGesuchAppDataAccessGesuchsView,
   selectSharedDataAccessStammdatensView,
   (gesuchView, stammdatenView) => {
-    const elternSituation = calculateElternSituationGesuch(gesuchView.gesuch);
+    const elternSituation = calculateElternSituationGesuch(
+      gesuchView.gesuchFormular
+    );
 
     return {
       ...gesuchView,
-      elterns: (gesuchView.gesuch?.elternContainers || [])
-        .map((c) => c.elternSB)
-        .filter(sharedUtilFnTypeGuardsIsDefined),
+      elterns: (gesuchView.gesuchFormular?.elterns ?? []).filter(
+        sharedUtilFnTypeGuardsIsDefined
+      ),
       expectVater: elternSituation.expectVater,
       expectMutter: elternSituation.expectMutter,
       vater: elternSituation.vater,

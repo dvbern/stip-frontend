@@ -60,14 +60,12 @@
               *ngFor="let geschwisterRaw of geschwisters; trackBy: trackByIndex"
             >
               <ng-container
-                *ngIf="
-                  asGeschwister(geschwisterRaw!.geschwisterSB!) as geschwister
-                "
+                *ngIf="asGeschwister(geschwisterRaw) as geschwister"
               >
                 <th scope="row">
                   <i class="material-symbols-rounded">done</i>
                 </th>
-                <td>{{ geschwister.vorname }} {{ geschwister.name }}</td>
+                <td>{{ geschwister.vorname }} {{ geschwister.nachname }}</td>
                 <td>
                   {{
                     parseBackendLocalDateAndPrint(

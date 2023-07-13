@@ -4,10 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import {
   SHARED_MODEL_GESUCH_RESOURCE,
   SharedModelGesuch,
+  SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
 
-const RESOURCE_URL = `${SHARED_MODEL_API_URL}${SHARED_MODEL_GESUCH_RESOURCE}`;
+const RESOURCE_URL =
+  `${SHARED_MODEL_API_URL}${SHARED_MODEL_GESUCH_RESOURCE}` as const;
 
 @Injectable({ providedIn: 'root' })
 export class GesuchAppDataAccessGesuchService {
@@ -26,9 +28,11 @@ export class GesuchAppDataAccessGesuchService {
     return this.http.post<{ id: string }>(`${RESOURCE_URL}`, gesuch);
   }
 
-  update(gesuch: Partial<SharedModelGesuch>) {
+  update(gesuchId: string, gesuchFormular: Partial<SharedModelGesuchFormular>) {
     // use REST because then it is compatible with mock backend
-    return this.http.put<void>(`${RESOURCE_URL}/${gesuch.id}`, gesuch);
+    return this.http.put<void>(`${RESOURCE_URL}/${gesuchId}`, {
+      gesuch_formular_to_work_with: gesuchFormular,
+    });
   }
 
   remove(id: string) {

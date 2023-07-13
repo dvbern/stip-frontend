@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   OnInit,
 } from '@angular/core';
@@ -16,7 +15,7 @@ import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/patter
 import { ElternteilCardComponent } from './elternteil-card/elternteil-card.component';
 
 import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
-import { Anrede, ElternDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { ElternTyp, ElternUpdate } from '@dv/shared/model/gesuch';
 import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -47,7 +46,8 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
 
   view$ = this.store.selectSignal(selectGesuchAppFeatureGesuchFormElternView);
 
-  editedElternteil?: Partial<ElternDTO>;
+  editedElternteil?: Omit<Partial<ElternUpdate>, 'elternTyp'> &
+    Required<Pick<ElternUpdate, 'elternTyp'>>;
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormEltern.init());
@@ -58,44 +58,56 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
     return index;
   }
 
-  handleEdit(elternteil: ElternDTO) {
+  handleEdit(elternteil: ElternUpdate) {
     this.editedElternteil = elternteil;
   }
 
-  handleAddElternteil(geschlecht: Anrede) {
+  handleAddElternteil(elternTyp: ElternTyp) {
     this.editedElternteil = {
-      geschlecht: geschlecht,
+      elternTyp,
     };
   }
 
-  handleEditorSave(elternteil: ElternDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormEltern.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithUpdatedElternteil(elternteil),
-        origin: GesuchFormSteps.ELTERN,
-      })
-    );
-    this.editedElternteil = undefined;
+  handleEditorSave(elternteil: ElternUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithUpdatedElternteil(elternteil);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormEltern.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.ELTERN,
+        })
+      );
+      this.editedElternteil = undefined;
+    }
   }
 
   public handleDeleteElternteil(id: string) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormEltern.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithDeletedElternteil(id),
-        origin: GesuchFormSteps.ELTERN,
-      })
-    );
-    this.editedElternteil = undefined;
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithDeletedElternteil(id);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormEltern.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.ELTERN,
+        })
+      );
+      this.editedElternteil = undefined;
+    }
   }
 
   handleContinue() {
     const { gesuch } = this.view$();
-    this.store.dispatch(
-      GesuchAppEventGesuchFormEltern.nextTriggered({
-        id: gesuch!.id!,
-        origin: GesuchFormSteps.ELTERN,
-      })
-    );
+    if (gesuch?.id) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormEltern.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.ELTERN,
+        })
+      );
+    }
   }
 
   handleEditorClose() {
@@ -103,48 +115,47 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithDeletedElternteil(id: string) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
-    const updatedElternContainers = gesuch?.elternContainers!.filter(
-      (elternContainer) => elternContainer.elternSB?.id !== id
+    const { gesuch, gesuchFormular } = this.view$();
+    const updatedElterns = gesuchFormular?.elterns?.filter(
+      (elternContainer) => elternContainer.id !== id
     );
 
     return {
-      ...gesuch,
-      elternContainers: updatedElternContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        elterns: updatedElterns,
+      },
     };
   }
 
-  private buildUpdatedGesuchWithUpdatedElternteil(elternteil: ElternDTO) {
-    const gesuch: SharedModelGesuch = this.view$().gesuch!;
+  private buildUpdatedGesuchWithUpdatedElternteil(elternteil: ElternUpdate) {
+    const { gesuch, gesuchFormular } = this.view$();
     // update existing elternteil if found
-    const updatedElternContainers =
-      gesuch?.elternContainers?.map((elternContainer) => {
-        if (elternContainer.elternSB?.id === elternteil.id) {
+    const updatedElterns =
+      gesuchFormular?.elterns?.map((elterns) => {
+        if (elterns.id === elternteil.id) {
           return {
-            ...elternContainer,
+            ...elterns,
             elternSB: elternteil,
           };
         } else {
-          return elternContainer;
+          return elterns;
         }
       }) ?? [];
     // add new elternteil if not found
     if (!elternteil.id) {
-      // TODO new elternteil doesnt have ID, will be added by backend?
-      updatedElternContainers.push({
-        elternSB: {
-          ...elternteil,
-          id: 'generated by backend? or FE uuid? ' + elternteil.vorname,
-        },
-        id: 'generated by backend? or FE uuid? ' + elternteil.vorname,
-      });
+      updatedElterns.push(elternteil);
     }
     return {
-      ...gesuch,
-      elternContainers: updatedElternContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        elterns: updatedElterns,
+      },
     };
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
-  protected readonly Anrede = Anrede;
+  protected readonly ElternTyp = ElternTyp;
 }

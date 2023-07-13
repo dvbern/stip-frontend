@@ -11,9 +11,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
-  AusbildungDTO,
-  AusbildungstaetteDTO,
-  LebenslaufItemDTO,
+  Ausbildung,
+  Ausbildungsstaette,
+  LebenslaufItem,
+  LebenslaufItemUpdate,
 } from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import {
@@ -33,6 +34,7 @@ import {
   TimelineRawItem,
   TwoColumnTimeline,
 } from './two-column-timeline';
+import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf-visual',
@@ -51,9 +53,9 @@ export class TwoColumnTimelineComponent implements OnChanges {
   @Output() deleteItemTriggered = new EventEmitter<string>();
 
   @Input({ required: true }) startDate!: Date | null;
-  @Input({ required: true }) lebenslaufItems!: LebenslaufItemDTO[];
-  @Input({ required: true }) ausbildung!: AusbildungDTO;
-  @Input({ required: true }) ausbildungstaettes?: AusbildungstaetteDTO[] | null;
+  @Input({ required: true }) lebenslaufItems!: LebenslaufItemUpdate[];
+  @Input({ required: true }) ausbildung!: Ausbildung;
+  @Input({ required: true }) ausbildungstaettes?: Ausbildungsstaette[] | null;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -73,40 +75,40 @@ export class TwoColumnTimelineComponent implements OnChanges {
 
   setLebenslaufItems(
     expectedSartDate: Date | null,
-    lebenslaufItems: LebenslaufItemDTO[],
-    plannedAusbildung: AusbildungDTO,
-    ausbildungstaettes: AusbildungstaetteDTO[]
+    lebenslaufItems: SharedModelLebenslauf[],
+    plannedAusbildung: Ausbildung,
+    ausbildungstaettes: Ausbildungsstaette[]
   ) {
     console.log('initializing lebenslauf items for timeline');
     const timelineRawItems = lebenslaufItems.map(
       (lebenslaufItem) =>
         ({
           col: lebenslaufItem.type === 'AUSBILDUNG' ? 'LEFT' : 'RIGHT',
-          dateStart: dateFromMonthYearString(lebenslaufItem.dateStart),
-          dateEnd: dateFromMonthYearString(lebenslaufItem.dateEnd),
+          von: dateFromMonthYearString(lebenslaufItem.von),
+          bis: dateFromMonthYearString(lebenslaufItem.bis),
           id: lebenslaufItem.id,
-          label: lebenslaufItem.name,
+          label: lebenslaufItem.beschreibung,
           editable: true,
         } as TimelineRawItem)
     );
 
     // planned ausbildung
     const ausbildungsstaette = ausbildungstaettes.find(
-      (each) => each.id === plannedAusbildung.ausbildungstaetteId
-    )!;
-    const ausbildungsgang = ausbildungsstaette.ausbildungsgaenge!.find(
+      (each) => each.id === plannedAusbildung.ausbildungsstaetteId
+    );
+    const ausbildungsgang = ausbildungsstaette?.ausbildungsgaenge?.find(
       (each) => each.id === plannedAusbildung.ausbildungsgangId
     );
 
     timelineRawItems.push({
       id: 'planned-ausbildung',
       col: 'LEFT',
-      dateStart: dateFromMonthYearString(plannedAusbildung.ausbildungBegin),
-      dateEnd: dateFromMonthYearString(plannedAusbildung.ausbildungEnd),
+      von: dateFromMonthYearString(plannedAusbildung.ausbildungBegin),
+      bis: dateFromMonthYearString(plannedAusbildung.ausbildungEnd),
       label:
-        ausbildungsstaette.name +
+        ausbildungsstaette?.name +
         ': ' +
-        ausbildungsgang!.bezeichnungDe +
+        ausbildungsgang?.bezeichnungDe +
         ' (' +
         plannedAusbildung.fachrichtung +
         ')',
@@ -130,15 +132,15 @@ export class TwoColumnTimelineComponent implements OnChanges {
 
   public handleAddAusbildung(timelineBusyBlock: TimelineGapBlock): void {
     this.addAusbildungTriggered.emit({
-      dateStart: timelineBusyBlock.dateStart,
-      dateEnd: timelineBusyBlock.dateEnd,
+      von: timelineBusyBlock.von,
+      bis: timelineBusyBlock.bis,
     });
   }
 
   public handleAddTaetigkeit(timelineGapBlock: TimelineGapBlock): void {
     this.addTaetigkeitTriggered.emit({
-      dateStart: timelineGapBlock.dateStart,
-      dateEnd: timelineGapBlock.dateEnd,
+      von: timelineGapBlock.von,
+      bis: timelineGapBlock.bis,
     });
   }
 

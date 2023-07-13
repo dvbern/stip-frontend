@@ -8,7 +8,8 @@ export const selectGesuchAppFeatureGesuchFormEducationView = createSelector(
   (gesuchsView, ausbildungstaettesView) => ({
     loading: gesuchsView.loading || ausbildungstaettesView.loading,
     gesuch: gesuchsView.gesuch,
-    ausbildung: gesuchsView.gesuch?.ausbildungContainer?.ausbildungSB,
+    gesuchFormular: gesuchsView.gesuchFormular,
+    ausbildung: gesuchsView.gesuchFormular?.ausbildung,
     ausbildungstaettes: ausbildungstaettesView.ausbildungstaettes,
   })
 );

@@ -11,7 +11,7 @@ import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
-import { GeschwisterDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { GeschwisterUpdate } from '@dv/shared/model/gesuch';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,15 +44,11 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
   parseBackendLocalDateAndPrint = parseBackendLocalDateAndPrint;
 
   sortedGeschwistersSig = computed(() => {
-    const originalList = this.view$().gesuch?.geschwisterContainers;
+    const originalList = this.view$().gesuchFormular?.geschwisters;
     return originalList
       ? [...originalList].sort((a, b) =>
-          (
-            a.geschwisterSB!.vorname +
-            ' ' +
-            a.geschwisterSB!.name
-          ).localeCompare(
-            b.geschwisterSB!.vorname + ' ' + b.geschwisterSB!.name
+          (a.vorname + ' ' + a.nachname).localeCompare(
+            b.vorname + ' ' + b.nachname
           )
         )
       : undefined;
@@ -60,7 +56,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
-  editedGeschwister?: Partial<GeschwisterDTO>;
+  editedGeschwister?: Partial<GeschwisterUpdate>;
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormGeschwister.init());
@@ -70,38 +66,50 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
     this.editedGeschwister = {};
   }
 
-  public handleEditGeschwister(ge: GeschwisterDTO): void {
+  public handleEditGeschwister(ge: GeschwisterUpdate): void {
     this.editedGeschwister = ge;
   }
 
-  handleEditorSave(geschwister: GeschwisterDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormGeschwister.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithUpdatedGeschwister(geschwister),
-        origin: GesuchFormSteps.GESCHWISTER,
-      })
-    );
-    this.editedGeschwister = undefined;
+  handleEditorSave(geschwister: GeschwisterUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithUpdatedGeschwister(geschwister);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.GESCHWISTER,
+        })
+      );
+      this.editedGeschwister = undefined;
+    }
   }
 
-  public handleDeleteGeschwister(geschwister: GeschwisterDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormGeschwister.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithDeletedGeschwister(geschwister),
-        origin: GesuchFormSteps.GESCHWISTER,
-      })
-    );
-    this.editedGeschwister = undefined;
+  public handleDeleteGeschwister(geschwister: GeschwisterUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithDeletedGeschwister(geschwister);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.GESCHWISTER,
+        })
+      );
+      this.editedGeschwister = undefined;
+    }
   }
 
   handleContinue() {
     const { gesuch } = this.view$();
-    this.store.dispatch(
-      GesuchAppEventGesuchFormGeschwister.nextTriggered({
-        id: gesuch!.id!,
-        origin: GesuchFormSteps.GESCHWISTER,
-      })
-    );
+    if (gesuch?.id) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormGeschwister.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.GESCHWISTER,
+        })
+      );
+    }
   }
 
   handleEditorClose() {
@@ -109,50 +117,48 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithDeletedGeschwister(
-    geschwister: GeschwisterDTO
+    geschwister: GeschwisterUpdate
   ) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
-    const updatedGeschwisterContainers = gesuch?.geschwisterContainers!.filter(
-      (geschwisterContainer) =>
-        geschwisterContainer.geschwisterSB?.id !== geschwister.id
+    const { gesuch, gesuchFormular } = this.view$();
+    const updatedGeschwisterContainers = gesuchFormular?.geschwisters?.filter(
+      (geschwisters) => geschwisters.id !== geschwister.id
     );
 
     return {
-      ...gesuch,
-      geschwisterContainers: updatedGeschwisterContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        geschwisters: updatedGeschwisterContainers,
+      },
     };
   }
 
   private buildUpdatedGesuchWithUpdatedGeschwister(
-    geschwister: GeschwisterDTO
+    geschwister: GeschwisterUpdate
   ) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
+    const { gesuch, gesuchFormular } = this.view$();
     // update existing geschwister if found
-    const updatedGeschwisterContainers =
-      gesuch?.geschwisterContainers?.map((geschwisterContainer) => {
-        if (geschwisterContainer.geschwisterSB?.id === geschwister.id) {
+    const updatedGeschwisters =
+      gesuchFormular?.geschwisters?.map((geschwisters) => {
+        if (geschwisters.id === geschwister.id) {
           return {
-            ...geschwisterContainer,
+            ...geschwisters,
             geschwisterSB: geschwister,
           };
         } else {
-          return geschwisterContainer;
+          return geschwisters;
         }
       }) ?? [];
     // add new geschwister if not found
     if (!geschwister.id) {
-      // TODO new geschwister doesnt have ID, will be added by backend?
-      updatedGeschwisterContainers.push({
-        geschwisterSB: {
-          ...geschwister,
-          id: 'generated by backend? or FE uuid?' + geschwister.vorname,
-        },
-        id: 'generated by backend? or FE uuid?' + geschwister.vorname,
-      });
+      updatedGeschwisters.push(geschwister);
     }
     return {
-      ...gesuch,
-      geschwisterContainers: updatedGeschwisterContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        geschwisters: updatedGeschwisters,
+      },
     };
   }
 
@@ -160,7 +166,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
     return index;
   }
 
-  public asGeschwister(geschwisterRaw: GeschwisterDTO): GeschwisterDTO {
+  public asGeschwister(geschwisterRaw: GeschwisterUpdate) {
     return geschwisterRaw;
   }
 }

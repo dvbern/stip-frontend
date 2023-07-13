@@ -13,7 +13,7 @@ import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
-import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
+import { Gesuchsperiode } from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
@@ -65,7 +65,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     mandant: 'bern',
   };
 
-  handleCreate(periode: GesuchsperiodeDTO) {
+  handleCreate(periode: Gesuchsperiode) {
     this.store.dispatch(
       GesuchAppEventCockpit.newTriggered({
         gesuch: {

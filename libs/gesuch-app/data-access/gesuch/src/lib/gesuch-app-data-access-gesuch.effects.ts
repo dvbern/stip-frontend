@@ -126,20 +126,22 @@ export const updateGesuch = createEffect(
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
         GesuchAppEventGesuchFormAuszahlung.saveTriggered
       ),
-      concatMap(({ gesuch, origin }) => {
-        return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
-          map(() =>
-            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
-              id: gesuch.id!,
-              origin,
-            })
-          ),
-          catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
-              error: sharedUtilFnErrorTransformer(error),
-            }),
-          ])
-        );
+      concatMap(({ gesuchId, gesuchFormular, origin }) => {
+        return gesuchAppDataAccessGesuchService
+          .update(gesuchId, gesuchFormular)
+          .pipe(
+            map(() =>
+              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
+                id: gesuchId,
+                origin,
+              })
+            ),
+            catchError((error) => [
+              GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
+                error: sharedUtilFnErrorTransformer(error),
+              }),
+            ])
+          );
       })
     );
   },
@@ -158,20 +160,22 @@ export const updateGesuchSubform = createEffect(
         GesuchAppEventGesuchFormKinder.saveSubformTriggered,
         GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered
       ),
-      concatMap(({ gesuch, origin }) => {
-        return gesuchAppDataAccessGesuchService.update(gesuch).pipe(
-          map(() =>
-            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
-              id: gesuch.id!,
-              origin,
-            })
-          ),
-          catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
-              error: sharedUtilFnErrorTransformer(error),
-            }),
-          ])
-        );
+      concatMap(({ gesuchId, gesuchFormular, origin }) => {
+        return gesuchAppDataAccessGesuchService
+          .update(gesuchId, gesuchFormular)
+          .pipe(
+            map(() =>
+              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
+                id: gesuchId,
+                origin,
+              })
+            ),
+            catchError((error) => [
+              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
+                error: sharedUtilFnErrorTransformer(error),
+              }),
+            ])
+          );
       })
     );
   },

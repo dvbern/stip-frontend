@@ -40,11 +40,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let kindRaw of kinder; trackBy: trackByIndex">
-              <ng-container *ngIf="asKinder(kindRaw!.kindSB!) as kinder">
+              <ng-container *ngIf="kindRaw as kinder">
                 <th scope="row">
                   <i class="material-symbols-rounded">done</i>
                 </th>
-                <td>{{ kinder.vorname }} {{ kinder.name }}</td>
+                <td>{{ kinder.vorname }} {{ kinder.nachname }}</td>
                 <td>
                   {{
                     parseBackendLocalDateAndPrint(

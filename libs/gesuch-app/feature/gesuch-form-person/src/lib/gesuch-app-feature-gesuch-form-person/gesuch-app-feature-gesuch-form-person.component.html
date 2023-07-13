@@ -88,7 +88,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            formControlName="name"
+            formControlName="nachname"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -289,10 +289,10 @@
               {{ 'shared.form.select.empty' | translate }}
             </option>
             <option
-              [ngValue]="l.landCode"
+              [ngValue]="l"
               *ngFor="let l of laenderSig(); trackBy: trackByIndex"
             >
-              {{ languageSig() === 'de' ? l.landDE : l.landFR }}
+              {{ l }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

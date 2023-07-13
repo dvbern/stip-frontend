@@ -4,7 +4,10 @@ import {
   ElternSituation,
 } from '@dv/gesuch-app/util-fn/gesuch-util';
 import { selectSharedDataAccessStammdatensView } from '@dv/shared/data-access/stammdaten';
-import { KontoinhaberinType, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import {
+  Kontoinhaber,
+  SharedModelGesuchFormular,
+} from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 
 export const selectGesuchAppFeatureGesuchFormAuszahlungenView = createSelector(
@@ -14,22 +17,25 @@ export const selectGesuchAppFeatureGesuchFormAuszahlungenView = createSelector(
     return {
       loading: gesuchsView.loading || stammdatenView.loading,
       gesuch: gesuchsView.gesuch,
+      gesuchFormular: gesuchsView.gesuchFormular,
       laender: stammdatenView.laender,
-      kontoinhaberValues: calculateKontoinhaberValuesGesuch(gesuchsView.gesuch),
+      kontoinhaberValues: calculateKontoinhaberValuesGesuch(
+        gesuchsView.gesuchFormular
+      ),
       hasNecessaryPreSteps: calculateHasNecessaryPreStepsGesuch(
-        gesuchsView.gesuch
+        gesuchsView.gesuchFormular
       ),
     };
   }
 );
 
 function calculateHasNecessaryPreStepsGesuch(
-  gesuch: SharedModelGesuch | undefined
+  formular: SharedModelGesuchFormular | undefined
 ) {
-  if (!gesuch?.familiensituationContainer) {
+  if (!formular?.familiensituation) {
     return false;
   }
-  const elternSituation = calculateElternSituationGesuch(gesuch);
+  const elternSituation = calculateElternSituationGesuch(formular);
   return calculateHasNecessaryPreSteps(elternSituation);
 }
 export function calculateHasNecessaryPreSteps(
@@ -45,13 +51,13 @@ export function calculateHasNecessaryPreSteps(
 }
 
 function calculateKontoinhaberValuesGesuch(
-  gesuch: SharedModelGesuch | undefined
+  formular: SharedModelGesuchFormular | undefined
 ) {
-  const elternSituation = calculateElternSituationGesuch(gesuch);
+  const elternSituation = calculateElternSituationGesuch(formular);
   return calculateKontoinhaberValues(elternSituation);
 }
 export function calculateKontoinhaberValues(elternSituation: ElternSituation) {
-  let kontoinhaberValues = Object.values(KontoinhaberinType);
+  let kontoinhaberValues = Object.values(Kontoinhaber);
 
   if (!elternSituation.expectVater) {
     kontoinhaberValues = kontoinhaberValues.filter((each) => each !== 'VATER');
