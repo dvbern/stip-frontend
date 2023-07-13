@@ -111,35 +111,39 @@ function removeAppComponentTests(tree: Tree, pathToApp: string) {
 function removeNxWelcomeComponent(tree: Tree, pathToApp: string) {
   tree.delete(path.join(pathToApp, 'nx-welcome.component.ts'));
   const appComponentContent = tree
-    .read(path.join(pathToApp, 'app.component.ts'))
-    .toString();
-  tree.write(
-    path.join(pathToApp, 'app.component.ts'),
-    appComponentContent
-      .replace('NxWelcomeComponent,', '')
-      .replace(
-        "import { NxWelcomeComponent } from './nx-welcome.component';",
-        ''
-      )
-  );
+    ?.read(path.join(pathToApp, 'app.component.ts'))
+    ?.toString();
+  if (appComponentContent) {
+    tree.write(
+      path.join(pathToApp, 'app.component.ts'),
+      appComponentContent
+        .replace('NxWelcomeComponent,', '')
+        .replace(
+          "import { NxWelcomeComponent } from './nx-welcome.component';",
+          ''
+        )
+    );
+  }
   const appComponentSpecContent = tree
-    .read(path.join(pathToApp, 'app.component.spec.ts'))
-    .toString();
-  tree.write(
-    path.join(pathToApp, 'app.component.spec.ts'),
-    appComponentSpecContent
-      .replace('NxWelcomeComponent,', '')
-      .replace(
-        "import { NxWelcomeComponent } from './nx-welcome.component';",
-        ''
-      )
-  );
+    ?.read(path.join(pathToApp, 'app.component.spec.ts'))
+    ?.toString();
+  if (appComponentSpecContent) {
+    tree.write(
+      path.join(pathToApp, 'app.component.spec.ts'),
+      appComponentSpecContent
+        .replace('NxWelcomeComponent,', '')
+        .replace(
+          "import { NxWelcomeComponent } from './nx-welcome.component';",
+          ''
+        )
+    );
+  }
 }
 
 function addScope(tree: Tree, projectName: string) {
   updateJson(tree, '.eslintrc.json', (json) => {
     json.overrides
-      .find((o) => o.rules['@nx/enforce-module-boundaries'])
+      .find((o: any) => o.rules['@nx/enforce-module-boundaries'])
       .rules['@nx/enforce-module-boundaries'][1].depConstraints.unshift({
         sourceTag: `scope:${projectName}`,
         onlyDependOnLibsWithTags: ['scope:shared', `scope:${projectName}`],
