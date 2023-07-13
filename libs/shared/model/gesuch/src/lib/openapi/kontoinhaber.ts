@@ -13,17 +13,17 @@
 /**
  *
  */
-export type Kontoinhaberin =
+export type Kontoinhaber =
   | 'GESUCHSTELLER'
   | 'VATER'
   | 'MUTTER'
   | 'SOZIALDIENST_INSTITUTION'
   | 'ANDERE';
 
-export const Kontoinhaberin = {
-  GESUCHSTELLER: 'GESUCHSTELLER' as Kontoinhaberin,
-  VATER: 'VATER' as Kontoinhaberin,
-  MUTTER: 'MUTTER' as Kontoinhaberin,
-  SOZIALDIENST_INSTITUTION: 'SOZIALDIENST_INSTITUTION' as Kontoinhaberin,
-  ANDERE: 'ANDERE' as Kontoinhaberin,
+export const Kontoinhaber = {
+  GESUCHSTELLER: 'GESUCHSTELLER' as Kontoinhaber,
+  VATER: 'VATER' as Kontoinhaber,
+  MUTTER: 'MUTTER' as Kontoinhaber,
+  SOZIALDIENST_INSTITUTION: 'SOZIALDIENST_INSTITUTION' as Kontoinhaber,
+  ANDERE: 'ANDERE' as Kontoinhaber,
 };

@@ -12,7 +12,6 @@
 import { Adresse } from './adresse';
 
 export interface Partner {
-  id: string;
   adresse: Adresse;
   vorname: string;
   geburtsdatum: string;

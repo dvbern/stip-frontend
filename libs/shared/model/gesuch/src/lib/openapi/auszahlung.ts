@@ -10,16 +10,15 @@
  * Do not edit the class manually.
  */
 import { Adresse } from './adresse';
-import { Kontoinhaberin } from './kontoinhaberin';
+import { Kontoinhaber } from './kontoinhaber';
 
 /**
  *
  */
 export interface Auszahlung {
-  id: string;
-  kontoinhaberin: Kontoinhaberin;
   vorname: string;
   adresse: Adresse;
   iban: string;
   nachname: string;
+  kontoinhaber: Kontoinhaber;
 }

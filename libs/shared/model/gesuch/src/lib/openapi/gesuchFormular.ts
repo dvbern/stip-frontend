@@ -9,37 +9,36 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Eltern } from './eltern';
-import { PersonInAusbildung } from './personInAusbildung';
-import { Ausbildung } from './ausbildung';
-import { Geschwister } from './geschwister';
-import { Kind } from './kind';
-import { Familiensituation } from './familiensituation';
-import { Auszahlung } from './auszahlung';
-import { Partner } from './partner';
-import { LebenslaufItem } from './lebenslaufItem';
+import { ElternUpdate } from './elternUpdate';
+import { KindUpdate } from './kindUpdate';
+import { FamiliensituationUpdate } from './familiensituationUpdate';
+import { AusbildungUpdate } from './ausbildungUpdate';
+import { AuszahlungUpdate } from './auszahlungUpdate';
+import { PartnerUpdate } from './partnerUpdate';
+import { GeschwisterUpdate } from './geschwisterUpdate';
+import { LebenslaufItemUpdate } from './lebenslaufItemUpdate';
+import { PersonInAusbildungUpdate } from './personInAusbildungUpdate';
 
 export interface GesuchFormular {
-  id: string;
-  ausbildung?: Ausbildung;
-  auzahlung?: Auszahlung;
-  familiensituation?: Familiensituation;
+  ausbildung?: AusbildungUpdate;
+  personInAusbildung?: PersonInAusbildungUpdate;
+  familiensituation?: FamiliensituationUpdate;
+  partner?: PartnerUpdate;
+  auszahlung?: AuszahlungUpdate;
   /**
    *
    */
-  elterns?: Array<Eltern>;
+  elterns?: Array<ElternUpdate>;
   /**
    *
    */
-  kinds?: Array<Kind>;
+  geschwisters?: Array<GeschwisterUpdate>;
   /**
    *
    */
-  lebenslaufItems?: Array<LebenslaufItem>;
-  partner?: Partner;
-  personInAusbildung?: PersonInAusbildung;
+  lebenslaufItems?: Array<LebenslaufItemUpdate>;
   /**
    *
    */
-  geschwisters?: Array<Geschwister>;
+  kinds?: Array<KindUpdate>;
 }

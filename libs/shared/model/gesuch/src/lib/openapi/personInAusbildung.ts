@@ -18,7 +18,6 @@ import { Land } from './land';
 import { Wohnsitz } from './wohnsitz';
 
 export interface PersonInAusbildung {
-  id: string;
   adresse: Adresse;
   sozialversicherungsnummer: string;
   vorname: string;

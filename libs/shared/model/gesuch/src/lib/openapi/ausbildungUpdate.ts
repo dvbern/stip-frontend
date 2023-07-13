@@ -14,16 +14,11 @@ import { Ausbildungsland } from './ausbildungsland';
 
 export interface AusbildungUpdate {
   ausbildungsgangId?: string;
-  ausbildungstaetteId?: string;
   ausbildungsland: Ausbildungsland;
   /**
    * Required wenn andere ausbildungNichtGefunden = true
    */
   alternativeAusbildungsgang?: string;
-  /**
-   * Required wenn andere ausbildungNichtGefunden = true
-   */
-  alternativeAusbildungstaette?: string;
   fachrichtung: string;
   ausbildungNichtGefunden?: boolean;
   /**
@@ -35,4 +30,9 @@ export interface AusbildungUpdate {
    */
   ausbildungEnd: string;
   pensum: AusbildungsPensum;
+  ausbildungsstaetteId?: string;
+  /**
+   * Required wenn andere ausbildungNichtGefunden = true
+   */
+  alternativeAusbildungsstaette?: string;
 }

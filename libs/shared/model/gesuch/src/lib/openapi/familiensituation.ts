@@ -14,7 +14,6 @@ import { ElternUnbekanntheitsGrund } from './elternUnbekanntheitsGrund';
 import { Elternschaftsteilung } from './elternschaftsteilung';
 
 export interface Familiensituation {
-  id: string;
   elternVerheiratetZusammen: boolean;
   elternteilUnbekanntVerstorben?: boolean;
   gerichtlicheAlimentenregelung?: boolean;
