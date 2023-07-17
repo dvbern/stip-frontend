@@ -97,8 +97,8 @@ export const createGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(GesuchAppEventCockpit.newTriggered),
-      exhaustMap(({ gesuch }) =>
-        gesuchAppDataAccessGesuchService.create(gesuch).pipe(
+      exhaustMap(({ create }) =>
+        gesuchAppDataAccessGesuchService.create(create).pipe(
           map(({ id }) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({ id })
           ),

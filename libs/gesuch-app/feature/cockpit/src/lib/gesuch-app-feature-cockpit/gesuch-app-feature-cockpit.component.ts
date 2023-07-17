@@ -73,9 +73,9 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   handleCreate(periode: Gesuchsperiode) {
     this.store.dispatch(
       GesuchAppEventCockpit.newTriggered({
-        gesuch: {
-          fall: this.initFall,
-          gesuchsperiode: periode,
+        create: {
+          fallId: this.initFall.id,
+          gesuchsperiodeId: periode.id,
         },
       })
     );
