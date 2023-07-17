@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import { SharedUiPercentageSplitterComponent } from '@dv/shared/ui/percentage-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -63,7 +63,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
     MaskitoModule,
-    GesuchAppUiPercentageSplitterComponent,
+    SharedUiPercentageSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl:
@@ -140,7 +140,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
       { allowSignalWrites: true }
     );
 
-    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
+    SharedUiPercentageSplitterComponent.setupPercentDependencies(
       this.form.controls.wohnsitzAnteilMutter,
       this.form.controls.wohnsitzAnteilVater
     );
@@ -154,11 +154,11 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         this.languageSig()
       ),
       wohnsitzAnteilMutter:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+        SharedUiPercentageSplitterComponent.numberToPercentString(
           this.geschwister.wohnsitzAnteilMutter
         ),
       wohnsitzAnteilVater:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
+        SharedUiPercentageSplitterComponent.numberToPercentString(
           this.geschwister.wohnsitzAnteilVater
         ),
     });
@@ -180,11 +180,11 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         geburtsdatum,
         wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
         wohnsitzAnteilMutter:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+          SharedUiPercentageSplitterComponent.percentStringToNumber(
             this.form.getRawValue().wohnsitzAnteilMutter
           ),
         wohnsitzAnteilVater:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
+          SharedUiPercentageSplitterComponent.percentStringToNumber(
             this.form.getRawValue().wohnsitzAnteilVater
           ),
       });

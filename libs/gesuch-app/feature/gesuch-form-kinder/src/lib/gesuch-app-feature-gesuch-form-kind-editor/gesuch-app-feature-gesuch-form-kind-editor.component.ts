@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   EventEmitter,
   inject,
   Input,
@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import { SharedUiWohnsitzSplitterComponent } from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -30,7 +30,6 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -61,7 +60,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelTargetDirective,
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
-    GesuchAppUiPercentageSplitterComponent,
+    SharedUiWohnsitzSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kind-editor.component.html',
@@ -112,34 +111,13 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
     ),
   });
 
-  wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
+  private wohnsitzChangedSig = toSignal(
+    this.form.controls.wohnsitz.valueChanges
+  );
 
-  private formUtils = inject(SharedUtilFormService);
-
-  constructor() {
-    effect(
-      () => {
-        const wohnsitzChanged = this.wohnsitzChangedSig();
-
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilMutter,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilVater,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
-      },
-      { allowSignalWrites: true }
-    );
-
-    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
-      this.form.controls.wohnsitzAnteilMutter,
-      this.form.controls.wohnsitzAnteilVater
-    );
-  }
+  showWohnsitzSplitterSig = computed(() => {
+    return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
+  });
 
   ngOnChanges() {
     this.form.patchValue({
@@ -148,14 +126,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         this.kind.geburtsdatum,
         this.languageSig()
       ),
-      wohnsitzAnteilMutter:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.kind.wohnsitzAnteilMutter
-        ),
-      wohnsitzAnteilVater:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.kind.wohnsitzAnteilVater
-        ),
+      ...SharedUiWohnsitzSplitterComponent.stringValues(this.kind),
     });
   }
 
@@ -173,14 +144,9 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         ...this.form.getRawValue(),
         id: this.kind?.id,
         geburtsdatum,
-        wohnsitzAnteilMutter:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilMutter
-          ),
-        wohnsitzAnteilVater:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilVater
-          ),
+        ...SharedUiWohnsitzSplitterComponent.numberValues(
+          this.form.getRawValue()
+        ),
       });
     }
   }

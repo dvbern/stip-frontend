@@ -5,15 +5,12 @@ import {
   effect,
   Input,
   OnChanges,
-  Signal,
+  OnInit,
+  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormControl,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
@@ -26,7 +23,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'dv-gesuch-app-ui-percentage-splitter',
+  selector: 'dv-shared-ui-percentage-splitter',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,11 +36,13 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageErrorDirective,
     TranslateModule,
   ],
-  templateUrl: './gesuch-app-ui-percentage-splitter.component.html',
-  styleUrls: ['./gesuch-app-ui-percentage-splitter.component.scss'],
+  templateUrl: './shared-ui-percentage-splitter.component.html',
+  styleUrls: ['./shared-ui-percentage-splitter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
+export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
+  @Input() visible = false;
+
   @Input({ required: true })
   controlA!: FormControl<string | null>;
 
@@ -60,6 +59,12 @@ export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
         this.setInvisible(this.controlB);
       }
     }
+  }
+
+  public ngOnInit(): void {
+    this.ngOnChanges({
+      visible: new SimpleChange(null, this.visible, true),
+    });
   }
 
   static setupPercentDependencies(
@@ -102,12 +107,12 @@ export class GesuchAppUiPercentageSplitterComponent implements OnChanges {
     return value?.toString() || '';
   }
 
-  private setInvisible(control: AbstractControl): void {
+  private setInvisible(control: FormControl): void {
     control.patchValue(null);
     control.disable();
   }
 
-  private setVisible(control: AbstractControl): void {
+  private setVisible(control: FormControl): void {
     control.enable();
   }
 
