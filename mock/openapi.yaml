@@ -501,10 +501,9 @@ components:
       type: string
     Wohnsitz:
       enum:
-        - ELTERN
-        - MUTTER
-        - VATER
         - EIGENER_HAUSHALT
+        - FAMILIE
+        - MUTTER_VATER
       type: string
     Zivilstand:
       enum:
@@ -1276,10 +1275,43 @@ components:
         - ANDERE
       type: string
     GesuchFormular:
+      required: []
       type: object
-      allOf:
-        - type: object
-        - $ref: '#/components/schemas/GesuchFormularUpdate'
+      properties:
+        ausbildung:
+          $ref: '#/components/schemas/Ausbildung'
+          description: ''
+        personInAusbildung:
+          $ref: '#/components/schemas/PersonInAusbildung'
+          description: ''
+        familiensituation:
+          $ref: '#/components/schemas/Familiensituation'
+        partner:
+          $ref: '#/components/schemas/Partner'
+          description: ''
+        auszahlung:
+          $ref: '#/components/schemas/Auszahlung'
+          description: ''
+        elterns:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/Eltern'
+        geschwisters:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/Geschwister'
+        lebenslaufItems:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/LebenslaufItem'
+        kinds:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/Kind'
   responses:
     Unauthorized:
       content:
