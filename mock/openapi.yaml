@@ -935,12 +935,12 @@ components:
     GesuchCreate:
       required:
         - fallId
-        - gesuchsPeriodeId
+        - gesuchsperiodeId
       type: object
       properties:
         fallId:
           $ref: '#/components/schemas/UUID'
-        gesuchsPeriodeId:
+        gesuchsperiodeId:
           $ref: '#/components/schemas/UUID'
     GesuchUpdate:
       description: ''

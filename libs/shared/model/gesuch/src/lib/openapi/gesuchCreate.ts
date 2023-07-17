@@ -12,5 +12,5 @@
 
 export interface GesuchCreate {
   fallId: string;
-  gesuchsPeriodeId: string;
+  gesuchsperiodeId: string;
 }
