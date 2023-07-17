@@ -1,7 +1,5 @@
-import { MaskitoOptions } from '@maskito/core';
-
 import { Gesuch } from './openapi/gesuch';
-import { GesuchFormular } from './openapi/gesuchFormular';
+import { GesuchFormularUpdate } from './openapi/gesuchFormularUpdate';
 
 export interface SharedModelGesuch extends Gesuch {
   view?: {
@@ -9,7 +7,7 @@ export interface SharedModelGesuch extends Gesuch {
   };
 }
 
-export interface SharedModelGesuchFormular extends GesuchFormular {
+export interface SharedModelGesuchFormular extends GesuchFormularUpdate {
   freigegeben: boolean;
 }
 

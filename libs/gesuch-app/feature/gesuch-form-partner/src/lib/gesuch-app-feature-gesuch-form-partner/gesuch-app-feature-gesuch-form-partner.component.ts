@@ -21,8 +21,7 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
-  Partner,
-  SharedModelGesuch,
+  PartnerUpdate,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -47,6 +46,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-feature-gesuch-form-partner.selector';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -94,16 +94,11 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       '',
       [Validators.required, sharedUtilValidatorAhv],
     ],
-    name: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    adresse: this.formBuilder.group({
-      coAdresse: ['', []],
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
+      this.formBuilder
+    ),
     geburtsdatum: [
       '',
       [
@@ -192,26 +187,26 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   private buildUpdatedGesuchFromForm() {
     const { gesuch, gesuchFormular } = this.view();
+    const formValues = this.form.getRawValue();
+    const partner: PartnerUpdate = {
+      ...gesuchFormular?.partner,
+      ...formValues,
+      adresse: {
+        id: gesuchFormular?.partner?.adresse?.id,
+        ...formValues.adresse,
+      },
+      geburtsdatum: parseStringAndPrintForBackendLocalDate(
+        formValues.geburtsdatum,
+        this.languageSig(),
+        subYears(new Date(), MEDIUM_AGE_ADULT)
+      )!,
+      jahreseinkommen: +formValues.jahreseinkommen,
+    };
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
-        partnerContainer: {
-          ...gesuchFormular?.partner,
-          partnerSB: {
-            ...gesuchFormular?.partner,
-            ...this.form.getRawValue(),
-            adresse: {
-              id: gesuchFormular?.partner?.adresse?.id || '', // TODO wie geht das bei neuen entities?
-              ...this.form.getRawValue().adresse,
-            },
-            geburtsdatum: parseStringAndPrintForBackendLocalDate(
-              this.form.getRawValue().geburtsdatum,
-              this.languageSig(),
-              subYears(new Date(), MEDIUM_AGE_ADULT)
-            ),
-          },
-        },
+        partner,
       },
     };
   }

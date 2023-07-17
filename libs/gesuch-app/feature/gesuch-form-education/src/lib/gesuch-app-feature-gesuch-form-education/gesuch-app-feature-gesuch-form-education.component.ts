@@ -10,9 +10,10 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 
@@ -83,7 +84,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
 
   readonly ausbildungslandValues = Object.values(Ausbildungsland);
@@ -92,12 +93,29 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: [<string | null>null, [Validators.required]],
-    ausbildungsstaette: [<string | null>null, [Validators.required]],
-    alternativeAusbildungsstaette: [<string | null>null, [Validators.required]],
-    ausbildungsgang: [<string | null>null, [Validators.required]],
-    alternativeAusbildungsgang: [<string | null>null, [Validators.required]],
-    fachrichtung: [<string | null>null, [Validators.required]],
+    ausbildungsland: this.formBuilder.control<Ausbildungsland>(
+      '' as Ausbildungsland,
+      {
+        validators: Validators.required,
+      }
+    ),
+    ausbildungsstaette: [
+      <string | undefined>undefined,
+      this.requiredIfSwiss(false),
+    ],
+    alternativeAusbildungsstaette: [
+      <string | undefined>undefined,
+      this.requiredIfSwiss(true),
+    ],
+    ausbildungsgang: [
+      <string | undefined>undefined,
+      this.requiredIfSwiss(false),
+    ],
+    alternativeAusbildungsgang: [
+      <string | undefined>undefined,
+      this.requiredIfSwiss(true),
+    ],
+    fachrichtung: ['', [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
       '',
@@ -129,7 +147,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: [<string | null>null, [Validators.required]],
+    pensum: this.formBuilder.control<AusbildungsPensum>(
+      '' as AusbildungsPensum,
+      {
+        validators: Validators.required,
+      }
+    ),
   });
 
   view$ = this.store.selectSignal(
@@ -260,17 +283,19 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungsstaette.reset(null);
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsstaette.reset();
+    this.form.controls.ausbildungsgang.reset();
   }
 
   handleStaetteChangedByUser() {
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsgang.reset();
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungsstaette.reset(null);
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsstaette.reset();
+    this.form.controls.alternativeAusbildungsstaette.reset();
+    this.form.controls.ausbildungsgang.reset();
+    this.form.controls.alternativeAusbildungsgang.reset();
   }
 
   handleSave() {
@@ -287,6 +312,16 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     }
   }
 
+  private requiredIfSwiss(alternative: boolean): ValidatorFn {
+    return (control) => {
+      return alternative &&
+        this.form &&
+        this.form.controls.ausbildungsland.value !== 'SCHWEIZ'
+        ? Validators.required(control)
+        : null;
+    };
+  }
+
   // TODO we should clean up this logic once we have final data structure
   // eg extract to util service (for every form step)
   private buildUpdatedGesuchFromForm() {
@@ -297,18 +332,16 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
-        ausbildungContainer: {
-          ausbildungSB: {
-            ...(this.form.getRawValue() as any),
-            ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
-              .filter(
-                (ausbildungsstaette) =>
-                  ausbildungsstaette.name ===
-                  this.form.controls.ausbildungsstaette.value
-              )
-              .pop()?.id,
-            ausbildungsgangId: this.form.controls.ausbildungsgang.value,
-          },
+        ausbildung: {
+          ...this.form.getRawValue(),
+          ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
+            .filter(
+              (ausbildungsstaette) =>
+                ausbildungsstaette.name ===
+                this.form.controls.ausbildungsstaette.value
+            )
+            .pop()?.id,
+          ausbildungsgangId: this.form.controls.ausbildungsgang.value,
         },
       },
     };

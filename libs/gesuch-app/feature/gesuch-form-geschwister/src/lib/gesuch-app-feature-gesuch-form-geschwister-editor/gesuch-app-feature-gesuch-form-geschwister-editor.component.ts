@@ -128,12 +128,12 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
         this.formUtils.setDisabledState(
           this.form.controls.wohnsitzAnteilMutter,
-          wohnsitzChanged !== Wohnsitz.ELTERN,
+          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
           true
         );
         this.formUtils.setDisabledState(
           this.form.controls.wohnsitzAnteilVater,
-          wohnsitzChanged !== Wohnsitz.ELTERN,
+          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
           true
         );
       },

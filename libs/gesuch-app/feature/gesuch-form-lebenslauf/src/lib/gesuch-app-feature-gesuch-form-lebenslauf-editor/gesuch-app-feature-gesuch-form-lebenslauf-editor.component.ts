@@ -12,9 +12,9 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
   FormsModule,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -23,8 +23,8 @@ import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Bildungsart,
   WohnsitzKanton,
-  LebenslaufItem,
   Taetigskeitsart,
+  LebenslaufItemUpdate,
 } from '@dv/shared/model/gesuch';
 import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import {
@@ -73,7 +73,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   implements OnChanges
 {
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
 
   private translateService = inject(TranslateService);
 
@@ -81,7 +81,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
 
-  @Output() saveTriggered = new EventEmitter<LebenslaufItem>();
+  @Output() saveTriggered = new EventEmitter<LebenslaufItemUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
 
@@ -90,14 +90,17 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
+    beschreibung: ['TBD', [Validators.required]],
     subtype: [<string | null>null, [Validators.required]],
-    dateStart: ['', []],
-    dateEnd: ['', []],
-    wohnsitz: [<string | null>null, [Validators.required]],
+    von: ['', []],
+    bis: ['', []],
+    wohnsitz: this.formBuilder.control<WohnsitzKanton>('' as WohnsitzKanton, [
+      Validators.required,
+    ]),
   });
 
-  startChanged$ = toSignal(this.form.controls.dateStart.valueChanges);
-  endChanged$ = toSignal(this.form.controls.dateEnd.valueChanges);
+  startChanged$ = toSignal(this.form.controls.von.valueChanges);
+  endChanged$ = toSignal(this.form.controls.bis.valueChanges);
   kantonValues = this.prepareKantonValues();
 
   constructor() {
@@ -105,14 +108,14 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     effect(
       () => {
         this.startChanged$();
-        this.form.controls.dateEnd.updateValueAndValidity();
+        this.form.controls.bis.updateValueAndValidity();
       },
       { allowSignalWrites: true }
     );
     effect(
       () => {
         this.endChanged$();
-        this.form.controls.dateStart.updateValueAndValidity();
+        this.form.controls.von.updateValueAndValidity();
       },
       { allowSignalWrites: true }
     );
@@ -139,13 +142,13 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   ngOnChanges(changes: SimpleChanges) {
     // update date validators
     if (changes['minStartDate']) {
-      this.form.controls.dateStart.clearValidators();
-      this.form.controls.dateStart.addValidators([
+      this.form.controls.von.clearValidators();
+      this.form.controls.von.addValidators([
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
       ]);
       if (changes['minStartDate'].currentValue) {
-        this.form.controls.dateStart.addValidators([
+        this.form.controls.von.addValidators([
           minDateValidatorForLocale(
             this.languageSig(),
             changes['minStartDate'].currentValue,
@@ -155,13 +158,13 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       }
     }
     if (changes['maxEndDate']) {
-      this.form.controls.dateEnd.clearValidators();
-      this.form.controls.dateEnd.addValidators([
+      this.form.controls.bis.clearValidators();
+      this.form.controls.bis.addValidators([
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
         createDateDependencyValidator(
           'after',
-          this.form.controls.dateStart,
+          this.form.controls.von,
           false,
           new Date(),
           this.languageSig(),
@@ -169,7 +172,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         ),
       ]);
       if (changes['maxEndDate'].currentValue) {
-        this.form.controls.dateEnd.addValidators([
+        this.form.controls.bis.addValidators([
           maxDateValidatorForLocale(
             this.languageSig(),
             changes['maxEndDate'].currentValue,
@@ -184,15 +187,15 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   handleSave() {
-    /* this.form.controls.dateStart.updateValueAndValidity(); // TODO oder in effect
-     this.form.controls.dateEnd.updateValueAndValidity();*/
+    /* this.form.controls.von.updateValueAndValidity(); // TODO oder in effect
+     this.form.controls.bis.updateValueAndValidity();*/
     this.form.markAllAsTouched();
-    this.onDateBlur(this.form.controls.dateStart);
-    this.onDateBlur(this.form.controls.dateEnd);
+    this.onDateBlur(this.form.controls.von);
+    this.onDateBlur(this.form.controls.bis);
     if (this.form.valid) {
       this.saveTriggered.emit({
         id: this.item?.id,
-        ...(this.form.getRawValue() as any),
+        ...this.form.getRawValue(),
       });
     }
   }

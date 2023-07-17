@@ -164,7 +164,9 @@ const getGesuchFormular = (
   gesuch: SharedModelGesuch
 ): SharedModelGesuchFormular | undefined => {
   const formular =
-    gesuch.gesuch_formular_freigabe_copy ?? gesuch.gesuch_formular_to_work_with;
+    // TODO: Fix mapping from GET GesuchFormular to PATCH GesuchFormularUpdate
+    (gesuch.gesuch_formular_freigabe_copy ??
+      gesuch.gesuch_formular_to_work_with) as SharedModelGesuchFormular;
   return formular
     ? { ...formular, freigegeben: !!gesuch.gesuch_formular_freigabe_copy }
     : undefined;

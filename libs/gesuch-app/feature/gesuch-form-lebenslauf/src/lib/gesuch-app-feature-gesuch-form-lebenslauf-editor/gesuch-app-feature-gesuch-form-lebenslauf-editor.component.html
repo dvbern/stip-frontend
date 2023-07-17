@@ -76,9 +76,9 @@
       <input
         class="form-control"
         dvSharedUiFormLabelTarget
-        formControlName="dateStart"
+        formControlName="von"
         placeholder="MM.YYYY"
-        (blur)="onDateBlur(form.controls.dateStart)"
+        (blur)="onDateBlur(form.controls.von)"
       />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -92,7 +92,7 @@
           'gesuch-app.form.lebenslauf.form.error.monthYearMin'
             | translate
               : {
-                  min: form.controls.dateStart.errors!['minDate']!.minDate
+                  min: form.controls.von.errors!['minDate']!.minDate
                 }
         }}
       </dv-shared-ui-form-message>
@@ -116,9 +116,9 @@
       <input
         class="form-control"
         dvSharedUiFormLabelTarget
-        formControlName="dateEnd"
+        formControlName="bis"
         placeholder="MM.YYYY"
-        (blur)="onDateBlur(form.controls.dateEnd)"
+        (blur)="onDateBlur(form.controls.bis)"
       />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -138,8 +138,7 @@
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
         {{
           'gesuch-app.form.lebenslauf.form.error.monthYearMax'
-            | translate
-              : { max: form.controls.dateEnd.errors!['maxDate']!.maxDate }
+            | translate : { max: form.controls.bis.errors!['maxDate']!.maxDate }
         }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>

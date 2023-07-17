@@ -20,6 +20,7 @@ import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
+import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 
 export const loadGesuchs = createEffect(
   (
@@ -58,6 +59,7 @@ export const loadGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
+        GesuchAppEventGesuchFormPartner.init,
         GesuchAppEventGesuchFormPerson.init,
         GesuchAppEventGesuchFormEducation.init,
         GesuchAppEventGesuchFormEltern.init,
@@ -121,6 +123,7 @@ export const updateGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
+        GesuchAppEventGesuchFormPartner.nextStepTriggered,
         GesuchAppEventGesuchFormPerson.saveTriggered,
         GesuchAppEventGesuchFormEducation.saveTriggered,
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
