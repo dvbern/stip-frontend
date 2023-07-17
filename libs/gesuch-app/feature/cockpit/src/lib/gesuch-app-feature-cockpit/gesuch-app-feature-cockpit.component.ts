@@ -59,6 +59,11 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     this.store.dispatch(GesuchAppEventCockpit.init());
   }
 
+  // TODO: Remove once Fall handling exists
+  public setFallId(id: string) {
+    this.initFall.id = id;
+  }
+
   private initFall = {
     id: '',
     fallNummer: 1,
