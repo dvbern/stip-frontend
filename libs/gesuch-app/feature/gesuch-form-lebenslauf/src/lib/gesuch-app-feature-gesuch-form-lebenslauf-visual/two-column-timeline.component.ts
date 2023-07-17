@@ -55,20 +55,20 @@ export class TwoColumnTimelineComponent implements OnChanges {
   @Input({ required: true }) startDate!: Date | null;
   @Input({ required: true }) lebenslaufItems!: LebenslaufItemUpdate[];
   @Input({ required: true }) ausbildung!: Ausbildung;
-  @Input({ required: true }) ausbildungstaettes?: Ausbildungsstaette[] | null;
+  @Input({ required: true }) ausbildungsstaettes?: Ausbildungsstaette[] | null;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['startDate'] &&
       changes['lebenslaufItems'] &&
       changes['ausbildung'] &&
-      changes['ausbildungstaettes']
+      changes['ausbildungsstaettes']
     ) {
       this.setLebenslaufItems(
         changes['startDate'].currentValue,
         changes['lebenslaufItems'].currentValue,
         changes['ausbildung'].currentValue,
-        changes['ausbildungstaettes'].currentValue
+        changes['ausbildungsstaettes'].currentValue
       );
     }
   }
@@ -77,7 +77,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
     expectedSartDate: Date | null,
     lebenslaufItems: SharedModelLebenslauf[],
     plannedAusbildung: Ausbildung,
-    ausbildungstaettes: Ausbildungsstaette[]
+    ausbildungsstaettes: Ausbildungsstaette[]
   ) {
     console.log('initializing lebenslauf items for timeline');
     const timelineRawItems = lebenslaufItems.map(
@@ -93,7 +93,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
     );
 
     // planned ausbildung
-    const ausbildungsstaette = ausbildungstaettes.find(
+    const ausbildungsstaette = ausbildungsstaettes.find(
       (each) => each.id === plannedAusbildung.ausbildungsstaetteId
     );
     const ausbildungsgang = ausbildungsstaette?.ausbildungsgaenge?.find(

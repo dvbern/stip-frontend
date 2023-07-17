@@ -4,15 +4,15 @@ import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs';
-import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
+import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
 
-import { GesuchAppDataAccessAusbildungstaetteService } from './gesuch-app-data-access-ausbildungstaette.service';
+import { GesuchAppDataAccessAusbildungsstaetteService } from './gesuch-app-data-access-ausbildungsstaette.service';
 
-export const loadAusbildungstaettes = createEffect(
+export const loadAusbildungsstaettes = createEffect(
   (
     events$ = inject(Actions),
-    gesuchAppDataAccessAusbildungstaetteService = inject(
-      GesuchAppDataAccessAusbildungstaetteService
+    gesuchAppDataAccessAusbildungsstaetteService = inject(
+      GesuchAppDataAccessAusbildungsstaetteService
     )
   ) => {
     return events$.pipe(
@@ -21,14 +21,14 @@ export const loadAusbildungstaettes = createEffect(
         GesuchAppEventGesuchFormLebenslauf.init
       ),
       switchMap(() =>
-        gesuchAppDataAccessAusbildungstaetteService.getAll().pipe(
-          map((ausbildungstaettes) =>
-            GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedSuccess(
-              { ausbildungstaettes }
+        gesuchAppDataAccessAusbildungsstaetteService.getAll().pipe(
+          map((ausbildungsstaettes) =>
+            GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
+              { ausbildungsstaettes }
             )
           ),
           catchError((error) => [
-            GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedFailure(
+            GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure(
               { error: sharedUtilFnErrorTransformer(error) }
             ),
           ])
@@ -40,6 +40,6 @@ export const loadAusbildungstaettes = createEffect(
 );
 
 // add effects here
-export const gesuchAppDataAccessAusbildungstaetteEffects = {
-  loadAusbildungstaettes,
+export const gesuchAppDataAccessAusbildungsstaetteEffects = {
+  loadAusbildungsstaettes,
 };

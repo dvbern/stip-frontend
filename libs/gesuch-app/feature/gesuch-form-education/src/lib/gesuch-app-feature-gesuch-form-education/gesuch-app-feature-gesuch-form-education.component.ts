@@ -93,8 +93,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   form = this.formBuilder.group({
     ausbildungsland: [<string | null>null, [Validators.required]],
-    ausbildungstaette: [<string | null>null, [Validators.required]],
+    ausbildungsstaette: [<string | null>null, [Validators.required]],
+    alternativeAusbildungsstaette: [<string | null>null, [Validators.required]],
     ausbildungsgang: [<string | null>null, [Validators.required]],
+    alternativeAusbildungsgang: [<string | null>null, [Validators.required]],
     fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
@@ -134,18 +136,18 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     selectGesuchAppFeatureGesuchFormEducationView
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
-  ausbildungstaetteOptions$ = computed(() => {
-    const ausbildungstaettes = this.view$().ausbildungstaettes;
-    return ausbildungstaettes.filter(
+  ausbildungsstaetteOptions$ = computed(() => {
+    const ausbildungsstaettes = this.view$().ausbildungsstaettes;
+    return ausbildungsstaettes.filter(
       (item) => item.ausbildungsland === this.land$()
     );
   });
   ausbildungsstaett$ = toSignal(
-    this.form.controls.ausbildungstaette.valueChanges
+    this.form.controls.ausbildungsstaette.valueChanges
   );
   ausbildungsgangOptions$ = computed(() => {
     return (
-      this.ausbildungstaetteOptions$().find(
+      this.ausbildungsstaetteOptions$().find(
         (item) => item.name === this.ausbildungsstaett$()
       )?.ausbildungsgaenge || []
     );
@@ -186,18 +188,18 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     effect(
       () => {
         const { ausbildung } = this.view$();
-        const { ausbildungstaettes } = this.view$();
-        if (ausbildung && ausbildungstaettes) {
+        const { ausbildungsstaettes } = this.view$();
+        if (ausbildung && ausbildungsstaettes) {
           this.form.patchValue({
             ...ausbildung,
-            ausbildungstaette: ausbildungstaettes?.find(
-              (ausbildungstaette) =>
-                ausbildungstaette.id === ausbildung.ausbildungsstaetteId
+            ausbildungsstaette: ausbildungsstaettes?.find(
+              (ausbildungsstaette) =>
+                ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
             )?.name,
-            ausbildungsgang: ausbildungstaettes
+            ausbildungsgang: ausbildungsstaettes
               ?.find(
-                (ausbildungstaette) =>
-                  ausbildungstaette.id === ausbildung.ausbildungsstaetteId
+                (ausbildungsstaette) =>
+                  ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
               )
               ?.ausbildungsgaenge?.find(
                 (ausbildungsgang) =>
@@ -219,7 +221,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         // do not enable/disable fields  on signal default value
         this.formUtils.setDisabledState(
-          this.form.controls.ausbildungstaette,
+          this.form.controls.ausbildungsstaette,
           !land$(),
           true
         );
@@ -229,8 +231,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
     // When Staette null, disable gang
     const staette$ = toSignal(
-      this.form.controls.ausbildungstaette.valueChanges.pipe(
-        startWith(this.form.value.ausbildungstaette)
+      this.form.controls.ausbildungsstaette.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsstaette)
       )
     );
     effect(
@@ -258,7 +260,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsstaette.reset(null);
     this.form.controls.ausbildungsgang.reset(null);
   }
 
@@ -267,7 +269,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungstaette.reset(null);
+    this.form.controls.ausbildungsstaette.reset(null);
     this.form.controls.ausbildungsgang.reset(null);
   }
 
@@ -298,11 +300,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         ausbildungContainer: {
           ausbildungSB: {
             ...(this.form.getRawValue() as any),
-            ausbildungstaetteId: this.ausbildungstaetteOptions$()
+            ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
               .filter(
-                (ausbildungstaette) =>
-                  ausbildungstaette.name ===
-                  this.form.controls.ausbildungstaette.value
+                (ausbildungsstaette) =>
+                  ausbildungsstaette.name ===
+                  this.form.controls.ausbildungsstaette.value
               )
               .pop()?.id,
             ausbildungsgangId: this.form.controls.ausbildungsgang.value,
@@ -313,24 +315,24 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
-  ausbildungstaetteTypeaheadFn$: Signal<
+  ausbildungsstaetteTypeaheadFn$: Signal<
     OperatorFunction<string, readonly any[]>
   > = computed(() => {
-    return this.createAusbildungstaetteTypeaheadFn(
-      this.ausbildungstaetteOptions$()
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
     );
   });
 
-  focusAusbildungstaette$ = new Subject<string>();
+  focusAusbildungsstaette$ = new Subject<string>();
 
-  createAusbildungstaetteTypeaheadFn(list: Ausbildungsstaette[]) {
+  createAusbildungsstaetteTypeaheadFn(list: Ausbildungsstaette[]) {
     console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(
         debounceTime(200),
         distinctUntilChanged()
       );
-      const inputFocus$ = this.focusAusbildungstaette$;
+      const inputFocus$ = this.focusAusbildungsstaette$;
       return merge(debouncedText$, inputFocus$).pipe(
         map((term) => {
           console.log('typeaheading term ', term, list);

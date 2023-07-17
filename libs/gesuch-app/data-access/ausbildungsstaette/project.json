@@ -1,7 +1,7 @@
 {
-  "name": "gesuch-app-data-access-ausbildungstaette",
+  "name": "gesuch-app-data-access-ausbildungsstaette",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/gesuch-app/data-access/ausbildungstaette/src",
+  "sourceRoot": "libs/gesuch-app/data-access/ausbildungsstaette/src",
   "prefix": "dv",
   "tags": ["type:data-access", "scope:gesuch-app"],
   "projectType": "library",
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/gesuch-app/data-access/ausbildungstaette/jest.config.ts",
+        "jestConfig": "libs/gesuch-app/data-access/ausbildungsstaette/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/gesuch-app/data-access/ausbildungstaette/**/*.ts",
-          "libs/gesuch-app/data-access/ausbildungstaette/**/*.html"
+          "libs/gesuch-app/data-access/ausbildungsstaette/**/*.ts",
+          "libs/gesuch-app/data-access/ausbildungsstaette/**/*.html"
         ]
       }
     }

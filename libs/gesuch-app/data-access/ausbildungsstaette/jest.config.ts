@@ -1,10 +1,10 @@
 /* eslint-disable */
 export default {
-  displayName: 'gesuch-app-data-access-ausbildungstaette',
+  displayName: 'gesuch-app-data-access-ausbildungsstaette',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory:
-    '../../../../coverage/libs/gesuch-app/data-access/ausbildungstaette',
+    '../../../../coverage/libs/gesuch-app/data-access/ausbildungsstaette',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

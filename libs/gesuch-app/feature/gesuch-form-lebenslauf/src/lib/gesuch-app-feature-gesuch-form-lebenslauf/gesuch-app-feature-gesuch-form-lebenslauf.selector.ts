@@ -1,16 +1,16 @@
-import { selectGesuchAppDataAccessAusbildungstaettesView } from '@dv/gesuch-app/data-access/ausbildungstaette';
+import { selectGesuchAppDataAccessAusbildungsstaettesView } from '@dv/gesuch-app/data-access/ausbildungsstaette';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { createSelector } from '@ngrx/store';
 
 export const selectGesuchAppFeatureGesuchFormLebenslaufVew = createSelector(
   selectGesuchAppDataAccessGesuchsView,
-  selectGesuchAppDataAccessAusbildungstaettesView,
-  (gesuchsView, ausbildungstaettesView) => ({
-    loading: gesuchsView.loading || ausbildungstaettesView.loading,
+  selectGesuchAppDataAccessAusbildungsstaettesView,
+  (gesuchsView, ausbildungsstaettesView) => ({
+    loading: gesuchsView.loading || ausbildungsstaettesView.loading,
     gesuch: gesuchsView.gesuch,
     gesuchFormular: gesuchsView.gesuchFormular,
     ausbildung: gesuchsView.gesuchFormular?.ausbildung,
-    ausbildungstaettes: ausbildungstaettesView.ausbildungstaettes,
+    ausbildungsstaettes: ausbildungsstaettesView.ausbildungsstaettes,
     lebenslaufItems: (gesuchsView.gesuchFormular?.lebenslaufItems ?? []).filter(
       (each) => each?.id
     ),

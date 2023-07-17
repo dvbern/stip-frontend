@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
 import { Land } from '@dv/shared/model/gesuch';
 
-const RESOURCE_URL = `${SHARED_MODEL_API_URL}/stammdaten/lands`;
+const RESOURCE_URL = `${SHARED_MODEL_API_URL}/stammdaten/land`;
 
 @Injectable({ providedIn: 'root' })
 export class SharedDataAccessStammdatenService {

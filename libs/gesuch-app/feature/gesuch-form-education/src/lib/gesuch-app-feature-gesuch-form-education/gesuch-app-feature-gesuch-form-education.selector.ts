@@ -1,15 +1,15 @@
 import { createSelector } from '@ngrx/store';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { selectGesuchAppDataAccessAusbildungstaettesView } from '@dv/gesuch-app/data-access/ausbildungstaette';
+import { selectGesuchAppDataAccessAusbildungsstaettesView } from '@dv/gesuch-app/data-access/ausbildungsstaette';
 
 export const selectGesuchAppFeatureGesuchFormEducationView = createSelector(
   selectGesuchAppDataAccessGesuchsView,
-  selectGesuchAppDataAccessAusbildungstaettesView,
-  (gesuchsView, ausbildungstaettesView) => ({
-    loading: gesuchsView.loading || ausbildungstaettesView.loading,
+  selectGesuchAppDataAccessAusbildungsstaettesView,
+  (gesuchsView, ausbildungsstaettesView) => ({
+    loading: gesuchsView.loading || ausbildungsstaettesView.loading,
     gesuch: gesuchsView.gesuch,
     gesuchFormular: gesuchsView.gesuchFormular,
     ausbildung: gesuchsView.gesuchFormular?.ausbildung,
-    ausbildungstaettes: ausbildungstaettesView.ausbildungstaettes,
+    ausbildungsstaettes: ausbildungsstaettesView.ausbildungsstaettes,
   })
 );

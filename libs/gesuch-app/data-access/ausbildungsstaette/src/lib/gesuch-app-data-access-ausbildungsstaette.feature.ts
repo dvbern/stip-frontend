@@ -5,23 +5,23 @@ import { SharedModelError } from '@dv/shared/model/error';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 
-import { GesuchAppDataAccessAusbildungstaetteApiEvents } from './gesuch-app-data-access-ausbildungstaette.events';
+import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
 import { Ausbildungsstaette } from '@dv/shared/model/gesuch';
 
 export interface State {
-  ausbildungstaettes: Ausbildungsstaette[];
+  ausbildungsstaettes: Ausbildungsstaette[];
   loading: boolean;
   error: SharedModelError | undefined;
 }
 
 const initialState: State = {
-  ausbildungstaettes: [],
+  ausbildungsstaettes: [],
   loading: false,
   error: undefined,
 };
 
-export const gesuchAppDataAccessAusbildungstaettesFeature = createFeature({
-  name: 'ausbildungstaettes',
+export const gesuchAppDataAccessAusbildungsstaettesFeature = createFeature({
+  name: 'ausbildungsstaettes',
   reducer: createReducer(
     initialState,
 
@@ -36,20 +36,20 @@ export const gesuchAppDataAccessAusbildungstaettesFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedSuccess,
-      (state, { ausbildungstaettes }): State => ({
+      GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess,
+      (state, { ausbildungsstaettes }): State => ({
         ...state,
-        ausbildungstaettes: ausbildungstaettes,
+        ausbildungsstaettes: ausbildungsstaettes,
         loading: false,
         error: undefined,
       })
     ),
     on(
-      GesuchAppDataAccessAusbildungstaetteApiEvents.ausbildungstaettesLoadedFailure,
+      GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure,
       // add other failure events here (if handled the same way)
       (state, { error }): State => ({
         ...state,
-        ausbildungstaettes: [],
+        ausbildungsstaettes: [],
         loading: false,
         error,
       })
@@ -60,8 +60,8 @@ export const gesuchAppDataAccessAusbildungstaettesFeature = createFeature({
 export const {
   name, // feature name
   reducer,
-  selectAusbildungstaettesState,
-  selectAusbildungstaettes,
+  selectAusbildungsstaettesState,
+  selectAusbildungsstaettes,
   selectLoading,
   selectError,
-} = gesuchAppDataAccessAusbildungstaettesFeature;
+} = gesuchAppDataAccessAusbildungsstaettesFeature;
