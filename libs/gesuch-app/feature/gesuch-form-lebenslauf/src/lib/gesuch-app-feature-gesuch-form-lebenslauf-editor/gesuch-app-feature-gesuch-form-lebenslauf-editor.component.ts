@@ -89,9 +89,20 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    name: ['', [Validators.required]],
-    beschreibung: ['TBD', [Validators.required]],
-    subtype: [<string | null>null, [Validators.required]],
+    beschreibung: ['', [Validators.required]],
+    bildungsart: this.formBuilder.control<Bildungsart | undefined>(undefined, [
+      this.item?.type === 'AUSBILDUNG'
+        ? Validators.required
+        : Validators.nullValidator,
+    ]),
+    taetigskeitsart: this.formBuilder.control<Taetigskeitsart | undefined>(
+      undefined,
+      [
+        this.item?.type === 'TAETIGKEIT'
+          ? Validators.required
+          : Validators.nullValidator,
+      ]
+    ),
     von: ['', []],
     bis: ['', []],
     wohnsitz: this.formBuilder.control<WohnsitzKanton>('' as WohnsitzKanton, [

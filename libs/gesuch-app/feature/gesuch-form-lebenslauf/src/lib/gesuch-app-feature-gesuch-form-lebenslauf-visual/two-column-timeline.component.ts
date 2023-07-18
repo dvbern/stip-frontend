@@ -75,7 +75,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
 
   setLebenslaufItems(
     expectedSartDate: Date | null,
-    lebenslaufItems: SharedModelLebenslauf[],
+    lebenslaufItems: LebenslaufItem[],
     plannedAusbildung: Ausbildung,
     ausbildungsstaettes: Ausbildungsstaette[]
   ) {
@@ -83,7 +83,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
     const timelineRawItems = lebenslaufItems.map(
       (lebenslaufItem) =>
         ({
-          col: lebenslaufItem.type === 'AUSBILDUNG' ? 'LEFT' : 'RIGHT',
+          col: lebenslaufItem.bildungsart ? 'LEFT' : 'RIGHT',
           von: dateFromMonthYearString(lebenslaufItem.von),
           bis: dateFromMonthYearString(lebenslaufItem.bis),
           id: lebenslaufItem.id,
