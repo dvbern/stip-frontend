@@ -22,14 +22,11 @@ import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
-  Adresse,
   Anrede,
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   Niederlassungsstatus,
   PATTERN_EMAIL,
-  PersonInAusbildung,
-  SharedModelGesuch,
   Sprache,
   Wohnsitz,
   Zivilstand,
@@ -66,6 +63,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
+import {
+  addWohnsitzControls,
+  SharedUiWohnsitzSplitterComponent,
+  wohnsitzAnteileString,
+  wohnsitzAnteileNumber,
+} from '@dv/shared/ui/wohnsitz-splitter';
+import { Subject } from 'rxjs';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -87,6 +91,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
+    SharedUiWohnsitzSplitterComponent,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     SharedPatternDocumentUploadComponent,
@@ -112,6 +117,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
+  save$ = new Subject();
 
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
@@ -172,15 +178,21 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     zivilstand: this.formBuilder.control<Zivilstand>('' as Zivilstand, {
       validators: Validators.required,
     }),
-    wohnsitz: this.formBuilder.control<Wohnsitz>('' as Wohnsitz, {
-      validators: Validators.required,
-    }),
+    ...addWohnsitzControls(this.formBuilder),
     sozialhilfebeitraege: [false, []],
     quellenbesteuerung: new FormControl<boolean | null>(null, []),
     digitaleKommunikation: [true, []],
     korrespondenzSprache: this.formBuilder.control<Sprache>('' as Sprache, {
       validators: Validators.required,
     }),
+  });
+
+  private wohnsitzChangedSig = toSignal(
+    this.form.controls.wohnsitz.valueChanges
+  );
+
+  showWohnsitzSplitterSig = computed(() => {
+    return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
   });
 
   constructor() {
@@ -197,7 +209,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
               this.languageSig()
             ),
           };
-          this.form.patchValue({ ...personForForm });
+          this.form.patchValue({
+            ...personForForm,
+            ...wohnsitzAnteileString(person),
+          });
         }
       },
       { allowSignalWrites: true }
@@ -283,6 +298,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   handleSave() {
+    this.save$.next({});
     this.form.markAllAsTouched();
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
@@ -325,6 +341,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
             this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           )!,
+          ...wohnsitzAnteileNumber(this.form.getRawValue()),
 
           // TODO missing fields that exist on the Adresse:
           quellenbesteuert: false,

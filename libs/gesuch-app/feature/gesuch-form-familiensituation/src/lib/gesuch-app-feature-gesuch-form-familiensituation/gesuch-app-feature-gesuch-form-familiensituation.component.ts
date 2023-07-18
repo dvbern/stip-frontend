@@ -18,7 +18,11 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
-import { SharedUiPercentageSplitterComponent } from '@dv/shared/ui/percentage-splitter';
+import {
+  numberToPercentString,
+  percentStringToNumber,
+  SharedUiPercentageSplitterComponent,
+} from '@dv/shared/ui/percentage-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import {
   ElternAbwesenheitsGrund,
@@ -148,14 +152,12 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           this.form.patchValue({
             ...initialFormFamSit,
 
-            obhutMutter:
-              SharedUiPercentageSplitterComponent.numberToPercentString(
-                gesuchFormular?.familiensituation?.obhutMutter
-              ),
-            obhutVater:
-              SharedUiPercentageSplitterComponent.numberToPercentString(
-                gesuchFormular?.familiensituation?.obhutVater
-              ),
+            obhutMutter: numberToPercentString(
+              gesuchFormular?.familiensituation?.obhutMutter
+            ),
+            obhutVater: numberToPercentString(
+              gesuchFormular?.familiensituation?.obhutVater
+            ),
           });
         }
       },
@@ -269,11 +271,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       { allowSignalWrites: true }
     );
 
-    SharedUiPercentageSplitterComponent.setupPercentDependencies(
-      this.form.controls.obhutMutter,
-      this.form.controls.obhutVater
-    );
-
     effect(
       () => {
         const zahltMutterAlimente =
@@ -340,13 +337,10 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
         familiensituation: {
           ...gesuchFormular?.familiensituation,
           ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
-          obhutVater: SharedUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().obhutVater
+          obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
+          obhutMutter: percentStringToNumber(
+            this.form.getRawValue().obhutMutter
           ),
-          obhutMutter:
-            SharedUiPercentageSplitterComponent.percentStringToNumber(
-              this.form.getRawValue().obhutMutter
-            ),
         },
       },
     };

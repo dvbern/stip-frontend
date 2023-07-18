@@ -415,7 +415,7 @@
         <!-- Wohnsitz -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.wohnsitz.label' | translate
+            'gesuch-app.form.shared.wohnsitz.label' | translate
           }}</dv-shared-ui-form-label>
           <select
             class="form-select"
@@ -429,7 +429,7 @@
               [ngValue]="z"
               *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
             >
-              {{ 'gesuch-app.form.person.wohnsitz.' + z | translate }}
+              {{ 'gesuch-app.form.shared.wohnsitz.' + z | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -451,6 +451,20 @@
               }}</span>
             </div>
           </ngb-alert>
+        </div>
+      </div>
+
+      <!-- WOHNSITZ AUFTEILUNG -->
+      <div class="row g-4 my-2">
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          [hidden]="!showWohnsitzSplitterSig()"
+        >
+          <dv-shared-ui-wohnsitz-splitter
+            [updateValidity]="save$ | async"
+            [visible]="showWohnsitzSplitterSig()"
+            [controls]="form.controls"
+          ></dv-shared-ui-wohnsitz-splitter>
         </div>
       </div>
 

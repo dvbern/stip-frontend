@@ -15,7 +15,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SharedUiWohnsitzSplitterComponent } from '@dv/shared/ui/wohnsitz-splitter';
+import {
+  addWohnsitzControls,
+  wohnsitzAnteileNumber,
+  SharedUiWohnsitzSplitterComponent,
+  wohnsitzAnteileString,
+} from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -42,6 +47,7 @@ import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
+import { Subject } from 'rxjs';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -79,6 +85,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+  save$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -100,11 +107,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         ),
       ],
     ],
-    wohnsitz: this.formBuilder.control<Wohnsitz>('' as Wohnsitz, [
-      Validators.required,
-    ]),
-    wohnsitzAnteilMutter: ['', [Validators.required]],
-    wohnsitzAnteilVater: ['', [Validators.required]],
+    ...addWohnsitzControls(this.formBuilder),
     ausbildungssituation: this.formBuilder.control<Ausbildungssituation>(
       '' as Ausbildungssituation,
       [Validators.required]
@@ -126,11 +129,12 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         this.kind.geburtsdatum,
         this.languageSig()
       ),
-      ...SharedUiWohnsitzSplitterComponent.stringValues(this.kind),
+      ...wohnsitzAnteileString(this.kind),
     });
   }
 
   handleSave() {
+    this.save$.next({});
     this.form.markAllAsTouched();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
@@ -144,9 +148,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         ...this.form.getRawValue(),
         id: this.kind?.id,
         geburtsdatum,
-        ...SharedUiWohnsitzSplitterComponent.numberValues(
-          this.form.getRawValue()
-        ),
+        ...wohnsitzAnteileNumber(this.form.getRawValue()),
       });
     }
   }

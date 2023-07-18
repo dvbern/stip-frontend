@@ -3,9 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
+  Injector,
   Input,
   OnChanges,
   OnInit,
+  runInInjectionContext,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
@@ -21,6 +24,7 @@ import {
 import { maskitoPercent } from '@dv/shared/util/maskito-util';
 import { MaskitoModule } from '@maskito/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { percentStringToNumber } from '../utils/form';
 
 @Component({
   selector: 'dv-shared-ui-percentage-splitter',
@@ -41,13 +45,16 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
+  @Input() updateValidity: unknown;
   @Input() visible = false;
 
   @Input({ required: true })
-  controlA!: FormControl<string | null>;
+  controlA!: FormControl<string | undefined>;
 
   @Input({ required: true })
-  controlB!: FormControl<string | null>;
+  controlB!: FormControl<string | undefined>;
+
+  private injector = inject(Injector);
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible']) {
@@ -65,46 +72,34 @@ export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
     this.ngOnChanges({
       visible: new SimpleChange(null, this.visible, true),
     });
-  }
+    runInInjectionContext(this.injector, () => {
+      const controlAChangedSig = toSignal(this.controlA.valueChanges, {
+        initialValue: undefined,
+      });
+      const controlBChangedSig = toSignal(this.controlB.valueChanges, {
+        initialValue: undefined,
+      });
 
-  static setupPercentDependencies(
-    controlA: FormControl<string | null>,
-    controlB: FormControl<string | null>
-  ) {
-    const controlAChangedSig = toSignal(controlA.valueChanges);
-    const controlBChangedSig = toSignal(controlB.valueChanges);
+      effect(
+        () => {
+          const anteilA = percentStringToNumber(controlAChangedSig());
+          if (anteilA !== undefined && anteilA !== null) {
+            this.controlB.setValue((100 - anteilA)?.toString());
+          }
+        },
+        { allowSignalWrites: true }
+      );
 
-    effect(
-      () => {
-        const anteilA = this.percentStringToNumber(controlAChangedSig());
-        if (anteilA !== undefined && anteilA !== null) {
-          controlB.setValue((100 - anteilA)?.toString());
-        }
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
-        const anteilB = this.percentStringToNumber(controlBChangedSig());
-        if (anteilB !== undefined && anteilB !== null) {
-          controlA.setValue((100 - anteilB)?.toString());
-        }
-      },
-      { allowSignalWrites: true }
-    );
-  }
-
-  static percentStringToNumber(value?: string | null): number | undefined {
-    const parsed = parseInt(value || '');
-    if (isNaN(parsed)) {
-      return undefined;
-    } else {
-      return parsed;
-    }
-  }
-  static numberToPercentString(value?: number): string {
-    return value?.toString() || '';
+      effect(
+        () => {
+          const anteilB = percentStringToNumber(controlBChangedSig());
+          if (anteilB !== undefined && anteilB !== null) {
+            this.controlA.setValue((100 - anteilB)?.toString());
+          }
+        },
+        { allowSignalWrites: true }
+      );
+    });
   }
 
   private setInvisible(control: FormControl): void {
