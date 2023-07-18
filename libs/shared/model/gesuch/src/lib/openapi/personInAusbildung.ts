@@ -34,6 +34,14 @@ export interface PersonInAusbildung {
   niederlassungsstatus?: Niederlassungsstatus;
   zivilstand?: Zivilstand;
   wohnsitz: Wohnsitz;
+  /**
+   * Required wenn Wohnsitz.MUTTER_VATER.
+   */
+  wohnsitzAnteilMutter?: number;
+  /**
+   * Required wenn Wohnsitz.MUTTER_VATER.
+   */
+  wohnsitzAnteilVater?: number;
   sozialhilfebeitraege: boolean;
   quellenbesteuert: boolean;
   digitaleKommunikation: boolean;
