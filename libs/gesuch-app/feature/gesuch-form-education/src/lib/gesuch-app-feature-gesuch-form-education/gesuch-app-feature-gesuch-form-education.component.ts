@@ -99,22 +99,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         validators: Validators.required,
       }
     ),
-    ausbildungsstaette: [
-      <string | undefined>undefined,
-      this.requiredIfSwiss(false),
-    ],
-    alternativeAusbildungsstaette: [
-      <string | undefined>undefined,
-      this.requiredIfSwiss(true),
-    ],
-    ausbildungsgang: [
-      <string | undefined>undefined,
-      this.requiredIfSwiss(false),
-    ],
-    alternativeAusbildungsgang: [
-      <string | undefined>undefined,
-      this.requiredIfSwiss(true),
-    ],
+    ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
+    alternativeAusbildungsstaette: [<string | undefined>undefined],
+    ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
+    alternativeAusbildungsgang: [<string | undefined>undefined],
     fachrichtung: ['', [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     ausbildungBegin: [
@@ -175,6 +163,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       )?.ausbildungsgaenge || []
     );
   });
+  ausbildungNichtGefundenChanged$ = toSignal(
+    this.form.controls.ausbildungNichtGefunden.valueChanges
+  );
   startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
   endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
 
@@ -192,6 +183,22 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ]);
 
     // abhaengige Validierung zuruecksetzen on valueChanges
+    effect(
+      () => {
+        const value = this.ausbildungNichtGefundenChanged$();
+        const {
+          alternativeAusbildungsgang,
+          alternativeAusbildungsstaette,
+          ausbildungsgang,
+          ausbildungsstaette,
+        } = this.form.controls;
+        this.formUtils.setRequired(alternativeAusbildungsgang, !!value);
+        this.formUtils.setRequired(alternativeAusbildungsstaette, !!value);
+        this.formUtils.setRequired(ausbildungsgang, !value);
+        this.formUtils.setRequired(ausbildungsstaette, !value);
+      },
+      { allowSignalWrites: true }
+    );
     effect(
       () => {
         this.startChanged$();
@@ -310,16 +317,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         })
       );
     }
-  }
-
-  private requiredIfSwiss(alternative: boolean): ValidatorFn {
-    return (control) => {
-      return alternative &&
-        this.form &&
-        this.form.controls.ausbildungsland.value !== 'SCHWEIZ'
-        ? Validators.required(control)
-        : null;
-    };
   }
 
   // TODO we should clean up this logic once we have final data structure

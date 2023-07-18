@@ -139,14 +139,11 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
     const { gesuch, gesuchFormular } = this.view$();
     // update existing geschwister if found
     const updatedGeschwisters =
-      gesuchFormular?.geschwisters?.map((geschwisters) => {
-        if (geschwisters.id === geschwister.id) {
-          return {
-            ...geschwisters,
-            geschwisterSB: geschwister,
-          };
+      gesuchFormular?.geschwisters?.map((oldGeschwister) => {
+        if (oldGeschwister.id === geschwister.id) {
+          return geschwister;
         } else {
-          return geschwisters;
+          return oldGeschwister;
         }
       }) ?? [];
     // add new geschwister if not found

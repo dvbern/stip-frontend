@@ -170,14 +170,11 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     const { gesuch, gesuchFormular } = this.view$();
     // update existing item if found
     const updatedItems =
-      gesuchFormular?.lebenslaufItems?.map((items) => {
-        if (items.id === item.id) {
-          return {
-            ...items,
-            lebenslaufItem: item,
-          };
+      gesuchFormular?.lebenslaufItems?.map((oldItem) => {
+        if (item.id === oldItem.id) {
+          return item;
         } else {
-          return items;
+          return oldItem;
         }
       }) ?? [];
     // add new item if not found

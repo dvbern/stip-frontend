@@ -99,12 +99,12 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     ),
     vaterWiederverheiratet: [false, [Validators.required]],
     mutterWiederverheiratet: [false, [Validators.required]],
-    sorgerecht: this.formBuilder.control<Elternschaftsteilung>(
-      '' as Elternschaftsteilung,
+    sorgerecht: this.formBuilder.control<Elternschaftsteilung | undefined>(
+      undefined,
       { validators: Validators.required }
     ),
-    obhut: this.formBuilder.control<Elternschaftsteilung>(
-      '' as Elternschaftsteilung,
+    obhut: this.formBuilder.control<Elternschaftsteilung | undefined>(
+      undefined,
       { validators: Validators.required }
     ),
     obhutMutter: ['', [Validators.required]],

@@ -35,7 +35,7 @@
           <select
             class="form-select"
             dvSharedUiFormLabelTarget
-            [formControl]="form.controls.kontoinhaber"
+            [formControlName]="'kontoinhaber'"
             (change)="handleKontoinhaberinChangedByUser()"
           >
             <option [ngValue]="null" disabled selected>
@@ -67,7 +67,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            [formControl]="form.controls.nachname"
+            [formControlName]="'nachname'"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -83,7 +83,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            [formControl]="form.controls.vorname"
+            [formControlName]="'vorname'"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -116,7 +116,7 @@
               class="form-control"
               type="text"
               dvSharedUiFormLabelTarget
-              [formControl]="form.controls.iban"
+              [formControlName]="'iban'"
               [maskito]="MASK_IBAN"
             />
           </div>
