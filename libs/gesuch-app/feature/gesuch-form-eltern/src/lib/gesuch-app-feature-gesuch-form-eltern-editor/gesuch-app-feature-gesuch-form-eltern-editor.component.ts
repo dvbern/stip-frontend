@@ -102,8 +102,8 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    izvPLZ: ['', [Validators.required]],
-    izvOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
     sozialversicherungsnummer: ['', [Validators.required]],
     geburtsdatum: [
@@ -137,17 +137,17 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       () => {
         const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
         this.formUtils.setDisabledState(
-          this.form.controls.izvPLZ,
+          this.form.controls.identischerZivilrechtlicherWohnsitzPLZ,
           zivilrechtlichIdentisch,
           true
         );
         this.formUtils.setDisabledState(
-          this.form.controls.izvOrt,
+          this.form.controls.identischerZivilrechtlicherWohnsitzOrt,
           zivilrechtlichIdentisch,
           true
         );
-        this.form.controls.izvPLZ.updateValueAndValidity();
-        this.form.controls.izvOrt.updateValueAndValidity();
+        this.form.controls.identischerZivilrechtlicherWohnsitzPLZ.updateValueAndValidity();
+        this.form.controls.identischerZivilrechtlicherWohnsitzOrt.updateValueAndValidity();
       },
       { allowSignalWrites: true }
     );
