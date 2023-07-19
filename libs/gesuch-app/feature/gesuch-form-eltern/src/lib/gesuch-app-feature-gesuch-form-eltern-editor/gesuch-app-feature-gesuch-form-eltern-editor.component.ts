@@ -38,6 +38,7 @@ import {
   parseBackendLocalDateAndPrint,
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -99,7 +100,10 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     izvPLZ: ['', [Validators.required]],
     izvOrt: ['', [Validators.required]],
     telefonnummer: ['', [Validators.required]],
-    sozialversicherungsnummer: ['', [Validators.required]],
+    sozialversicherungsnummer: [
+      '',
+      [Validators.required, sharedUtilValidatorAhv],
+    ],
     geburtsdatum: [
       '',
       [
