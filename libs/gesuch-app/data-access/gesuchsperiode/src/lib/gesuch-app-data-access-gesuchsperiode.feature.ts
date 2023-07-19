@@ -1,13 +1,13 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelError } from '@dv/shared/model/error';
-import { GesuchsperiodeDTO } from '@dv/shared/model/gesuch';
+import { Gesuchsperiode } from '@dv/shared/model/gesuch';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 
 import { GesuchAppDataAccessGesuchsperiodeEvents } from './gesuch-app-data-access-gesuchsperiode.events';
 
 export interface State {
-  gesuchsperiodes: GesuchsperiodeDTO[];
+  gesuchsperiodes: Gesuchsperiode[];
   loading: boolean;
   error: SharedModelError | undefined;
 }

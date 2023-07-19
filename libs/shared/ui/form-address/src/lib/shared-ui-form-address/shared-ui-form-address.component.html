@@ -93,11 +93,8 @@
       <option [ngValue]="null" disabled selected>
         {{ 'shared.form.select.empty' | translate }}
       </option>
-      <option
-        [value]="l.landCode"
-        *ngFor="let l of laender; trackBy: trackByIndex"
-      >
-        {{ language === 'de' ? l.landDE : l.landFR }}
+      <option [value]="l" *ngFor="let l of laender; trackBy: trackByIndex">
+        {{ l }}
       </option>
     </select>
     <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">

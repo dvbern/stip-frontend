@@ -40,14 +40,14 @@
       "ausbildungContainer": {
         "ausbildungSB": {
           "ausbildungsland": "SCHWEIZ",
-          "ausbildungstaette": "Universität Bern",
+          "ausbildungsstaette": "Universität Bern",
           "ausbildungsgang": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
           "fachrichtung": "Die Welt retten",
           "ausbildungNichtGefunden": false,
           "ausbildungBegin": "07.2023",
           "ausbildungEnd": "07.2023",
           "pensum": "VOLLZEIT",
-          "ausbildungstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+          "ausbildungsstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
           "ausbildungsgangId": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a"
         }
       },
@@ -260,7 +260,7 @@
       "id": "uZwfxjt"
     }
   ],
-  "ausbildungstaettes": [
+  "ausbildungsstaettes": [
     {
       "id": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
       "ausbildungsgaenge": [

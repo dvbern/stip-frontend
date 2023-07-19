@@ -11,7 +11,7 @@ import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
-import { KindDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { KindUpdate } from '@dv/shared/model/gesuch';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,18 +44,18 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
   parseBackendLocalDateAndPrint = parseBackendLocalDateAndPrint;
 
   sortedKinderSig = computed(() => {
-    const originalList = this.view$().gesuch?.kindContainers;
+    const originalList = this.view$().gesuchFormular?.kinds;
     return originalList
       ? [...originalList].sort((a, b) =>
-          (a.kindSB!.vorname + ' ' + a.kindSB!.name).localeCompare(
-            b.kindSB!.vorname + ' ' + b.kindSB!.name
+          (a.vorname + ' ' + a.nachname).localeCompare(
+            b.vorname + ' ' + b.nachname
           )
         )
       : undefined;
   });
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
-  editedKind?: Partial<KindDTO>;
+  editedKind?: Partial<KindUpdate>;
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormKinder.init());
@@ -65,92 +65,95 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
     this.editedKind = {};
   }
 
-  public handleEditKinder(ge: KindDTO): void {
+  public handleEditKinder(ge: KindUpdate): void {
     this.editedKind = ge;
   }
 
-  handleEditorSave(kind: KindDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormKinder.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithUpdatedKind(kind),
-        origin: GesuchFormSteps.KINDER,
-      })
-    );
-    this.editedKind = undefined;
+  handleEditorSave(kind: KindUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithUpdatedKind(kind);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormKinder.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.KINDER,
+        })
+      );
+      this.editedKind = undefined;
+    }
   }
 
-  public handleDeleteKinder(kinder: KindDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormKinder.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithDeletedKinder(kinder),
-        origin: GesuchFormSteps.KINDER,
-      })
-    );
-    this.editedKind = undefined;
+  public handleDeleteKinder(kind: KindUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithDeletedKinder(kind);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormKinder.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.KINDER,
+        })
+      );
+      this.editedKind = undefined;
+    }
   }
 
   handleContinue() {
     const { gesuch } = this.view$();
-    this.store.dispatch(
-      GesuchAppEventGesuchFormKinder.nextTriggered({
-        id: gesuch!.id!,
-        origin: GesuchFormSteps.KINDER,
-      })
-    );
+    if (gesuch?.id)
+      this.store.dispatch(
+        GesuchAppEventGesuchFormKinder.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.KINDER,
+        })
+      );
   }
 
   handleEditorClose() {
     this.editedKind = undefined;
   }
 
-  private buildUpdatedGesuchWithDeletedKinder(kind: KindDTO) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
-    const updatedKinderContainers = gesuch?.kindContainers!.filter(
-      (kinderContainer) => kinderContainer.kindSB?.id !== kind.id
+  private buildUpdatedGesuchWithDeletedKinder(kind: KindUpdate) {
+    const { gesuch, gesuchFormular } = this.view$();
+    const updatedKinders = gesuchFormular?.kinds?.filter(
+      (entry) => entry.id !== kind.id
     );
 
     return {
-      ...gesuch,
-      kindContainers: updatedKinderContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        kinds: updatedKinders,
+      },
     };
   }
 
-  private buildUpdatedGesuchWithUpdatedKind(kind: KindDTO) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
+  private buildUpdatedGesuchWithUpdatedKind(kind: KindUpdate) {
+    const { gesuch, gesuchFormular } = this.view$();
     // update existing kind if found
-    const updatedKinderContainers =
-      gesuch?.kindContainers?.map((kindContainer) => {
-        if (kindContainer.kindSB?.id === kind.id) {
-          return {
-            ...kindContainer,
-            kindSB: kind,
-          };
+    const updatedKinders =
+      gesuchFormular?.kinds?.map((oldKind) => {
+        if (oldKind?.id === kind.id) {
+          return kind;
         } else {
-          return kindContainer;
+          return oldKind;
         }
       }) ?? [];
     // add new kind if not found
     if (!kind.id) {
-      // TODO new kind doesnt have ID, will be added by backend?
-      updatedKinderContainers.push({
-        kindSB: {
-          ...kind,
-          id: 'generated by backend? or FE uuid?' + kind.vorname,
-        },
-        id: 'generated by backend? or FE uuid?' + kind.vorname,
-      });
+      updatedKinders.push(kind);
     }
     return {
-      ...gesuch,
-      kindContainers: updatedKinderContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        kinds: updatedKinders,
+      },
     };
   }
 
   trackByIndex(index: number) {
     return index;
-  }
-
-  public asKinder(kinderRaw: KindDTO): KindDTO {
-    return kinderRaw;
   }
 }

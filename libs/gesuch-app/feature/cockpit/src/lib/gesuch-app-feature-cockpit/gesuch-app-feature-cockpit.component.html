@@ -11,6 +11,18 @@
     </h1>
 
     <div class="row">
+      <!-- TODO: Remove once Fall handling exists -->
+      <div class="mb-3">
+        <div class="col-4 card p-3">
+          <label>Fall ID:</label>
+          <input
+            type="text"
+            title="DEBUG: Fall ID"
+            #fallID
+            (change)="setFallId(fallID.value)"
+          />
+        </div>
+      </div>
       <!-- main column -->
       <div class="col-lg-8 mb-lg-5">
         <!-- progress -->

@@ -1,49 +1,39 @@
 import {
   Anrede,
-  ElternContainerDTO,
-  ElternDTO,
-  FamiliensituationDTO,
-  SharedModelGesuch,
+  ElternTyp,
+  ElternUpdate,
+  FamiliensituationUpdate,
+  SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 
 export interface ElternSituation {
   expectVater: boolean;
   expectMutter: boolean;
-  vater?: ElternDTO;
-  mutter?: ElternDTO;
+  vater?: ElternUpdate;
+  mutter?: ElternUpdate;
 }
 
 export function calculateElternSituationGesuch(
-  gesuch: SharedModelGesuch | undefined
+  gesuch: SharedModelGesuchFormular | undefined
 ): ElternSituation {
-  return calculateElternSituation(
-    gesuch?.familiensituationContainer?.familiensituationSB,
-    gesuch?.elternContainers
-  );
+  return calculateElternSituation(gesuch?.familiensituation, gesuch?.elterns);
 }
 
 function calculateElternSituation(
-  familienSituation: FamiliensituationDTO | undefined,
-  elternContainers: ElternContainerDTO[] | undefined
+  familienSituation: FamiliensituationUpdate | undefined,
+  elterns: ElternUpdate[] | undefined
 ): ElternSituation {
-  const vater = elternContainers?.find(
-    (elternContainer) => elternContainer.elternSB?.geschlecht === Anrede.HERR
-  )?.elternSB;
-  const mutter = elternContainers?.find(
-    (elternContainer) => elternContainer.elternSB?.geschlecht === Anrede.FRAU
-  )?.elternSB;
-
   return {
     expectVater: calculateExpectElternteil(Anrede.HERR, familienSituation),
     expectMutter: calculateExpectElternteil(Anrede.FRAU, familienSituation),
-    vater: findElternteil(Anrede.HERR, elternContainers),
-    mutter: findElternteil(Anrede.FRAU, elternContainers),
+    vater: findElternteil(ElternTyp.VATER, elterns),
+    mutter: findElternteil(ElternTyp.MUTTER, elterns),
   };
 }
 
 export function calculateExpectElternteil(
   geschlecht: Anrede,
-  familienSituation: FamiliensituationDTO | undefined
+  familienSituation: FamiliensituationUpdate | undefined
 ): boolean {
   let expectMutter = false;
 
@@ -62,12 +52,8 @@ export function calculateExpectElternteil(
 }
 
 export function findElternteil(
-  geschlecht: Anrede,
-  elternContainers: ElternContainerDTO[] | undefined
-): ElternDTO | undefined {
-  return (
-    elternContainers?.find(
-      (elternContainer) => elternContainer.elternSB?.geschlecht === geschlecht
-    )?.elternSB || undefined
-  );
+  elternTyp: ElternTyp,
+  elterns: ElternUpdate[] | undefined
+): ElternUpdate | undefined {
+  return elterns?.find((eltern) => eltern.elternTyp === elternTyp) || undefined;
 }

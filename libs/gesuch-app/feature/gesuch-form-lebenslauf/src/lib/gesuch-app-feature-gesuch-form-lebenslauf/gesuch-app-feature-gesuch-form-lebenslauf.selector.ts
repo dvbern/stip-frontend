@@ -1,18 +1,18 @@
-import { selectGesuchAppDataAccessAusbildungstaettesView } from '@dv/gesuch-app/data-access/ausbildungstaette';
+import { selectGesuchAppDataAccessAusbildungsstaettesView } from '@dv/gesuch-app/data-access/ausbildungsstaette';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
-import { LebenslaufItemDTO } from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 
 export const selectGesuchAppFeatureGesuchFormLebenslaufVew = createSelector(
   selectGesuchAppDataAccessGesuchsView,
-  selectGesuchAppDataAccessAusbildungstaettesView,
-  (gesuchsView, ausbildungstaettesView) => ({
-    loading: gesuchsView.loading || ausbildungstaettesView.loading,
+  selectGesuchAppDataAccessAusbildungsstaettesView,
+  (gesuchsView, ausbildungsstaettesView) => ({
+    loading: gesuchsView.loading || ausbildungsstaettesView.loading,
     gesuch: gesuchsView.gesuch,
-    ausbildung: gesuchsView.gesuch?.ausbildungContainer?.ausbildungSB,
-    ausbildungstaettes: ausbildungstaettesView.ausbildungstaettes,
-    lebenslaufItems: (gesuchsView.gesuch?.lebenslaufItemContainers || [])
-      .map((each) => each.lebenslaufItemSB)
-      .filter((each) => each?.id) as LebenslaufItemDTO[],
+    gesuchFormular: gesuchsView.gesuchFormular,
+    ausbildung: gesuchsView.gesuchFormular?.ausbildung,
+    ausbildungsstaettes: ausbildungsstaettesView.ausbildungsstaettes,
+    lebenslaufItems: (gesuchsView.gesuchFormular?.lebenslaufItems ?? []).filter(
+      (each) => each?.id
+    ),
   })
 );

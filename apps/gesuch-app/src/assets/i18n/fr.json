@@ -56,7 +56,7 @@
   "gesuch-app.form.education.title": "Formation",
   "gesuch-app.form.education.place.title": "Informations sur la formation",
   "gesuch-app.form.education.ausbildungsland.label": "Pays de la formation",
-  "gesuch-app.form.education.ausbildungstaette.label": "Centre de formation",
+  "gesuch-app.form.education.ausbildungsstaette.label": "Centre de formation",
   "gesuch-app.form.education.ausbildungsgang.label": "Formation",
   "gesuch-app.form.education.fachrichtung.label": "Spécialisation",
   "gesuch-app.form.education.manuell.label": "Saisir un autre centre de formation",
