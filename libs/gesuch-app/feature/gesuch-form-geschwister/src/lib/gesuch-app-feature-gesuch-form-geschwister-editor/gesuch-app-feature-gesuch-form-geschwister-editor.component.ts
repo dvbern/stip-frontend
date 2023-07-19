@@ -171,9 +171,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
       this.languageSig(),
       subYears(new Date(), MEDIUM_AGE)
     );
-    if (!geburtsdatum) {
-      this.form.controls.geburtsdatum.setErrors({ invalid: true });
-    } else if (this.form.valid) {
+    if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
         id: this.geschwister.id,
