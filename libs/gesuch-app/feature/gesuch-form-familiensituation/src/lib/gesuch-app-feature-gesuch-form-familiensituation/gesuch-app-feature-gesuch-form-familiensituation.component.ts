@@ -17,7 +17,11 @@ import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
-import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import {
+  numberToPercentString,
+  percentStringToNumber,
+  SharedUiPercentageSplitterComponent,
+} from '@dv/shared/ui/percentage-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import {
   ElternAbwesenheitsGrund,
@@ -56,7 +60,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
-    GesuchAppUiPercentageSplitterComponent,
+    SharedUiPercentageSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl:
@@ -173,14 +177,12 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           this.form.patchValue({
             ...initialFormFamSit,
 
-            obhutMutter:
-              GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-                gesuchFormular?.familiensituation?.obhutMutter
-              ),
-            obhutVater:
-              GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-                gesuchFormular?.familiensituation?.obhutVater
-              ),
+            obhutMutter: numberToPercentString(
+              gesuchFormular?.familiensituation?.obhutMutter
+            ),
+            obhutVater: numberToPercentString(
+              gesuchFormular?.familiensituation?.obhutVater
+            ),
           });
         }
       },
@@ -298,11 +300,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       { allowSignalWrites: true }
     );
 
-    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
-      obhutMutter,
-      obhutVater
-    );
-
     effect(
       () => {
         const zahltMutterAlimente =
@@ -368,14 +365,8 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       familiensituation: {
         ...gesuchFormular?.familiensituation,
         ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
-        obhutVater:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().obhutVater
-          ),
-        obhutMutter:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().obhutMutter
-          ),
+        obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
+        obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),
       },
     };
   }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   EventEmitter,
   inject,
@@ -15,7 +16,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import {
+  addWohnsitzControls,
+  wohnsitzAnteileNumber,
+  SharedUiWohnsitzSplitterComponent,
+  wohnsitzAnteileString,
+} from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -44,6 +50,7 @@ import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
+import { Subject } from 'rxjs';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -63,7 +70,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
     MaskitoModule,
-    GesuchAppUiPercentageSplitterComponent,
+    SharedUiWohnsitzSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl:
@@ -87,6 +94,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+  save$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -108,11 +116,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         ),
       ],
     ],
-    wohnsitz: this.formBuilder.control<Wohnsitz>('' as Wohnsitz, [
-      Validators.required,
-    ]),
-    wohnsitzAnteilMutter: ['', [Validators.required]],
-    wohnsitzAnteilVater: ['', [Validators.required]],
+    ...addWohnsitzControls(this.formBuilder),
     ausbildungssituation: this.formBuilder.control<Ausbildungssituation>(
       '' as Ausbildungssituation,
       [Validators.required]
@@ -120,6 +124,10 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   });
 
   wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
+
+  showWohnsitzSplitterSig = computed(() => {
+    return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
+  });
 
   constructor() {
     effect(
@@ -139,11 +147,6 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
       },
       { allowSignalWrites: true }
     );
-
-    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
-      this.form.controls.wohnsitzAnteilMutter,
-      this.form.controls.wohnsitzAnteilVater
-    );
   }
 
   ngOnChanges() {
@@ -153,18 +156,12 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         this.geschwister.geburtsdatum,
         this.languageSig()
       ),
-      wohnsitzAnteilMutter:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.geschwister.wohnsitzAnteilMutter
-        ),
-      wohnsitzAnteilVater:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.geschwister.wohnsitzAnteilVater
-        ),
+      ...wohnsitzAnteileString(this.geschwister),
     });
   }
 
   handleSave() {
+    this.save$.next({});
     this.form.markAllAsTouched();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
@@ -179,14 +176,7 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
         id: this.geschwister.id,
         geburtsdatum,
         wohnsitz: this.form.getRawValue().wohnsitz as Wohnsitz,
-        wohnsitzAnteilMutter:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilMutter
-          ),
-        wohnsitzAnteilVater:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilVater
-          ),
+        ...wohnsitzAnteileNumber(this.form.getRawValue()),
       });
     }
   }

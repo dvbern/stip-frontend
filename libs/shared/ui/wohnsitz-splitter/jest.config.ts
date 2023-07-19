@@ -1,10 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'gesuch-app-ui-percentage-splitter',
+  displayName: 'shared-ui-wohnsitz-splitter',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory:
-    '../../../../coverage/libs/gesuch-app/ui/percentage-splitter',
+  coverageDirectory: '../../../../coverage/libs/shared/ui/wohnsitz-splitter',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   EventEmitter,
   inject,
   Input,
@@ -15,7 +15,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GesuchAppUiPercentageSplitterComponent } from '@dv/gesuch-app/ui/percentage-splitter';
+import {
+  addWohnsitzControls,
+  wohnsitzAnteileNumber,
+  SharedUiWohnsitzSplitterComponent,
+  wohnsitzAnteileString,
+} from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -30,7 +35,6 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -43,6 +47,7 @@ import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
+import { Subject } from 'rxjs';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -61,7 +66,7 @@ const MEDIUM_AGE = 20;
     SharedUiFormLabelTargetDirective,
     SharedUiFormLabelComponent,
     NgbInputDatepicker,
-    GesuchAppUiPercentageSplitterComponent,
+    SharedUiWohnsitzSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kind-editor.component.html',
@@ -80,6 +85,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+  save$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -101,45 +107,20 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         ),
       ],
     ],
-    wohnsitz: this.formBuilder.control<Wohnsitz>('' as Wohnsitz, [
-      Validators.required,
-    ]),
-    wohnsitzAnteilMutter: ['', [Validators.required]],
-    wohnsitzAnteilVater: ['', [Validators.required]],
+    ...addWohnsitzControls(this.formBuilder),
     ausbildungssituation: this.formBuilder.control<Ausbildungssituation>(
       '' as Ausbildungssituation,
       [Validators.required]
     ),
   });
 
-  wohnsitzChangedSig = toSignal(this.form.controls.wohnsitz.valueChanges);
+  private wohnsitzChangedSig = toSignal(
+    this.form.controls.wohnsitz.valueChanges
+  );
 
-  private formUtils = inject(SharedUtilFormService);
-
-  constructor() {
-    effect(
-      () => {
-        const wohnsitzChanged = this.wohnsitzChangedSig();
-
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilMutter,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilVater,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
-      },
-      { allowSignalWrites: true }
-    );
-
-    GesuchAppUiPercentageSplitterComponent.setupPercentDependencies(
-      this.form.controls.wohnsitzAnteilMutter,
-      this.form.controls.wohnsitzAnteilVater
-    );
-  }
+  showWohnsitzSplitterSig = computed(() => {
+    return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
+  });
 
   ngOnChanges() {
     this.form.patchValue({
@@ -148,18 +129,12 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         this.kind.geburtsdatum,
         this.languageSig()
       ),
-      wohnsitzAnteilMutter:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.kind.wohnsitzAnteilMutter
-        ),
-      wohnsitzAnteilVater:
-        GesuchAppUiPercentageSplitterComponent.numberToPercentString(
-          this.kind.wohnsitzAnteilVater
-        ),
+      ...wohnsitzAnteileString(this.kind),
     });
   }
 
   handleSave() {
+    this.save$.next({});
     this.form.markAllAsTouched();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
@@ -173,14 +148,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
         ...this.form.getRawValue(),
         id: this.kind?.id,
         geburtsdatum,
-        wohnsitzAnteilMutter:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilMutter
-          ),
-        wohnsitzAnteilVater:
-          GesuchAppUiPercentageSplitterComponent.percentStringToNumber(
-            this.form.getRawValue().wohnsitzAnteilVater
-          ),
+        ...wohnsitzAnteileNumber(this.form.getRawValue()),
       });
     }
   }
