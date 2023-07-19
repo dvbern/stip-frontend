@@ -32,6 +32,7 @@ import {
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import { SharedUtilFormService } from '@dv/shared/util/form';
+import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -40,6 +41,7 @@ import {
   parseBackendLocalDateAndPrint,
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
+import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -109,7 +111,10 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
     ],
-    sozialversicherungsnummer: ['', [Validators.required]],
+    sozialversicherungsnummer: [
+      '',
+      [Validators.required, sharedUtilValidatorAhv],
+    ],
     geburtsdatum: [
       '',
       [

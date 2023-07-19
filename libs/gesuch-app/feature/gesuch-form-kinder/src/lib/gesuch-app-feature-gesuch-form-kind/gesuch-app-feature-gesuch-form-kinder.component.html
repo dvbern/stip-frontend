@@ -22,7 +22,11 @@
     <div class="row g-4 my-2">
       <!-- Table -->
       <div class="col-12 col-xl-8" *ngIf="sortedKinderSig() as kinder">
-        <table class="table" *ngIf="kinder.length">
+        <table
+          class="table"
+          *ngIf="kinder.length"
+          aria-describedby="List von Kinder"
+        >
           <thead>
             <tr>
               <th scope="col"></th>

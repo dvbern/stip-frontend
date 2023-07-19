@@ -39,7 +39,11 @@
         class="col-12 col-xl-8"
         *ngIf="sortedGeschwistersSig() as geschwisters"
       >
-        <table class="table" *ngIf="geschwisters.length">
+        <table
+          class="table"
+          *ngIf="geschwisters.length"
+          aria-describedby="List von Geschwister"
+        >
           <thead>
             <tr>
               <th scope="col"></th>
