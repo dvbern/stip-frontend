@@ -30,6 +30,7 @@ import {
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import { SharedUtilFormService } from '@dv/shared/util/form';
+import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import {
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
@@ -99,7 +100,10 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     identischerZivilrechtlicherWohnsitz: [true, []],
     izvPLZ: ['', [Validators.required]],
     izvOrt: ['', [Validators.required]],
-    telefonnummer: ['', [Validators.required]],
+    telefonnummer: [
+      '',
+      [Validators.required, sharedUtilValidatorTelefonNummer()],
+    ],
     sozialversicherungsnummer: [
       '',
       [Validators.required, sharedUtilValidatorAhv],
