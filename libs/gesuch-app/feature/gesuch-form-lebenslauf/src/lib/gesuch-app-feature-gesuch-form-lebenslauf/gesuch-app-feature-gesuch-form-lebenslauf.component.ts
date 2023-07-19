@@ -20,11 +20,13 @@ import {
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears, subMonths } from 'date-fns';
+import { addYears, setMonth, subMonths } from 'date-fns';
 import { GesuchAppFeatureGesuchFormLebenslaufEditorComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-editor/gesuch-app-feature-gesuch-form-lebenslauf-editor.component';
 import { TimelineAddCommand } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline';
 import { TwoColumnTimelineComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline.component';
 import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feature-gesuch-form-lebenslauf.selector';
+
+const AUSBILDUNGS_MONTH = 8; // August
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf',
@@ -55,7 +57,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
       this.view$().gesuch?.personInAusbildungContainer?.personInAusbildungSB
         ?.geburtsdatum;
     if (geburtsdatum) {
-      const sixteenthBirthdate = addYears(Date.parse(geburtsdatum), 16);
+      const sixteenthBirthdate = setMonth(
+        addYears(Date.parse(geburtsdatum), 16),
+        AUSBILDUNGS_MONTH - 1
+      );
       return new Date(
         sixteenthBirthdate.getFullYear(),
         sixteenthBirthdate.getMonth(),
