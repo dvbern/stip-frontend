@@ -120,15 +120,15 @@ export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {
     geschwister: GeschwisterUpdate
   ) {
     const { gesuch, gesuchFormular } = this.view$();
-    const updatedGeschwisterContainers = gesuchFormular?.geschwisters?.filter(
-      (geschwisters) => geschwisters.id !== geschwister.id
+    const updatedGeschwisters = gesuchFormular?.geschwisters?.filter(
+      (entry) => entry.id !== geschwister.id
     );
 
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
-        geschwisters: updatedGeschwisterContainers,
+        geschwisters: updatedGeschwisters,
       },
     };
   }
