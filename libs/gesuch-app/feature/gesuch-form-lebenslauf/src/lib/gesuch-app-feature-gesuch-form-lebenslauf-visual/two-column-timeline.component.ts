@@ -79,7 +79,6 @@ export class TwoColumnTimelineComponent implements OnChanges {
     plannedAusbildung: Ausbildung,
     ausbildungsstaettes: Ausbildungsstaette[]
   ) {
-    console.log('initializing lebenslauf items for timeline');
     const timelineRawItems = lebenslaufItems.map(
       (lebenslaufItem) =>
         ({

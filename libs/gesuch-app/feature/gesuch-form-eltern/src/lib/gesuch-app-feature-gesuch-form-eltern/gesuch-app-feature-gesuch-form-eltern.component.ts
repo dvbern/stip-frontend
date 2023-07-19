@@ -117,7 +117,7 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   private buildUpdatedGesuchWithDeletedElternteil(id: string) {
     const { gesuch, gesuchFormular } = this.view$();
     const updatedElterns = gesuchFormular?.elterns?.filter(
-      (elternContainer) => elternContainer.id !== id
+      (entry) => entry.id !== id
     );
 
     return {
@@ -133,14 +133,11 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
     const { gesuch, gesuchFormular } = this.view$();
     // update existing elternteil if found
     const updatedElterns =
-      gesuchFormular?.elterns?.map((elterns) => {
-        if (elterns.id === elternteil.id) {
-          return {
-            ...elterns,
-            elternSB: elternteil,
-          };
+      gesuchFormular?.elterns?.map((oldEltern) => {
+        if (oldEltern.id === elternteil.id) {
+          return elternteil;
         } else {
-          return elterns;
+          return oldEltern;
         }
       }) ?? [];
     // add new elternteil if not found

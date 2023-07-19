@@ -116,15 +116,15 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
 
   private buildUpdatedGesuchWithDeletedKinder(kind: KindUpdate) {
     const { gesuch, gesuchFormular } = this.view$();
-    const updatedKinderContainers = gesuchFormular?.kinds?.filter(
-      (kinderContainer) => kinderContainer.id !== kind.id
+    const updatedKinders = gesuchFormular?.kinds?.filter(
+      (entry) => entry.id !== kind.id
     );
 
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
-        kindContainers: updatedKinderContainers,
+        kinds: updatedKinders,
       },
     };
   }
@@ -133,14 +133,11 @@ export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {
     const { gesuch, gesuchFormular } = this.view$();
     // update existing kind if found
     const updatedKinders =
-      gesuchFormular?.kinds?.map((kinds) => {
-        if (kinds?.id === kind.id) {
-          return {
-            ...kinds,
-            kindSB: kind,
-          };
+      gesuchFormular?.kinds?.map((oldKind) => {
+        if (oldKind?.id === kind.id) {
+          return kind;
         } else {
-          return kinds;
+          return oldKind;
         }
       }) ?? [];
     // add new kind if not found
