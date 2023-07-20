@@ -40,7 +40,9 @@ export class SharedUtilFormService {
   /**
    * Convert the value changes from a given control into a signal
    */
-  signalFromChanges<R>(control: FormControl<R>): ReturnType<typeof toSignal<R>>;
+  signalFromChanges<R>(
+    control: FormControl<R>
+  ): ReturnType<typeof toSignal<R | undefined>>;
   /**
    * Convert the value changes from a given control into a signal with default values
    */
