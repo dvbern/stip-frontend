@@ -31,7 +31,10 @@ import {
   ElternUpdate,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  optionalRequiredBoolean,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import {
   maxDateValidatorForLocale,
@@ -131,9 +134,15 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
         ),
       ],
     ],
-    sozialhilfebeitraegeAusbezahlt: [false, [Validators.required]],
-    ausweisbFluechtling: [false, [Validators.required]],
-    ergaenzungsleistungAusbezahlt: [false, [Validators.required]],
+    sozialhilfebeitraegeAusbezahlt: [
+      optionalRequiredBoolean,
+      [Validators.required],
+    ],
+    ausweisbFluechtling: [optionalRequiredBoolean, [Validators.required]],
+    ergaenzungsleistungAusbezahlt: [
+      optionalRequiredBoolean,
+      [Validators.required],
+    ],
   });
 
   constructor() {
