@@ -45,7 +45,11 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { SharedUtilFormService, unsetString } from '@dv/shared/util/form';
+import {
+  optionalRequiredBoolean,
+  SharedUtilFormService,
+  unsetString,
+} from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -184,8 +188,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       validators: Validators.required,
     }),
     ...addWohnsitzControls(this.formBuilder),
-    sozialhilfebeitraege: [false, []],
-    quellenbesteuerung: new FormControl<boolean | null>(null, []),
+    quellenbesteuert: [optionalRequiredBoolean, [Validators.required]],
+    sozialhilfebeitraege: [optionalRequiredBoolean, [Validators.required]],
     digitaleKommunikation: [true, []],
     korrespondenzSprache: this.formBuilder.control<Sprache>('' as Sprache, {
       validators: Validators.required,

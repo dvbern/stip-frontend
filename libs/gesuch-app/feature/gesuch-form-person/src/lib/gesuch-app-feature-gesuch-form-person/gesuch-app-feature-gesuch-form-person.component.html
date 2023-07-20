@@ -469,6 +469,39 @@
       </div>
 
       <div class="row g-4 mt-1">
+        <!-- Quellenbesteuerung -->
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.person.tax-at-source.label' | translate
+          }}</dv-shared-ui-form-label>
+          <div class="form-check">
+            <input
+              formControlName="quellenbesteuert"
+              [value]="true"
+              class="form-check-input"
+              type="radio"
+              name="quellenbesteuert"
+              id="quellenbesteuertJa"
+            />
+            <label class="form-check-label" for="quellenbesteuertJa">
+              {{ 'shared.form.radio.yes' | translate }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              formControlName="quellenbesteuert"
+              [value]="false"
+              class="form-check-input"
+              type="radio"
+              name="quellenbesteuert"
+              id="quellenbesteuertNein"
+            />
+            <label class="form-check-label" for="quellenbesteuerungNein">
+              {{ 'shared.form.radio.no' | translate }}
+            </label>
+          </div>
+        </dv-shared-ui-form-field>
+
         <!-- Sozialhilfebeitraege -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -497,39 +530,6 @@
               id="sozialhilfebeitraegeNein"
             />
             <label class="form-check-label" for="sozialhilfebeitraegeNein">
-              {{ 'shared.form.radio.no' | translate }}
-            </label>
-          </div>
-        </dv-shared-ui-form-field>
-
-        <!-- Quellenbesteuerung -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.tax-at-source.label' | translate
-          }}</dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuerung"
-              [value]="true"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuerung"
-              id="quellenbesteuerungJa"
-            />
-            <label class="form-check-label" for="quellenbesteuerungJa">
-              {{ 'shared.form.radio.yes' | translate }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuerung"
-              [value]="false"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuerung"
-              id="quellenbesteuerungNein"
-            />
-            <label class="form-check-label" for="quellenbesteuerungNein">
               {{ 'shared.form.radio.no' | translate }}
             </label>
           </div>
