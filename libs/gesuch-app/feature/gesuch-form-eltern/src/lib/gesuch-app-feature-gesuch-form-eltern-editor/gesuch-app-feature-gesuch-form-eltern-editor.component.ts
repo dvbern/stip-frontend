@@ -46,6 +46,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import { subYears } from 'date-fns';
 
 const MAX_AGE_ADULT = 130;
@@ -178,9 +179,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       this.languageSig(),
       subYears(new Date(), MEDIUM_AGE_ADULT)
     );
-    if (!geburtsdatum) {
-      this.form.controls.geburtsdatum.setErrors({ invalid: true });
-    } else if (this.form.valid) {
+    if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
         ...this.form.getRawValue(),
         id: this.elternteil.id,
