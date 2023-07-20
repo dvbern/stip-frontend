@@ -14,7 +14,7 @@ describe('GesuchAppFeatureGesuchFormElternComponent', () => {
   it.each`
     wohnsitz              | expected     | shouldContain
     ${'FAMILIE'}          | ${'Bern'}    | ${'should'}
-    ${'MUTTER_VATER'}     | ${'Bern'}    | ${'should'}
+    ${'MUTTER_VATER'}     | ${undefined} | ${'should not'}
     ${'EIGENER_HAUSHALT'} | ${undefined} | ${'should not'}
   `(
     '$shouldContain prefill the address with personInAusbildung if $wohnsitz',
