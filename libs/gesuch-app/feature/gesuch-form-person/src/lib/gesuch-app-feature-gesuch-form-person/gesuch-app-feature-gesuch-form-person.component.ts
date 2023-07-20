@@ -45,7 +45,7 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import { SharedUtilFormService, unsetString } from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -142,8 +142,14 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    identischerZivilrechtlicherWohnsitzPLZ: ['', [Validators.required]],
-    identischerZivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: [
+      unsetString,
+      [Validators.required],
+    ],
+    identischerZivilrechtlicherWohnsitzOrt: [
+      unsetString,
+      [Validators.required],
+    ],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
     telefonnummer: [
       '',
@@ -170,10 +176,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       validators: Validators.required,
     }),
     heimatort: ['', [Validators.required]],
-    niederlassungsstatus: this.formBuilder.control<Niederlassungsstatus>(
-      '' as Niederlassungsstatus,
-      { validators: Validators.required }
-    ),
+    niederlassungsstatus: this.formBuilder.control<
+      Niederlassungsstatus | undefined
+    >(undefined, { validators: Validators.required }),
     vormundschaft: [false, []],
     zivilstand: this.formBuilder.control<Zivilstand>('' as Zivilstand, {
       validators: Validators.required,

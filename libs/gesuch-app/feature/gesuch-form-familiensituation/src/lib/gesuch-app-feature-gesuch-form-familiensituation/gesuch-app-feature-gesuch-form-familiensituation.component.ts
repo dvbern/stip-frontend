@@ -94,23 +94,18 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       optionalRequiredBoolean,
       [Validators.required],
     ],
-    mutterUnbekanntVerstorben:
-      this.formBuilder.control<ElternAbwesenheitsGrund>(
-        '' as ElternAbwesenheitsGrund,
-        { validators: Validators.required }
-      ),
-    vaterUnbekanntVerstorben: this.formBuilder.control<ElternAbwesenheitsGrund>(
-      '' as ElternAbwesenheitsGrund,
-      { validators: Validators.required }
-    ),
-    mutterUnbekanntGrund: this.formBuilder.control<ElternUnbekanntheitsGrund>(
-      '' as ElternUnbekanntheitsGrund,
-      { validators: Validators.required }
-    ),
-    vaterUnbekanntGrund: this.formBuilder.control<ElternUnbekanntheitsGrund>(
-      '' as ElternUnbekanntheitsGrund,
-      { validators: Validators.required }
-    ),
+    mutterUnbekanntVerstorben: this.formBuilder.control<
+      ElternAbwesenheitsGrund | undefined
+    >(undefined, { validators: Validators.required }),
+    vaterUnbekanntVerstorben: this.formBuilder.control<
+      ElternAbwesenheitsGrund | undefined
+    >(undefined, { validators: Validators.required }),
+    mutterUnbekanntGrund: this.formBuilder.control<
+      ElternUnbekanntheitsGrund | undefined
+    >(undefined, { validators: Validators.required }),
+    vaterUnbekanntGrund: this.formBuilder.control<
+      ElternUnbekanntheitsGrund | undefined
+    >(undefined, { validators: Validators.required }),
     vaterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
     mutterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
     sorgerecht: this.formBuilder.control<Elternschaftsteilung | undefined>(
