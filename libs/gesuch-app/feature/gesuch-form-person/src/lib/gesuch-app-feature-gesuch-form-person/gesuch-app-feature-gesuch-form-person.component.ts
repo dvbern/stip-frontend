@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -226,8 +225,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-    const zivilrechtlichChanged$ = toSignal(
-      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    const zivilrechtlichChanged$ = this.formUtils.signalFromChanges(
+      this.form.controls.identischerZivilrechtlicherWohnsitz,
+      { useDefault: true }
     );
     effect(
       () => {

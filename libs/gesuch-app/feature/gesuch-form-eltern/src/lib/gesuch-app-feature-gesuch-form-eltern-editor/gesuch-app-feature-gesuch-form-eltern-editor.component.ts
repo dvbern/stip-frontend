@@ -147,8 +147,9 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   constructor() {
     // zivilrechtlicher Wohnsitz -> PLZ/Ort enable/disable
-    const zivilrechtlichChanged$ = toSignal(
-      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    const zivilrechtlichChanged$ = this.formUtils.signalFromChanges(
+      this.form.controls.identischerZivilrechtlicherWohnsitz,
+      { useDefault: true }
     );
     effect(
       () => {
