@@ -276,29 +276,12 @@
         </dv-shared-ui-form-field>
 
         <!-- NATIONALITAET -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.nationality.label' | translate
-          }}</dv-shared-ui-form-label>
-          <select
-            class="form-select"
-            dvSharedUiFormLabelTarget
-            formControlName="nationalitaet"
-          >
-            <option [ngValue]="null" disabled selected>
-              {{ 'shared.form.select.empty' | translate }}
-            </option>
-            <option
-              [ngValue]="l"
-              *ngFor="let l of laenderSig(); trackBy: trackByIndex"
-            >
-              {{ l }}
-            </option>
-          </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+        <dv-shared-ui-form-country
+          class="col-12 col-md-6 col-xl-4"
+          formControlName="nationalitaet"
+          [labelText]="'gesuch-app.form.person.nationality.label' | translate"
+          [laender]="laenderSig()"
+        ></dv-shared-ui-form-country>
 
         <!-- Auslaenderausweis -->
         <div

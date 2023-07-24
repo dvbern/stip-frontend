@@ -74,6 +74,7 @@ import {
   wohnsitzAnteileNumber,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { Subject } from 'rxjs';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -95,6 +96,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
+    SharedUiFormCountryComponent,
     SharedUiWohnsitzSplitterComponent,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,

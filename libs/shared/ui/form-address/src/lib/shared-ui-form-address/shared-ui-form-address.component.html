@@ -81,27 +81,10 @@
   </dv-shared-ui-form-field>
 
   <!-- Land -->
-  <dv-shared-ui-form-field class="col-12 col-md-6">
-    <dv-shared-ui-form-label>{{
-      'gesuch-app.form.shared.address.country.label' | translate
-    }}</dv-shared-ui-form-label>
-    <select
-      class="form-select"
-      dvSharedUiFormLabelTarget
-      formControlName="land"
-    >
-      <option [ngValue]="null" disabled selected>
-        {{ 'shared.form.select.empty' | translate }}
-      </option>
-      <option
-        [value]="l.code"
-        *ngFor="let l of translatedLaender$ | async; trackBy: trackByIndex"
-      >
-        {{ l.text }}
-      </option>
-    </select>
-    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-      {{ 'shared.form.error.required' | translate }}
-    </dv-shared-ui-form-message>
-  </dv-shared-ui-form-field>
+  <dv-shared-ui-form-country
+    class="col-12 col-md-6"
+    formControlName="land"
+    [labelText]="'gesuch-app.form.shared.address.country.label' | translate"
+    [laender]="laender"
+  ></dv-shared-ui-form-country>
 </div>

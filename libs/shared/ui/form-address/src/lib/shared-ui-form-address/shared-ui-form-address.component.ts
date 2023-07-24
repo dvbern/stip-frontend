@@ -10,13 +10,10 @@ import {
   Component,
   DoCheck,
   Input,
-  OnChanges,
-  SimpleChanges,
-  inject,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import {
   SharedUiFormComponent,
@@ -26,9 +23,8 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 import { Land } from '@dv/shared/model/gesuch';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'dv-shared-ui-form-address',
@@ -41,6 +37,7 @@ import { map, startWith } from 'rxjs/operators';
     SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
+    SharedUiFormCountryComponent,
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormMessageInfoDirective,
@@ -49,7 +46,7 @@ import { map, startWith } from 'rxjs/operators';
   styleUrls: ['./shared-ui-form-address.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
+export class SharedUiFormAddressComponent implements DoCheck {
   @Input({ required: true }) group!: FormGroup;
 
   @Input({ required: true }) laender!: Land[];
@@ -57,35 +54,6 @@ export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
   @Input({ required: true }) language!: string;
 
   touchedSig = signal(false);
-  private translate = inject(TranslateService);
-  private laender$ = new BehaviorSubject<string[]>([]);
-
-  translatedLaender$ = combineLatest([
-    this.translate.onLangChange.pipe(
-      startWith({
-        translations: this.translate.translations[this.translate.currentLang],
-      })
-    ),
-    this.laender$,
-  ]).pipe(
-    map(([{ translations }, laender]) => {
-      const translated = laender
-        .filter((code) => translations[`gesuch-app.shared.country.${code}`])
-        .map((code) => ({
-          code,
-          text: translations[`gesuch-app.shared.country.${code}`],
-        }));
-      translated.sort(({ text: a }, { text: b }) =>
-        a.localeCompare(b, this.translate.currentLang, {
-          ignorePunctuation: true,
-        })
-      );
-      return [
-        { code: 'CH', text: translations['gesuch-app.shared.country.CH'] },
-        ...translated,
-      ];
-    })
-  );
 
   static buildAddressFormGroup(fb: NonNullableFormBuilder) {
     return fb.group({
@@ -98,16 +66,6 @@ export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
         validators: Validators.required,
       }),
     });
-  }
-
-  trackByIndex(index: number) {
-    return index;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['laender']?.currentValue) {
-      this.laender$.next(changes['laender'].currentValue);
-    }
   }
 
   ngDoCheck(): void {
