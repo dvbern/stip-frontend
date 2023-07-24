@@ -60,18 +60,6 @@ export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
   private translate = inject(TranslateService);
   private laender$ = new BehaviorSubject<string[]>([]);
 
-  constructor() {
-    window.addEventListener('keyup', (ev) => {
-      const code = ev.code;
-      console.log('CODE?', ev);
-      if (code === 'KeyF') {
-        this.translate.use('fr');
-      } else if (code === 'KeyD') {
-        this.translate.use('de');
-      }
-    });
-  }
-
   translatedLaender$ = combineLatest([
     this.translate.onLangChange.pipe(
       startWith({
@@ -81,13 +69,11 @@ export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
     this.laender$,
   ]).pipe(
     map(([{ translations }, laender]) => {
-      console.log('translations', translations);
       const translated = laender
-        .filter((code) => code !== 'CH')
+        .filter((code) => translations[`gesuch-app.shared.country.${code}`])
         .map((code) => ({
           code,
-          text:
-            translations[`gesuch-app.shared.country.${code}`] ?? `zzz_${code}`,
+          text: translations[`gesuch-app.shared.country.${code}`],
         }));
       translated.sort(({ text: a }, { text: b }) =>
         a.localeCompare(b, this.translate.currentLang, {
@@ -118,10 +104,9 @@ export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
     return index;
   }
 
-  ngOnChanges(change: SimpleChanges) {
-    console.log('CHANGE', change);
-    if (change['laender'].currentValue) {
-      this.laender$.next(change['laender'].currentValue);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['laender']?.currentValue) {
+      this.laender$.next(changes['laender'].currentValue);
     }
   }
 
