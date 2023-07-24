@@ -82,7 +82,7 @@ export class GesuchAppPatternMainLayoutComponent implements OnChanges {
       .subscribe((result) => {
         this.compactHeader = result.matches;
         this.cd.markForCheck();
-      }); // TODO unsubscribe on destroy
+      });
   }
 
   handleLanguageChangeHeader(language: Language) {

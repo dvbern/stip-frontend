@@ -23,6 +23,7 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 import { Land } from '@dv/shared/model/gesuch';
 
 @Component({
@@ -36,6 +37,7 @@ import { Land } from '@dv/shared/model/gesuch';
     SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
+    SharedUiFormCountryComponent,
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormMessageInfoDirective,
@@ -64,10 +66,6 @@ export class SharedUiFormAddressComponent implements DoCheck {
         validators: Validators.required,
       }),
     });
-  }
-
-  trackByIndex(index: number) {
-    return index;
   }
 
   ngDoCheck(): void {
