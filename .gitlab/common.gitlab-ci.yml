@@ -35,7 +35,7 @@ variables:
   before_script:
     - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
       echo "Skipping npm ci because a cached version is available"'
-    - NX_HEAD=$CI_COMMIT_SHA
+    - NX_HEAD=${CI_COMMIT_SHA:-$CI_COMMIT_BRANCH}
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
