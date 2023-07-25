@@ -71,8 +71,16 @@ sonarqube-check:
 build:pipeline:
   stage: build
   extends: .base
+  variables:
+    FORCE: 'false'
   script:
-    - node ./tools/pipeline/generate.js "$(npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
+    - >-
+      node ./tools/pipeline/generate.js
+      "$(
+        [ "$FORCE" = true ]
+        && npx nx print-affected --type=app --all
+        || npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD
+      )"
     - cat affected-apps.gitlab-ci.yml
   artifacts:
     expire_in: 30 days
