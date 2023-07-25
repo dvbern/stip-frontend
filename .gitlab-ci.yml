@@ -82,6 +82,7 @@ build:pipeline:
 trigger:affected-apps:
   stage: build
   trigger:
+    strategy: depend
     include:
       - artifact: affected-apps.gitlab-ci.yml
         job: build:pipeline
