@@ -96,7 +96,8 @@ mirror:
     entrypoint: ['']
   tags: ['os:linux', 'type:docker', 'zone:tz']
   variables:
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: clone
+    GIT_CHECKOUT: 'true'
   script:
     - git fetch origin $CI_DEFAULT_BRANCH
     - git checkout $CI_DEFAULT_BRANCH
