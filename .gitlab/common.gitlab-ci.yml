@@ -37,6 +37,8 @@ variables:
       echo "Skipping npm ci because a cached version is available"'
     - NX_HEAD=${NX_HEAD:-$CI_COMMIT_SHA}
     - NX_BASE=${NX_BASE:-${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}}
+    - echo "NX_HEAD $NX_HEAD"
+    - echo "NX_BASE $NX_BASE"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
