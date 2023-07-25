@@ -5,6 +5,7 @@ nameSuffix: -dev
 
 resources:
 - ../base
+- ingress-config.yml
 
 images:
 - name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
