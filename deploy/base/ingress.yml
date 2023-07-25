@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: www
+spec:
+  rules:
+    - host: "<overlay-specific>"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              service:
+                name: gesuch-app
+                port:
+                  name: http
+            pathType: Prefix
+  tls:
+    - {}

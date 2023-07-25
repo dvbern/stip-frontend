@@ -15,7 +15,10 @@ commonAnnotations:
 resources:
   - deployment.yml
   - service.yml
-  - route.yml
+  - ingress.yml
+  # TODO: OpenShift
+  # - route.yml
 
-crds:
-  - crds/openshift-route.json
+# TODO: OpenShift
+# crds:
+#  - crds/openshift-route.json

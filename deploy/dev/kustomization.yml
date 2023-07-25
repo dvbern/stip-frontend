@@ -10,7 +10,20 @@ images:
 - name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
   newTag: f1339420
 
-patches:
-- path: route-patch.yml
-  target:
-    kind: Route
+# TODO: OpenShift
+# patches:
+# - path: route-patch.yml
+#  target:
+#    kind: Route
+
+replacements:
+  - source:
+      fieldPath: data.host
+      kind: ConfigMap
+      name: ingress-config
+    targets:
+      - fieldPaths:
+          - spec.rules.0.host
+        select:
+          kind: Ingress
+          name: www
