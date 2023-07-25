@@ -37,7 +37,7 @@ deploy:{{ this }}:
   tags: ['os:linux', 'type:docker', 'zone:tz']
   variables:
     STAGE: dev
-    IMAGE_PATH: $DVB_DOCKER_REGISTRY/$CI_PROJECT_ROOT_NAMESPACE/stip/{{ this }}:$CI_COMMIT_SHORT_SHA
+    IMAGE_PATH: $DVB_DOCKER_PUBLIC_REGISTRY/$CI_PROJECT_ROOT_NAMESPACE/stip/{{ this }}:$CI_COMMIT_SHORT_SHA
   script:
     - git fetch origin $CI_COMMIT_BRANCH
     - cd deploy/$STAGE
