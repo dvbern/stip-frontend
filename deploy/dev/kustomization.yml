@@ -8,7 +8,7 @@ resources:
 - ingress-config.yml
 
 images:
-- name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
+- name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
   newTag: f1339420
 
 # TODO: OpenShift
