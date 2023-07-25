@@ -86,3 +86,19 @@ trigger:affected-apps:
         job: build:pipeline
   needs:
     - job: 'build:pipeline'
+
+mirror:
+  stage: mirror
+  image:
+    name: '${DVB_DOCKER_REGISTRY}/dockerhub/alpine/git:2.40.1'
+    entrypoint: ['']
+  tags: ['os:linux', 'type:docker', 'zone:tz']
+  variables:
+    GIT_STRATEGY: fetch
+  script:
+    - git fetch origin $CI_DEFAULT_BRANCH
+    - git checkout -b $CI_DEFAULT_BRANCH
+    - git remote add github https://token:${GITHUB_MIRROR_TOKEN}@github.com/dvbern/stip-frontend.git || echo "Remote github exists"
+    - git push -u github $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
