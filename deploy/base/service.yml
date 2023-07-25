@@ -4,7 +4,8 @@ metadata:
   name: gesuch-app
 spec:
   ports:
-    - port: 80
+      - port: 80
+        name: http
   selector:
     app: gesuch-app
   type: ClusterIP
