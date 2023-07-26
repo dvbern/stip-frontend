@@ -23,7 +23,7 @@ replacements:
   targets:
   - fieldPaths:
     - spec.rules.0.host
-    - spec.tls.0.0
+    - spec.tls.0.hosts.0
     select:
       kind: Ingress
       name: www
