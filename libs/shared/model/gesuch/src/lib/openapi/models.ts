@@ -9,6 +9,7 @@ export * from './ausbildungssituation';
 export * from './ausbildungsstaette';
 export * from './auszahlung';
 export * from './auszahlungUpdate';
+export * from './benutzer';
 export * from './benutzerLogin';
 export * from './bildungsart';
 export * from './deploymentConfig';

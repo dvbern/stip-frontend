@@ -3,4 +3,5 @@
 /coverage
 .angular
 /libs/tooling/nx-plugin/src/generators/lib/files/
+/libs/shared/model/gesuch/src/lib/openapi/
 /deploy

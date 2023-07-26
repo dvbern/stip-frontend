@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GesuchFormularUpdate } from './gesuchFormularUpdate';
 
 /**
  * 
  */
-export interface GesuchUpdate { 
-    gesuch_formular_to_work_with?: GesuchFormularUpdate;
+export interface Benutzer { 
+    id: string;
+    sozialversicherungsnummer: string;
+    vorname: string;
+    nachname: string;
 }
 
