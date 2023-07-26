@@ -3,6 +3,14 @@ import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 
 export const appRoutes: Route[] = [
   {
+    path: 'gesuch-app-feature-user-select',
+    title: 'gesuch-app.user-select.title',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/user-select').then(
+        (m) => m.gesuchAppFeatureUserSelectRoutes
+      ),
+  },
+  {
     path: 'gesuch-app-feature-gesuch-form-kinder',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-kinder').then(
@@ -81,7 +89,7 @@ export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'gesuch-app-feature-cockpit',
+    redirectTo: 'gesuch-app-feature-user-select',
   },
   ...appRoutes,
   {

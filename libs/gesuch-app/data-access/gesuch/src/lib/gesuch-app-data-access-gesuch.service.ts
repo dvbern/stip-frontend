@@ -17,7 +17,9 @@ export class GesuchAppDataAccessGesuchService {
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<SharedModelGesuch[]>(RESOURCE_URL);
+    return this.http.get<SharedModelGesuch[]>(
+      `${RESOURCE_URL}/benutzer/${localStorage.getItem('userId')}`
+    );
   }
 
   get(id: string) {

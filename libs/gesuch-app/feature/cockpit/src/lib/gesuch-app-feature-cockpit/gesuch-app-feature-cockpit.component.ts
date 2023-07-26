@@ -13,7 +13,7 @@ import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
 } from '@dv/shared/data-access/language';
-import { Gesuchsperiode } from '@dv/shared/model/gesuch';
+import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
@@ -26,6 +26,12 @@ import {
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
+
+// TODO: Remove once login exists
+// -----
+import { HttpClient } from '@angular/common/http';
+import { map, switchMap } from 'rxjs/operators';
+// -----
 
 @Component({
   selector: 'dv-gesuch-app-feature-cockpit',
@@ -49,6 +55,22 @@ import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureCockpitComponent implements OnInit {
+  // TODO: Remove once login exists
+  // -----
+  private fallUrl = `/api/v1/fall/benutzer/${localStorage.getItem('userId')}`;
+  private http = inject(HttpClient);
+  fall$ = this.http.get<Fall[]>(this.fallUrl).pipe(
+    switchMap((falls) =>
+      falls.length === 0
+        ? this.http.post(this.fallUrl, {}).pipe(
+            switchMap(() => this.http.get<Fall[]>(this.fallUrl)),
+            map((falls) => falls[0])
+          )
+        : [falls[0]]
+    )
+  );
+  // -----
+
   private store = inject(Store);
 
   cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
@@ -59,22 +81,11 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     this.store.dispatch(GesuchAppEventCockpit.init());
   }
 
-  // TODO: Remove once Fall handling exists
-  public setFallId(id: string) {
-    this.initFall.id = id;
-  }
-
-  private initFall = {
-    id: '',
-    fallNummer: 1,
-    mandant: 'bern',
-  };
-
-  handleCreate(periode: Gesuchsperiode) {
+  handleCreate(periode: Gesuchsperiode, fallId: string) {
     this.store.dispatch(
       GesuchAppEventCockpit.newTriggered({
         create: {
-          fallId: this.initFall.id,
+          fallId,
           gesuchsperiodeId: periode.id,
         },
       })

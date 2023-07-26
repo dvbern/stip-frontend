@@ -40,6 +40,7 @@
       "@dv/gesuch-app/feature/gesuch-form-lebenslauf": ["libs/gesuch-app/feature/gesuch-form-lebenslauf/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-partner": ["libs/gesuch-app/feature/gesuch-form-partner/src/index.ts"],
       "@dv/gesuch-app/feature/gesuch-form-person": ["libs/gesuch-app/feature/gesuch-form-person/src/index.ts"],
+      "@dv/gesuch-app/feature/user-select": ["libs/gesuch-app/feature/user-select/src/index.ts"],
       "@dv/gesuch-app/model/gesuch-form": ["libs/gesuch-app/model/gesuch-form/src/index.ts"],
       "@dv/gesuch-app/pattern/gesuch-step-layout": ["libs/gesuch-app/pattern/gesuch-step-layout/src/index.ts"],
       "@dv/gesuch-app/pattern/gesuch-step-nav": ["libs/gesuch-app/pattern/gesuch-step-nav/src/index.ts"],
