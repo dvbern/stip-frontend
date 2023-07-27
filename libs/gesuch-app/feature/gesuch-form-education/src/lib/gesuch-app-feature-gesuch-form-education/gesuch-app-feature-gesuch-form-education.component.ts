@@ -14,7 +14,6 @@ import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 
@@ -96,20 +95,15 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: this.formBuilder.control<Ausbildungsland>(
-      '' as Ausbildungsland,
-      {
-        validators: Validators.required,
-      }
-    ),
-    ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
-    alternativeAusbildungsstaette: [<string | undefined>undefined],
-    ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
-    alternativeAusbildungsgang: [<string | undefined>undefined],
-    fachrichtung: ['', [Validators.required]],
+    ausbildungsland: this.formBuilder.control<Ausbildungsland | null>(null, {
+      validators: Validators.required,
+    }),
+    ausbildungsstaette: [<string | null>null, [Validators.required]],
+    ausbildungsgang: [<string | null>null, [Validators.required]],
+    fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     alternativeAusbildungsgang: [<string | null>null],
-    alternativeAusbildungstaette: [<string | null>null],
+    alternativeAusbildungsstaette: [<string | null>null],
     ausbildungBegin: [
       '',
       [
@@ -140,12 +134,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: this.formBuilder.control<AusbildungsPensum>(
-      '' as AusbildungsPensum,
-      {
-        validators: Validators.required,
-      }
-    ),
+    pensum: this.formBuilder.control<AusbildungsPensum | null>(null, {
+      validators: Validators.required,
+    }),
   });
 
   view$ = this.store.selectSignal(
@@ -297,26 +288,26 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   handleLandChangedByUser() {
     this.form.controls.ausbildungsstaette.reset();
     this.form.controls.ausbildungsgang.reset();
-    this.form.controls.fachrichtung.reset(null);
+    this.form.controls.fachrichtung.reset();
   }
 
   @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead?: NgbTypeahead;
 
   clearStaetteTypeahead(inputField: HTMLInputElement) {
-    this.form.controls.ausbildungstaette.setValue('');
+    this.form.controls.ausbildungsstaette.setValue('');
     this.handleStaetteChangedByUser();
     this.ausbildungsstaetteTypeahead!.dismissPopup();
-    this.focusAusbildungstaette$.next(''); // damit das "Dropdown" geoeffnet wird
+    // this.focusAusbildungstaette$.next(''); // damit das "Dropdown" geoeffnet wird
     inputField.focus();
   }
 
   handleStaetteChangedByUser() {
     this.form.controls.ausbildungsgang.reset();
-    this.form.controls.fachrichtung.reset(null);
+    this.form.controls.fachrichtung.reset();
   }
 
   handleGangChangedByUser() {
-    this.form.controls.fachrichtung.reset(null);
+    this.form.controls.fachrichtung.reset();
   }
 
   handleManuellChangedByUser() {
@@ -324,18 +315,31 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.controls.alternativeAusbildungsstaette.reset();
     this.form.controls.ausbildungsgang.reset();
     this.form.controls.alternativeAusbildungsgang.reset();
-    this.form.controls.fachrichtung.reset(null);
+    this.form.controls.fachrichtung.reset();
   }
 
   handleSave() {
     this.form.markAllAsTouched();
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
+      const formValue = this.form.getRawValue();
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuchId,
-          gesuchFormular,
+          gesuchFormular: {
+            ...gesuchFormular,
+            ausbildung: {
+              ...formValue,
+              ausbildungsland: formValue.ausbildungsland!,
+              fachrichtung: formValue.fachrichtung!,
+              pensum: formValue.pensum!,
+              alternativeAusbildungsgang:
+                formValue.alternativeAusbildungsgang || undefined,
+              alternativeAusbildungsstaette:
+                formValue.alternativeAusbildungsstaette || undefined,
+            },
+          },
         })
       );
     }
@@ -381,7 +385,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
     // Grund wieso wir (selectItem) verwenden und nicht (change): change wird nicht immer ausgeloest. Dafuer muessen
     // wir hier noch selber pruefen, ob der Wert geaendert hat.
-    if (event.item !== this.form.getRawValue().ausbildungstaette) {
+    if (event.item !== this.form.getRawValue().ausbildungsstaette) {
       this.handleStaetteChangedByUser();
     }
   }
