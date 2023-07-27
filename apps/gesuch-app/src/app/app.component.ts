@@ -23,7 +23,7 @@ import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  // TODO: Remove once login exists, also remove isNotNull
+  // TODO: Remove once login exists, also remember to remove isNotNull
   // -----------
   private http = inject(HttpClient);
   private store = inject(Store);
