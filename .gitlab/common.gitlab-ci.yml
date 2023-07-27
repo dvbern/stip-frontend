@@ -36,7 +36,7 @@ variables:
     - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
       echo "Skipping npm ci because a cached version is available"'
     - NX_HEAD=${NX_HEAD:-$CI_COMMIT_SHA}
-    - NX_BASE=${NX_BASE:-${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}}
+    - NX_BASE=dad9f00e4eb515c5bffcde425fc2c78c42e77857
     - echo "NX_HEAD $NX_HEAD"
     - echo "NX_BASE $NX_BASE"
   rules:
@@ -45,4 +45,3 @@ variables:
         NX_BASE: $CI_COMMIT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-
