@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - ../base
 - ingress-config.yml
+- basicauth.yml
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
@@ -14,6 +15,9 @@ images:
 # - path: route-patch.yml
 #  target:
 #    kind: Route
+
+patchesStrategicMerge:
+  - ingress.yml
 
 replacements:
 - source:
