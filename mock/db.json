@@ -5,25 +5,18 @@
   },
   "gesuchsperiode": [
     {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
-      "gueltigAb": "2022-02-01",
-      "gueltigBis": "2023-01-31",
-      "einreichfrist": "2022-06-30",
-      "aufschaltdatum": "2022-06-01"
-    },
-    {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "gueltigAb": "2023-02-01",
-      "gueltigBis": "2024-01-31",
-      "einreichfrist": "2023-06-30",
+      "gueltigAb": "2023-08-01",
+      "gueltigBis": "2024-06-30",
+      "einreichfrist": "2023-12-31",
       "aufschaltdatum": "2023-06-01"
     },
     {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "gueltigAb": "2023-08-01",
-      "gueltigBis": "2024-07-31",
-      "einreichfrist": "2023-12-31",
-      "aufschaltdatum": "2023-06-01"
+      "gueltigAb": "2022-12-01",
+      "gueltigBis": "2023-10-31",
+      "einreichfrist": "2023-06-30",
+      "aufschaltdatum": "2022-11-01"
     }
   ],
   "gesuch": [
@@ -47,14 +40,14 @@
       "ausbildungContainer": {
         "ausbildungSB": {
           "ausbildungsland": "SCHWEIZ",
-          "ausbildungstaette": "Universität Bern",
+          "ausbildungsstaette": "Universität Bern",
           "ausbildungsgang": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
           "fachrichtung": "Die Welt retten",
           "ausbildungNichtGefunden": false,
           "ausbildungBegin": "07.2023",
           "ausbildungEnd": "07.2023",
           "pensum": "VOLLZEIT",
-          "ausbildungstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+          "ausbildungsstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
           "ausbildungsgangId": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a"
         }
       },
@@ -153,12 +146,15 @@
         }
       ],
       "personInAusbildungContainer": {
+        "id": "abc",
         "personInAusbildungSB": {
+          "id": "abc",
           "sozialversicherungsnummer": "756.1234.5678.97",
           "anrede": "HERR",
           "name": "Conner",
           "vorname": "Ivan",
           "adresse": {
+            "id": "iuiu",
             "coAdresse": "Perferendis voluptat",
             "strasse": "Qui id sint assume",
             "hausnummer": "588",
@@ -166,14 +162,15 @@
             "ort": "Zürich",
             "land": "CH"
           },
-          "identischerZivilrechtlicherWohnsitz": true,
-          "zivilrechtlicherWohnsitzPlz": "",
-          "zivilrechtlicherWohnsitzOrt": "",
+          "identischerZivilrechtlicherWohnsitz": false,
+          "izvPLZ": "1234",
+          "izvOrt": "Vessy",
           "email": "mypyrew@mailbucket.dvbern.ch",
           "telefonnummer": "+41 78 868 59 53",
           "geburtsdatum": "1990-03-03",
           "nationalitaet": "FR",
           "heimatort": "",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B",
           "vormundschaft": true,
           "zivilstand": "VERHEIRATET",
           "wohnsitz": "ELTERN",
@@ -181,7 +178,8 @@
           "quellenbesteuerung": true,
           "digitaleKommunikation": false,
           "korrespondenzSprache": "DEUTSCH",
-          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B"
+          "quellenbesteuert": false,
+          "kinder": false
         }
       },
       "kindContainers": [
@@ -252,7 +250,7 @@
       "gesuchsperiode": {
         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
         "gueltigAb": "2023-08-01",
-        "gueltigBis": "2024-07-31",
+        "gueltigBis": "2024-06-30",
         "einreichfrist": "2023-12-31",
         "aufschaltdatum": "2023-06-01",
         "semester": "HERBST",
@@ -262,7 +260,7 @@
       "id": "uZwfxjt"
     }
   ],
-  "ausbildungstaettes": [
+  "ausbildungsstaettes": [
     {
       "id": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
       "ausbildungsgaenge": [

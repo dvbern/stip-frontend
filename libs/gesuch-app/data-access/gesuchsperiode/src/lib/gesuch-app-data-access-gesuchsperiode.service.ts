@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
-  GesuchsperiodeDTO,
+  Gesuchsperiode,
   SHARED_MODEL_GESUCHSPERIODE_RESOURCE,
 } from '@dv/shared/model/gesuch';
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
@@ -12,6 +12,6 @@ export class GesuchAppDataAccessGesuchsperiodeService {
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<GesuchsperiodeDTO[]>(`${RESOURCE_URL}/aktive`);
+    return this.http.get<Gesuchsperiode[]>(`${RESOURCE_URL}/aktive`);
   }
 }

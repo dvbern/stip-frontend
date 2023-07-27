@@ -2,7 +2,7 @@
   <!-- touchedSig muessen wir irgendwo lesen, damit die change detection funktioniert, deshalb hier im html -->
 
   <!-- Strasse -->
-  <dv-shared-ui-form-field class="col-8 col-xl-9">
+  <dv-shared-ui-form-field class="col-8 col-lg-4 pe-0">
     <dv-shared-ui-form-label
       >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
     </dv-shared-ui-form-label>
@@ -18,7 +18,7 @@
   </dv-shared-ui-form-field>
 
   <!-- Nr -->
-  <dv-shared-ui-form-field class="col-4 col-xl-3">
+  <dv-shared-ui-form-field class="col-4 col-lg-2 ps-2">
     <dv-shared-ui-form-label
       >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
     </dv-shared-ui-form-label>
@@ -32,8 +32,9 @@
       {{ 'shared.form.error.required' | translate }}
     </dv-shared-ui-form-message>
   </dv-shared-ui-form-field>
+
   <!-- PLZ -->
-  <dv-shared-ui-form-field class="col-5 col-md-4 col-xl-3">
+  <dv-shared-ui-form-field class="col-5 col-md-4 col-lg-2 pe-2">
     <dv-shared-ui-form-label
       >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
     </dv-shared-ui-form-label>
@@ -49,7 +50,7 @@
   </dv-shared-ui-form-field>
 
   <!-- Ort -->
-  <dv-shared-ui-form-field class="col-7 col-md-8 col-xl-9">
+  <dv-shared-ui-form-field class="col-7 col-md-8 col-lg-4 ps-0">
     <dv-shared-ui-form-label
       >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
     </dv-shared-ui-form-label>
@@ -80,27 +81,10 @@
   </dv-shared-ui-form-field>
 
   <!-- Land -->
-  <dv-shared-ui-form-field class="col-12 col-md-6">
-    <dv-shared-ui-form-label>{{
-      'gesuch-app.form.shared.address.country.label' | translate
-    }}</dv-shared-ui-form-label>
-    <select
-      class="form-select"
-      dvSharedUiFormLabelTarget
-      formControlName="land"
-    >
-      <option [ngValue]="null" disabled selected>
-        {{ 'shared.form.select.empty' | translate }}
-      </option>
-      <option
-        [value]="l.landCode"
-        *ngFor="let l of laender; trackBy: trackByIndex"
-      >
-        {{ language === 'de' ? l.landDE : l.landFR }}
-      </option>
-    </select>
-    <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-      {{ 'shared.form.error.required' | translate }}
-    </dv-shared-ui-form-message>
-  </dv-shared-ui-form-field>
+  <dv-shared-ui-form-country
+    class="col-12 col-md-6"
+    formControlName="land"
+    [labelText]="'gesuch-app.form.shared.address.country.label' | translate"
+    [laender]="laender"
+  ></dv-shared-ui-form-country>
 </div>

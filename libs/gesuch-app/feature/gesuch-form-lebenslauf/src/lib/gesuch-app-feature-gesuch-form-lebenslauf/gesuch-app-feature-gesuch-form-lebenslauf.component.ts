@@ -10,8 +10,10 @@ import {
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
-import { LebenslaufItemDTO, SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { LebenslaufItemUpdate } from '@dv/shared/model/gesuch';
+import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import {
   dateFromMonthYearString,
   printDateAsMonthYear,
@@ -19,11 +21,13 @@ import {
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears, subMonths } from 'date-fns';
+import { addYears, setMonth, subMonths } from 'date-fns';
 import { GesuchAppFeatureGesuchFormLebenslaufEditorComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-editor/gesuch-app-feature-gesuch-form-lebenslauf-editor.component';
 import { TimelineAddCommand } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline';
 import { TwoColumnTimelineComponent } from '../gesuch-app-feature-gesuch-form-lebenslauf-visual/two-column-timeline.component';
 import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feature-gesuch-form-lebenslauf.selector';
+
+const AUSBILDUNGS_MONTH = 8; // August
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-lebenslauf',
@@ -35,6 +39,7 @@ import { selectGesuchAppFeatureGesuchFormLebenslaufVew } from './gesuch-app-feat
     NgbAlert,
     TranslateModule,
     TwoColumnTimelineComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-lebenslauf.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-lebenslauf.component.scss'],
@@ -50,10 +55,12 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
 
   minDate$: Signal<Date | null> = computed(() => {
     const geburtsdatum =
-      this.view$().gesuch?.personInAusbildungContainer?.personInAusbildungSB
-        ?.geburtsdatum;
+      this.view$().gesuchFormular?.personInAusbildung?.geburtsdatum;
     if (geburtsdatum) {
-      const sixteenthBirthdate = addYears(Date.parse(geburtsdatum), 16);
+      const sixteenthBirthdate = setMonth(
+        addYears(Date.parse(geburtsdatum), 16),
+        AUSBILDUNGS_MONTH - 1
+      );
       return new Date(
         sixteenthBirthdate.getFullYear(),
         sixteenthBirthdate.getMonth(),
@@ -65,7 +72,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
 
   maxDate$: Signal<Date | null> = computed(() => {
     const ausbildungStart =
-      this.view$().gesuch?.ausbildungContainer?.ausbildungSB?.ausbildungBegin;
+      this.view$().gesuchFormular?.ausbildung?.ausbildungBegin;
     if (ausbildungStart) {
       const start = dateFromMonthYearString(ausbildungStart);
       console.log('ausbildung start parsed: ', start);
@@ -76,7 +83,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
-  editedItem?: Partial<LebenslaufItemDTO>;
+  editedItem?: SharedModelLebenslauf;
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormLebenslauf.init());
@@ -85,49 +92,54 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   public handleAddAusbildung(addCommand: TimelineAddCommand | undefined): void {
     this.editedItem = {
       type: 'AUSBILDUNG',
-      dateStart: addCommand
-        ? printDateAsMonthYear(addCommand.dateStart)
-        : undefined,
-      dateEnd: addCommand
-        ? printDateAsMonthYear(addCommand.dateEnd)
-        : undefined,
+      von: addCommand ? printDateAsMonthYear(addCommand.von) : undefined,
+      bis: addCommand ? printDateAsMonthYear(addCommand.bis) : undefined,
     };
   }
 
   public handleAddTaetigkeit(addCommand: TimelineAddCommand | undefined): void {
     this.editedItem = {
       type: 'TAETIGKEIT',
-      dateStart: addCommand
-        ? printDateAsMonthYear(addCommand.dateStart)
-        : undefined,
-      dateEnd: addCommand
-        ? printDateAsMonthYear(addCommand.dateEnd)
-        : undefined,
+      von: addCommand ? printDateAsMonthYear(addCommand.von) : undefined,
+      bis: addCommand ? printDateAsMonthYear(addCommand.bis) : undefined,
     };
   }
 
-  public handleEditItem(ge: LebenslaufItemDTO): void {
-    this.editedItem = ge;
+  public handleEditItem(ge: LebenslaufItemUpdate): void {
+    this.editedItem = {
+      type: ge.bildungsart ? 'AUSBILDUNG' : 'TAETIGKEIT',
+      ...ge,
+    };
   }
 
-  handleEditorSave(item: LebenslaufItemDTO) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithUpdatedItem(item),
-        origin: GesuchFormSteps.LEBENSLAUF,
-      })
-    );
-    this.editedItem = undefined;
+  handleEditorSave(item: LebenslaufItemUpdate) {
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithUpdatedItem(item);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.LEBENSLAUF,
+        })
+      );
+      this.editedItem = undefined;
+    }
   }
 
   public handleDeleteItem(itemId: string) {
-    this.store.dispatch(
-      GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered({
-        gesuch: this.buildUpdatedGesuchWithDeletedItem(itemId),
-        origin: GesuchFormSteps.LEBENSLAUF,
-      })
-    );
-    this.editedItem = undefined;
+    const { gesuchId, gesuchFormular } =
+      this.buildUpdatedGesuchWithDeletedItem(itemId);
+    if (gesuchId) {
+      this.store.dispatch(
+        GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered({
+          gesuchId,
+          gesuchFormular,
+          origin: GesuchFormSteps.LEBENSLAUF,
+        })
+      );
+      this.editedItem = undefined;
+    }
   }
 
   handleContinue() {
@@ -145,45 +157,41 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithDeletedItem(itemId: string) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
-    const updatedItemContainers = gesuch?.lebenslaufItemContainers!.filter(
-      (itemContainer) => itemContainer.lebenslaufItemSB?.id !== itemId
+    const { gesuch, gesuchFormular } = this.view$();
+    const updatedItems = gesuchFormular?.lebenslaufItems?.filter(
+      (item) => item.id !== itemId
     );
 
     return {
-      ...gesuch,
-      lebenslaufItemContainers: updatedItemContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuch,
+        lebenslaufItems: updatedItems,
+      },
     };
   }
 
-  private buildUpdatedGesuchWithUpdatedItem(item: LebenslaufItemDTO) {
-    const gesuch: Partial<SharedModelGesuch> = this.view$().gesuch!;
+  private buildUpdatedGesuchWithUpdatedItem(item: LebenslaufItemUpdate) {
+    const { gesuch, gesuchFormular } = this.view$();
     // update existing item if found
-    const updatedItemContainers =
-      gesuch?.lebenslaufItemContainers?.map((itemContainer) => {
-        if (itemContainer.lebenslaufItemSB?.id === item.id) {
-          return {
-            ...itemContainer,
-            lebenslaufItemSB: item,
-          };
+    const updatedItems =
+      gesuchFormular?.lebenslaufItems?.map((oldItem) => {
+        if (item.id === oldItem.id) {
+          return item;
         } else {
-          return itemContainer;
+          return oldItem;
         }
       }) ?? [];
     // add new item if not found
     if (!item.id) {
-      // TODO new item doesnt have ID, will be added by backend?
-      updatedItemContainers.push({
-        lebenslaufItemSB: {
-          ...item,
-          id: 'generated by backend? or FE uuid?' + item.name,
-        },
-        id: 'generated by backend? or FE uuid?' + item.name,
-      });
+      updatedItems.push(item);
     }
     return {
-      ...gesuch,
-      lebenslaufItemContainers: updatedItemContainers,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        lebenslaufItems: updatedItems,
+      },
     };
   }
 
@@ -191,11 +199,11 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     return index;
   }
 
-  public asItem(itemRaw: LebenslaufItemDTO): LebenslaufItemDTO {
+  public asItem(itemRaw: LebenslaufItemUpdate): LebenslaufItemUpdate {
     return itemRaw;
   }
 
-  public handleEditItemId(id: string, items: LebenslaufItemDTO[]): void {
+  public handleEditItemId(id: string, items: LebenslaufItemUpdate[]): void {
     const item = items.find((each) => each.id === id);
     if (item) {
       this.handleEditItem(item);

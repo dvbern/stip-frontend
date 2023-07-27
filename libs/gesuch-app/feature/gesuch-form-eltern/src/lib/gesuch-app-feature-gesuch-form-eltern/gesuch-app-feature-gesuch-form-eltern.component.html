@@ -27,7 +27,7 @@
         *ngIf="view$().expectVater"
         class="col-12 col-md-6 col-xl-4"
         [elternteil]="view$().vater"
-        [geschlecht]="Anrede.HERR"
+        [elternTyp]="ElternTyp.VATER"
         [translationkey]="'vater'"
         (addTriggered)="handleAddElternteil($event)"
         (editTriggered)="handleEdit($event)"
@@ -37,7 +37,7 @@
         *ngIf="view$().expectMutter"
         class="col-12 col-md-6 col-xl-4"
         [elternteil]="view$().mutter"
-        [geschlecht]="Anrede.FRAU"
+        [elternTyp]="ElternTyp.MUTTER"
         [translationkey]="'mutter'"
         (addTriggered)="handleAddElternteil($event)"
         (editTriggered)="handleEdit($event)"
@@ -48,10 +48,10 @@
       </div>
     </div>
 
-    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <dv-gesuch-app-ui-step-form-buttons>
       <button type="button" class="btn btn-primary" (click)="handleContinue()">
         {{ 'gesuch-app.form.gonext' | translate }}
       </button>
-    </div>
+    </dv-gesuch-app-ui-step-form-buttons>
   </ng-container>
 </dv-gesuch-app-pattern-gesuch-step-layout>

@@ -1,11 +1,14 @@
-import { MaskitoOptions } from '@maskito/core';
+import { Gesuch } from './openapi/gesuch';
+import { GesuchFormularUpdate } from './openapi/gesuchFormularUpdate';
 
-import { GesuchDTO } from './openapi/gesuchDTO';
-
-export interface SharedModelGesuch extends GesuchDTO {
+export interface SharedModelGesuch extends Gesuch {
   view?: {
     // view specific props
   };
+}
+
+export interface SharedModelGesuchFormular extends GesuchFormularUpdate {
+  freigegeben: boolean;
 }
 
 // TODO extract to env or generate with OpenAPI?

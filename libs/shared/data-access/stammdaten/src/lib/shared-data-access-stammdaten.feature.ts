@@ -3,10 +3,10 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { SharedModelError } from '@dv/shared/model/error';
 
 import { SharedDataAccessStammdatenApiEvents } from './shared-data-access-stammdaten.events';
-import { LandDTO } from '@dv/shared/model/gesuch';
+import { Land } from '@dv/shared/model/gesuch';
 
 export interface State {
-  laender: LandDTO[];
+  laender: Land[];
   loading: boolean;
   error: SharedModelError | undefined;
 }

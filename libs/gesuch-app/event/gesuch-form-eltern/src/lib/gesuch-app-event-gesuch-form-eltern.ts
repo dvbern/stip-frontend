@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { SharedModelGesuch } from '@dv/shared/model/gesuch';
+import { SharedModelGesuchFormular } from '@dv/shared/model/gesuch';
 import { GesuchAppModelGesuchFormStep } from '@dv/gesuch-app/model/gesuch-form';
 
 export const GesuchAppEventGesuchFormEltern = createActionGroup({
@@ -8,11 +8,13 @@ export const GesuchAppEventGesuchFormEltern = createActionGroup({
   events: {
     init: emptyProps(),
     saveTriggered: props<{
-      gesuch: Partial<SharedModelGesuch>;
+      gesuchId: string;
+      gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: GesuchAppModelGesuchFormStep;
     }>(),
     saveSubformTriggered: props<{
-      gesuch: Partial<SharedModelGesuch>;
+      gesuchId: string;
+      gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: GesuchAppModelGesuchFormStep;
     }>(),
     nextTriggered: props<{

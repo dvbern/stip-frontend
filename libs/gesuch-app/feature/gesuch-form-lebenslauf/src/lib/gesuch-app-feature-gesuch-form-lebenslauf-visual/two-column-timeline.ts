@@ -5,8 +5,8 @@ export interface TimelineRawItem {
   id: string;
   col: 'LEFT' | 'RIGHT';
   label: string;
-  dateStart: Date;
-  dateEnd: Date;
+  von: Date;
+  bis: Date;
   editable: boolean;
 }
 export interface TimelineMergedRawItem extends TimelineRawItem {
@@ -14,16 +14,16 @@ export interface TimelineMergedRawItem extends TimelineRawItem {
 }
 
 export interface TimelineAddCommand {
-  dateStart: Date;
-  dateEnd: Date;
+  von: Date;
+  bis: Date;
 }
 
 export class TimelineBlock {
   col!: 'LEFT' | 'RIGHT' | 'BOTH';
   positionStartRow!: number;
   positionRowSpan!: number;
-  dateStart!: Date;
-  dateEnd!: Date;
+  von!: Date;
+  bis!: Date;
   positionStartCol!: number;
   positionColSpan!: number;
 }
@@ -40,8 +40,8 @@ export class TimelineBusyBlock extends TimelineBlock {
 export class TimelineBusyBlockChild {
   id!: string;
   label!: string;
-  dateStart!: Date;
-  dateEnd!: Date;
+  von!: Date;
+  bis!: Date;
   editable!: boolean;
 }
 
@@ -107,11 +107,11 @@ export class TwoColumnTimeline {
 
     // Startluecke falls Startdatum vorhanden
     if (inputSorted.length && expectedStartDate) {
-      if (isAfter(inputSorted[0].dateStart, expectedStartDate)) {
+      if (isAfter(inputSorted[0].von, expectedStartDate)) {
         output.push({
           col: 'BOTH',
-          dateStart: expectedStartDate,
-          dateEnd: subMonths(inputSorted[0].dateStart, 1),
+          von: expectedStartDate,
+          bis: subMonths(inputSorted[0].von, 1),
           positionStartRow: startRow,
           positionRowSpan: 1,
         } as TimelineGapBlock);
@@ -130,14 +130,14 @@ export class TwoColumnTimeline {
       );
 
       //- startDate = das erste startDate der Inputlisten (beide ersten Elemente, das frühere Datum nehmen)
-      const startDate = inputSorted[0].dateStart;
+      const startDate = inputSorted[0].von;
       console.log('start date: ', printDateAsMonthYear(startDate));
       console.log('start row: ', startRow);
 
       // - aus beiden Listen alle Items mit diesem Startdatum in current-Left und current-Right schieben (als
       // busyBlocks mit rowspan=0) - alle in current mit diesem Startdatum erhalten positionStartRow=startRow
       for (const inputItem of [...inputSorted]) {
-        if (isEqual(inputItem.dateStart, startDate)) {
+        if (isEqual(inputItem.von, startDate)) {
           inputSorted.splice(inputSorted.indexOf(inputItem), 1);
           current.push({
             ...inputItem,
@@ -179,7 +179,7 @@ export class TwoColumnTimeline {
         while (canMoveSomethingToOutput) {
           // - die Items aus current mit endDate=endDate bekommen gehen aus current raus in die Outputspalten
           for (const each of [...current]) {
-            if (isEqual(each.dateEnd, endDate)) {
+            if (isEqual(each.bis, endDate)) {
               current.splice(current.indexOf(each), 1);
               output.push(each);
               console.log(
@@ -234,14 +234,13 @@ export class TwoColumnTimeline {
         const latestOutputEnddate = this.getLatestEnddate(output);
         const expectedNextStart = addMonths(latestOutputEnddate, 1);
         const gaplessNextBlockFound =
-          inputSorted.length &&
-          isEqual(inputSorted[0].dateStart, expectedNextStart);
+          inputSorted.length && isEqual(inputSorted[0].von, expectedNextStart);
         console.log('gap found: ', !gaplessNextBlockFound);
         if (!gaplessNextBlockFound) {
           output.push({
             col: 'BOTH',
-            dateStart: expectedNextStart,
-            dateEnd: subMonths(inputSorted[0].dateStart, 1),
+            von: expectedNextStart,
+            bis: subMonths(inputSorted[0].von, 1),
             positionStartRow: startRow,
             positionRowSpan: 1,
           } as TimelineGapBlock);
@@ -264,7 +263,7 @@ export class TwoColumnTimeline {
     }
 
     // nach Startdatum sortieren: dadurch kommen die spaeteren Boxen ueber die frueheren
-    output.sort((a, b) => (isBefore(a.dateStart, b.dateStart) ? -1 : 1));
+    output.sort((a, b) => (isBefore(a.von, b.von) ? -1 : 1));
 
     return {
       items: output,
@@ -285,7 +284,7 @@ export class TwoColumnTimeline {
     mode: 'MERGE' | 'NO_MERGE'
   ) {
     const inputSorted = [...rawItems].sort((a, b) =>
-      isBefore(a.dateStart, b.dateStart) ? -1 : 1
+      isBefore(a.von, b.von) ? -1 : 1
     );
 
     const output: TimelineMergedRawItem[] = [];
@@ -316,8 +315,8 @@ export class TwoColumnTimeline {
         // find all input items that overlap this range
         let overlapping = this.findOverlapping(
           group.col,
-          group.dateStart,
-          group.dateEnd,
+          group.von,
+          group.bis,
           inputSorted
         );
         while (overlapping.length) {
@@ -333,29 +332,26 @@ export class TwoColumnTimeline {
             group.children.push(eachOverlapping);
 
             // adapt group date range
-            group.dateStart = isBefore(
-              eachOverlapping.dateStart,
-              group.dateStart
-            )
-              ? eachOverlapping.dateStart
-              : group.dateStart;
-            group.dateEnd = isAfter(eachOverlapping.dateEnd, group.dateEnd)
-              ? eachOverlapping.dateEnd
-              : group.dateEnd;
+            group.von = isBefore(eachOverlapping.von, group.von)
+              ? eachOverlapping.von
+              : group.von;
+            group.bis = isAfter(eachOverlapping.bis, group.bis)
+              ? eachOverlapping.bis
+              : group.bis;
 
             console.log(
               'group date range: ',
-              printDateAsMonthYear(group.dateStart),
+              printDateAsMonthYear(group.von),
               ' ',
-              printDateAsMonthYear(group.dateEnd)
+              printDateAsMonthYear(group.bis)
             );
           }
 
           // search for more overlapping items
           overlapping = this.findOverlapping(
             group.col,
-            group.dateStart,
-            group.dateEnd,
+            group.von,
+            group.bis,
             inputSorted
           );
         }
@@ -373,25 +369,25 @@ export class TwoColumnTimeline {
     return output;
   }
 
-  static getEarliestEnddate(list: { dateEnd: Date }[]) {
+  static getEarliestEnddate(list: { bis: Date }[]) {
     const listSortedByEnddate = [...list].sort((a, b) =>
-      isBefore(a.dateEnd, b.dateEnd) ? -1 : 1
+      isBefore(a.bis, b.bis) ? -1 : 1
     );
-    return listSortedByEnddate[0].dateEnd;
+    return listSortedByEnddate[0].bis;
   }
 
-  static getLatestEnddate(list: { dateEnd: Date }[]) {
+  static getLatestEnddate(list: { bis: Date }[]) {
     const listSortedByEnddate = [...list].sort((a, b) =>
-      isBefore(a.dateEnd, b.dateEnd) ? 1 : -1
+      isBefore(a.bis, b.bis) ? 1 : -1
     );
-    return listSortedByEnddate[0].dateEnd;
+    return listSortedByEnddate[0].bis;
   }
 
-  static getEarliestStartdate(list: { dateStart: Date }[]) {
+  static getEarliestStartdate(list: { von: Date }[]) {
     const listSortedByEnddate = [...list].sort((a, b) =>
-      isBefore(a.dateStart, b.dateStart) ? -1 : 1
+      isBefore(a.von, b.von) ? -1 : 1
     );
-    return listSortedByEnddate[0].dateStart;
+    return listSortedByEnddate[0].von;
   }
 
   static selectCol(
@@ -405,15 +401,15 @@ export class TwoColumnTimeline {
 
   static findOverlapping(
     col: 'LEFT' | 'RIGHT',
-    dateStart: Date,
-    dateEnd: Date,
+    von: Date,
+    bis: Date,
     list: TimelineRawItem[]
   ): TimelineRawItem[] {
     return list
       .filter((each) => each.col === col)
       .filter((each) => {
-        const itemIsCompletelyBeforeEach = !isAfter(dateEnd, each.dateStart);
-        const itemIsCompletelyAfterEach = !isAfter(each.dateEnd, dateStart);
+        const itemIsCompletelyBeforeEach = !isAfter(bis, each.von);
+        const itemIsCompletelyAfterEach = !isAfter(each.bis, von);
         const itemIsNotOverlapping =
           itemIsCompletelyBeforeEach || itemIsCompletelyAfterEach;
         return !itemIsNotOverlapping;
@@ -430,8 +426,8 @@ export class TwoColumnTimeline {
       // gap
       {
         col: 'BOTH',
-        dateStart: new Date(2016, 1),
-        dateEnd: new Date(2016, 6),
+        von: new Date(2016, 1),
+        bis: new Date(2016, 6),
         positionStartRow: leftIndex,
         positionRowSpan: 1,
         positionStartCol: 1,
@@ -453,8 +449,8 @@ export class TwoColumnTimeline {
           {
             id: '1',
             label: 'Informatiker EFZ',
-            dateStart: new Date(2016, 7),
-            dateEnd: new Date(2017, 11),
+            von: new Date(2016, 7),
+            bis: new Date(2017, 11),
             editable: true,
           },
         ],
@@ -474,8 +470,8 @@ export class TwoColumnTimeline {
           {
             id: '2',
             label: 'Job A',
-            dateStart: new Date(2016, 7),
-            dateEnd: new Date(2016, 9),
+            von: new Date(2016, 7),
+            bis: new Date(2016, 9),
             editable: true,
           },
         ],
@@ -490,8 +486,8 @@ export class TwoColumnTimeline {
         id: 'group',
         col: 'RIGHT',
         label: 'group',
-        dateStart: new Date(2017, 7),
-        dateEnd: new Date(2017, 11),
+        von: new Date(2017, 7),
+        bis: new Date(2017, 11),
         editable: true,
         positionStartRow: rightIndex,
         positionRowSpan: 1,
@@ -502,16 +498,16 @@ export class TwoColumnTimeline {
             id: '2',
             col: 'RIGHT',
             label: 'Job B',
-            dateStart: new Date(2017, 7),
-            dateEnd: new Date(2017, 10),
+            von: new Date(2017, 7),
+            bis: new Date(2017, 10),
             editable: true,
           },
           {
             id: '3',
             col: 'RIGHT',
             label: 'Job C',
-            dateStart: new Date(2017, 8),
-            dateEnd: new Date(2017, 8),
+            von: new Date(2017, 8),
+            bis: new Date(2017, 8),
             editable: true,
           } as TimelineBusyBlock,
 
@@ -519,8 +515,8 @@ export class TwoColumnTimeline {
             id: '4',
             col: 'RIGHT',
             label: 'Job D',
-            dateStart: new Date(2017, 10),
-            dateEnd: new Date(2017, 11),
+            von: new Date(2017, 10),
+            bis: new Date(2017, 11),
             editable: true,
           } as TimelineBusyBlock,
         ],

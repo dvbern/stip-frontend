@@ -1,12 +1,15 @@
+import { State } from './gesuch-app-data-access-gesuch.feature';
 import { selectGesuchAppDataAccessGesuchsView } from './gesuch-app-data-access-gesuch.selectors';
 
 describe('selectGesuchAppDataAccessGesuchsView', () => {
   it('selects view', () => {
-    const state = {
+    const state: State = {
       gesuch: undefined,
       gesuchs: [],
+      gesuchFormular: undefined,
+      benutzer: undefined,
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result = selectGesuchAppDataAccessGesuchsView.projector(state);
     expect(result.gesuchFormStepsInfo.length).toBeTruthy();

@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+  inject,
+} from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { Store } from '@ngrx/store';
@@ -23,6 +29,9 @@ import { gesuchAppPatternGesuchStepNavView } from './gesuch-app-pattern-gesuch-s
 })
 export class GesuchAppPatternGesuchStepNavComponent {
   private store = inject(Store);
+
+  @Output() navClicked = new EventEmitter();
+
   route = inject(Router);
 
   view$ = this.store.selectSignal(gesuchAppPatternGesuchStepNavView);

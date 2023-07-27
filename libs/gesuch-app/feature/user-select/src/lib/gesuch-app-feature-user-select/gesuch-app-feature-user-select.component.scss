@@ -1,0 +1,15 @@
+:host {
+  .row:nth-child(2n) {
+    background-color: var(--dv-gray-bg-subtle);
+  }
+  .col {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+    &.actions,
+    & .btn {
+      padding: 0;
+    }
+  }
+}

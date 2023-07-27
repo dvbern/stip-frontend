@@ -1,10 +1,10 @@
-<h2 class="mt-4">
+<h3 class="mt-4">
   {{
     'gesuch-app.form.eltern.' +
-      (elternteil.geschlecht === Anrede.FRAU ? 'mutter' : 'vater') +
+      (elternteil.elternTyp === ElternTyp.MUTTER ? 'mutter' : 'vater') +
       '.title' | translate
   }}
-</h2>
+</h3>
 
 <form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
   <div class="row g-4 my-2">
@@ -14,7 +14,7 @@
       }}</dv-shared-ui-form-label>
       <input
         dvSharedUiFormLabelTarget
-        formControlName="name"
+        formControlName="nachname"
         class="form-control"
         type="text"
       />
@@ -64,6 +64,50 @@
       </div>
     </dv-shared-ui-form-field>
   </div>
+  <!-- alternative civil residence -->
+  <div
+    class="row g-4 mt-1"
+    *ngIf="!form.value.identischerZivilrechtlicherWohnsitz"
+  >
+    <div class="col-12 col-xl-8">
+      <label class="mb-2">{{
+        'gesuch-app.form.shared.alternative-civil-residence.title' | translate
+      }}</label>
+      <div class="row g-4">
+        <!-- PLZ -->
+        <dv-shared-ui-form-field class="col-5 col-md-4 col-xl-3">
+          <dv-shared-ui-form-label
+            >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+          </dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="identischerZivilrechtlicherWohnsitzPLZ"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+
+        <!-- Ort -->
+        <dv-shared-ui-form-field class="col-7 col-md-8 col-xl-9">
+          <dv-shared-ui-form-label
+            >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+          </dv-shared-ui-form-label>
+          <input
+            class="form-control"
+            type="text"
+            dvSharedUiFormLabelTarget
+            formControlName="identischerZivilrechtlicherWohnsitzOrt"
+          />
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+      </div>
+    </div>
+  </div>
 
   <div class="row g-4 my-2">
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
@@ -86,7 +130,7 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <h3 class="pt-4">{{ 'shared.weiterangaben' | translate }}</h3>
+  <h3 class="pt-5">{{ 'shared.weiterangaben' | translate }}</h3>
 
   <div class="row g-4 my-2">
     <!-- GEBURTSDATUM -->
@@ -95,15 +139,13 @@
         'gesuch-app.form.shared.birthday.label' | translate
       }}</dv-shared-ui-form-label>
 
-      <div class="input-group">
-        <input
-          class="form-control"
-          placeholder="dd.mm.yyyy"
-          dvSharedUiFormLabelTarget
-          formControlName="geburtsdatum"
-          (blur)="onGeburtsdatumBlur($event)"
-        />
-      </div>
+      <input
+        class="form-control"
+        placeholder="dd.mm.yyyy"
+        dvSharedUiFormLabelTarget
+        formControlName="geburtsdatum"
+        (blur)="onGeburtsdatumBlur($event)"
+      />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
@@ -125,6 +167,9 @@
       <input formControlName="telefonnummer" class="form-control" />
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'telefonnummer'">
+        {{ 'shared.form.error.telefonnummer' | translate }}
       </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
@@ -160,6 +205,9 @@
           {{ 'shared.form.radio.no' | translate }}
         </label>
       </div>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
   <div class="row g-4 my-2">
@@ -193,6 +241,9 @@
           {{ 'shared.form.radio.no' | translate }}
         </label>
       </div>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
   <div class="row g-4 my-2">
@@ -230,15 +281,18 @@
           {{ 'shared.form.radio.no' | translate }}
         </label>
       </div>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
 
-  <!-- buttons -->
-  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+  <!-- Buttons -->
+  <dv-gesuch-app-ui-step-form-buttons>
     <button
       *ngIf="elternteil.id"
       type="button"
-      class="btn btn-outline-primary d-flex align-items-center"
+      class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
       [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
     >
@@ -256,5 +310,5 @@
     <button type="submit" class="btn btn-primary">
       {{ 'gesuch-app.form.save-and-back' | translate }}
     </button>
-  </div>
+  </dv-gesuch-app-ui-step-form-buttons>
 </form>

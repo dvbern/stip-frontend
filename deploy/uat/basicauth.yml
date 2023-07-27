@@ -1,0 +1,15 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: basic-auth
+  namespace: stip-uat
+spec:
+  encryptedData:
+    auth: AgA6a8PJovaJiLdQGrvgwTgw4AwgGDO0sg/kwetM5oCmjieCnvDefU3DVYFAFyXyNC9ZOYa63TxvrYoaTcHGobVrfxcQ0Dhit96bfcCvprsihSNSgAfk8IxU9ftr3CRsHJ2hg1uEJEn7xQVL6OW8GZra5z2rdo4PYXUE5ieIsw7v2fpOp5L3+1RcxInFxHJWM/jgfhld4TIlC6+ujVVqerAhtnbqiF8jsekzWVL4ENxgHtmf6c5NfNmR67Sse366Auo2Dyj24voqyYVAHcwhGut+26hXLG9z4xfC/qnGGTOWqix7LA+6RSEPvXAolJCk5e3KVoUQomZSUS80kNVAmxXVcQdKBOF6Dn93uOPnA+KgS5xI7ACUme5GBsV5eniTFX8HovNS0MYea1B43Bqoaln/8zpo1Ly4u6siyi3wlJ8q/giaXsxSWdvh64p60CFea+S6zWyL3JZAtDA4ijTaQm05MYaWQwwYPEZm9mMx5SSJPZlkMYG0fzm+IeyRw1BO8Ndq9VT545qN1vE8KuL4CbambW4o1TUg/m00TcRdbaizQ9VY36V9d8IL1bhhGZ4mfOBGsLmLwoN/cqkWQX1XYWE9KPcC+Awj9X1yBBVrRl66Xh+jPslucqpe9FRxksaCuSOMSEqnIJIrUScoMO/It0tZjTY69CJ1/MP+5vYWGE77se4mGQKwpsoSAQG0GbU/8st/+bf4gTGHOOsH2X360qVxLY4aDtz8oyX9fBP3t68aAabpMUBxN0QplSjWVO5+uQ==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: basic-auth
+      namespace: stip-uat
+

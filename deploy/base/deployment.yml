@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: gesuch-app
 spec:
-  replicas: 2
+  replicas: 1
   progressDeadlineSeconds: 120
   strategy:
     type: RollingUpdate
@@ -18,18 +18,15 @@ spec:
       containers:
         - name: gesuch-app
           imagePullPolicy: Always
-          image: docker-registry.dvbern.ch/kibon/stip/gesuch-app:latest
+          image: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app:latest
           ports:
             - name: http
               protocol: TCP
               containerPort: 80
           resources:
             limits:
-              cpu: 1000m
-              memory: 1Gi
-            requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: "200m"
+              memory: "256Mi"
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -49,4 +46,4 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
       imagePullSecrets:
-        - name: dvbern-registry
+        - name: dvbern-public-registry

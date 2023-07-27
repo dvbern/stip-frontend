@@ -39,7 +39,11 @@
         class="col-12 col-xl-8"
         *ngIf="sortedGeschwistersSig() as geschwisters"
       >
-        <table class="table" *ngIf="geschwisters.length">
+        <table
+          class="table"
+          *ngIf="geschwisters.length"
+          aria-describedby="List von Geschwister"
+        >
           <thead>
             <tr>
               <th scope="col"></th>
@@ -60,14 +64,12 @@
               *ngFor="let geschwisterRaw of geschwisters; trackBy: trackByIndex"
             >
               <ng-container
-                *ngIf="
-                  asGeschwister(geschwisterRaw!.geschwisterSB!) as geschwister
-                "
+                *ngIf="asGeschwister(geschwisterRaw) as geschwister"
               >
                 <th scope="row">
                   <i class="material-symbols-rounded">done</i>
                 </th>
-                <td>{{ geschwister.vorname }} {{ geschwister.name }}</td>
+                <td>{{ geschwister.vorname }} {{ geschwister.nachname }}</td>
                 <td>
                   {{
                     parseBackendLocalDateAndPrint(
@@ -104,19 +106,21 @@
     </div>
 
     <!-- ADD -->
-    <button
-      type="button"
-      class="btn btn-outline-primary"
-      (click)="handleAddGeschwister()"
-    >
-      {{ 'gesuch-app.form.geschwister.add' | translate }}
-    </button>
+    <div class="d-flex flex-column flex-md-row">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="handleAddGeschwister()"
+      >
+        {{ 'gesuch-app.form.geschwister.add' | translate }}
+      </button>
+    </div>
 
     <!-- Buttons -->
-    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <dv-gesuch-app-ui-step-form-buttons>
       <button type="button" class="btn btn-primary" (click)="handleContinue()">
         {{ 'gesuch-app.form.gonext' | translate }}
       </button>
-    </div>
+    </dv-gesuch-app-ui-step-form-buttons>
   </ng-container>
 </dv-gesuch-app-pattern-gesuch-step-layout>

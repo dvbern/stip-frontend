@@ -1,7 +1,7 @@
 import {
   Anrede,
   ElternAbwesenheitsGrund,
-  FamiliensituationDTO,
+  Familiensituation,
 } from '@dv/shared/model/gesuch';
 import { calculateExpectElternteil } from './gesuch-app-util-fn-gesuch-util';
 
@@ -32,9 +32,9 @@ describe('gesuch util', () => {
       grund: ElternAbwesenheitsGrund | undefined,
       expectElternteil: boolean
     ) => {
-      const familienSituation: FamiliensituationDTO = {
+      const familienSituation: Familiensituation = {
         elternteilUnbekanntVerstorben,
-      } as FamiliensituationDTO;
+      } as Familiensituation;
       if (geschlecht === 'HERR') {
         familienSituation.vaterUnbekanntVerstorben = grund;
       }

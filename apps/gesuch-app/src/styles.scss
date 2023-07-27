@@ -1,5 +1,7 @@
 // override boostrap variables + add custom
 @import 'theme';
+@include dv-variables;
+
 @import 'components';
 
 @import 'bootstrap/scss/bootstrap';

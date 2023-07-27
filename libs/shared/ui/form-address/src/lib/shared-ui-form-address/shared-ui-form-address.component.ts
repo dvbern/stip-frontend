@@ -1,13 +1,11 @@
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormGroup,
   FormsModule,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   DoCheck,
@@ -25,16 +23,8 @@ import {
   SharedUiFormMessageErrorDirective,
   SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
-import { Land, LandDTO } from '@dv/shared/model/gesuch';
-import {
-  distinctUntilChanged,
-  map,
-  Observable,
-  of,
-  startWith,
-  Subject,
-  switchMap,
-} from 'rxjs';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
+import { Land } from '@dv/shared/model/gesuch';
 
 @Component({
   selector: 'dv-shared-ui-form-address',
@@ -47,6 +37,7 @@ import {
     SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
+    SharedUiFormCountryComponent,
     SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
     SharedUiFormMessageInfoDirective,
@@ -58,25 +49,23 @@ import {
 export class SharedUiFormAddressComponent implements DoCheck {
   @Input({ required: true }) group!: FormGroup;
 
-  @Input({ required: true }) laender!: LandDTO[];
+  @Input({ required: true }) laender!: Land[];
 
   @Input({ required: true }) language!: string;
 
   touchedSig = signal(false);
 
-  static buildAddressFormGroup(fb: FormBuilder) {
+  static buildAddressFormGroup(fb: NonNullableFormBuilder) {
     return fb.group({
       coAdresse: ['', []],
       strasse: ['', [Validators.required]],
       hausnummer: ['', []],
       plz: ['', [Validators.required]],
       ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
+      land: fb.control<Land>('' as Land, {
+        validators: Validators.required,
+      }),
     });
-  }
-
-  trackByIndex(index: number) {
-    return index;
   }
 
   ngDoCheck(): void {

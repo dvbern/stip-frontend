@@ -6,7 +6,7 @@
       }}</dv-shared-ui-form-label>
       <input
         dvSharedUiFormLabelTarget
-        formControlName="name"
+        formControlName="nachname"
         class="form-control"
         type="text"
       />
@@ -37,15 +37,13 @@
         'gesuch-app.form.shared.birthday.label' | translate
       }}</dv-shared-ui-form-label>
 
-      <div class="input-group">
-        <input
-          class="form-control"
-          placeholder="dd.mm.yyyy"
-          dvSharedUiFormLabelTarget
-          formControlName="geburtsdatum"
-          (blur)="onGeburtsdatumBlur($event)"
-        />
-      </div>
+      <input
+        class="form-control"
+        placeholder="dd.mm.yyyy"
+        dvSharedUiFormLabelTarget
+        formControlName="geburtsdatum"
+        (blur)="onGeburtsdatumBlur($event)"
+      />
 
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
@@ -64,7 +62,7 @@
     <!-- Wohnsitz -->
     <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
       <dv-shared-ui-form-label>{{
-        'gesuch-app.form.geschwister.wohnsitz.label' | translate
+        'gesuch-app.form.shared.wohnsitz.label' | translate
       }}</dv-shared-ui-form-label>
       <select
         class="form-select"
@@ -78,7 +76,7 @@
           [ngValue]="a"
           *ngFor="let a of wohnsitzValues; trackBy: trackByIndex"
         >
-          {{ 'gesuch-app.form.geschwister.wohnsitz.select.' + a | translate }}
+          {{ 'gesuch-app.form.shared.wohnsitz.' + a | translate }}
         </option>
       </select>
       <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -87,29 +85,14 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <div
-    class="row g-4 my-2"
-    *ngIf="
-      !form.controls.wohnsitzAnteilVater.disabled &&
-      !form.controls.wohnsitzAnteilMutter.disabled
-    "
-  >
+  <div class="row g-4 my-2" [hidden]="!showWohnsitzSplitterSig()">
     <div class="col-12 col-md-6 col-xl-4">
       <!-- WOHNSITZ AUFTEILUNG -->
-      <dv-gesuch-app-ui-percentage-splitter
-        [controlA]="form.controls.wohnsitzAnteilMutter"
-        [controlB]="form.controls.wohnsitzAnteilVater"
-      >
-        <dv-shared-ui-form-label>{{
-          'gesuch-app.form.geschwister.wohnsitzanteil.label' | translate
-        }}</dv-shared-ui-form-label>
-        <dv-shared-ui-form-label class="label-a">{{
-          'gesuch-app.form.geschwister.wohnsitzanteil.mutter' | translate
-        }}</dv-shared-ui-form-label>
-        <dv-shared-ui-form-label class="label-b">{{
-          'gesuch-app.form.geschwister.wohnsitzanteil.vater' | translate
-        }}</dv-shared-ui-form-label>
-      </dv-gesuch-app-ui-percentage-splitter>
+      <dv-shared-ui-wohnsitz-splitter
+        [updateValidity]="save$ | async"
+        [visible]="showWohnsitzSplitterSig()"
+        [controls]="form.controls"
+      ></dv-shared-ui-wohnsitz-splitter>
     </div>
   </div>
 
@@ -138,12 +121,14 @@
           }}
         </label>
       </div>
+      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </dv-shared-ui-form-message>
     </dv-shared-ui-form-field>
   </div>
 
   <!-- buttons -->
-
-  <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+  <dv-gesuch-app-ui-step-form-buttons>
     <button
       type="button"
       class="btn btn-outline-primary"
@@ -154,5 +139,5 @@
     <button type="submit" class="btn btn-primary">
       {{ 'gesuch-app.form.save-and-back' | translate }}
     </button>
-  </div>
+  </dv-gesuch-app-ui-step-form-buttons>
 </form>

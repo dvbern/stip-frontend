@@ -6,7 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { Anrede, ElternDTO, LebenslaufItemDTO } from '@dv/shared/model/gesuch';
+import { ElternTyp, ElternUpdate } from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -20,21 +20,21 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class ElternteilCardComponent {
   @Input({ required: true })
-  elternteil!: ElternDTO | undefined;
+  elternteil!: ElternUpdate | undefined;
   @Input({ required: true })
-  geschlecht!: Anrede;
+  elternTyp!: ElternTyp;
   @Input({ required: true })
   translationkey!: string;
   @Output()
-  editTriggered = new EventEmitter<ElternDTO>();
+  editTriggered = new EventEmitter<ElternUpdate>();
   @Output()
-  addTriggered = new EventEmitter<Anrede>();
+  addTriggered = new EventEmitter<ElternTyp>();
 
   handleClick() {
     if (this.elternteil) {
       this.editTriggered.emit(this.elternteil);
     } else {
-      this.addTriggered.emit(this.geschlecht);
+      this.addTriggered.emit(this.elternTyp);
     }
   }
 }

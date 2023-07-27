@@ -88,7 +88,7 @@
             class="form-control"
             type="text"
             dvSharedUiFormLabelTarget
-            formControlName="name"
+            formControlName="nachname"
           />
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -167,7 +167,7 @@
                 class="form-control"
                 type="text"
                 dvSharedUiFormLabelTarget
-                formControlName="zivilrechtlicherWohnsitzPlz"
+                formControlName="identischerZivilrechtlicherWohnsitzPLZ"
               />
               <dv-shared-ui-form-message
                 *dvSharedUiFormMessageError="'required'"
@@ -185,7 +185,7 @@
                 class="form-control"
                 type="text"
                 dvSharedUiFormLabelTarget
-                formControlName="zivilrechtlicherWohnsitzOrt"
+                formControlName="identischerZivilrechtlicherWohnsitzOrt"
               />
               <dv-shared-ui-form-message
                 *dvSharedUiFormMessageError="'required'"
@@ -253,15 +253,13 @@
             'gesuch-app.form.shared.birthday.label' | translate
           }}</dv-shared-ui-form-label>
 
-          <div class="input-group">
-            <input
-              class="form-control"
-              placeholder="dd.mm.yyyy"
-              dvSharedUiFormLabelTarget
-              formControlName="geburtsdatum"
-              (blur)="onGeburtsdatumBlur($event)"
-            />
-          </div>
+          <input
+            class="form-control"
+            placeholder="dd.mm.yyyy"
+            dvSharedUiFormLabelTarget
+            formControlName="geburtsdatum"
+            (blur)="onGeburtsdatumBlur()"
+          />
 
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
@@ -278,29 +276,12 @@
         </dv-shared-ui-form-field>
 
         <!-- NATIONALITAET -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.nationality.label' | translate
-          }}</dv-shared-ui-form-label>
-          <select
-            class="form-select"
-            dvSharedUiFormLabelTarget
-            formControlName="nationalitaet"
-          >
-            <option [ngValue]="null" disabled selected>
-              {{ 'shared.form.select.empty' | translate }}
-            </option>
-            <option
-              [ngValue]="l.landCode"
-              *ngFor="let l of laenderSig(); trackBy: trackByIndex"
-            >
-              {{ languageSig() === 'de' ? l.landDE : l.landFR }}
-            </option>
-          </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+        <dv-shared-ui-form-country
+          class="col-12 col-md-6 col-xl-4"
+          formControlName="nationalitaet"
+          [labelText]="'gesuch-app.form.person.nationality.label' | translate"
+          [laender]="laenderSig()"
+        ></dv-shared-ui-form-country>
 
         <!-- Auslaenderausweis -->
         <div
@@ -417,7 +398,7 @@
         <!-- Wohnsitz -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.wohnsitz.label' | translate
+            'gesuch-app.form.shared.wohnsitz.label' | translate
           }}</dv-shared-ui-form-label>
           <select
             class="form-select"
@@ -431,7 +412,7 @@
               [ngValue]="z"
               *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
             >
-              {{ 'gesuch-app.form.person.wohnsitz.' + z | translate }}
+              {{ 'gesuch-app.form.shared.wohnsitz.' + z | translate }}
             </option>
           </select>
           <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
@@ -456,7 +437,57 @@
         </div>
       </div>
 
+      <!-- WOHNSITZ AUFTEILUNG -->
+      <div class="row g-4 my-2">
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          [hidden]="!showWohnsitzSplitterSig()"
+        >
+          <dv-shared-ui-wohnsitz-splitter
+            [updateValidity]="save$ | async"
+            [visible]="showWohnsitzSplitterSig()"
+            [controls]="form.controls"
+          ></dv-shared-ui-wohnsitz-splitter>
+        </div>
+      </div>
+
       <div class="row g-4 mt-1">
+        <!-- Quellenbesteuerung -->
+        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
+          <dv-shared-ui-form-label>{{
+            'gesuch-app.form.person.tax-at-source.label' | translate
+          }}</dv-shared-ui-form-label>
+          <div class="form-check">
+            <input
+              formControlName="quellenbesteuert"
+              [value]="true"
+              class="form-check-input"
+              type="radio"
+              name="quellenbesteuert"
+              id="quellenbesteuertJa"
+            />
+            <label class="form-check-label" for="quellenbesteuertJa">
+              {{ 'shared.form.radio.yes' | translate }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              formControlName="quellenbesteuert"
+              [value]="false"
+              class="form-check-input"
+              type="radio"
+              name="quellenbesteuert"
+              id="quellenbesteuertNein"
+            />
+            <label class="form-check-label" for="quellenbesteuerungNein">
+              {{ 'shared.form.radio.no' | translate }}
+            </label>
+          </div>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
+        </dv-shared-ui-form-field>
+
         <!-- Sozialhilfebeitraege -->
         <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-form-label>{{
@@ -488,39 +519,9 @@
               {{ 'shared.form.radio.no' | translate }}
             </label>
           </div>
-        </dv-shared-ui-form-field>
-
-        <!-- Quellenbesteuerung -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
-            'gesuch-app.form.person.tax-at-source.label' | translate
-          }}</dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuerung"
-              [value]="true"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuerung"
-              id="quellenbesteuerungJa"
-            />
-            <label class="form-check-label" for="quellenbesteuerungJa">
-              {{ 'shared.form.radio.yes' | translate }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuerung"
-              [value]="false"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuerung"
-              id="quellenbesteuerungNein"
-            />
-            <label class="form-check-label" for="quellenbesteuerungNein">
-              {{ 'shared.form.radio.no' | translate }}
-            </label>
-          </div>
+          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </dv-shared-ui-form-message>
         </dv-shared-ui-form-field>
       </div>
       <div class="row g-4 mt-1">
@@ -576,13 +577,11 @@
       </div>
 
       <!-- Buttons -->
-      <div
-        class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end"
-      >
+      <dv-gesuch-app-ui-step-form-buttons>
         <button type="submit" class="btn btn-primary">
           {{ 'gesuch-app.form.save-and-continue' | translate }}
         </button>
-      </div>
+      </dv-gesuch-app-ui-step-form-buttons>
     </form>
   </div>
 </dv-gesuch-app-pattern-gesuch-step-layout>

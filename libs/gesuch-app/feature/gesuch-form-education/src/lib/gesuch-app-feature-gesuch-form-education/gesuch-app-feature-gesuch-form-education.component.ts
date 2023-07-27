@@ -11,21 +11,22 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Ausbildungsland,
   AusbildungsPensum,
-  AusbildungstaetteDTO,
-  SharedModelGesuch,
+  Ausbildungsstaette,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -78,6 +79,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     SharedUiFormLabelTargetDirective,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
@@ -85,7 +87,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
 
   readonly ausbildungslandValues = Object.values(Ausbildungsland);
@@ -94,10 +96,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: [<string | null>null, [Validators.required]],
-    ausbildungstaette: [<string | null>null, [Validators.required]],
-    ausbildungsgang: [<string | null>null, [Validators.required]],
-    fachrichtung: [<string | null>null, [Validators.required]],
+    ausbildungsland: this.formBuilder.control<Ausbildungsland>(
+      '' as Ausbildungsland,
+      {
+        validators: Validators.required,
+      }
+    ),
+    ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
+    alternativeAusbildungsstaette: [<string | undefined>undefined],
+    ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
+    alternativeAusbildungsgang: [<string | undefined>undefined],
+    fachrichtung: ['', [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     alternativeAusbildungsgang: [<string | null>null],
     alternativeAusbildungstaette: [<string | null>null],
@@ -131,29 +140,37 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: [<string | null>null, [Validators.required]],
+    pensum: this.formBuilder.control<AusbildungsPensum>(
+      '' as AusbildungsPensum,
+      {
+        validators: Validators.required,
+      }
+    ),
   });
 
   view$ = this.store.selectSignal(
     selectGesuchAppFeatureGesuchFormEducationView
   );
   land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
-  ausbildungstaetteOptions$ = computed(() => {
-    const ausbildungstaettes = this.view$().ausbildungstaettes;
-    return ausbildungstaettes.filter(
+  ausbildungsstaetteOptions$ = computed(() => {
+    const ausbildungsstaettes = this.view$().ausbildungsstaettes;
+    return ausbildungsstaettes.filter(
       (item) => item.ausbildungsland === this.land$()
     );
   });
   ausbildungsstaett$ = toSignal(
-    this.form.controls.ausbildungstaette.valueChanges
+    this.form.controls.ausbildungsstaette.valueChanges
   );
   ausbildungsgangOptions$ = computed(() => {
     return (
-      this.ausbildungstaetteOptions$().find(
+      this.ausbildungsstaetteOptions$().find(
         (item) => item.name === this.ausbildungsstaett$()
       )?.ausbildungsgaenge || []
     );
   });
+  ausbildungNichtGefundenChanged$ = toSignal(
+    this.form.controls.ausbildungNichtGefunden.valueChanges
+  );
   startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
   endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
 
@@ -169,18 +186,24 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         'monthYear'
       ),
     ]);
-    this.form.controls.ausbildungBegin.addValidators([
-      createDateDependencyValidator(
-        'before',
-        this.form.controls.ausbildungEnd,
-        true,
-        new Date(),
-        this.languageSig(),
-        'monthYear'
-      ),
-    ]);
 
     // abhaengige Validierung zuruecksetzen on valueChanges
+    effect(
+      () => {
+        const value = this.ausbildungNichtGefundenChanged$();
+        const {
+          alternativeAusbildungsgang,
+          alternativeAusbildungsstaette,
+          ausbildungsgang,
+          ausbildungsstaette,
+        } = this.form.controls;
+        this.formUtils.setRequired(alternativeAusbildungsgang, !!value);
+        this.formUtils.setRequired(alternativeAusbildungsstaette, !!value);
+        this.formUtils.setRequired(ausbildungsgang, !value);
+        this.formUtils.setRequired(ausbildungsstaette, !value);
+      },
+      { allowSignalWrites: true }
+    );
     effect(
       () => {
         this.startChanged$();
@@ -200,18 +223,18 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     effect(
       () => {
         const { ausbildung } = this.view$();
-        const { ausbildungstaettes } = this.view$();
-        if (ausbildung && ausbildungstaettes) {
+        const { ausbildungsstaettes } = this.view$();
+        if (ausbildung && ausbildungsstaettes) {
           this.form.patchValue({
             ...ausbildung,
-            ausbildungstaette: ausbildungstaettes?.find(
-              (ausbildungstaette) =>
-                ausbildungstaette.id === ausbildung.ausbildungstaetteId
+            ausbildungsstaette: ausbildungsstaettes?.find(
+              (ausbildungsstaette) =>
+                ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
             )?.name,
-            ausbildungsgang: ausbildungstaettes
+            ausbildungsgang: ausbildungsstaettes
               ?.find(
-                (ausbildungstaette) =>
-                  ausbildungstaette.id === ausbildung.ausbildungstaetteId
+                (ausbildungsstaette) =>
+                  ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
               )
               ?.ausbildungsgaenge?.find(
                 (ausbildungsgang) =>
@@ -233,7 +256,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         // do not enable/disable fields  on signal default value
         this.formUtils.setDisabledState(
-          this.form.controls.ausbildungstaette,
+          this.form.controls.ausbildungsstaette,
           !land$(),
           true
         );
@@ -243,8 +266,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
     // When Staette null, disable gang
     const staette$ = toSignal(
-      this.form.controls.ausbildungstaette.valueChanges.pipe(
-        startWith(this.form.value.ausbildungstaette)
+      this.form.controls.ausbildungsstaette.valueChanges.pipe(
+        startWith(this.form.value.ausbildungsstaette)
       )
     );
     effect(
@@ -272,8 +295,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   // which should trigger it and not the backed patching of value
   // we would need .valueChangesUser and .valueChangesPatch to make it fully declarative
   handleLandChangedByUser() {
-    this.form.controls.ausbildungstaette.reset(null);
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsstaette.reset();
+    this.form.controls.ausbildungsgang.reset();
     this.form.controls.fachrichtung.reset(null);
   }
 
@@ -288,7 +311,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   handleStaetteChangedByUser() {
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsgang.reset();
     this.form.controls.fachrichtung.reset(null);
   }
 
@@ -297,18 +320,22 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   handleManuellChangedByUser() {
-    this.form.controls.ausbildungstaette.reset(null);
-    this.form.controls.ausbildungsgang.reset(null);
+    this.form.controls.ausbildungsstaette.reset();
+    this.form.controls.alternativeAusbildungsstaette.reset();
+    this.form.controls.ausbildungsgang.reset();
+    this.form.controls.alternativeAusbildungsgang.reset();
     this.form.controls.fachrichtung.reset(null);
   }
 
   handleSave() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
-          gesuch: this.buildUpdatedGesuchFromForm(),
+          gesuchId,
+          gesuchFormular,
         })
       );
     }
@@ -319,34 +346,36 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   private buildUpdatedGesuchFromForm() {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
+    const { gesuch, gesuchFormular } = this.view$();
     return {
-      ...this.view$().gesuch,
-      ausbildungContainer: {
-        ausbildungSB: {
-          ...(this.form.getRawValue() as any),
-          ausbildungstaetteId: this.ausbildungstaetteOptions$()
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        ausbildung: {
+          ...this.form.getRawValue(),
+          ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
             .filter(
-              (ausbildungstaette) =>
-                ausbildungstaette.name ===
-                this.form.controls.ausbildungstaette.value
+              (ausbildungsstaette) =>
+                ausbildungsstaette.name ===
+                this.form.controls.ausbildungsstaette.value
             )
             .pop()?.id,
           ausbildungsgangId: this.form.controls.ausbildungsgang.value,
         },
       },
-    } as Partial<SharedModelGesuch>;
+    };
   }
 
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
-  ausbildungstaetteTypeaheadFn$: Signal<
+  ausbildungsstaetteTypeaheadFn$: Signal<
     OperatorFunction<string, readonly any[]>
   > = computed(() => {
-    return this.createAusbildungstaetteTypeaheadFn(
-      this.ausbildungstaetteOptions$()
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
     );
   });
 
-  focusAusbildungstaette$ = new Subject<string>();
+  focusAusbildungsstaette$ = new Subject<string>();
   clickAusbildungstaette$ = new Subject<string>();
 
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
@@ -357,7 +386,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     }
   }
 
-  createAusbildungstaetteTypeaheadFn(list: AusbildungstaetteDTO[]) {
+  createAusbildungsstaetteTypeaheadFn(list: Ausbildungsstaette[]) {
     console.log('computing typeaheading function for list ', list);
     return (text$: Observable<string>) => {
       const debouncedText$ = text$.pipe(
@@ -368,7 +397,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       const clicksWithClosedPopup$ = click$.pipe(
         filter(() => !this.ausbildungsstaetteTypeahead!.isPopupOpen())
       );
-      const focus$ = this.focusAusbildungstaette$;
+      const focus$ = this.focusAusbildungsstaette$;
       return merge(debouncedText$, focus$, clicksWithClosedPopup$).pipe(
         map((term) => {
           console.log('typeaheading term ', term, list);

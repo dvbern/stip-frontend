@@ -9,8 +9,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
-  FormControl,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -18,18 +17,18 @@ import {
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import {
   Anrede,
+  Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
   Niederlassungsstatus,
   PATTERN_EMAIL,
-  PersonInAusbildungDTO,
-  SharedModelGesuch,
+  Sprache,
   Wohnsitz,
   Zivilstand,
-  Sprache,
 } from '@dv/shared/model/gesuch';
 import {
   DocumentOptions,
@@ -45,6 +44,11 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import {
+  optionalRequiredBoolean,
+  SharedUtilFormService,
+  unsetString,
+} from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -62,7 +66,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feature-gesuch-form-person.selector';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  addWohnsitzControls,
+  SharedUiWohnsitzSplitterComponent,
+  wohnsitzAnteileString,
+  wohnsitzAnteileNumber,
+} from '@dv/shared/ui/wohnsitz-splitter';
+import { Subject } from 'rxjs';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -84,9 +95,12 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     SharedUiFormMessageComponent,
     SharedUiFormMessageInfoDirective,
     SharedUiFormMessageErrorDirective,
+    SharedUiFormCountryComponent,
+    SharedUiWohnsitzSplitterComponent,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiFormAddressComponent,
     SharedPatternDocumentUploadComponent,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
@@ -94,7 +108,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
 })
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private store = inject(Store);
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly anredeValues = Object.values(Anrede);
@@ -108,12 +122,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   });
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
+  save$ = new Subject();
 
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
     return {
       resource: 'gesuch',
-      resourceId: this.view().gesuch ? this.view().gesuch!.id! : null,
+      resourceId: this.view().gesuch?.id,
       type: 'person',
     } as DocumentOptions;
   });
@@ -123,15 +138,23 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       '',
       [Validators.required, sharedUtilValidatorAhv],
     ],
-    anrede: ['', [Validators.required]],
-    name: ['', [Validators.required]],
+    anrede: this.formBuilder.control<Anrede>('' as Anrede, {
+      validators: Validators.required,
+    }),
+    nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    zivilrechtlicherWohnsitzPlz: ['', [Validators.required]],
-    zivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: [
+      unsetString,
+      [Validators.required],
+    ],
+    identischerZivilrechtlicherWohnsitzOrt: [
+      unsetString,
+      [Validators.required],
+    ],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
     telefonnummer: [
       '',
@@ -154,26 +177,41 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         ),
       ],
     ],
-    nationalitaet: ['', [Validators.required]],
+    nationalitaet: this.formBuilder.control<Land>('' as Land, {
+      validators: Validators.required,
+    }),
     heimatort: ['', [Validators.required]],
-    niederlassungsstatus: ['', [Validators.required]],
-    vormundschaft: new FormControl<boolean | null>(null, []),
-    zivilstand: ['', [Validators.required]],
-    wohnsitz: ['', [Validators.required]],
-    sozialhilfebeitraege: new FormControl<boolean | null>(null, []),
-    quellenbesteuerung: new FormControl<boolean | null>(null, []),
+    niederlassungsstatus: this.formBuilder.control<
+      Niederlassungsstatus | undefined
+    >(undefined, { validators: Validators.required }),
+    vormundschaft: [false, []],
+    zivilstand: this.formBuilder.control<Zivilstand>('' as Zivilstand, {
+      validators: Validators.required,
+    }),
+    ...addWohnsitzControls(this.formBuilder),
+    quellenbesteuert: [optionalRequiredBoolean, [Validators.required]],
+    sozialhilfebeitraege: [optionalRequiredBoolean, [Validators.required]],
     digitaleKommunikation: [true, []],
-    korrespondenzSprache: ['', [Validators.required]],
+    korrespondenzSprache: this.formBuilder.control<Sprache>('' as Sprache, {
+      validators: Validators.required,
+    }),
+  });
+
+  private wohnsitzChangedSig = toSignal(
+    this.form.controls.wohnsitz.valueChanges
+  );
+
+  showWohnsitzSplitterSig = computed(() => {
+    return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
   });
 
   constructor() {
     // patch form value
     effect(
       () => {
-        const { gesuch } = this.view();
-        if (gesuch?.personInAusbildungContainer?.personInAusbildungSB) {
-          const person =
-            gesuch.personInAusbildungContainer.personInAusbildungSB;
+        const { gesuchFormular } = this.view();
+        if (gesuchFormular?.personInAusbildung) {
+          const person = gesuchFormular.personInAusbildung;
           const personForForm = {
             ...person,
             geburtsdatum: parseBackendLocalDateAndPrint(
@@ -181,28 +219,33 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
               this.languageSig()
             ),
           };
-          this.form.patchValue({ ...personForForm });
+          this.form.patchValue({
+            ...personForForm,
+            ...wohnsitzAnteileString(person),
+          });
         }
       },
       { allowSignalWrites: true }
     );
-    const zivilrechtlichChanged$ = toSignal(
-      this.form.controls.identischerZivilrechtlicherWohnsitz.valueChanges
+    const zivilrechtlichChanged$ = this.formUtils.signalFromChanges(
+      this.form.controls.identischerZivilrechtlicherWohnsitz,
+      { useDefault: true }
     );
     effect(
       () => {
-        const zivilrechtlichIdentisch = zivilrechtlichChanged$();
-        if (zivilrechtlichIdentisch) {
-          this.form.controls.zivilrechtlicherWohnsitzPlz.patchValue('');
-          this.form.controls.zivilrechtlicherWohnsitzOrt.patchValue('');
-          this.form.controls.zivilrechtlicherWohnsitzPlz.disable();
-          this.form.controls.zivilrechtlicherWohnsitzOrt.disable();
-        } else {
-          this.form.controls.zivilrechtlicherWohnsitzPlz.enable();
-          this.form.controls.zivilrechtlicherWohnsitzOrt.enable();
-        }
-        this.form.controls.zivilrechtlicherWohnsitzPlz.updateValueAndValidity();
-        this.form.controls.zivilrechtlicherWohnsitzOrt.updateValueAndValidity();
+        const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
+        this.formUtils.setDisabledState(
+          this.form.controls.identischerZivilrechtlicherWohnsitzPLZ,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.identischerZivilrechtlicherWohnsitzOrt,
+          zivilrechtlichIdentisch,
+          true
+        );
+        this.form.controls.identischerZivilrechtlicherWohnsitzPLZ.updateValueAndValidity();
+        this.form.controls.identischerZivilrechtlicherWohnsitzOrt.updateValueAndValidity();
       },
       { allowSignalWrites: true }
     );
@@ -225,8 +268,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
         }
         // No nationality was selected
         else if (nationalitaetChanged === undefined) {
-          this.form.controls.niederlassungsstatus.patchValue('');
-          this.form.controls.niederlassungsstatus.disable();
+          this.formUtils.setDisabledState(
+            this.form.controls.niederlassungsstatus,
+            true,
+            true
+          );
           this.formUtils.setDisabledState(
             this.form.controls.heimatort,
             true,
@@ -263,12 +309,15 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   handleSave() {
+    this.save$.next({});
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPerson.saveTriggered({
+          gesuchId,
+          gesuchFormular,
           origin: GesuchFormSteps.PERSON,
-          gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );
     }
@@ -278,7 +327,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     return index;
   }
 
-  onGeburtsdatumBlur(_: any) {
+  onGeburtsdatumBlur() {
     return onDateInputBlur(
       this.form.controls.geburtsdatum,
       subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER),
@@ -287,27 +336,30 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view().gesuch;
+    const { gesuch, gesuchFormular } = this.view();
     return {
-      ...gesuch,
-      personInAusbildungContainer: {
-        ...gesuch?.personInAusbildungContainer,
-        personInAusbildungSB: {
-          ...gesuch?.personInAusbildungContainer?.personInAusbildungSB,
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        personInAusbildung: {
           ...this.form.getRawValue(),
           adresse: {
-            ...gesuch?.personInAusbildungContainer?.personInAusbildungSB
-              ?.adresse,
+            id: gesuchFormular?.personInAusbildung?.adresse?.id,
             ...this.form.getRawValue().adresse,
           },
           geburtsdatum: parseStringAndPrintForBackendLocalDate(
             this.form.getRawValue().geburtsdatum,
             this.languageSig(),
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
-          ),
-        } as PersonInAusbildungDTO,
+          )!,
+          ...wohnsitzAnteileNumber(this.form.getRawValue()),
+
+          // TODO missing fields that exist on the Adresse:
+          quellenbesteuert: false,
+          kinder: false,
+        },
       },
-    } as SharedModelGesuch;
+    };
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;

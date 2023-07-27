@@ -7,17 +7,21 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
   Land,
   MASK_SOZIALVERSICHERUNGSNUMMER,
-  PartnerDTO,
-  SharedModelGesuch,
+  PartnerUpdate,
 } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormComponent,
@@ -42,6 +46,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-feature-gesuch-form-partner.selector';
+import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -62,6 +67,7 @@ const MEDIUM_AGE_ADULT = 30;
     MaskitoModule,
     NgbInputDatepicker,
     SharedUiFormMessageErrorDirective,
+    GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-partner.component.html',
   styleUrls: ['./gesuch-app-feature-gesuch-form-partner.component.scss'],
@@ -70,7 +76,7 @@ const MEDIUM_AGE_ADULT = 30;
 export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   private store = inject(Store);
 
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
@@ -88,16 +94,11 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
       '',
       [Validators.required, sharedUtilValidatorAhv],
     ],
-    name: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
-    adresse: this.formBuilder.group({
-      coAdresse: ['', []],
-      strasse: ['', [Validators.required]],
-      nummer: ['', []],
-      plz: ['', [Validators.required]],
-      ort: ['', [Validators.required]],
-      land: ['', [Validators.required]],
-    }),
+    adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
+      this.formBuilder
+    ),
     geburtsdatum: [
       '',
       [
@@ -120,9 +121,9 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      const { gesuch } = this.view();
-      if (gesuch?.partnerContainer?.partnerSB) {
-        const partner = gesuch.partnerContainer.partnerSB;
+      const { gesuchFormular } = this.view();
+      if (gesuchFormular?.partner) {
+        const partner = gesuchFormular.partner;
         const partnerForForm = {
           ...partner,
           geburtsdatum: partner.geburtsdatum.toString(),
@@ -133,6 +134,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
             partner.geburtsdatum,
             this.languageSig()
           ),
+          jahreseinkommen: partnerForForm.jahreseinkommen.toString(),
         });
       }
     });
@@ -145,11 +147,13 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPartner.nextStepTriggered({
           origin: GesuchFormSteps.PARTNER,
-          gesuch: this.buildUpdatedGesuchFromForm(),
+          gesuchId,
+          gesuchFormular,
         })
       );
     }
@@ -157,11 +161,13 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndBack() {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
+    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormPartner.prevStepTriggered({
+          gesuchId,
+          gesuchFormular,
           origin: GesuchFormSteps.PARTNER,
-          gesuch: this.buildUpdatedGesuchFromForm(),
         })
       );
     }
@@ -180,26 +186,29 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const gesuch = this.view().gesuch;
-    return {
-      ...gesuch,
-      partnerContainer: {
-        ...gesuch?.partnerContainer,
-        partnerSB: {
-          ...gesuch?.partnerContainer?.partnerSB,
-          ...this.form.getRawValue(),
-          adresse: {
-            id: gesuch!.partnerContainer!.partnerSB!.adresse?.id || '', // TODO wie geht das bei neuen entities?
-            ...this.form.getRawValue().adresse,
-          },
-          geburtsdatum: parseStringAndPrintForBackendLocalDate(
-            this.form.getRawValue().geburtsdatum,
-            this.languageSig(),
-            subYears(new Date(), MEDIUM_AGE_ADULT)
-          )!,
-        } as PartnerDTO,
+    const { gesuch, gesuchFormular } = this.view();
+    const formValues = this.form.getRawValue();
+    const partner: PartnerUpdate = {
+      ...gesuchFormular?.partner,
+      ...formValues,
+      adresse: {
+        id: gesuchFormular?.partner?.adresse?.id,
+        ...formValues.adresse,
       },
-    } as Partial<SharedModelGesuch>;
+      geburtsdatum: parseStringAndPrintForBackendLocalDate(
+        formValues.geburtsdatum,
+        this.languageSig(),
+        subYears(new Date(), MEDIUM_AGE_ADULT)
+      )!,
+      jahreseinkommen: +formValues.jahreseinkommen,
+    };
+    return {
+      gesuchId: gesuch?.id,
+      gesuchFormular: {
+        ...gesuchFormular,
+        partner,
+      },
+    };
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
