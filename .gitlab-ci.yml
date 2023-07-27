@@ -76,7 +76,7 @@ build:pipeline:
     FORCE: 'false'
   script:
     - echo "Force Mode [${FORCE:-false}]"
-    - node ./tools/pipeline/generate.js "$([ "$FORCE" = true ] && npx nx print-affected --type=app --base=dad9f00e4eb515c5bffcde425fc2c78c42e77857 || npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
+    - node ./tools/pipeline/generate.js "$([ "$FORCE" = true ] && npx nx print-affected --type=app --base=fa4ec0f0a896b02f99a025cf3a798753ab42d1ad || npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
     - cat affected-apps.gitlab-ci.yml
   rules:
     - if: $CI_COMMIT_BRANCH || $CI_PIPELINE_SOURCE == 'merge_request_event'
