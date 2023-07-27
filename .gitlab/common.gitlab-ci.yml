@@ -36,7 +36,7 @@ variables:
     - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
       echo "Skipping npm ci because a cached version is available"'
     - NX_HEAD=${NX_HEAD:-$CI_COMMIT_SHA}
-    - NX_BASE=fa4ec0f0a896b02f99a025cf3a798753ab42d1ad
+    - NX_BASE=f0731bcdddd7e5f20db7519f1916edb3d90ea998
     - echo "NX_HEAD $NX_HEAD"
     - echo "NX_BASE $NX_BASE"
   rules:
