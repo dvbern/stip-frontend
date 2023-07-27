@@ -231,32 +231,23 @@
     <div class="d-flex flex-column align-items-start">
       <ul class="nav flex-column w-100">
         <li class="nav-item">
-          <span class="nav-link mb-4">Armin Student</span>
+          <span class="nav-link mb-4">{{ benutzerNameSig() }}</span>
         </li>
 
         <li class="nav-item">
           <a class="nav-link">Profil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link">Logout</a>
+          <button type="button" class="nav-link" (click)="logout()">
+            Logout
+          </button>
         </li>
       </ul>
     </div>
   </div>
 
   <!-- DESKTOP HEADER (LEFT) -->
-  <div class="header-desktop-left d-flex flex-grow-1 ms-3">
-    <div class="d-flex gap-3 align-items-center">
-      <a
-        routerLink="/"
-        class="btn btn-warning fw-normal px-2 d-flex align-items-center shadow-none"
-        data-testid="cockpit-nav-dashboard"
-      >
-        <i class="material-symbols-rounded text-white me-2">dashboard</i>
-        <span>Dashboard</span>
-      </a>
-    </div>
-  </div>
+  <div class="header-desktop-left d-flex flex-grow-1 ms-3"></div>
 
   <!-- DESKTOP HEADER (RIGHT) -->
   <div class="header-desktop-right d-flex gap-4 align-items-center">
@@ -273,13 +264,13 @@
         id="userMenu"
         ngbDropdownToggle
       >
-        <span>Armin Student</span>
+        <span>{{ benutzerNameSig() }}</span>
         <i class="material-symbols-rounded ms-2">expand_more</i>
       </button>
 
       <div ngbDropdownMenu aria-labelledby="userMenu">
         <button type="button" ngbDropdownItem>Profil</button>
-        <button type="button" ngbDropdownItem>Logout</button>
+        <button type="button" ngbDropdownItem (click)="logout()">Logout</button>
       </div>
     </div>
   </div>

@@ -7,6 +7,10 @@ import { HttpClient } from '@angular/common/http';
 import { Benutzer } from '@dv/shared/model/gesuch';
 import { Router } from '@angular/router';
 
+import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
+import { setBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
+import { Store } from '@ngrx/store';
+
 @Component({
   selector: 'dv-gesuch-app-feature-user-select',
   standalone: true,
@@ -23,14 +27,16 @@ import { Router } from '@angular/router';
 export class GesuchAppFeatureUserSelectComponent {
   http = inject(HttpClient);
   router = inject(Router);
+  store = inject(Store);
   users$ = this.http.get<Benutzer[]>('/api/v1/benutzer');
 
   trackByIndex(index: number) {
     return index;
   }
 
-  setUser(userId: string) {
-    localStorage.setItem('userId', userId);
+  setUser(benutzer: Benutzer) {
+    this.store.dispatch(GesuchAppEventBenutzer.setBenutzer(benutzer));
+    setBenutzerId(benutzer.id);
     this.router.navigate(['/gesuch-app-feature-cockpit']);
   }
 }

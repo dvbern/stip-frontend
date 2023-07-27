@@ -2,12 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import {
+  Gesuch,
   GesuchCreate,
   SHARED_MODEL_GESUCH_RESOURCE,
   SharedModelGesuch,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
+import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
 
 const RESOURCE_URL =
   `${SHARED_MODEL_API_URL}${SHARED_MODEL_GESUCH_RESOURCE}` as const;
@@ -18,7 +20,7 @@ export class GesuchAppDataAccessGesuchService {
 
   getAll() {
     return this.http.get<SharedModelGesuch[]>(
-      `${RESOURCE_URL}/benutzer/${localStorage.getItem('userId')}`
+      `${RESOURCE_URL}/benutzer/${getBenutzerId()}`
     );
   }
 
@@ -26,9 +28,13 @@ export class GesuchAppDataAccessGesuchService {
     return this.http.get<SharedModelGesuch>(`${RESOURCE_URL}/${id}`);
   }
 
+  getByFallId(id: string) {
+    return this.http.get<Gesuch[]>(`${RESOURCE_URL}/fall/${id}`);
+  }
+
   create(gesuch: GesuchCreate) {
     // use REST because then it is compatible with mock backend
-    return this.http.post<{ id: string }>(`${RESOURCE_URL}`, gesuch);
+    return this.http.post<null>(`${RESOURCE_URL}`, gesuch);
   }
 
   update(gesuchId: string, gesuchFormular: Partial<SharedModelGesuchFormular>) {

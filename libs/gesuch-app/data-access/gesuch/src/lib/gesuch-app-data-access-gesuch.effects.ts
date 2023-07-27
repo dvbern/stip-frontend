@@ -6,7 +6,15 @@ import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  exhaustMap,
+  filter,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
@@ -101,8 +109,20 @@ export const createGesuch = createEffect(
       ofType(GesuchAppEventCockpit.newTriggered),
       exhaustMap(({ create }) =>
         gesuchAppDataAccessGesuchService.create(create).pipe(
-          map(({ id }) =>
-            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({ id })
+          switchMap(() =>
+            gesuchAppDataAccessGesuchService.getByFallId(create.fallId)
+          ),
+          map(
+            (gesuche) =>
+              gesuche.find(
+                ({ gesuchsperiode: { id } }) => id === create.gesuchsperiodeId
+              )?.id
+          ),
+          filter((id) => id != null),
+          map((id) =>
+            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
+              id: id!, // TODO cleanup quick workaround
+            })
           ),
           catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure({

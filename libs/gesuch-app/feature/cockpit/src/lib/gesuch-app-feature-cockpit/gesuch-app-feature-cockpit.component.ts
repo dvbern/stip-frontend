@@ -2,10 +2,11 @@ import { CommonModule, NgFor } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
@@ -31,6 +32,12 @@ import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.
 // -----
 import { HttpClient } from '@angular/common/http';
 import { map, switchMap } from 'rxjs/operators';
+import {
+  getBenutzerId,
+  unsetBenutzerId,
+} from '@dv/shared/util-fn/local-storage-helper';
+import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
+import { selectBenutzer } from '@dv/gesuch-app/data-access/gesuch';
 // -----
 
 @Component({
@@ -57,7 +64,7 @@ import { map, switchMap } from 'rxjs/operators';
 export class GesuchAppFeatureCockpitComponent implements OnInit {
   // TODO: Remove once login exists
   // -----
-  private fallUrl = `/api/v1/fall/benutzer/${localStorage.getItem('userId')}`;
+  private fallUrl = `/api/v1/fall/benutzer/${getBenutzerId()}`;
   private http = inject(HttpClient);
   fall$ = this.http.get<Fall[]>(this.fallUrl).pipe(
     switchMap((falls) =>
@@ -72,8 +79,13 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   // -----
 
   private store = inject(Store);
+  private router = inject(Router);
 
   cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
+  benutzerNameSig = computed(() => {
+    const benutzer = this.store.selectSignal(selectBenutzer)();
+    return `${benutzer?.vorname} ${benutzer?.nachname}`;
+  });
 
   languageSig = this.store.selectSignal(selectLanguage);
 
@@ -98,6 +110,12 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   trackByIndex(index: number) {
     return index;
+  }
+
+  logout() {
+    unsetBenutzerId();
+    this.store.dispatch(GesuchAppEventBenutzer.init());
+    this.router.navigate(['/']);
   }
 
   handleLanguageChangeHeader(language: Language) {
