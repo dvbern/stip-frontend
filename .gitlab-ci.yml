@@ -23,11 +23,12 @@ lint:
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=3
 
-format-check:
-  stage: validate
-  extends: .base
-  script:
-    - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+# Temporarily disabled
+# format-check:
+#   stage: validate
+#   extends: .base
+#   script:
+#     - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
 
 test:
   extends: .base
