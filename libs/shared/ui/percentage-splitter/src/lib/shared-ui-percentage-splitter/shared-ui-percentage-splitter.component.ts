@@ -44,9 +44,8 @@ import { percentStringToNumber } from '../utils/form';
   styleUrls: ['./shared-ui-percentage-splitter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
+export class SharedUiPercentageSplitterComponent implements OnInit {
   @Input() updateValidity: unknown;
-  @Input() visible = false;
 
   @Input({ required: true })
   controlA!: FormControl<string | undefined>;
@@ -56,22 +55,7 @@ export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
 
   private injector = inject(Injector);
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['visible']) {
-      if (changes['visible'].currentValue) {
-        this.setVisible(this.controlA);
-        this.setVisible(this.controlB);
-      } else {
-        this.setInvisible(this.controlA);
-        this.setInvisible(this.controlB);
-      }
-    }
-  }
-
   public ngOnInit(): void {
-    this.ngOnChanges({
-      visible: new SimpleChange(null, this.visible, true),
-    });
     runInInjectionContext(this.injector, () => {
       const controlAChangedSig = toSignal(this.controlA.valueChanges, {
         initialValue: undefined,

@@ -1,6 +1,6 @@
 <dv-shared-ui-percentage-splitter
   [updateValidity]="updateValidity"
-  [visible]="visible"
+  *ngIf="visible"
   [controlA]="controls.wohnsitzAnteilMutter"
   [controlB]="controls.wohnsitzAnteilVater"
 >
