@@ -3,9 +3,8 @@ include:
 
 stages:
   - validate
-  # Temporarily disabled
-  # - test
-  # - analyze
+  - test
+  - analyze
   - build
   - deploy
   - mirror
@@ -24,52 +23,50 @@ lint:
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=3
 
-# Temporarily disabled
-# format-check:
-#   stage: validate
-#   extends: .base
-#   script:
-#     - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+format-check:
+  stage: validate
+  extends: .base
+  script:
+    - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
 
-# test:
-#   extends: .base
-#   stage: test
-#   script:
-#     - npm run test:ci
-#   allow_failure: true
-#   artifacts:
-#     when: always
-#     paths:
-#       - coverage
-#     reports:
-#       junit:
-#         - junit.xml
-#     expire_in: 1 day
+test:
+  extends: .base
+  stage: test
+  script:
+    - npm run test:ci
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - coverage
+    reports:
+      junit:
+        - junit.xml
+    expire_in: 1 day
 
-# Temporarily disabled
-# sonarqube-check:
-#   image:
-#     name: sonarsource/sonar-scanner-cli:latest
-#     entrypoint: ['']
-#   stage: analyze
-#   tags: ['os:linux', 'type:docker', 'zone:tz']
-#   variables:
-#     SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
-#     GIT_DEPTH: '0'
-#   cache:
-#     key: '${CI_JOB_NAME}'
-#     paths:
-#       - .sonar/cache
-#   script:
-#     - sonar-scanner
-#   allow_failure: true
-#   rules:
-#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-#     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-#     - if: $CI_COMMIT_BRANCH
-#   needs:
-#     - job: test
-#       artifacts: true
+sonarqube-check:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: ['']
+  stage: analyze
+  tags: ['os:linux', 'type:docker', 'zone:tz']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
+    GIT_DEPTH: '0'
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH
+  needs:
+    - job: test
+      artifacts: true
 
 build:pipeline:
   stage: build
@@ -77,8 +74,7 @@ build:pipeline:
   variables:
     FORCE: 'false'
   script:
-    - echo "Force Mode [${FORCE:-false}]"
-    - node ./tools/pipeline/generate.js "$([ "$FORCE" = true ] && npx nx print-affected --type=app || npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
+    - node ./tools/pipeline/generate.js "$([ "$FORCE" = true ] && npx nx print-affected --type=app --all || npx nx print-affected --type=app --base=$NX_BASE --head=$NX_HEAD)"
     - cat affected-apps.gitlab-ci.yml
   rules:
     - if: $CI_COMMIT_BRANCH || $CI_PIPELINE_SOURCE == 'merge_request_event'
