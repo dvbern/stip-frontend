@@ -61,7 +61,7 @@ deploy:{{ this }}:
     - cd deploy/$STAGE
     - kustomize edit set image $IMAGE_PATH
     - 'git commit --no-verify -a -m "ci($STAGE): deploy image $IMAGE_PATH"'
-    - git push -o ci.skip https://deploy:$DEPLOYMENT_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git HEAD:$CI_COMMIT_BRANCH
+    - git push -o ci.skip origin HEAD:$CI_COMMIT_BRANCH
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_DEPLOY_FREEZE == null
       variables:
