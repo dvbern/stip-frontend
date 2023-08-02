@@ -152,6 +152,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   ausbildungsstaett$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
+  ausbildungNichtGefundenChanged$ = toSignal(
+    this.form.controls.ausbildungNichtGefunden.valueChanges
+  );
+  startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
+  endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
+
   ausbildungsgangOptions$ = computed(() => {
     return (
       this.ausbildungsstaetteOptions$().find(
@@ -159,11 +165,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       )?.ausbildungsgaenge || []
     );
   });
-  ausbildungNichtGefundenChanged$ = toSignal(
-    this.form.controls.ausbildungNichtGefunden.valueChanges
-  );
-  startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
-  endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
+  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
+  ausbildungsstaetteTypeaheadFn$: Signal<
+    OperatorFunction<string, readonly any[]>
+  > = computed(() => {
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
+    );
+  });
+
+  focusAusbildungsstaette$ = new Subject<string>();
+  clickAusbildungstaette$ = new Subject<string>();
 
   constructor() {
     // add multi-control validators
@@ -291,13 +303,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.controls.fachrichtung.reset();
   }
 
-  @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead?: NgbTypeahead;
+  @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead!: NgbTypeahead;
 
   clearStaetteTypeahead(inputField: HTMLInputElement) {
     this.form.controls.ausbildungsstaette.setValue('');
     this.handleStaetteChangedByUser();
-    this.ausbildungsstaetteTypeahead!.dismissPopup();
-    // this.focusAusbildungstaette$.next(''); // damit das "Dropdown" geoeffnet wird
+    this.ausbildungsstaetteTypeahead.dismissPopup();
     inputField.focus();
   }
 
@@ -370,18 +381,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     };
   }
 
-  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
-  ausbildungsstaetteTypeaheadFn$: Signal<
-    OperatorFunction<string, readonly any[]>
-  > = computed(() => {
-    return this.createAusbildungsstaetteTypeaheadFn(
-      this.ausbildungsstaetteOptions$()
-    );
-  });
-
-  focusAusbildungsstaette$ = new Subject<string>();
-  clickAusbildungstaette$ = new Subject<string>();
-
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
     // Grund wieso wir (selectItem) verwenden und nicht (change): change wird nicht immer ausgeloest. Dafuer muessen
     // wir hier noch selber pruefen, ob der Wert geaendert hat.
@@ -399,7 +398,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       );
       const click$ = this.clickAusbildungstaette$;
       const clicksWithClosedPopup$ = click$.pipe(
-        filter(() => !this.ausbildungsstaetteTypeahead!.isPopupOpen())
+        filter(() => !this.ausbildungsstaetteTypeahead.isPopupOpen())
       );
       const focus$ = this.focusAusbildungsstaette$;
       return merge(debouncedText$, focus$, clicksWithClosedPopup$).pipe(
