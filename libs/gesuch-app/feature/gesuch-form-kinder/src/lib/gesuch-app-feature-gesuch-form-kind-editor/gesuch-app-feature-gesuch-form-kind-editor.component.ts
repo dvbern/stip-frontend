@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   EventEmitter,
   inject,
   Input,
@@ -20,6 +21,7 @@ import {
   wohnsitzAnteileNumber,
   SharedUiWohnsitzSplitterComponent,
   wohnsitzAnteileString,
+  updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -48,6 +50,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { Subject } from 'rxjs';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -77,6 +80,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
   implements OnChanges
 {
   private formBuilder = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   @Input({ required: true }) kind!: Partial<KindUpdate>;
 
@@ -121,6 +125,18 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
   showWohnsitzSplitterSig = computed(() => {
     return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
   });
+
+  constructor() {
+    effect(
+      () =>
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig()
+        ),
+      { allowSignalWrites: true }
+    );
+  }
 
   ngOnChanges() {
     this.form.patchValue({

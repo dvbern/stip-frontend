@@ -6,11 +6,8 @@ import {
   inject,
   Injector,
   Input,
-  OnChanges,
   OnInit,
   runInInjectionContext,
-  SimpleChange,
-  SimpleChanges,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -45,8 +42,6 @@ import { percentStringToNumber } from '../utils/form';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiPercentageSplitterComponent implements OnInit {
-  @Input() updateValidity: unknown;
-
   @Input({ required: true })
   controlA!: FormControl<string | undefined>;
 
@@ -84,15 +79,6 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
         { allowSignalWrites: true }
       );
     });
-  }
-
-  private setInvisible(control: FormControl): void {
-    control.patchValue(null);
-    control.disable();
-  }
-
-  private setVisible(control: FormControl): void {
-    control.enable();
   }
 
   maskitoOptionsPercent = maskitoPercent;

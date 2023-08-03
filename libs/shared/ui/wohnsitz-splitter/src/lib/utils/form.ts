@@ -1,21 +1,28 @@
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  NonNullableFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Wohnsitz } from '@dv/shared/model/gesuch';
 import {
   numberToPercentString,
   percentStringToNumber,
 } from '@dv/shared/ui/percentage-splitter';
-import { unsetString } from '@dv/shared/util/form';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 
-type WohnsitzAnteile<T extends string | number> = {
-  wohnsitzAnteilVater?: T;
-  wohnsitzAnteilMutter?: T;
+type WohnsitzAnteile<T> = {
+  wohnsitzAnteilVater: T;
+  wohnsitzAnteilMutter: T;
 };
 
 export const addWohnsitzControls = (fb: NonNullableFormBuilder) => {
   return {
     wohnsitz: fb.control<Wohnsitz>('' as Wohnsitz, [Validators.required]),
-    wohnsitzAnteilMutter: [unsetString, [Validators.required]],
-    wohnsitzAnteilVater: [unsetString, [Validators.required]],
+    wohnsitzAnteilMutter: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
+    wohnsitzAnteilVater: [<string | undefined>undefined, [Validators.required]],
   };
 };
 
@@ -35,4 +42,13 @@ export function wohnsitzAnteileString(
     wohnsitzAnteilMutter: numberToPercentString(anteile.wohnsitzAnteilMutter),
     wohnsitzAnteilVater: numberToPercentString(anteile.wohnsitzAnteilVater),
   };
+}
+
+export function updateWohnsitzControlsState(
+  formUtils: SharedUtilFormService,
+  form: WohnsitzAnteile<FormControl>,
+  disabled: boolean
+) {
+  formUtils.setDisabledState(form.wohnsitzAnteilVater, disabled, true);
+  formUtils.setDisabledState(form.wohnsitzAnteilMutter, disabled, true);
 }
