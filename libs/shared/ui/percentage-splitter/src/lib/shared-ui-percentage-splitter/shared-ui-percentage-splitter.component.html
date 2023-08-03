@@ -7,7 +7,10 @@
   <div class="row gy-0 mt-2">
     <!-- LEFT -->
     <dv-shared-ui-form-field class="col-6">
-      <ng-content select=".label-a"></ng-content>
+      <ng-content
+        select=".label-a"
+        ngProjectAs="dv-shared-ui-form-label"
+      ></ng-content>
 
       <input
         class="form-control"
@@ -23,7 +26,10 @@
 
     <!-- RIGHT -->
     <dv-shared-ui-form-field class="col-6">
-      <ng-content select=".label-b"></ng-content>
+      <ng-content
+        select=".label-b"
+        ngProjectAs="dv-shared-ui-form-label"
+      ></ng-content>
       <input
         class="form-control"
         type="text"
