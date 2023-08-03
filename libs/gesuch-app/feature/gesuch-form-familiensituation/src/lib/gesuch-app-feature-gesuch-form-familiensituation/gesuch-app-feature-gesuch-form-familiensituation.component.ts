@@ -37,7 +37,10 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -356,13 +359,16 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       ...(gesuchFormular ?? {}),
       familiensituation: {
         ...gesuchFormular?.familiensituation,
-        ...prepareFormValues(this.form, [
-          'elternVerheiratetZusammen',
-          'gerichtlicheAlimentenregelung',
-          'elternteilUnbekanntVerstorben',
-          'vaterWiederverheiratet',
-          'mutterWiederverheiratet',
-        ]), // nicht form.value, sonst werden keine Werte auf null gesetzt!
+        ...convertTempFormToRealValues(this.form, {
+          required: [
+            'elternVerheiratetZusammen',
+            'gerichtlicheAlimentenregelung',
+            'elternteilUnbekanntVerstorben',
+            'vaterWiederverheiratet',
+            'mutterWiederverheiratet',
+          ],
+        }),
+        // nicht form.value, sonst werden keine Werte auf null gesetzt!
         obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
         obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),
       },

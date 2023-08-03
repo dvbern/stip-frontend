@@ -34,7 +34,10 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
   maxDateValidatorForLocale,
@@ -339,7 +342,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
           gesuchId,
           gesuchFormular: {
             ...gesuchFormular,
-            ausbildung: prepareFormValues(this.form, {
+            ausbildung: convertTempFormToRealValues(this.form, {
               required: ['ausbildungsland', 'fachrichtung', 'pensum'],
               undefinedIfEmpty: [
                 'alternativeAusbildungsgang',

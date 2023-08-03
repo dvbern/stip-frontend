@@ -25,7 +25,7 @@ const fromRequired = <
 };
 
 /**
- * Mark and make given properties undefined if empty
+ * Mark and make given properties undefined if empty string or null
  */
 const undefinedIfEmpty = <
   T extends { [k: string]: unknown },
@@ -38,7 +38,10 @@ const undefinedIfEmpty = <
   return (Object.keys(values) as K[]).reduce(
     (acc, key) => ({
       ...acc,
-      [key]: keys.includes(key) ? values[key] || undefined : values[key],
+      [key]:
+        keys.includes(key) && (values[key] === '' || values[key] === null)
+          ? undefined
+          : values[key],
     }),
     {} as Omit<T, Keys[number]> & UndefinedIfEmptyRecord<Pick<T, Keys[number]>>
   );
@@ -47,35 +50,42 @@ const undefinedIfEmpty = <
 type OnlyString<T> = T extends string ? T : never;
 
 /**
- * This helper function can be used to optain the non nullable required form values
+ * This helper function can be used to obtain the non nullable required form values and convert empty
+ * values to undefined.
+ *
+ * **required**
+ * During form editing some values are nullable but in reality they are required, this methods should ensure
+ * that these Values are also reflecting the reality during design-time
+ *
+ * **undefinedIfEmpty**
+ * Some values should be given as undefined to the API instead of empty, this setting can be used to mark
+ * the necessary properties
  *
  * Sadly it is requiered to specify again which form keys should be handled as **required** because there is
- * no information available about the used validators in a form during design time.
+ * no information available about the used validators in a form during design-time.
  *
  * @throws Error if given properties have no `Validators.required` set
  * @param values The form values optained for example via `form.getRawValues()`
- * @param optsOrkeys Can be a list of `required` values or a combination of `required` & `undefined if empty`
+ * @param opts {
+ *  required: a list of properties that should be handled as non-nullable,
+ *  undefinedIfEmpty: a list of properties that should be converted to undefined if empty
+ * }
  */
-export function prepareFormValues<
+export function convertTempFormToRealValues<
   T extends {
     [K: string]: AbstractControl<unknown>;
   },
   K extends keyof T
 >(
   form: FormGroup<T>,
-  optsOrkeys:
-    | {
-        required?: OnlyString<K>[];
-        undefinedIfEmpty?: OnlyString<K>[];
-      }
-    | OnlyString<K>[]
+  opts: {
+    required?: OnlyString<K>[];
+    undefinedIfEmpty?: OnlyString<K>[];
+  }
 ) {
   const values = form.getRawValue();
-  const [requiredFields, undefinedFields] = Array.isArray(optsOrkeys)
-    ? [optsOrkeys]
-    : [optsOrkeys.required, optsOrkeys.undefinedIfEmpty];
 
-  const invalidFieldConfig = requiredFields?.find(
+  const invalidFieldConfig = opts.required?.find(
     (f) => !form.get(f)?.hasValidator(Validators.required)
   );
   if (invalidFieldConfig) {
@@ -85,7 +95,9 @@ export function prepareFormValues<
   }
 
   return fromRequired(
-    undefinedFields ? undefinedIfEmpty(values, undefinedFields) : values,
-    requiredFields ?? []
+    opts.undefinedIfEmpty
+      ? undefinedIfEmpty(values, opts.undefinedIfEmpty)
+      : values,
+    opts.required ?? []
   );
 }

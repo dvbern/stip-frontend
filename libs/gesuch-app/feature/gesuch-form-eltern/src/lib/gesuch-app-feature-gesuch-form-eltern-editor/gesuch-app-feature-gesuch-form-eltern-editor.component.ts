@@ -30,7 +30,10 @@ import {
   ElternUpdate,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
-import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import {
   maxDateValidatorForLocale,
@@ -186,11 +189,13 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     );
     if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
-        ...prepareFormValues(this.form, [
-          'sozialhilfebeitraegeAusbezahlt',
-          'ausweisbFluechtling',
-          'ergaenzungsleistungAusbezahlt',
-        ]),
+        ...convertTempFormToRealValues(this.form, {
+          required: [
+            'sozialhilfebeitraegeAusbezahlt',
+            'ausweisbFluechtling',
+            'ergaenzungsleistungAusbezahlt',
+          ],
+        }),
         elternTyp: this.elternteil.elternTyp,
         geburtsdatum,
       });

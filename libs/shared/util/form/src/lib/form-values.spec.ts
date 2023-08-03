@@ -1,5 +1,5 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { prepareFormValues } from './form-values';
+import { convertTempFormToRealValues } from './form-values';
 
 describe('prepareFormValues', () => {
   const fb = new FormBuilder();
@@ -9,31 +9,30 @@ describe('prepareFormValues', () => {
       b: [1],
     });
     form.controls.a.setValue('1 ');
-    const values = prepareFormValues(form, {
+    const values = convertTempFormToRealValues(form, {
       required: ['a'],
     });
+    // Pseudo test, this code would trigger a syntax error if values.a is nullable
     expect(values.a.trim()).toBe('1');
   });
   it('should transform empty string to undefined', () => {
-    const values = prepareFormValues(
+    const values = convertTempFormToRealValues(
       fb.nonNullable.group({
         a: [1, []],
         b: ['', []],
       }),
-      {
-        undefinedIfEmpty: ['b'],
-      }
+      { undefinedIfEmpty: ['b'] }
     );
     expect(values.b).toBe(undefined);
   });
   it('should throw an error if no Validators.required is set', () => {
     const invalid = () =>
-      prepareFormValues(
+      convertTempFormToRealValues(
         fb.nonNullable.group({
           a: [1, []],
           b: ['', []],
         }),
-        ['a']
+        { required: ['a'] }
       );
     expect(invalid).toThrow();
   });

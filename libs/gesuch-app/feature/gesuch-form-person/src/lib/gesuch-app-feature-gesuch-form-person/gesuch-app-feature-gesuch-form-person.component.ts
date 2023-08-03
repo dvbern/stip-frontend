@@ -44,7 +44,10 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -338,10 +341,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       gesuchFormular: {
         ...gesuchFormular,
         personInAusbildung: {
-          ...prepareFormValues(this.form, [
-            'quellenbesteuert',
-            'sozialhilfebeitraege',
-          ]),
+          ...convertTempFormToRealValues(this.form, {
+            required: ['quellenbesteuert', 'sozialhilfebeitraege'],
+          }),
           adresse: {
             id: gesuchFormular?.personInAusbildung?.adresse?.id,
             ...this.form.getRawValue().adresse,
