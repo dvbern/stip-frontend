@@ -9,7 +9,6 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -31,10 +30,7 @@ import {
   ElternUpdate,
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
-import {
-  optionalRequiredBoolean,
-  SharedUtilFormService,
-} from '@dv/shared/util/form';
+import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
 import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
 import {
   maxDateValidatorForLocale,
@@ -135,12 +131,12 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       ],
     ],
     sozialhilfebeitraegeAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
-    ausweisbFluechtling: [optionalRequiredBoolean, [Validators.required]],
+    ausweisbFluechtling: [<boolean | null>null, [Validators.required]],
     ergaenzungsleistungAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
   });
@@ -190,8 +186,11 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
     );
     if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
-        ...this.form.getRawValue(),
-        id: this.elternteil.id,
+        ...prepareFormValues(this.form, [
+          'sozialhilfebeitraegeAusbezahlt',
+          'ausweisbFluechtling',
+          'ergaenzungsleistungAusbezahlt',
+        ]),
         elternTyp: this.elternteil.elternTyp,
         geburtsdatum,
       });

@@ -34,7 +34,7 @@ import {
   SharedUiFormMessageComponent,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
   maxDateValidatorForLocale,
@@ -333,23 +333,19 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.markAllAsTouched();
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
-      const formValue = this.form.getRawValue();
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuchId,
           gesuchFormular: {
             ...gesuchFormular,
-            ausbildung: {
-              ...formValue,
-              ausbildungsland: formValue.ausbildungsland!,
-              fachrichtung: formValue.fachrichtung!,
-              pensum: formValue.pensum!,
-              alternativeAusbildungsgang:
-                formValue.alternativeAusbildungsgang || undefined,
-              alternativeAusbildungsstaette:
-                formValue.alternativeAusbildungsstaette || undefined,
-            },
+            ausbildung: prepareFormValues(this.form, {
+              required: ['ausbildungsland', 'fachrichtung', 'pensum'],
+              undefinedIfEmpty: [
+                'alternativeAusbildungsgang',
+                'alternativeAusbildungsstaette',
+              ],
+            }),
           },
         })
       );

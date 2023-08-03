@@ -44,11 +44,7 @@ import {
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
-import {
-  optionalRequiredBoolean,
-  SharedUtilFormService,
-  unsetString,
-} from '@dv/shared/util/form';
+import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
   maxDateValidatorForLocale,
@@ -148,11 +144,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
     identischerZivilrechtlicherWohnsitzPLZ: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     identischerZivilrechtlicherWohnsitzOrt: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
@@ -189,8 +185,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       validators: Validators.required,
     }),
     ...addWohnsitzControls(this.formBuilder),
-    quellenbesteuert: [optionalRequiredBoolean, [Validators.required]],
-    sozialhilfebeitraege: [optionalRequiredBoolean, [Validators.required]],
+    quellenbesteuert: [<boolean | null>null, [Validators.required]],
+    sozialhilfebeitraege: [<boolean | null>null, [Validators.required]],
     digitaleKommunikation: [true, []],
     korrespondenzSprache: this.formBuilder.control<Sprache>('' as Sprache, {
       validators: Validators.required,
@@ -342,7 +338,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       gesuchFormular: {
         ...gesuchFormular,
         personInAusbildung: {
-          ...this.form.getRawValue(),
+          ...prepareFormValues(this.form, [
+            'quellenbesteuert',
+            'sozialhilfebeitraege',
+          ]),
           adresse: {
             id: gesuchFormular?.personInAusbildung?.adresse?.id,
             ...this.form.getRawValue().adresse,

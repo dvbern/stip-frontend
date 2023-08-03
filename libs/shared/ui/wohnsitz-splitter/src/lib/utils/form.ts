@@ -4,7 +4,6 @@ import {
   numberToPercentString,
   percentStringToNumber,
 } from '@dv/shared/ui/percentage-splitter';
-import { unsetString } from '@dv/shared/util/form';
 
 type WohnsitzAnteile<T extends string | number> = {
   wohnsitzAnteilVater?: T;
@@ -14,8 +13,11 @@ type WohnsitzAnteile<T extends string | number> = {
 export const addWohnsitzControls = (fb: NonNullableFormBuilder) => {
   return {
     wohnsitz: fb.control<Wohnsitz>('' as Wohnsitz, [Validators.required]),
-    wohnsitzAnteilMutter: [unsetString, [Validators.required]],
-    wohnsitzAnteilVater: [unsetString, [Validators.required]],
+    wohnsitzAnteilMutter: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
+    wohnsitzAnteilVater: [<string | undefined>undefined, [Validators.required]],
   };
 };
 

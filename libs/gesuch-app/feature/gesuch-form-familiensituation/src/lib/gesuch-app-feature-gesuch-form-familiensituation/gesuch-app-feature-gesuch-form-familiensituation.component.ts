@@ -37,10 +37,7 @@ import {
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import {
-  optionalRequiredBoolean,
-  SharedUtilFormService,
-} from '@dv/shared/util/form';
+import { prepareFormValues, SharedUtilFormService } from '@dv/shared/util/form';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -82,16 +79,16 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
   form = this.formBuilder.group({
-    elternVerheiratetZusammen: [optionalRequiredBoolean, [Validators.required]],
+    elternVerheiratetZusammen: [<boolean | null>null, [Validators.required]],
     gerichtlicheAlimentenregelung: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
     werZahltAlimente: this.formBuilder.control<
       Elternschaftsteilung | undefined
     >(undefined, { validators: Validators.required }),
     elternteilUnbekanntVerstorben: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
     mutterUnbekanntVerstorben: this.formBuilder.control<
@@ -106,8 +103,8 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     vaterUnbekanntGrund: this.formBuilder.control<
       ElternUnbekanntheitsGrund | undefined
     >(undefined, { validators: Validators.required }),
-    vaterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
-    mutterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
+    vaterWiederverheiratet: [<boolean | null>null, [Validators.required]],
+    mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
     sorgerecht: this.formBuilder.control<Elternschaftsteilung | undefined>(
       undefined,
       { validators: Validators.required }
@@ -359,7 +356,13 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       ...(gesuchFormular ?? {}),
       familiensituation: {
         ...gesuchFormular?.familiensituation,
-        ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
+        ...prepareFormValues(this.form, [
+          'elternVerheiratetZusammen',
+          'gerichtlicheAlimentenregelung',
+          'elternteilUnbekanntVerstorben',
+          'vaterWiederverheiratet',
+          'mutterWiederverheiratet',
+        ]), // nicht form.value, sonst werden keine Werte auf null gesetzt!
         obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
         obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),
       },
