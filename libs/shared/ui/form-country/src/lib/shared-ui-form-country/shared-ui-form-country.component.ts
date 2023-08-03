@@ -15,6 +15,7 @@ import {
   SharedUiFormComponent,
   SharedUiFormLabelComponent,
   SharedUiFormMessageComponent,
+  SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
   SharedUiFormControlProxyDirective,
@@ -33,6 +34,7 @@ import { combineLatest, startWith, map, BehaviorSubject } from 'rxjs';
     SharedUiFormComponent,
     SharedUiFormLabelComponent,
     SharedUiFormMessageComponent,
+    SharedUiFormMessageErrorDirective,
   ],
   hostDirectives: [SharedUiFormControlProxyDirective],
   templateUrl: './shared-ui-form-country.component.html',
