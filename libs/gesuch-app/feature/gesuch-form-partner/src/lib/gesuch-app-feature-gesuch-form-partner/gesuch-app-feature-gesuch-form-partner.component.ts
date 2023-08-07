@@ -47,6 +47,7 @@ import { subYears } from 'date-fns';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-feature-gesuch-form-partner.selector';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
+import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -61,6 +62,7 @@ const MEDIUM_AGE_ADULT = 30;
     GesuchAppPatternGesuchStepLayoutComponent,
     TranslateModule,
     SharedUiFormComponent,
+    SharedUiFormCountryComponent,
     SharedUiFormLabelComponent,
     SharedUiFormLabelTargetDirective,
     SharedUiFormMessageComponent,
