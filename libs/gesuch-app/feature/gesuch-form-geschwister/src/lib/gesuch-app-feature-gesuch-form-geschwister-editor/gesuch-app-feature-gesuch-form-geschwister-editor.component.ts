@@ -21,6 +21,7 @@ import {
   wohnsitzAnteileNumber,
   SharedUiWohnsitzSplitterComponent,
   wohnsitzAnteileString,
+  updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -84,13 +85,12 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   implements OnChanges
 {
   private formBuilder = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   @Input({ required: true }) geschwister!: Partial<GeschwisterUpdate>;
 
   @Output() saveTriggered = new EventEmitter<GeschwisterUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
-
-  private formUtils = inject(SharedUtilFormService);
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
@@ -130,6 +130,15 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   });
 
   constructor() {
+    effect(
+      () =>
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig()
+        ),
+      { allowSignalWrites: true }
+    );
     effect(
       () => {
         const wohnsitzChanged = this.wohnsitzChangedSig();

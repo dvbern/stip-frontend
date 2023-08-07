@@ -85,12 +85,10 @@
     </dv-shared-ui-form-field>
   </div>
 
-  <div class="row g-4 my-2" [hidden]="!showWohnsitzSplitterSig()">
+  <!-- WOHNSITZ AUFTEILUNG -->
+  <div class="row g-4 my-2" *ngIf="showWohnsitzSplitterSig()">
     <div class="col-12 col-md-6 col-xl-4">
-      <!-- WOHNSITZ AUFTEILUNG -->
       <dv-shared-ui-wohnsitz-splitter
-        [updateValidity]="save$ | async"
-        [visible]="showWohnsitzSplitterSig()"
         [controls]="form.controls"
       ></dv-shared-ui-wohnsitz-splitter>
     </div>

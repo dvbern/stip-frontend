@@ -19,9 +19,6 @@ import { FormControl } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiWohnsitzSplitterComponent {
-  @Input() updateValidity: unknown;
-  @Input({ required: true }) visible!: boolean;
-
   @Input({ required: true }) controls!: {
     wohnsitzAnteilMutter: FormControl<string | undefined>;
     wohnsitzAnteilVater: FormControl<string | undefined>;

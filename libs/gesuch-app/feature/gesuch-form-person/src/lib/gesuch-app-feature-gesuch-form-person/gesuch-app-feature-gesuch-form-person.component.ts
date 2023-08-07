@@ -71,6 +71,7 @@ import {
   SharedUiWohnsitzSplitterComponent,
   wohnsitzAnteileString,
   wohnsitzAnteileNumber,
+  updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { Subject } from 'rxjs';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
@@ -207,6 +208,15 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   constructor() {
     // patch form value
+    effect(
+      () =>
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig()
+        ),
+      { allowSignalWrites: true }
+    );
     effect(
       () => {
         const { gesuchFormular } = this.view();
