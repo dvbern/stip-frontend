@@ -20,11 +20,7 @@ import { PathLike } from 'fs';
 import childProcess from 'child_process';
 import path from 'path';
 
-let yaml = 'http://localhost:8080/q/openapi';
-if (process.argv[2] && fs.existsSync(process.argv[2])) {
-  yaml = process.argv[2];
-}
-
+const yaml = './node_modules/@kibon/stip-contract/openapi.yaml';
 const dependencies = require('../package.json').dependencies;
 
 const ngVersion = dependencies['@angular/core'].replace(/[^0-9.]/, '');

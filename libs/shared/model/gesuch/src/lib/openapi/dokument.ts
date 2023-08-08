@@ -15,5 +15,9 @@ export interface Dokument {
     filename: string;
     filepfad: string;
     filesize: string;
+    /**
+     * 
+     */
+    objectId: string;
 }
 

@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-export type Wohnsitz = 'EIGENER_HAUSHALT' | 'FAMILIE' | 'MUTTER_VATER';
+export type Wohnsitz = 'FAMILIE' | 'MUTTER_VATER' | 'EIGENER_HAUSHALT';
 
 export const Wohnsitz = {
-    EIGENER_HAUSHALT: 'EIGENER_HAUSHALT' as Wohnsitz,
     FAMILIE: 'FAMILIE' as Wohnsitz,
-    MUTTER_VATER: 'MUTTER_VATER' as Wohnsitz
+    MUTTER_VATER: 'MUTTER_VATER' as Wohnsitz,
+    EIGENER_HAUSHALT: 'EIGENER_HAUSHALT' as Wohnsitz
 };
 
