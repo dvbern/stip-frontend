@@ -42,6 +42,9 @@ Install the dependencies with `npm ci` (append `--legacy-peer-deps` or `--force`
 
 > The `--legacy-peer-deps` flag might need to used in case the dependencies available at the time of last workspace update did not fulfill their peerDependencies ranges perfectly. This might change again in the future as newer versions of the libraries are released and the `--legacy-peer-deps` flag might not be needed anymore.
 
+In order to install the dependency `@kibon/stip-contract` a DvBern internal access is needed. Follow [this](https://intra.dvbern.ch/display/DEV/GitLab%3A+NPM+Registry+verwenden) tutorial to setup the access to the private `npm` registry.  
+For external users, please uninstall the `@kibon/stip-contract` in order to use this repository. It is only required to update the models and interfaces.
+
 ## Workspace generators & Executors
 
 This workspace provides a set of generators and executors to automate the creation of new projects and libraries
