@@ -29,13 +29,9 @@ import {
   Kontoinhaber,
   MASK_IBAN,
   PersonInAusbildungUpdate,
-  SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
@@ -54,10 +50,7 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     SharedUiProgressBarComponent,
     TranslateModule,

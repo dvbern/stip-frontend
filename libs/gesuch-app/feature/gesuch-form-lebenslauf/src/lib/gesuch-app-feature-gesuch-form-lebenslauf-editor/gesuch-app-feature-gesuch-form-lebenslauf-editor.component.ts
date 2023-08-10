@@ -18,6 +18,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -28,10 +31,7 @@ import {
 } from '@dv/shared/model/gesuch';
 import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
@@ -54,12 +54,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     FormsModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     TranslateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     MaskitoModule,
     GesuchAppUiStepFormButtonsComponent,
   ],

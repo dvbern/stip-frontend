@@ -30,10 +30,7 @@ import {
   GesuchFormularUpdate,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
@@ -54,10 +51,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     MaskitoModule,
     SharedUiProgressBarComponent,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiPercentageSplitterComponent,

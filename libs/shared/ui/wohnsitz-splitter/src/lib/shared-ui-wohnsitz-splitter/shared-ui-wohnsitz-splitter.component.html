@@ -2,13 +2,11 @@
   [controlA]="controls.wohnsitzAnteilMutter"
   [controlB]="controls.wohnsitzAnteilVater"
 >
-  <dv-shared-ui-form-label>{{
-    'gesuch-app.form.shared.wohnsitzanteil.label' | translate
-  }}</dv-shared-ui-form-label>
-  <dv-shared-ui-form-label class="label-a">{{
+  <label>{{ 'gesuch-app.form.shared.wohnsitzanteil.label' | translate }}</label>
+  <span class="label-a">{{
     'gesuch-app.form.shared.wohnsitzanteil.mutter' | translate
-  }}</dv-shared-ui-form-label>
-  <dv-shared-ui-form-label class="label-b">{{
+  }}</span>
+  <span class="label-b">{{
     'gesuch-app.form.shared.wohnsitzanteil.vater' | translate
-  }}</dv-shared-ui-form-label>
+  }}</span>
 </dv-shared-ui-percentage-splitter>

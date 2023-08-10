@@ -31,10 +31,7 @@ import {
   Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
@@ -63,12 +60,9 @@ const MEDIUM_AGE = 20;
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     TranslateModule,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormLabelComponent,
     NgbInputDatepicker,
     MaskitoModule,
     SharedUiWohnsitzSplitterComponent,

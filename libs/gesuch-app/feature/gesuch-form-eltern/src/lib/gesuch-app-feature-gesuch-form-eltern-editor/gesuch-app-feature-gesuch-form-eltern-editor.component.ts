@@ -18,10 +18,7 @@ import {
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
@@ -64,10 +61,7 @@ const MEDIUM_AGE_ADULT = 40;
     TranslateModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     SharedUiFormAddressComponent,
     GesuchAppUiStepFormButtonsComponent,

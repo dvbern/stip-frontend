@@ -10,21 +10,26 @@ import {
   Component,
   DoCheck,
   Input,
+  OnChanges,
+  SimpleChanges,
+  inject,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
-  SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 import { Land } from '@dv/shared/model/gesuch';
+import { SharedUtilCountriesService } from '@dv/shared/util/countries';
 
 @Component({
   selector: 'dv-shared-ui-form-address',
@@ -34,24 +39,28 @@ import { Land } from '@dv/shared/model/gesuch';
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    SharedUiFormFieldDirective,
     SharedUiFormCountryComponent,
-    SharedUiFormMessageComponent,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormMessageInfoDirective,
   ],
   templateUrl: './shared-ui-form-address.component.html',
   styleUrls: ['./shared-ui-form-address.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedUiFormAddressComponent implements DoCheck {
+export class SharedUiFormAddressComponent implements DoCheck, OnChanges {
   @Input({ required: true }) group!: FormGroup;
-
   @Input({ required: true }) laender!: Land[];
-
   @Input({ required: true }) language!: string;
+
+  private countriesService = inject(SharedUtilCountriesService);
+  private laender$ = new BehaviorSubject<Land[]>([]);
+
+  translatedLaender$ = this.laender$.pipe(
+    switchMap((laender) => this.countriesService.getCountryList(laender))
+  );
 
   touchedSig = signal(false);
 
@@ -68,6 +77,10 @@ export class SharedUiFormAddressComponent implements DoCheck {
     });
   }
 
+  trackByIndex(index: number) {
+    return index;
+  }
+
   ngDoCheck(): void {
     if (!this.group) {
       return;
@@ -79,6 +92,12 @@ export class SharedUiFormAddressComponent implements DoCheck {
 
     if (this.group.touched) {
       this.touchedSig.set(true);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['laender']?.currentValue) {
+      this.laender$.next(changes['laender'].currentValue);
     }
   }
 }

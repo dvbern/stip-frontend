@@ -7,12 +7,19 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -35,12 +42,8 @@ import {
   SharedPatternDocumentUploadComponent,
 } from '@dv/shared/pattern/document-upload';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
-  SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
@@ -73,8 +76,8 @@ import {
   wohnsitzAnteileNumber,
   updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
-import { Subject } from 'rxjs';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
+import { SharedUtilCountriesService } from '@dv/shared/util/countries';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -88,13 +91,14 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     ReactiveFormsModule,
     TranslateModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatRadioModule,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
-    SharedUiFormMessageInfoDirective,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     SharedUiFormCountryComponent,
     SharedUiWohnsitzSplitterComponent,
@@ -111,6 +115,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private countriesService = inject(SharedUtilCountriesService);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
@@ -118,12 +123,13 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly zivilstandValues = Object.values(Zivilstand);
   readonly wohnsitzValues = Object.values(Wohnsitz);
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
-  laenderSig = computed(() => {
-    return this.view().laender;
-  });
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
   save$ = new Subject();
+  laenderSig = computed(() => this.view().laender);
+  translatedLaender$ = toObservable(this.laenderSig).pipe(
+    switchMap((laender) => this.countriesService.getCountryList(laender))
+  );
 
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
@@ -366,7 +372,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
           // TODO missing fields that exist on the Adresse:
           quellenbesteuert: false,
-          kinder: false,
         },
       },
     };

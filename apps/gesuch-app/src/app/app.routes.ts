@@ -28,40 +28,40 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormLebenslaufRoutes
       ),
   },
-  {
-    path: 'gesuch-app-feature-gesuch-form-geschwister',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-geschwister').then(
-        (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.AUSZAHLUNGEN.route,
-    canActivate: [hasBenutzer],
-    title: 'gesuch-app.auszahlung.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
-        (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.FAMILIENSITUATION.route,
-    canActivate: [hasBenutzer],
-    title: 'gesuch-app.familiensituation.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
-        (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-partner',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-partner').then(
-        (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
-      ),
-  },
+  // {
+  //   path: 'gesuch-app-feature-gesuch-form-geschwister',
+  //   canActivate: [hasBenutzer],
+  //   loadChildren: () =>
+  //     import('@dv/gesuch-app/feature/gesuch-form-geschwister').then(
+  //       (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
+  //     ),
+  // },
+  // {
+  //   path: GesuchFormSteps.AUSZAHLUNGEN.route,
+  //   canActivate: [hasBenutzer],
+  //   title: 'gesuch-app.auszahlung.title',
+  //   loadChildren: () =>
+  //     import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
+  //       (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
+  //     ),
+  // },
+  // {
+  //   path: GesuchFormSteps.FAMILIENSITUATION.route,
+  //   canActivate: [hasBenutzer],
+  //   title: 'gesuch-app.familiensituation.title',
+  //   loadChildren: () =>
+  //     import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
+  //       (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
+  //     ),
+  // },
+  // {
+  //   path: 'gesuch-app-feature-gesuch-form-partner',
+  //   canActivate: [hasBenutzer],
+  //   loadChildren: () =>
+  //     import('@dv/gesuch-app/feature/gesuch-form-partner').then(
+  //       (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
+  //     ),
+  // },
   {
     path: 'gesuch-app-feature-cockpit',
     canActivate: [hasBenutzer],
@@ -71,14 +71,14 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureCockpitRoutes
       ),
   },
-  {
-    path: 'gesuch-app-feature-gesuch-form-eltern',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
-        (m) => m.gesuchAppFeatureGesuchFormElternRoutes
-      ),
-  },
+  // {
+  //   path: 'gesuch-app-feature-gesuch-form-eltern',
+  //   canActivate: [hasBenutzer],
+  //   loadChildren: () =>
+  //     import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
+  //       (m) => m.gesuchAppFeatureGesuchFormElternRoutes
+  //     ),
+  // },
   {
     path: 'gesuch-app-feature-gesuch-form-person',
     canActivate: [hasBenutzer],
