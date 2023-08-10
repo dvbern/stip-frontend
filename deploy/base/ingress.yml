@@ -19,4 +19,5 @@ spec:
   tls:
     - hosts:
       - "<overlay-specific>"
+      - "<overlay-specific>"
       secretName: stip-ingress-cert

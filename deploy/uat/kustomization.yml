@@ -31,3 +31,13 @@ replacements:
     select:
       kind: Ingress
       name: www
+- source:
+    fieldPath: data.identityHost
+    kind: ConfigMap
+    name: ingress-config
+  targets:
+    - fieldPaths:
+        - spec.tls.0.hosts.1
+      select:
+        kind: Ingress
+        name: www
