@@ -13,7 +13,7 @@ install:
   stage: .pre
   extends: .base
   before_script:
-    - echo "//gitlab.dvbern.ch/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+    - echo "//gitlab.dvbern.ch/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
   script:
     - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
       echo "Skipping npm ci because a cached version is available"'
