@@ -12,6 +12,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
@@ -41,6 +44,7 @@ import {
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-familiensituation',
@@ -50,6 +54,9 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatSelectModule,
     SharedUiProgressBarComponent,
     SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
@@ -115,6 +122,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  updateValidity$ = new Subject<unknown>();
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
@@ -334,6 +342,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   handleSave(): void {
     this.form.markAllAsTouched();
+    this.updateValidity$.next({});
     const { gesuch } = this.view();
     if (this.form.valid && gesuch?.id) {
       const gesuchFormular = this.buildSharedModelAdresseFromForm();

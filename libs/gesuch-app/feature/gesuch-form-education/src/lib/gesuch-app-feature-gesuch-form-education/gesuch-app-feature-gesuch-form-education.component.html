@@ -60,7 +60,6 @@
         <input
           id="typeahead-focus"
           type="text"
-          class="form-control form-select"
           formControlName="ausbildungsstaette"
           matInput
           [matAutocomplete]="staetten"
@@ -70,12 +69,13 @@
         <button
           type="button"
           *ngIf="form.controls.ausbildungsstaette.value"
-          color="primary"
           matSuffix
           mat-icon-button
           aria-label="Clear"
           (click)="form.controls.ausbildungsstaette.reset()"
-        ></button>
+        >
+          <span class="material-symbols-rounded align-middle">clear</span>
+        </button>
         <mat-autocomplete #staetten>
           <mat-option
             *ngFor="

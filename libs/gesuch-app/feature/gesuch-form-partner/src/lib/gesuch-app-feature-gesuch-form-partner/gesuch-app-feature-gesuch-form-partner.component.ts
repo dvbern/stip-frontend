@@ -14,6 +14,9 @@ import {
 } from '@angular/forms';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -63,6 +66,9 @@ const MEDIUM_AGE_ADULT = 30;
     TranslateModule,
     SharedUiFormFieldDirective,
     SharedUiFormCountryComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     MaskitoModule,
     NgbInputDatepicker,
     SharedUiFormMessageErrorDirective,

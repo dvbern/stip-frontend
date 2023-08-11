@@ -91,7 +91,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
-  save$ = new Subject();
+  updateValidity$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -152,8 +152,8 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.updateValidity$.next({});
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
       this.languageSig(),

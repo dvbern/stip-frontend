@@ -82,7 +82,7 @@
           'gesuch-app.form.lebenslauf.form.error.monthYearMin'
             | translate
               : {
-                  min: form.controls.von.errors!['minDate']!.minDate
+                  min: form.controls.von.errors?.['minDate']?.minDate
                 }
         }}
       </mat-error>
@@ -123,7 +123,7 @@
       <mat-error *dvSharedUiFormMessageError="'maxDate'">
         {{
           'gesuch-app.form.lebenslauf.form.error.monthYearMax'
-            | translate : { max: form.controls.bis.errors!['maxDate']!.maxDate }
+            | translate : { max: form.controls.bis.errors?.['maxDate']?.maxDate }
         }}
       </mat-error>
     </mat-form-field>

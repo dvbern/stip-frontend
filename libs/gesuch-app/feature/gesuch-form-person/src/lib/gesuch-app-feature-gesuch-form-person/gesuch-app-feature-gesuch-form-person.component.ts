@@ -125,7 +125,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
-  save$ = new Subject();
+  updateValidity$ = new Subject<unknown>();
   laenderSig = computed(() => this.view().laender);
   translatedLaender$ = toObservable(this.laenderSig).pipe(
     switchMap((laender) => this.countriesService.getCountryList(laender))
@@ -325,8 +325,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.updateValidity$.next({});
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(

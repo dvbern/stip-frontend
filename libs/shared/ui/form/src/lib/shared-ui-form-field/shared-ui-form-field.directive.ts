@@ -59,7 +59,7 @@ export class SharedUiFormFieldDirective implements DoCheck, AfterViewInit {
       this.control.statusChanges?.pipe(
         startWith(null),
         map(() => this.control.status),
-        filter((status) => status === 'INVALID')
+        distinctUntilChanged()
       ) ?? of(null);
     combineLatest([validityHasChanged$, errorMessages$, touched$])
       .pipe(map((values) => [...values, this.control.touched] as const))

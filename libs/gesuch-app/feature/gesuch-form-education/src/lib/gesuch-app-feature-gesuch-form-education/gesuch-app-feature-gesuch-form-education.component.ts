@@ -21,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -76,6 +77,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     MatFormFieldModule,
+    MatButtonModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
@@ -357,6 +359,8 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
             ausbildung: {
               ...gesuchFormular.ausbildung,
               ...formValue,
+              // TODO: Find better way to remove unecessary properties
+              ...{ ausbildungsstaette: undefined, ausbildungsgang: undefined },
               ausbildungsland: formValue.ausbildungsland!,
               fachrichtung: formValue.fachrichtung!,
               pensum: formValue.pensum!,

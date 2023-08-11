@@ -40,6 +40,7 @@ import { MatInputModule } from '@angular/material/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiPercentageSplitterComponent implements OnInit {
+  @Input({ required: true }) updateValidity: unknown;
   @Input({ required: true })
   controlA!: FormControl<string | undefined>;
 
