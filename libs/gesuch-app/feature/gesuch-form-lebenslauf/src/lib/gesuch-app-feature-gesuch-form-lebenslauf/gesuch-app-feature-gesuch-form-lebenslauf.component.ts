@@ -165,7 +165,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
-        ...gesuch,
+        ...gesuchFormular,
         lebenslaufItems: updatedItems,
       },
     };
