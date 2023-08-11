@@ -4,3 +4,4 @@ metadata:
   name: ingress-config
 data:
   host: "stip.dev.apps.test.kibon.ch"
+  identityHost: "auth.stip.dev.apps.test.kibon.ch"
