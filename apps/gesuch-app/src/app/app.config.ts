@@ -9,11 +9,13 @@ import {
 } from '@dv/gesuch-app/data-access/gesuch';
 
 import { routes } from './app.routes';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideSharedPatternCore(routes),
     provideState(gesuchAppDataAccessGesuchsFeature),
     provideEffects(gesuchAppDataAccessGesuchEffects),
+    provideAnimations(),
   ],
 };

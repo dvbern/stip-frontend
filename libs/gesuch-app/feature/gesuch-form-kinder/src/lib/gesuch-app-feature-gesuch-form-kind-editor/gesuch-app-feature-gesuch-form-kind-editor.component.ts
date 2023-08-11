@@ -16,6 +16,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   addWohnsitzControls,
   wohnsitzAnteileNumber,
@@ -31,10 +33,7 @@ import {
   Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
@@ -51,6 +50,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { Subject } from 'rxjs';
 import { SharedUtilFormService } from '@dv/shared/util/form';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -62,13 +63,14 @@ const MEDIUM_AGE = 20;
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     TranslateModule,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormLabelComponent,
     NgbInputDatepicker,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
     SharedUiWohnsitzSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
@@ -89,7 +91,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
-  save$ = new Subject();
+  updateValidity$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -150,8 +152,8 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.updateValidity$.next({});
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
       this.languageSig(),

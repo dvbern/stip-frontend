@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Land } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
@@ -31,9 +31,9 @@ import { combineLatest, startWith, map, BehaviorSubject } from 'rxjs';
     CommonModule,
     ReactiveFormsModule,
     TranslateModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormMessageComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
   ],
   hostDirectives: [SharedUiFormControlProxyDirective],

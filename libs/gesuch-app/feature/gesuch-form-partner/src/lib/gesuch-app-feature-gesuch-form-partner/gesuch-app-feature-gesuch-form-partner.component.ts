@@ -12,6 +12,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -24,10 +29,7 @@ import {
   PartnerUpdate,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
@@ -48,6 +50,7 @@ import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stam
 import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-feature-gesuch-form-partner.selector';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
+import { SharedUtilCountriesService } from '@dv/shared/util/countries';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -61,11 +64,11 @@ const MEDIUM_AGE_ADULT = 30;
     ReactiveFormsModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     TranslateModule,
-    SharedUiFormComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormCountryComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     MaskitoModule,
     NgbInputDatepicker,
     SharedUiFormMessageErrorDirective,
@@ -79,17 +82,18 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   private store = inject(Store);
 
   private formBuilder = inject(NonNullableFormBuilder);
+  private countriesService = inject(SharedUtilCountriesService);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
   readonly Land = Land;
 
-  laenderSig = computed(() => {
-    return this.view().laender;
-  });
   languageSig = this.store.selectSignal(selectLanguage);
-
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormPartnerView);
+  laenderSig = computed(() => this.view().laender);
+  translatedLaender$ = toObservable(this.laenderSig).pipe(
+    switchMap((laender) => this.countriesService.getCountryList(laender))
+  );
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [

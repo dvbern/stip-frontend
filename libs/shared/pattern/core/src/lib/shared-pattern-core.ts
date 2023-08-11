@@ -41,6 +41,7 @@ import {
   sharedDataAccessLanguageEffects,
   sharedDataAccessLanguageFeature,
 } from '@dv/shared/data-access/language';
+import { provideMaterialDefaultOptions } from '@dv/shared/pattern/angular-material-config';
 import { provideSharedPatternI18nTitleStrategy } from '@dv/shared/pattern/i18n-title-strategy';
 import { provideSharedPatternNgbDatepickerAdapter } from '@dv/shared/pattern/ngb-datepicker-adapter';
 import { provideSharedPatternRouteReuseStrategyConfigurable } from '@dv/shared/pattern/route-reuse-strategy-configurable';
@@ -83,6 +84,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
     provideSharedPatternI18nTitleStrategy(),
     provideSharedPatternNgbDatepickerAdapter(),
     provideSharedPatternRouteReuseStrategyConfigurable(),
+    provideMaterialDefaultOptions(),
 
     // state management
     provideStore(

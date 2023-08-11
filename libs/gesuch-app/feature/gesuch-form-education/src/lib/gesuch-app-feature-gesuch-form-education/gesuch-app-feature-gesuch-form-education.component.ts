@@ -16,6 +16,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -28,10 +34,7 @@ import {
   Ausbildungsstaette,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
@@ -71,11 +74,14 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     ReactiveFormsModule,
     NgbInputDatepicker,
     NgbTypeahead,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
-    SharedUiFormLabelComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     GesuchAppUiStepFormButtonsComponent,
@@ -99,7 +105,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       validators: Validators.required,
     }),
     ausbildungsstaette: [<string | null>null, [Validators.required]],
-    ausbildungsgang: [<string | null>null, [Validators.required]],
+    ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
     fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
     alternativeAusbildungsgang: [<string | null>null],
@@ -152,6 +158,16 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   ausbildungsstaett$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
+  ausbildungsstaettOptionsSig = computed(() => {
+    const currentAusbildungsstatte = this.ausbildungsstaett$();
+    return currentAusbildungsstatte
+      ? this.ausbildungsstaetteOptions$().filter((item) =>
+          item.name
+            .toLowerCase()
+            .includes(currentAusbildungsstatte.toLowerCase())
+        )
+      : this.ausbildungsstaetteOptions$();
+  });
   ausbildungNichtGefundenChanged$ = toSignal(
     this.form.controls.ausbildungNichtGefunden.valueChanges
   );
@@ -341,7 +357,10 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
           gesuchFormular: {
             ...gesuchFormular,
             ausbildung: {
+              ...gesuchFormular.ausbildung,
               ...formValue,
+              // TODO: Find better way to remove unecessary properties
+              ...{ ausbildungsstaette: undefined, ausbildungsgang: undefined },
               ausbildungsland: formValue.ausbildungsland!,
               fachrichtung: formValue.fachrichtung!,
               pensum: formValue.pensum!,
@@ -362,7 +381,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
-    return {
+    const a = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
@@ -379,6 +398,18 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         },
       },
     };
+    console.log(
+      'FORM',
+      a,
+      this.ausbildungsstaetteOptions$(),
+      this.ausbildungsstaetteOptions$().filter(
+        (ausbildungsstaette) =>
+          ausbildungsstaette.name ===
+          this.form.controls.ausbildungsstaette.value
+      ),
+      this.form.controls.ausbildungsstaette.value
+    );
+    return a;
   }
 
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {

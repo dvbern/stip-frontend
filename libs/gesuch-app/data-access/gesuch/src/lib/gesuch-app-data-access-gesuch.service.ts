@@ -39,8 +39,36 @@ export class GesuchAppDataAccessGesuchService {
 
   update(gesuchId: string, gesuchFormular: Partial<SharedModelGesuchFormular>) {
     // use REST because then it is compatible with mock backend
+    // TODO: Analyze options to prevent sending unwanted properties and cleanup this workaround
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      freigegeben,
+      lebenslaufItems,
+      geschwisters,
+      elterns,
+      kinds,
+      ...formular
+    } = gesuchFormular;
     return this.http.patch<void>(`${RESOURCE_URL}/${gesuchId}`, {
-      gesuch_formular_to_work_with: gesuchFormular,
+      gesuch_formular_to_work_with: {
+        ...formular,
+        lebenslaufItems: lebenslaufItems?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        elterns: elterns?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        kinds: kinds?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        geschwisters: geschwisters?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+      },
     });
   }
 
