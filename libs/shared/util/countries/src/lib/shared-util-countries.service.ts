@@ -1,8 +1,7 @@
-import { Injectable, inject, Signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { Injectable, inject } from '@angular/core';
 import { Land } from '@dv/shared/model/gesuch';
 import { TranslateService } from '@ngx-translate/core';
-import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,6 @@ export class SharedUtilCountriesService {
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   public getCountryList(laender: Land[]) {
-    console.log('Laender', laender);
     return this.translatedLaender$.pipe(
       map(({ translations }) => {
         const translated = laender

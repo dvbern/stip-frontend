@@ -78,10 +78,6 @@ export class SharedUiFormCountryComponent
     })
   );
 
-  constructor() {
-    console.log('control____', this.ngControl);
-  }
-
   trackByIndex(index: number) {
     return index;
   }
