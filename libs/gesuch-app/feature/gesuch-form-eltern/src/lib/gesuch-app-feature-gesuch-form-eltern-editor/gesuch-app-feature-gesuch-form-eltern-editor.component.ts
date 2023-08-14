@@ -184,14 +184,19 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
+    const formValues = this.form.getRawValue();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
-      this.form.getRawValue().geburtsdatum,
+      formValues.geburtsdatum,
       this.languageSig(),
       subYears(new Date(), MEDIUM_AGE_ADULT)
     );
     if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
-        ...this.form.getRawValue(),
+        ...formValues,
+        adresse: {
+          ...formValues.adresse,
+          id: this.elternteil.adresse?.id,
+        },
         id: this.elternteil.id,
         elternTyp: this.elternteil.elternTyp,
         geburtsdatum,
