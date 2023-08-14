@@ -1,5 +1,6 @@
 import {
   Anrede,
+  ElternAbwesenheitsGrund,
   ElternTyp,
   ElternUpdate,
   FamiliensituationUpdate,
@@ -35,20 +36,17 @@ export function calculateExpectElternteil(
   geschlecht: Anrede,
   familienSituation: FamiliensituationUpdate | undefined
 ): boolean {
-  let expectMutter = false;
-
   if (familienSituation) {
     if (familienSituation.elternteilUnbekanntVerstorben) {
-      const elternteilStatus =
-        geschlecht === 'HERR'
-          ? familienSituation?.vaterUnbekanntVerstorben
-          : familienSituation?.mutterUnbekanntVerstorben;
-      expectMutter = elternteilStatus === 'WEDER_NOCH';
-    } else {
-      expectMutter = true;
+      return geschlecht === 'HERR'
+        ? familienSituation?.vaterUnbekanntVerstorben ===
+            ElternAbwesenheitsGrund.WEDER_NOCH
+        : familienSituation?.mutterUnbekanntVerstorben ===
+            ElternAbwesenheitsGrund.WEDER_NOCH;
     }
+    return true;
   }
-  return expectMutter;
+  return false;
 }
 
 export function findElternteil(
