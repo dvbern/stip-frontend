@@ -51,6 +51,10 @@ import { selectGesuchAppFeatureGesuchFormPartnerView } from './gesuch-app-featur
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
 import { SharedUtilCountriesService } from '@dv/shared/util/countries';
+import {
+  fromFormatedNumber,
+  maskitoNumber,
+} from '@dv/shared/util/maskito-util';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -85,6 +89,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
   private countriesService = inject(SharedUtilCountriesService);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
+  readonly maskitoNumber = maskitoNumber;
 
   readonly Land = Land;
 
@@ -206,7 +211,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
         this.languageSig(),
         subYears(new Date(), MEDIUM_AGE_ADULT)
       )!,
-      jahreseinkommen: +formValues.jahreseinkommen,
+      jahreseinkommen: fromFormatedNumber(formValues.jahreseinkommen) ?? 0,
     };
     return {
       gesuchId: gesuch?.id,
