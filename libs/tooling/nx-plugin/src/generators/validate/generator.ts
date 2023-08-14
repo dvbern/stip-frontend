@@ -157,7 +157,11 @@ async function validateProjectTagsMatchProjectLocation(
     expectedTags.push(`type:${type}`);
   }
   const tagsDiff = diff(tags, expectedTags);
-  if (JSON.stringify(expectedTags.sort()) !== JSON.stringify(tags.sort())) {
+
+  if (
+    JSON.stringify(expectedTags.sort((a, b) => a.localeCompare(b))) !==
+    JSON.stringify(tags.sort((a, b) => a.localeCompare(b)))
+  ) {
     if (fix) {
       projectJson.tags = expectedTags;
       fixes.push(`${chalk.inverse(
