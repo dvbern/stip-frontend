@@ -197,7 +197,12 @@
           <mat-label>{{
             'gesuch-app.form.partner.jahreseinkommen.label' | translate
           }}</mat-label>
-          <input formControlName="jahreseinkommen" matInput type="text" />
+          <input
+            formControlName="jahreseinkommen"
+            matInput
+            type="text"
+            [maskito]="maskitoNumber"
+          />
           <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
           </mat-error>
