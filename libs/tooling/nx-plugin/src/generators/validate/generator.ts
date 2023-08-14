@@ -14,6 +14,9 @@ export interface Result {
   fixes: string[];
 }
 
+const sortStrings = (arr: string[]) =>
+  Array.from(arr).sort((a, b) => a.localeCompare(b));
+
 export default async function validate(
   tree: Tree,
   schema: ValidateGeneratorSchema
@@ -159,8 +162,8 @@ async function validateProjectTagsMatchProjectLocation(
   const tagsDiff = diff(tags, expectedTags);
 
   if (
-    JSON.stringify(expectedTags.sort((a, b) => a.localeCompare(b))) !==
-    JSON.stringify(tags.sort((a, b) => a.localeCompare(b)))
+    JSON.stringify(sortStrings(expectedTags)) !==
+    JSON.stringify(sortStrings(tags))
   ) {
     if (fix) {
       projectJson.tags = expectedTags;
@@ -208,10 +211,10 @@ async function validateEslintEnforceModuleBoundariesMatchesFolderStructure(
   )
     .properties.scope['x-prompt'].items.map((i: any) => i.value)
     .sort();
-  const scopeApps = getFoldersFromTree(tree, './apps').sort();
-  const scopeLibs = getFoldersFromTree(tree, './libs')
-    .sort()
-    .filter((s) => s !== 'tooling');
+  const scopeApps = sortStrings(getFoldersFromTree(tree, './apps'));
+  const scopeLibs = sortStrings(getFoldersFromTree(tree, './libs')).filter(
+    (s) => s !== 'tooling'
+  );
   const scopeDirs = Array.from(new Set([...scopeApps, ...scopeLibs])).filter(
     (scope) => !scope.endsWith('-e2e') && scope !== 'tooling'
   );
