@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedUiPercentageSplitterComponent } from './shared-ui-percentage-splitter.component';
+import { FormControl } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SharedUiPercentageSplitterComponent', () => {
   let component: SharedUiPercentageSplitterComponent;
@@ -7,11 +9,13 @@ describe('SharedUiPercentageSplitterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUiPercentageSplitterComponent],
+      imports: [NoopAnimationsModule, SharedUiPercentageSplitterComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedUiPercentageSplitterComponent);
     component = fixture.componentInstance;
+    component.controlA = new FormControl();
+    component.controlB = new FormControl();
     fixture.detectChanges();
   });
 

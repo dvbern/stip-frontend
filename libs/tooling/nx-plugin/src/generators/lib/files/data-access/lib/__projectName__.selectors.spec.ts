@@ -5,7 +5,7 @@ describe('select<%= classify(projectName) %>sView', () => {
     const state = {
       <%= camelize(name) %>s: [],
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result = select<%= classify(projectName) %>sView.projector(state);
     expect(result).toEqual(state);

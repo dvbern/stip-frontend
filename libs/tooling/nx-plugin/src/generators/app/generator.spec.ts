@@ -57,7 +57,7 @@ describe('app generator', () => {
       const depConstraints = readJson(tree, '.eslintrc.json').overrides[0]
         .rules['@nx/enforce-module-boundaries'][1].depConstraints;
       expect(
-        depConstraints.find((c) => c.sourceTag === 'scope:example-app')
+        depConstraints.find((c: any) => c.sourceTag === 'scope:example-app')
       ).toEqual({
         sourceTag: 'scope:example-app',
         onlyDependOnLibsWithTags: ['scope:shared', 'scope:example-app'],

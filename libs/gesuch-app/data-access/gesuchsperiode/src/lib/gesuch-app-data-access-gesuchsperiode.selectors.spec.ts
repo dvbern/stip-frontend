@@ -5,7 +5,7 @@ describe('selectGesuchAppDataAccessGesuchsperiodesView', () => {
     const state = {
       gesuchsperiodes: [],
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result =
       selectGesuchAppDataAccessGesuchsperiodesView.projector(state);
