@@ -381,7 +381,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
-    const a = {
+    return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
@@ -398,18 +398,6 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         },
       },
     };
-    console.log(
-      'FORM',
-      a,
-      this.ausbildungsstaetteOptions$(),
-      this.ausbildungsstaetteOptions$().filter(
-        (ausbildungsstaette) =>
-          ausbildungsstaette.name ===
-          this.form.controls.ausbildungsstaette.value
-      ),
-      this.form.controls.ausbildungsstaette.value
-    );
-    return a;
   }
 
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
