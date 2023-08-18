@@ -17,6 +17,7 @@ import {
   HttpBackend,
   provideHttpClient,
   withInterceptors,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideState, provideStore, Store } from '@ngrx/store';
@@ -49,6 +50,7 @@ import {
   sharedDataAccessStammdatenEffects,
   sharedDataAccessStammdatensFeature,
 } from '@dv/shared/data-access/stammdaten';
+import { provideSharedPatternAppInitialization } from '@dv/shared/pattern/app-initialization';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -61,8 +63,15 @@ export class ExplicitMissingTranslationHandler
 export function provideSharedPatternCore(appRoutes: Route[]) {
   return [
     // providers
+    provideSharedPatternAppInitialization(),
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true, runCoalescing: true }),
+    provideHttpClient(
+      withInterceptors([
+        SharedPatternInterceptorDeploymentConfig,
+        // STUB add global interceptors for auth, error handling, ...
+      ])
+    ),
     provideRouter(
       appRoutes,
       withRouterConfig({
@@ -74,12 +83,6 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
       })
-    ),
-    provideHttpClient(
-      withInterceptors([
-        SharedPatternInterceptorDeploymentConfig,
-        // STUB add global interceptors for auth, error handling, ...
-      ])
     ),
     provideSharedPatternI18nTitleStrategy(),
     provideSharedPatternNgbDatepickerAdapter(),
