@@ -9,7 +9,6 @@ import {
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 import { SHARED_MODEL_API_URL } from '@dv/shared/model/api';
-import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
 
 const RESOURCE_URL =
   `${SHARED_MODEL_API_URL}${SHARED_MODEL_GESUCH_RESOURCE}` as const;
@@ -18,9 +17,9 @@ const RESOURCE_URL =
 export class GesuchAppDataAccessGesuchService {
   private http = inject(HttpClient);
 
-  getAll() {
+  getAll(benutzerId: string) {
     return this.http.get<SharedModelGesuch[]>(
-      `${RESOURCE_URL}/benutzer/${getBenutzerId()}`
+      `${RESOURCE_URL}/benutzer/${benutzerId}`
     );
   }
 

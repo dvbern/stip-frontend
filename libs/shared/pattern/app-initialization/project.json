@@ -1,16 +1,16 @@
 {
-  "name": "gesuch-app-feature-user-select",
+  "name": "shared-pattern-app-initialization",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/gesuch-app/feature/user-select/src",
+  "sourceRoot": "libs/shared/pattern/app-initialization/src",
   "prefix": "dv",
-  "tags": ["type:feature", "scope:gesuch-app"],
+  "tags": ["type:pattern", "scope:shared"],
   "projectType": "library",
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/gesuch-app/feature/user-select/jest.config.ts",
+        "jestConfig": "libs/shared/pattern/app-initialization/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/gesuch-app/feature/user-select/**/*.ts",
-          "libs/gesuch-app/feature/user-select/**/*.html"
+          "libs/shared/pattern/app-initialization/**/*.ts",
+          "libs/shared/pattern/app-initialization/**/*.html"
         ]
       }
     }
