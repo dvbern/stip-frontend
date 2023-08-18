@@ -32,6 +32,13 @@ export class GesuchAppUtilGesuchFormStepManagerService {
         return GesuchFormSteps.AUSZAHLUNGEN;
       case GesuchFormSteps.AUSZAHLUNGEN:
         return GesuchFormSteps.EINNAHMEN_KOSTEN;
+      case GesuchFormSteps.EINNAHMEN_KOSTEN:
+        return {
+          route: '/',
+          translationKey: '',
+          currentStepNumber: -1,
+          iconSymbolName: '',
+        };
       default:
         throw new Error('Step not defined');
     }

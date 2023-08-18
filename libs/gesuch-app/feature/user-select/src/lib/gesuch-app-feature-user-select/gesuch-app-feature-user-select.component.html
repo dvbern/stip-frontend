@@ -14,6 +14,7 @@
             <button
               class="btn btn-link"
               type="button"
+              [attr.data-testid]="'form-user-select-' + user.vorname"
               [title]="'gesuch-app.cockpit.gesuch.edit' | translate"
               (click)="setUser(user)"
             >

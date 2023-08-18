@@ -5,6 +5,7 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 
 import { SharedModelError } from '@dv/shared/model/error';
 import {
@@ -74,6 +75,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormGeschwister.init,
       GesuchAppEventGesuchFormKinder.init,
       GesuchAppEventGesuchFormLebenslauf.init,
+      GesuchAppEventGesuchFormEinnahmenkosten.init,
       (state): State => ({
         ...state,
         gesuch: undefined,
@@ -93,6 +95,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormKinder.saveSubformTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered,
+      GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered,
       GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,

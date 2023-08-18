@@ -23,6 +23,7 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
@@ -75,7 +76,8 @@ export const loadGesuch = createEffect(
         GesuchAppEventGesuchFormAuszahlung.init,
         GesuchAppEventGesuchFormGeschwister.init,
         GesuchAppEventGesuchFormKinder.init,
-        GesuchAppEventGesuchFormLebenslauf.init
+        GesuchAppEventGesuchFormLebenslauf.init,
+        GesuchAppEventGesuchFormEinnahmenkosten.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {

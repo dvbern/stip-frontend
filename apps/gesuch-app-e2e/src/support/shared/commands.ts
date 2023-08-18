@@ -15,6 +15,7 @@ declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
     login(email: string, password: string): void;
+    selectUser(user: string): Chainable;
 
     getBySel(selector: string): Chainable;
   }
@@ -23,6 +24,10 @@ declare namespace Cypress {
 // -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
   console.log('Custom command example: Login', email, password);
+});
+
+Cypress.Commands.add('selectUser', (user) => {
+  return cy.getBySel('form-user-select-' + user).click();
 });
 
 Cypress.Commands.add('getBySel', (selector, ...args): Chainable => {
