@@ -3,16 +3,15 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { selectBenutzer } from '@dv/gesuch-app/data-access/gesuch';
-// TODO: Remove once login exists
+// TODO: Refactor once services and landing page exist
 // -----------
 import { Benutzer } from '@dv/shared/model/gesuch';
-import { filter, switchMap, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 // -----------
 
 @Component({
@@ -23,26 +22,17 @@ import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  // TODO: Remove once login exists, also remember to remove isNotNull
+  // TODO: Refactor once services and landing page exist
   // -----------
   private http = inject(HttpClient);
   private store = inject(Store);
   constructor() {
-    this.store
-      .select(selectBenutzer)
-      .pipe(
-        filter((benutzer) => benutzer === undefined && !!getBenutzerId()),
-        switchMap(() => this.http.get<Benutzer[]>('/api/v1/benutzer')),
-        map((benutzers) => benutzers.find((b) => b.id === getBenutzerId())),
-        filter(isNotNull),
-        takeUntilDestroyed()
-      )
+    this.http
+      .get<Benutzer>('/api/v1/benutzer/me')
+      .pipe(filter(sharedUtilFnTypeGuardsIsDefined), takeUntilDestroyed())
       .subscribe((benutzer) =>
         this.store.dispatch(GesuchAppEventBenutzer.setBenutzer(benutzer))
       );
   }
 }
-
-const isNotNull = <T, R extends Exclude<T, null | undefined>>(x: T): x is R =>
-  x != null;
 // -----------

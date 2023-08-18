@@ -1,9 +1,10 @@
 /* eslint-disable */
 export default {
-  displayName: 'gesuch-app-feature-user-select',
+  displayName: 'shared-pattern-app-initialization',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/gesuch-app/feature/user-select',
+  coverageDirectory:
+    '../../../../coverage/libs/shared/pattern/app-initialization',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
