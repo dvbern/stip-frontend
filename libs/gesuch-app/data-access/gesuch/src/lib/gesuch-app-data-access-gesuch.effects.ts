@@ -23,16 +23,19 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
+import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
-import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
-import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
+import { selectBenutzer } from './gesuch-app-data-access-gesuch.feature';
 
 export const loadGesuchs = createEffect(
   (
     actions$ = inject(Actions),
+    store = inject(Store),
     gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
   ) => {
     return actions$.pipe(
@@ -40,8 +43,10 @@ export const loadGesuchs = createEffect(
         GesuchAppEventCockpit.init,
         GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
-      concatMap(() =>
-        gesuchAppDataAccessGesuchService.getAll().pipe(
+      switchMap(() => store.select(selectBenutzer)),
+      filter(sharedUtilFnTypeGuardsIsDefined),
+      concatMap((benutzer) =>
+        gesuchAppDataAccessGesuchService.getAll(benutzer.id).pipe(
           map((gesuchs) =>
             GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
               gesuchs,
