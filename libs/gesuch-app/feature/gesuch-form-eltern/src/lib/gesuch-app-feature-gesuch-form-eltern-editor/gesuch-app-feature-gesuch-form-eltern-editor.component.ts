@@ -108,8 +108,14 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    identischerZivilrechtlicherWohnsitzPLZ: ['', [Validators.required]],
-    identischerZivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
+    identischerZivilrechtlicherWohnsitzOrt: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
     telefonnummer: [
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],

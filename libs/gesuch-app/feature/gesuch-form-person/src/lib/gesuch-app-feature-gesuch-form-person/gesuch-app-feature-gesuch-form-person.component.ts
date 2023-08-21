@@ -155,11 +155,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
     identischerZivilrechtlicherWohnsitzPLZ: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     identischerZivilrechtlicherWohnsitzOrt: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],

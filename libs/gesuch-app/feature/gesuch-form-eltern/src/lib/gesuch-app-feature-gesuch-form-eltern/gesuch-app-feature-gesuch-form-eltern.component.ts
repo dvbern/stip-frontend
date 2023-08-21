@@ -168,7 +168,9 @@ export const setupElternTeil = (
   const lebtBeiEltern =
     gesuchFormular?.personInAusbildung?.wohnsitz === 'FAMILIE';
   return {
-    ...(adresse && lebtBeiEltern ? { adresse } : {}),
+    ...(adresse && lebtBeiEltern
+      ? { adresse: { ...adresse, id: undefined } }
+      : {}),
     elternTyp,
   };
 };
