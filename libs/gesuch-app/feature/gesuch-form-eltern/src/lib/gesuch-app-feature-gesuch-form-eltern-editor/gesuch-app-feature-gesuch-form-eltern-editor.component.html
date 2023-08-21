@@ -10,6 +10,26 @@
   <div class="row g-4 my-2">
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
+        'gesuch-app.form.shared.social-insurance-number.label' | translate
+      }}</mat-label>
+      <input
+        matInput
+        formControlName="sozialversicherungsnummer"
+        placeholder="756.xxxx.xxxx.xx"
+        [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
+      />
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </mat-error>
+      <mat-error *dvSharedUiFormMessageError="'ahv'">
+        {{ 'shared.form.error.ahv' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row g-4 my-2">
+    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+      <mat-label>{{
         'gesuch-app.form.shared.lastname.label' | translate
       }}</mat-label>
       <input formControlName="nachname" matInput type="text" />
@@ -37,7 +57,7 @@
     />
   </div>
 
-  <div class="row g-4 my-2">
+  <div class="row g-4">
     <div class="col-12 col-xl-8">
       <mat-checkbox
         type="checkbox"
@@ -89,26 +109,6 @@
         </mat-form-field>
       </div>
     </div>
-  </div>
-
-  <div class="row g-4 my-2">
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-      <mat-label>{{
-        'gesuch-app.form.shared.social-insurance-number.label' | translate
-      }}</mat-label>
-      <input
-        matInput
-        formControlName="sozialversicherungsnummer"
-        placeholder="756.xxxx.xxxx.xx"
-        [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
-      />
-      <mat-error *dvSharedUiFormMessageError="'required'">
-        {{ 'shared.form.error.required' | translate }}
-      </mat-error>
-      <mat-error *dvSharedUiFormMessageError="'ahv'">
-        {{ 'shared.form.error.ahv' | translate }}
-      </mat-error>
-    </mat-form-field>
   </div>
 
   <h3 class="pt-5">{{ 'shared.weiterangaben' | translate }}</h3>
