@@ -1,6 +1,4 @@
 import {
-  Anrede,
-  ElternAbwesenheitsGrund,
   ElternTyp,
   ElternUpdate,
   FamiliensituationUpdate,
@@ -25,26 +23,30 @@ function calculateElternSituation(
   elterns: ElternUpdate[] | undefined
 ): ElternSituation {
   return {
-    expectVater: calculateExpectElternteil(Anrede.HERR, familienSituation),
-    expectMutter: calculateExpectElternteil(Anrede.FRAU, familienSituation),
+    expectVater: calculateExpectElternteil(ElternTyp.VATER, familienSituation),
+    expectMutter: calculateExpectElternteil(
+      ElternTyp.MUTTER,
+      familienSituation
+    ),
     vater: findElternteil(ElternTyp.VATER, elterns),
     mutter: findElternteil(ElternTyp.MUTTER, elterns),
   };
 }
 
+const lowercase = <T extends string>(value: T) =>
+  value.toLocaleLowerCase() as Lowercase<T>;
+
 export function calculateExpectElternteil(
-  geschlecht: Anrede,
+  type: ElternTyp,
   familienSituation: FamiliensituationUpdate | undefined
 ): boolean {
   if (familienSituation) {
-    if (familienSituation.elternteilUnbekanntVerstorben) {
-      return geschlecht === 'HERR'
-        ? familienSituation?.vaterUnbekanntVerstorben ===
-            ElternAbwesenheitsGrund.WEDER_NOCH
-        : familienSituation?.mutterUnbekanntVerstorben ===
-            ElternAbwesenheitsGrund.WEDER_NOCH;
-    }
-    return true;
+    const elternteilLebt = familienSituation.elternteilUnbekanntVerstorben
+      ? familienSituation?.[`${lowercase(type)}UnbekanntVerstorben`] ===
+        'WEDER_NOCH'
+      : true;
+    const elternteilZahltAlimente = familienSituation.werZahltAlimente !== type;
+    return elternteilLebt && elternteilZahltAlimente;
   }
   return false;
 }
