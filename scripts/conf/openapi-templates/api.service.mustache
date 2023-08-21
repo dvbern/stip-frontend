@@ -238,6 +238,7 @@ export class {{classname}} {
         // authentication ({{name}}) required
         localVarCredential = this.configuration.lookupCredential('{{name}}');
         if (localVarCredential) {
+            // using credentials
 {{#isApiKey}}
     {{#isKeyInHeader}}
             localVarHeaders = localVarHeaders.set('{{keyParamName}}', localVarCredential);

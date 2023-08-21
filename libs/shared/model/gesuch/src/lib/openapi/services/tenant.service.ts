@@ -18,23 +18,18 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { Benutzer } from '../model/benutzer';
-import { BenutzerUpdate } from '../model/benutzerUpdate';
+import { TenantInfo } from '../model/tenantInfo';
 import { ValidationReport } from '../model/validationReport';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
-export interface BenutzerServiceUpdateCurrentBenutzerRequestParams {
-    benutzerUpdate: BenutzerUpdate;
-}
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class BenutzerService {
+export class TenantService {
 
     protected basePath = '/api/v1';
     public defaultHeaders = new HttpHeaders();
@@ -95,14 +90,15 @@ export class BenutzerService {
     }
 
     /**
-     * Get the logged-in Benutzer
+     * Current Tenant
+     * &#x60;Tenant&#x60; based on the current Request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-     public getCurrentBenutzer$(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<Benutzer>;
-     public getCurrentBenutzer$(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<Benutzer>>;
-     public getCurrentBenutzer$(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<Benutzer>>;
-     public getCurrentBenutzer$(observe: 'body' | 'response' | 'events' = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
+     public getCurrentTenant$(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<TenantInfo>;
+     public getCurrentTenant$(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<TenantInfo>>;
+     public getCurrentTenant$(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<TenantInfo>>;
+     public getCurrentTenant$(observe: 'body' | 'response' | 'events' = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -149,93 +145,10 @@ export class BenutzerService {
             }
         }
 
-        const localVarPath = `/benutzer/me`;
-        return this.httpClient.request<Benutzer>('get', `${this.configuration.basePath}${localVarPath}`,
+        const localVarPath = `/tenant/current`;
+        return this.httpClient.request<TenantInfo>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: <any>observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Update the logged-in Benutzer
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-     public updateCurrentBenutzer$(requestParameters: BenutzerServiceUpdateCurrentBenutzerRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any>;
-     public updateCurrentBenutzer$(requestParameters: BenutzerServiceUpdateCurrentBenutzerRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<any>>;
-     public updateCurrentBenutzer$(requestParameters: BenutzerServiceUpdateCurrentBenutzerRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<any>>;
-     public updateCurrentBenutzer$(requestParameters: BenutzerServiceUpdateCurrentBenutzerRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
-        const benutzerUpdate = requestParameters.benutzerUpdate;
-        if (benutzerUpdate === null || benutzerUpdate === undefined) {
-            throw new Error('Required parameter benutzerUpdate was null or undefined when calling updateCurrentBenutzer$.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (auth-uat-bern) required
-        localVarCredential = this.configuration.lookupCredential('auth-uat-bern');
-        if (localVarCredential) {
-            // using credentials
-        }
-
-        // authentication (auth-dev-bern) required
-        localVarCredential = this.configuration.lookupCredential('auth-dev-bern');
-        if (localVarCredential) {
-            // using credentials
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json',
-                'text/plain'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        const localVarPath = `/benutzer/me`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: benutzerUpdate,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

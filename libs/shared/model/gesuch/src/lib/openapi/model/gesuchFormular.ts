@@ -13,6 +13,7 @@ import { Eltern } from './eltern';
 import { PersonInAusbildung } from './personInAusbildung';
 import { Ausbildung } from './ausbildung';
 import { Geschwister } from './geschwister';
+import { EinnahmenKosten } from './einnahmenKosten';
 import { Kind } from './kind';
 import { Familiensituation } from './familiensituation';
 import { Auszahlung } from './auszahlung';
@@ -41,5 +42,6 @@ export interface GesuchFormular {
      * 
      */
     kinds?: Array<Kind>;
+    einnahmenKosten?: EinnahmenKosten;
 }
 

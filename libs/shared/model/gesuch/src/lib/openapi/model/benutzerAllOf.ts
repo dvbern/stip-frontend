@@ -9,14 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Bildungsart } from './bildungsart';
 
-export interface Ausbildungsgang { 
+export interface BenutzerAllOf { 
     id: string;
-    bezeichnungDe: string;
-    bezeichnungFr?: string;
-    ausbildungsrichtung: Bildungsart;
 }
-
-
 

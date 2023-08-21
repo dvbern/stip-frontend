@@ -29,8 +29,8 @@ import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards'
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
-import { selectBenutzer } from './gesuch-app-data-access-gesuch.feature';
 import { GesuchService } from '@dv/shared/model/gesuch';
+import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 export const loadGesuchs = createEffect(
   (
@@ -43,7 +43,7 @@ export const loadGesuchs = createEffect(
         GesuchAppEventCockpit.init,
         GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
-      switchMap(() => store.select(selectBenutzer)),
+      switchMap(() => store.select(selectCurrentBenutzer)),
       filter(sharedUtilFnTypeGuardsIsDefined),
       concatMap((benutzer) =>
         gesuchService.getGesucheForBenutzer$({ benutzerId: benutzer.id }).pipe(

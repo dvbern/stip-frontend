@@ -12,5 +12,7 @@ export * from './gesuchsperiode.service';
 // import { GesuchsperiodeService } from './gesuchsperiode.service';
 export * from './stammdaten.service';
 // import { StammdatenService } from './stammdaten.service';
+export * from './tenant.service';
+// import { TenantService } from './tenant.service';
 // Do not generate the constant as accidental use of this prevents tree-shaking.
-// export const APIS = [AusbildungsstaetteService, BenutzerService, ConfigurationService, FallService, GesuchService, GesuchsperiodeService, StammdatenService];
+// export const APIS = [AusbildungsstaetteService, BenutzerService, ConfigurationService, FallService, GesuchService, GesuchsperiodeService, StammdatenService, TenantService];

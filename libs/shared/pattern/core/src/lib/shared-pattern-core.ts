@@ -17,7 +17,6 @@ import {
   HttpBackend,
   provideHttpClient,
   withInterceptors,
-  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideState, provideStore, Store } from '@ngrx/store';
@@ -51,6 +50,10 @@ import {
   sharedDataAccessStammdatensFeature,
 } from '@dv/shared/data-access/stammdaten';
 import { provideSharedPatternAppInitialization } from '@dv/shared/pattern/app-initialization';
+import {
+  sharedDataAccessBenutzerEffects,
+  sharedDataAccessBenutzersFeature,
+} from '@dv/shared/data-access/benutzer';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -105,10 +108,12 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         },
       }
     ),
+    provideState(sharedDataAccessBenutzersFeature),
     provideState(sharedDataAccessConfigsFeature),
     provideState(sharedDataAccessLanguageFeature),
     provideState(sharedDataAccessStammdatensFeature),
     provideEffects(
+      sharedDataAccessBenutzerEffects,
       sharedDataAccessConfigEffects,
       sharedDataAccessLanguageEffects,
       sharedDataAccessStammdatenEffects

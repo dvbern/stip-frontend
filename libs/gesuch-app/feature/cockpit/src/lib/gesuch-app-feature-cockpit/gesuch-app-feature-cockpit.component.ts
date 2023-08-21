@@ -6,7 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
@@ -32,9 +32,9 @@ import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.
 // -----
 import { HttpClient } from '@angular/common/http';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
-import { selectBenutzer } from '@dv/gesuch-app/data-access/gesuch';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+import { KeycloakService } from 'keycloak-angular';
+import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 // -----
 
 @Component({
@@ -60,12 +60,13 @@ import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards'
 })
 export class GesuchAppFeatureCockpitComponent implements OnInit {
   private store = inject(Store);
-  private router = inject(Router);
+  private benutzerSig = this.store.selectSignal(selectCurrentBenutzer);
+  private keyCloakService = inject(KeycloakService);
 
   // TODO: Refactor once services and landing page exist
   // -----
   private http = inject(HttpClient);
-  fall$ = this.store.select(selectBenutzer).pipe(
+  fall$ = this.store.select(selectCurrentBenutzer).pipe(
     filter(sharedUtilFnTypeGuardsIsDefined),
     switchMap((benutzer) => {
       const fallUrl = `/api/v1/fall/benutzer/${benutzer.id}`;
@@ -84,8 +85,9 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   // -----
 
   cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
+  // Do not initialize signals in computed directly, just usage
   benutzerNameSig = computed(() => {
-    const benutzer = this.store.selectSignal(selectBenutzer)();
+    const benutzer = this.benutzerSig();
     return `${benutzer?.vorname} ${benutzer?.nachname}`;
   });
 
@@ -122,8 +124,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   }
 
   logout() {
-    this.store.dispatch(GesuchAppEventBenutzer.init());
-    this.router.navigate(['/']);
+    this.keyCloakService.logout();
   }
 
   handleLanguageChangeHeader(language: Language) {

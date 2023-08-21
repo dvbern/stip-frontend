@@ -9,14 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Bildungsart } from './bildungsart';
 
-export interface Ausbildungsgang { 
-    id: string;
-    bezeichnungDe: string;
-    bezeichnungFr?: string;
-    ausbildungsrichtung: Bildungsart;
+/**
+ * 
+ */
+export interface ValidationError { 
+    /**
+     * 
+     */
+    propertyPath?: string;
+    /**
+     * 
+     */
+    messageTemplate: string;
+    /**
+     * 
+     */
+    message: string;
 }
-
-
 
