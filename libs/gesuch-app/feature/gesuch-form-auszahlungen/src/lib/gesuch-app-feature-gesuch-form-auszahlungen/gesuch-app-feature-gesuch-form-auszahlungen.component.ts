@@ -235,7 +235,6 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
           ...this.form.getRawValue(),
           iban: 'CH' + this.form.getRawValue().iban,
         },
-        freigegeben: gesuchFormular?.freigegeben ?? false,
       },
     };
   }

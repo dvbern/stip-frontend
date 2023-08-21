@@ -29,7 +29,7 @@ import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards'
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
-import { GesuchService } from '@dv/shared/model/gesuch';
+import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
 import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 export const loadGesuchs = createEffect(
@@ -154,7 +154,7 @@ export const updateGesuch = createEffect(
         return gesuchService
           .updateGesuch$({
             gesuchId,
-            gesuchUpdate: { gesuch_formular_to_work_with: gesuchFormular },
+            gesuchUpdate: prepareFormularData(gesuchFormular),
           })
           .pipe(
             map(() =>
@@ -188,7 +188,7 @@ export const updateGesuchSubform = createEffect(
         return gesuchService
           .updateGesuch$({
             gesuchId,
-            gesuchUpdate: { gesuch_formular_to_work_with: gesuchFormular },
+            gesuchUpdate: prepareFormularData(gesuchFormular),
           })
           .pipe(
             map(() =>
@@ -286,4 +286,30 @@ export const gesuchAppDataAccessGesuchEffects = {
   redirectToGesuchForm,
   redirectToGesuchFormNextStep,
   refreshGesuchFormStep,
+};
+
+const prepareFormularData = (gesuchFormular: GesuchFormularUpdate) => {
+  const { lebenslaufItems, geschwisters, elterns, kinds, ...formular } =
+    gesuchFormular;
+  return {
+    gesuch_formular_to_work_with: {
+      ...formular,
+      lebenslaufItems: lebenslaufItems?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      elterns: elterns?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      kinds: kinds?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      geschwisters: geschwisters?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+    },
+  };
 };

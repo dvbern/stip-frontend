@@ -7,9 +7,7 @@ export interface SharedModelGesuch extends Gesuch {
   };
 }
 
-export interface SharedModelGesuchFormular extends GesuchFormularUpdate {
-  freigegeben: boolean;
-}
+export type SharedModelGesuchFormular = GesuchFormularUpdate;
 
 // TODO extract to env or generate with OpenAPI?
 export const SHARED_MODEL_GESUCH_RESOURCE = `/gesuch`;
