@@ -13,7 +13,7 @@
     "graph": "nx dep-graph --groupByFolder",
     "readme:toc": "markdown-toc -i README.md",
     "reset": "nx reset",
-    "start": "run-p serve:gesuch-app serve:gesuch-app:mock",
+    "start": "run-p serve:gesuch-app",
     "start:backend": "nx serve gesuch-app --proxyConfig proxy.conf.json",
     "serve:gesuch-app": "nx serve gesuch-app --proxyConfig proxy.conf.json",
     "serve:gesuch-app:mock": "prism mock ./mock/openapi.yaml -p 8080",
