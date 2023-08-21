@@ -95,7 +95,7 @@ async function generateOpenApi(directory: string, apis: string[]) {
     ' --template-dir scripts/conf/openapi-templates' +
     ` --global-property models,apis=${apisString},supportingFiles` +
     ` -p ngVersion=${ngVersion}` +
-    ' -p basePath=/' +
+    ' -p basePath=/api/v1' +
     ' -p supportsES6=true' +
     ' -p disallowAdditionalPropertiesIfNotPresent=false' +
     ' -p legacyDiscriminatorBehavior=false' +
@@ -148,13 +148,24 @@ async function sleep(msec: number) {
   // add more APIs as you go
   // Keep in mind: there is one file generated per OpenAPI-@Tag,
   // Names are CamelCase versions from OpenAPIConst Tags
-  const generatedApis = [''];
+  const generatedApis = [
+    'Ausbildungsstaette',
+    'Benutzer',
+    'Configuration',
+    'Fall',
+    'Gesuch',
+    'Gesuchsperiode',
+    'Stammdaten',
+    'Tenant',
+  ];
 
   await generateOpenApi(generatorPath, generatedApis);
 
   deleteOldFilesSync(apiPath, timestamp);
   deleteOldFilesSync(modelsPath, timestamp);
-  const gesuchModelPath = 'libs/shared/model/gesuch/src/lib/openapi';
+  const gesuchModelPath = 'libs/shared/model/gesuch/src/lib/openapi/model';
+  const gesuchServicePath = 'libs/shared/model/gesuch/src/lib/openapi/services';
+  copyFilesForGesuch(apiPath, gesuchServicePath);
   copyFilesForGesuch(modelsPath, gesuchModelPath);
   // we can generate only a selection of model entities according to namespace for example.
   // That would allow us to split the model directly in the right packages. Lets see if we need it.

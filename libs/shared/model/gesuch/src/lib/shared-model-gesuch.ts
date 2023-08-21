@@ -1,5 +1,5 @@
-import { Gesuch } from './openapi/gesuch';
-import { GesuchFormularUpdate } from './openapi/gesuchFormularUpdate';
+import { Gesuch } from './openapi/model/gesuch';
+import { GesuchFormularUpdate } from './openapi/model/gesuchFormularUpdate';
 
 export interface SharedModelGesuch extends Gesuch {
   view?: {
