@@ -19,7 +19,13 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideState, provideStore, Store } from '@ngrx/store';
+import {
+  ActionReducer,
+  MetaReducer,
+  provideState,
+  provideStore,
+  Store,
+} from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
@@ -63,6 +69,21 @@ export class ExplicitMissingTranslationHandler
   }
 }
 
+export function debugReducers(
+  reducer: ActionReducer<unknown>
+): ActionReducer<unknown> {
+  return function (state, action) {
+    if (isDevMode()) {
+      console.log('state', state);
+      console.log('action', action);
+    }
+
+    return reducer(state, action);
+  };
+}
+
+export const metaReducers: MetaReducer<any>[] = [debugReducers];
+
 export function provideSharedPatternCore(appRoutes: Route[]) {
   return [
     // providers
@@ -98,6 +119,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         router: routerReducer,
       },
       {
+        metaReducers,
         runtimeChecks: {
           strictStateImmutability: true,
           strictActionImmutability: true,
