@@ -45,8 +45,9 @@ export function calculateExpectElternteil(
       ? familienSituation?.[`${lowercase(type)}UnbekanntVerstorben`] ===
         'WEDER_NOCH'
       : true;
-    const elternteilZahltAlimente = familienSituation.werZahltAlimente !== type;
-    return elternteilLebt && elternteilZahltAlimente;
+    const elternteilZahltKeineAlimente =
+      familienSituation.werZahltAlimente !== type;
+    return elternteilLebt && elternteilZahltKeineAlimente;
   }
   return false;
 }
