@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -34,6 +35,7 @@ import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
   maxDateValidatorForLocale,
@@ -73,8 +75,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
-
+  private formUtils = inject(SharedUtilFormService);
   private translateService = inject(TranslateService);
 
   @Input({ required: true }) item!: Partial<SharedModelLebenslauf>;
@@ -201,6 +204,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
     /* this.form.controls.von.updateValueAndValidity(); // TODO oder in effect
      this.form.controls.bis.updateValueAndValidity();*/
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.onDateBlur(this.form.controls.von);
     this.onDateBlur(this.form.controls.bis);
     if (this.form.valid) {

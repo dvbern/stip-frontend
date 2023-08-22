@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { Subject, combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
 import { SharedUiFormMessageErrorDirective } from '../shared-ui-form-message/shared-ui-form-message-error.directive';
 import { FormControlName } from '@angular/forms';

@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
   Signal,
@@ -91,6 +92,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -347,6 +349,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       const formValue = this.form.getRawValue();

@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -81,6 +82,7 @@ const MEDIUM_AGE = 20;
 export class GesuchAppFeatureGesuchFormKinderEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
 
@@ -153,6 +155,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.updateValidity$.next({});
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
