@@ -33,7 +33,7 @@ import {
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import {
-  optionalRequiredBoolean,
+  convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
 import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
@@ -143,12 +143,12 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       ],
     ],
     sozialhilfebeitraegeAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
-    ausweisbFluechtling: [optionalRequiredBoolean, [Validators.required]],
+    ausweisbFluechtling: [<boolean | null>null, [Validators.required]],
     ergaenzungsleistungAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
   });
@@ -192,7 +192,11 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   handleSave() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const formValues = this.form.getRawValue();
+    const formValues = convertTempFormToRealValues(this.form, [
+      'sozialhilfebeitraegeAusbezahlt',
+      'ausweisbFluechtling',
+      'ergaenzungsleistungAusbezahlt',
+    ]);
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       formValues.geburtsdatum,
       this.languageSig(),
