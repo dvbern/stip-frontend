@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -112,6 +113,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -326,6 +328,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.updateValidity$.next({});
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {

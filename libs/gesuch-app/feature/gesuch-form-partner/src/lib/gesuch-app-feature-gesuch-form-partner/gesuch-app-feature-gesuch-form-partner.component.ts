@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -55,6 +56,7 @@ import {
   fromFormatedNumber,
   maskitoNumber,
 } from '@dv/shared/util/maskito-util';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -83,9 +85,10 @@ const MEDIUM_AGE_ADULT = 30;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
-
   private formBuilder = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
   private countriesService = inject(SharedUtilCountriesService);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
@@ -158,6 +161,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -172,6 +176,7 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
 
   handleSaveAndBack() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(

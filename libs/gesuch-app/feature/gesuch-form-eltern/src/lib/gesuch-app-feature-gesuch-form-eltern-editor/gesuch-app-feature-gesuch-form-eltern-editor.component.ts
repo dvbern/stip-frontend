@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -80,8 +81,10 @@ const MEDIUM_AGE_ADULT = 40;
 export class GesuchAppFeatureGesuchFormElternEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private store = inject(Store);
 
   @Input({ required: true }) elternteil!: Omit<
     Partial<ElternUpdate>,
@@ -96,8 +99,6 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
   readonly ElternTyp = ElternTyp;
-
-  private store = inject(Store);
 
   languageSig = this.store.selectSignal(selectLanguage);
 
@@ -190,6 +191,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const formValues = this.form.getRawValue();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       formValues.geburtsdatum,
