@@ -36,6 +36,7 @@ import {
 } from '@dv/shared/ui/form';
 import {
   createDateDependencyValidator,
+  createOverlappingValidator,
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
   onMonthYearInputBlur,
@@ -78,6 +79,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   private translateService = inject(TranslateService);
 
   @Input({ required: true }) item!: Partial<SharedModelLebenslauf>;
+  @Input({ required: true }) ausbildungen!: LebenslaufItemUpdate[];
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
 
@@ -151,6 +153,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const previousAusbildungen = this.ausbildungen
+      .filter((l) => !this.item.id || l.id !== this.item.id)
+      .map((a) => [a.von, a.bis] as const);
     // update date validators
     if (changes['minStartDate']) {
       this.form.controls.von.clearValidators();
@@ -184,6 +189,12 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       ]);
       if (changes['maxEndDate'].currentValue) {
         this.form.controls.bis.addValidators([
+          createOverlappingValidator(
+            this.form.controls.von,
+            previousAusbildungen,
+            new Date(),
+            'monthYear'
+          ),
           maxDateValidatorForLocale(
             this.languageSig(),
             changes['maxEndDate'].currentValue,
@@ -195,6 +206,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
     // fill form
     this.form.patchValue(this.item);
+
+    if (this.item.von && this.item.bis) {
+      this.form.controls.bis.markAsTouched();
+    }
   }
 
   handleSave() {

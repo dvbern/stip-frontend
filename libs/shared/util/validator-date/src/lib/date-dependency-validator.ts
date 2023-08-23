@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Language } from '@dv/shared/model/language';
 import { parseDateForVariant } from '../index';
-import { isAfter, isEqual } from 'date-fns';
+import { isAfter, isEqual, areIntervalsOverlapping } from 'date-fns';
 import { DateFormatVariant } from './date-format-util';
 
 export function createDateDependencyValidator(
@@ -40,6 +40,50 @@ export function createDateDependencyValidator(
   };
 }
 
+export function createOverlappingValidator(
+  minDateControl: FormControl<string | null>,
+  intervalValues: Readonly<[string, string]>[],
+  referenceDate: Date,
+  dateFormatVariant: DateFormatVariant
+): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const minDate = parseDateForVariant(
+      minDateControl.value,
+      new Date(),
+      dateFormatVariant
+    );
+    const maxDate = parseDateForVariant(
+      control.value,
+      new Date(),
+      dateFormatVariant
+    );
+    const intervals = intervalValues.map(([start, end]) => [
+      parseDateForVariant(start, referenceDate, dateFormatVariant),
+      parseDateForVariant(end, referenceDate, dateFormatVariant),
+    ]);
+
+    if (!minDate || !maxDate || (minDate && maxDate && maxDate < minDate)) {
+      return null;
+    }
+
+    const hasOverlaps = intervals.some(([start, end]) => {
+      if (!start || !end) {
+        return false;
+      }
+      const isOverlapping = areIntervalsOverlapping(
+        { start: minDate, end: maxDate },
+        { start, end }
+      );
+      return (
+        isOverlapping ||
+        isOnIntervalLimits(minDate, start, end) ||
+        isOnIntervalLimits(maxDate, start, end)
+      );
+    });
+    return hasOverlaps ? { overlapsOthers: true } : null;
+  };
+}
+
 export function validateStartBeforeEnd(
   startValue: string | null,
   endValue: string | null,
@@ -69,3 +113,7 @@ export function validateStartBeforeEnd(
   }
   return null;
 }
+
+const isOnIntervalLimits = (date: Date, start: Date, end: Date) => {
+  return date !== null && (isEqual(date, start) || isEqual(date, end));
+};

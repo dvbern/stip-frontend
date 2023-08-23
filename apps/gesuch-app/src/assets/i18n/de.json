@@ -167,6 +167,7 @@
   "gesuch-app.form.lebenslauf.form.error.monthYearMin": "Das Jahr darf nicht vor {{min}} liegen",
   "gesuch-app.form.lebenslauf.form.error.monthYearMax": "Das Jahr darf nicht nach {{max}} liegen",
   "gesuch-app.form.lebenslauf.form.error.monthYearAfterStart": "Das Ende muss nach dem Beginn sein",
+  "gesuch-app.form.lebenslauf.form.error.overlapsOthers": "Der Zeitraum überschneidet andere angegebene Ausbildungen",
   "gesuch-app.form.familiensituation.obhutsaufteilung.label": "Obhutsaufteilung",
   "gesuch-app.form.familiensituation.obhutsaufteilung.mutter": "Mutter",
   "gesuch-app.form.familiensituation.obhutsaufteilung.vater": "Vater",

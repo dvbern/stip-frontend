@@ -126,6 +126,9 @@
             | translate : { max: form.controls.bis.errors?.['maxDate']?.maxDate }
         }}
       </mat-error>
+      <mat-error *dvSharedUiFormMessageError="'overlapsOthers'">
+        {{ 'gesuch-app.form.lebenslauf.form.error.overlapsOthers' | translate }}
+      </mat-error>
     </mat-form-field>
   </div>
 
