@@ -322,6 +322,22 @@
             'gesuch-app.form.person.guardianship.label' | translate
           }}</mat-checkbox>
         </div>
+        <div class="col-12 col-md-6 col-xl-8">
+          <ngb-alert
+            type="info"
+            [dismissible]="false"
+            *ngIf="form.controls.niederlassungsstatus.enabled"
+          >
+            <div class="d-flex gap-3">
+              <span class="material-symbols-rounded text-info"> info </span>
+              <span
+                [innerHTML]="
+                  'gesuch-app.form.person.niederlassungsstatus.info' | translate
+                "
+              ></span>
+            </div>
+          </ngb-alert>
+        </div>
       </div>
       <div class="row g-4 mt-1">
         <!-- ZIVILSTAND -->
