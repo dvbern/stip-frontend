@@ -1,18 +1,13 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { getBenutzerId } from '@dv/shared/util-fn/local-storage-helper';
+import { KeycloakService } from 'keycloak-angular';
 
 export const hasBenutzer = () => {
-  const router = inject(Router);
-  return getBenutzerId()
-    ? true
-    : router.navigate(['/gesuch-app-feature-user-select']);
-};
-
-export const hasNoBenutzer = () => {
-  const router = inject(Router);
-  return !getBenutzerId()
-    ? true
-    : router.navigate(['/gesuch-app-feature-cockpit']);
+  const keycloakService = inject(KeycloakService);
+  return keycloakService.isLoggedIn().then((isLoggedIn) =>
+    isLoggedIn
+      ? Promise.resolve(true)
+      : // TODO: show landing page if not logged in
+        (console.error('IS NOT LOGGED IN'), Promise.resolve(true))
+  );
 };

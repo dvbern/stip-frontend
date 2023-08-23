@@ -8,7 +8,6 @@ import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form
 
 import { SharedModelError } from '@dv/shared/model/error';
 import {
-  Benutzer,
   SharedModelGesuch,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
@@ -16,13 +15,11 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
-import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
 
 export interface State {
   gesuch: SharedModelGesuch | undefined;
   gesuchFormular: SharedModelGesuchFormular | undefined;
   gesuchs: SharedModelGesuch[];
-  benutzer: Benutzer | undefined;
   loading: boolean;
   error: SharedModelError | undefined;
 }
@@ -31,7 +28,6 @@ const initialState: State = {
   gesuch: undefined,
   gesuchFormular: undefined,
   gesuchs: [],
-  benutzer: undefined,
   loading: false,
   error: undefined,
 };
@@ -46,22 +42,6 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       (state): State => ({
         ...state,
         gesuchs: [],
-      })
-    ),
-
-    on(
-      GesuchAppEventBenutzer.init,
-      (state): State => ({
-        ...state,
-        benutzer: undefined,
-      })
-    ),
-
-    on(
-      GesuchAppEventBenutzer.setBenutzer,
-      (state, benutzer): State => ({
-        ...state,
-        benutzer,
       })
     ),
 
@@ -176,7 +156,6 @@ export const {
   selectGesuchsState,
   selectGesuch,
   selectGesuchs,
-  selectBenutzer,
   selectLoading,
   selectError,
 } = gesuchAppDataAccessGesuchsFeature;
@@ -188,7 +167,5 @@ const getGesuchFormular = (
     // TODO: Fix mapping from GET GesuchFormular to PATCH GesuchFormularUpdate
     (gesuch.gesuch_formular_freigabe_copy ??
       gesuch.gesuch_formular_to_work_with) as SharedModelGesuchFormular;
-  return formular
-    ? { ...formular, freigegeben: !!gesuch.gesuch_formular_freigabe_copy }
-    : undefined;
+  return formular;
 };

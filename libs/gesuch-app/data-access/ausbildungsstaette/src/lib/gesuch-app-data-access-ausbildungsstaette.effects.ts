@@ -2,18 +2,15 @@ import { inject } from '@angular/core';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
+import { AusbildungsstaetteService } from '@dv/shared/model/gesuch';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs';
 import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
 
-import { GesuchAppDataAccessAusbildungsstaetteService } from './gesuch-app-data-access-ausbildungsstaette.service';
-
 export const loadAusbildungsstaettes = createEffect(
   (
     events$ = inject(Actions),
-    gesuchAppDataAccessAusbildungsstaetteService = inject(
-      GesuchAppDataAccessAusbildungsstaetteService
-    )
+    ausbildungsstaetteService = inject(AusbildungsstaetteService)
   ) => {
     return events$.pipe(
       ofType(
@@ -21,7 +18,7 @@ export const loadAusbildungsstaettes = createEffect(
         GesuchAppEventGesuchFormLebenslauf.init
       ),
       switchMap(() =>
-        gesuchAppDataAccessAusbildungsstaetteService.getAll().pipe(
+        ausbildungsstaetteService.getAusbildungsstaetten$().pipe(
           map((ausbildungsstaettes) =>
             GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
               { ausbildungsstaettes }

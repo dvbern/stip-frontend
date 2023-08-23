@@ -8,7 +8,7 @@ resources:
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: "08881066"
+  newTag: "aa60037f"
 
 # TODO: OpenShift
 # patches:
@@ -31,3 +31,13 @@ replacements:
     select:
       kind: Ingress
       name: www
+- source:
+    fieldPath: data.identityHost
+    kind: ConfigMap
+    name: ingress-config
+  targets:
+    - fieldPaths:
+        - spec.tls.0.hosts.1
+      select:
+        kind: Ingress
+        name: www

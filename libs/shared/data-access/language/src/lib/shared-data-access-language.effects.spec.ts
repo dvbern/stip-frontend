@@ -61,7 +61,7 @@ describe('SharedDataAccessLanguage Effects', () => {
 
   it('resolves to language from local storage if available', () => {
     const sharedDataAccessTranslationServiceMock = {
-      getLanguageFromLocalStorage: () => 'it',
+      getLanguageFromLocalStorage: () => 'de',
       getLanguageFromBrowser: () => 'fr',
     } as SharedDataAccessLanguageService;
 
@@ -76,7 +76,7 @@ describe('SharedDataAccessLanguage Effects', () => {
       );
       expectObservable(effectStream$).toBe('a', {
         a: SharedDataAccessLanguageEvents.resolvedFromLocalStorage({
-          language: 'it',
+          language: 'de',
         }),
       });
     });

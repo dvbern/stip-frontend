@@ -6,7 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
@@ -28,16 +28,13 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
 
-// TODO: Remove once login exists
+// TODO: Refactor once services and landing page exist
 // -----
 import { HttpClient } from '@angular/common/http';
-import { map, switchMap } from 'rxjs/operators';
-import {
-  getBenutzerId,
-  unsetBenutzerId,
-} from '@dv/shared/util-fn/local-storage-helper';
-import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
-import { selectBenutzer } from '@dv/gesuch-app/data-access/gesuch';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+import { KeycloakService } from 'keycloak-angular';
+import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 // -----
 
 @Component({
@@ -62,28 +59,35 @@ import { selectBenutzer } from '@dv/gesuch-app/data-access/gesuch';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureCockpitComponent implements OnInit {
-  // TODO: Remove once login exists
+  private store = inject(Store);
+  private benutzerSig = this.store.selectSignal(selectCurrentBenutzer);
+  private keyCloakService = inject(KeycloakService);
+
+  // TODO: Refactor once services and landing page exist
   // -----
-  private fallUrl = `/api/v1/fall/benutzer/${getBenutzerId()}`;
   private http = inject(HttpClient);
-  fall$ = this.http.get<Fall[]>(this.fallUrl).pipe(
-    switchMap((falls) =>
-      falls.length === 0
-        ? this.http.post(this.fallUrl, {}).pipe(
-            switchMap(() => this.http.get<Fall[]>(this.fallUrl)),
-            map((falls) => falls[0])
-          )
-        : [falls[0]]
-    )
+  fall$ = this.store.select(selectCurrentBenutzer).pipe(
+    filter(sharedUtilFnTypeGuardsIsDefined),
+    switchMap((benutzer) => {
+      const fallUrl = `/api/v1/fall/benutzer/${benutzer.id}`;
+      return this.http.get<Fall[]>(fallUrl).pipe(
+        switchMap((falls) =>
+          falls.length === 0
+            ? this.http.post(fallUrl, {}).pipe(
+                switchMap(() => this.http.get<Fall[]>(fallUrl)),
+                map((falls) => falls[0])
+              )
+            : [falls[0]]
+        )
+      );
+    })
   );
   // -----
 
-  private store = inject(Store);
-  private router = inject(Router);
-
   cockpitView = this.store.selectSignal(selectGesuchAppFeatureCockpitView);
+  // Do not initialize signals in computed directly, just usage
   benutzerNameSig = computed(() => {
-    const benutzer = this.store.selectSignal(selectBenutzer)();
+    const benutzer = this.benutzerSig();
     return `${benutzer?.vorname} ${benutzer?.nachname}`;
   });
 
@@ -108,14 +112,19 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     this.store.dispatch(GesuchAppEventCockpit.removeTriggered({ id }));
   }
 
+  trackByPerioden(
+    _index: number,
+    periode: Gesuchsperiode & { gesuchLoading: boolean }
+  ) {
+    return periode.id + periode.gesuchLoading;
+  }
+
   trackByIndex(index: number) {
     return index;
   }
 
   logout() {
-    unsetBenutzerId();
-    this.store.dispatch(GesuchAppEventBenutzer.init());
-    this.router.navigate(['/']);
+    this.keyCloakService.logout();
   }
 
   handleLanguageChangeHeader(language: Language) {

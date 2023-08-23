@@ -6,7 +6,8 @@
   <div class="container mt-5 mb-5">
     <h1 class="text-white mb-4">
       {{
-        'gesuch-app.cockpit.welcome.titel' | translate : { name: 'Anja Muster' }
+        'gesuch-app.cockpit.welcome.titel'
+          | translate : { name: benutzerNameSig() }
       }}
     </h1>
 
@@ -26,7 +27,7 @@
             class="card mb-5 shadow-lg"
             *ngFor="
               let periode of cockpitView().gesuchsperiodes;
-              trackBy: trackByIndex
+              trackBy: trackByPerioden
             "
             [class.col-md-6]="!periode.gesuchId"
             [class.col-md-12]="periode.gesuchId"

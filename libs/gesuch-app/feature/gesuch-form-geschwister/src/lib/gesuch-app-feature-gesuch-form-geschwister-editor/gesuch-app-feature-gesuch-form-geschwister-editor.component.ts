@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -21,6 +22,7 @@ import {
   wohnsitzAnteileNumber,
   SharedUiWohnsitzSplitterComponent,
   wohnsitzAnteileString,
+  updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -30,10 +32,7 @@ import {
   Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUtilFormService } from '@dv/shared/util/form';
@@ -51,6 +50,10 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { Subject } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -62,12 +65,13 @@ const MEDIUM_AGE = 20;
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     TranslateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormLabelComponent,
     NgbInputDatepicker,
     MaskitoModule,
     SharedUiWohnsitzSplitterComponent,
@@ -83,18 +87,18 @@ const MEDIUM_AGE = 20;
 export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   @Input({ required: true }) geschwister!: Partial<GeschwisterUpdate>;
 
   @Output() saveTriggered = new EventEmitter<GeschwisterUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
 
-  private formUtils = inject(SharedUtilFormService);
-
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
-  save$ = new Subject();
+  updateValidity$ = new Subject<unknown>();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -131,6 +135,15 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
 
   constructor() {
     effect(
+      () =>
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig()
+        ),
+      { allowSignalWrites: true }
+    );
+    effect(
       () => {
         const wohnsitzChanged = this.wohnsitzChangedSig();
 
@@ -161,8 +174,9 @@ export class GesuchAppFeatureGesuchFormGeschwisterEditorComponent
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
+    this.updateValidity$.next({});
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
       this.languageSig(),

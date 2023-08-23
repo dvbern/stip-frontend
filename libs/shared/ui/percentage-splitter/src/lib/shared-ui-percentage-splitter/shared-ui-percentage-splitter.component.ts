@@ -6,25 +6,21 @@ import {
   inject,
   Injector,
   Input,
-  OnChanges,
   OnInit,
   runInInjectionContext,
-  SimpleChange,
-  SimpleChanges,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { maskitoPercent } from '@dv/shared/util/maskito-util';
 import { MaskitoModule } from '@maskito/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { percentStringToNumber } from '../utils/form';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'dv-shared-ui-percentage-splitter',
@@ -32,11 +28,10 @@ import { percentStringToNumber } from '../utils/form';
   imports: [
     CommonModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatInputModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     TranslateModule,
   ],
@@ -44,10 +39,8 @@ import { percentStringToNumber } from '../utils/form';
   styleUrls: ['./shared-ui-percentage-splitter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
-  @Input() updateValidity: unknown;
-  @Input() visible = false;
-
+export class SharedUiPercentageSplitterComponent implements OnInit {
+  @Input({ required: true }) updateValidity: unknown;
   @Input({ required: true })
   controlA!: FormControl<string | undefined>;
 
@@ -56,22 +49,7 @@ export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
 
   private injector = inject(Injector);
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['visible']) {
-      if (changes['visible'].currentValue) {
-        this.setVisible(this.controlA);
-        this.setVisible(this.controlB);
-      } else {
-        this.setInvisible(this.controlA);
-        this.setInvisible(this.controlB);
-      }
-    }
-  }
-
   public ngOnInit(): void {
-    this.ngOnChanges({
-      visible: new SimpleChange(null, this.visible, true),
-    });
     runInInjectionContext(this.injector, () => {
       const controlAChangedSig = toSignal(this.controlA.valueChanges, {
         initialValue: undefined,
@@ -100,15 +78,6 @@ export class SharedUiPercentageSplitterComponent implements OnChanges, OnInit {
         { allowSignalWrites: true }
       );
     });
-  }
-
-  private setInvisible(control: FormControl): void {
-    control.patchValue(null);
-    control.disable();
-  }
-
-  private setVisible(control: FormControl): void {
-    control.enable();
   }
 
   maskitoOptionsPercent = maskitoPercent;

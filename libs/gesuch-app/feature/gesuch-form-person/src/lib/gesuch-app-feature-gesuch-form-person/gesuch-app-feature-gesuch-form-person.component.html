@@ -20,97 +20,80 @@
     >
       <!-- AHV -->
       <div class="row g-4">
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.social-insurance-number.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</mat-label>
           <input
-            class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            matInput
             formControlName="sozialversicherungsnummer"
             placeholder="756.xxxx.xxxx.xx"
             [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageInfo>
-            {{
-              'gesuch-app.form.shared.social-insurance-number.info' | translate
-            }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'ahv'">
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'ahv'">
             {{ 'shared.form.error.ahv' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
       </div>
-
-      <h3 class="pt-5">
+      <h3 class="pt-5 mb-4">
         {{ 'gesuch-app.form.shared.section.personal-details' | translate }}
       </h3>
 
       <div class="row g-4">
         <!-- Anrede -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.person.salutation.label' | translate
-          }}</dv-shared-ui-form-label>
-          <select
-            class="form-select"
-            dvSharedUiFormLabelTarget
-            formControlName="anrede"
-          >
-            <option [ngValue]="null" disabled selected>
+          }}</mat-label>
+          <mat-select formControlName="anrede">
+            <mat-option [value]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
-            </option>
-            <option
-              [ngValue]="a"
+            </mat-option>
+            <mat-option
+              [value]="a"
               *ngFor="let a of anredeValues; trackBy: trackByIndex"
             >
               {{
                 'shared.form.select.salutation.' + (a | lowercase) | translate
               }}
-            </option>
-          </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            </mat-option>
+          </mat-select>
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
 
         <!-- Name -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.lastname.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</mat-label>
           <input
             data-testid="form-person-name"
-            class="form-control"
             type="text"
-            dvSharedUiFormLabelTarget
+            matInput
             formControlName="nachname"
           />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
       </div>
       <div class="row g-4 mt-1">
         <!-- Vorname -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.firstname.label' | translate
-          }}</dv-shared-ui-form-label>
-          <input
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            formControlName="vorname"
-          />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          }}</mat-label>
+          <input type="text" matInput formControlName="vorname" />
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <!-- Adresse -->
@@ -125,25 +108,11 @@
 
       <div class="row g-4 mt-1">
         <!-- Wohnsitz -->
-        <dv-shared-ui-form-field
-          class="col-12 col-md-6 col-xl-4"
-          [isCheckbox]="true"
-        >
-          <dv-shared-ui-form-label
-            >{{
-              'gesuch-app.form.shared.identical-civil-residence.label'
-                | translate
-            }}
-          </dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              dvSharedUiFormLabelTarget
-              formControlName="identischerZivilrechtlicherWohnsitz"
-            />
-          </div>
-        </dv-shared-ui-form-field>
+        <div class="col-12 col-md-6 col-xl-4">
+          <mat-checkbox formControlName="identischerZivilrechtlicherWohnsitz">{{
+            'gesuch-app.form.shared.identical-civil-residence.label' | translate
+          }}</mat-checkbox>
+        </div>
       </div>
       <!-- alternative civil residence -->
       <div
@@ -151,54 +120,54 @@
         *ngIf="!form.value.identischerZivilrechtlicherWohnsitz"
       >
         <div class="col-12 col-xl-8">
-          <label class="mb-2">{{
+          <mat-label class="mb-2">{{
             'gesuch-app.form.shared.alternative-civil-residence.title'
               | translate
-          }}</label>
-          <div class="row g-4">
+          }}</mat-label>
+          <div class="row g-4 mt-1">
             <!-- PLZ -->
-            <dv-shared-ui-form-field class="col-5 col-md-4 col-xl-3">
-              <dv-shared-ui-form-label
+            <mat-form-field
+              dvSharedUiFormField
+              class="col-5 col-md-4 col-xl-3 mt-3"
+            >
+              <mat-label
                 >{{
                   'gesuch-app.form.shared.address.zipcode.label' | translate
                 }}
-              </dv-shared-ui-form-label>
+              </mat-label>
               <input
-                class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                matInput
                 formControlName="identischerZivilrechtlicherWohnsitzPLZ"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
-              >
+              <mat-error *dvSharedUiFormMessageError="'required'">
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
-            </dv-shared-ui-form-field>
+              </mat-error>
+            </mat-form-field>
 
             <!-- Ort -->
-            <dv-shared-ui-form-field class="col-7 col-md-8 col-xl-9">
-              <dv-shared-ui-form-label
+            <mat-form-field
+              dvSharedUiFormField
+              class="col-7 col-md-8 col-xl-9 mt-3"
+            >
+              <mat-label
                 >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
-              </dv-shared-ui-form-label>
+              </mat-label>
               <input
-                class="form-control"
                 type="text"
-                dvSharedUiFormLabelTarget
+                matInput
                 formControlName="identischerZivilrechtlicherWohnsitzOrt"
               />
-              <dv-shared-ui-form-message
-                *dvSharedUiFormMessageError="'required'"
-              >
+              <mat-error *dvSharedUiFormMessageError="'required'">
                 {{ 'shared.form.error.required' | translate }}
-              </dv-shared-ui-form-message>
-            </dv-shared-ui-form-field>
+              </mat-error>
+            </mat-form-field>
           </div>
         </div>
       </div>
 
       <!-- Weitere Angaben -->
-      <h3 class="pt-5">
+      <h3 class="pt-5 mb-4">
         {{
           'gesuch-app.form.person.section.additional-information' | translate
         }}
@@ -206,82 +175,85 @@
 
       <div class="row g-4">
         <!-- E-MAIL -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.person.email.label' | translate
-          }}</dv-shared-ui-form-label>
-          <input
-            class="form-control"
-            type="email"
-            dvSharedUiFormLabelTarget
-            formControlName="email"
-          />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          }}</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'pattern'">
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'pattern'">
             {{ 'shared.form.error.email' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
 
         <!-- TEL -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.phone.label' | translate
-          }}</dv-shared-ui-form-label>
-          <input
-            class="form-control"
-            type="text"
-            dvSharedUiFormLabelTarget
-            formControlName="telefonnummer"
-          />
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          }}</mat-label>
+          <input type="text" matInput formControlName="telefonnummer" />
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message
-            *dvSharedUiFormMessageError="'telefonnummer'"
-          >
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'telefonnummer'">
             {{ 'shared.form.error.telefonnummer' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <div class="row g-4 mt-1">
         <!-- GEBURTSDATUM -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.birthday.label' | translate
-          }}</dv-shared-ui-form-label>
+          }}</mat-label>
 
           <input
-            class="form-control"
+            matInput
             placeholder="dd.mm.yyyy"
-            dvSharedUiFormLabelTarget
             formControlName="geburtsdatum"
             (blur)="onGeburtsdatumBlur()"
           />
 
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'dateFormat'">
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'dateFormat'">
             {{ 'shared.form.error.dateFormat' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'minDate'">
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'minDate'">
             {{ 'shared.form.error.minDatePast' | translate }}
-          </dv-shared-ui-form-message>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'maxDate'">
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'maxDate'">
             {{ 'shared.form.error.maxDatePast' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
 
         <!-- NATIONALITAET -->
-        <dv-shared-ui-form-country
-          class="col-12 col-md-6 col-xl-4"
-          formControlName="nationalitaet"
-          [labelText]="'gesuch-app.form.person.nationality.label' | translate"
-          [laender]="laenderSig()"
-        ></dv-shared-ui-form-country>
+        <mat-form-field class="col-12 col-md-6 col-xl-4" dvSharedUiFormField>
+          <mat-label>{{
+            'gesuch-app.form.person.nationality.label' | translate
+          }}</mat-label>
+          <mat-select formControlName="nationalitaet">
+            <mat-option [value]="null" disabled selected>
+              {{ 'shared.form.select.empty' | translate }}
+            </mat-option>
+            <mat-option
+              [value]="l.code"
+              *ngFor="
+                let l of translatedLaender$ | async;
+                trackBy: trackByIndex
+              "
+            >
+              {{ l.text }}
+            </mat-option>
+          </mat-select>
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-form-field>
 
         <!-- Auslaenderausweis -->
         <div
@@ -302,22 +274,18 @@
 
       <div class="row g-4 mt-1">
         <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
-        <div *ngIf="form.controls.niederlassungsstatus.enabled">
-          <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-            <dv-shared-ui-form-label>{{
+        <ng-container *ngIf="form.controls.niederlassungsstatus.enabled">
+          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-label>{{
               'gesuch-app.form.person.niederlassungsstatus.label' | translate
-            }}</dv-shared-ui-form-label>
+            }}</mat-label>
 
-            <select
-              class="form-select"
-              dvSharedUiFormLabelTarget
-              formControlName="niederlassungsstatus"
-            >
-              <option [ngValue]="null" disabled selected>
+            <mat-select formControlName="niederlassungsstatus">
+              <mat-option [value]="null" disabled selected>
                 {{ 'shared.form.select.empty' | translate }}
-              </option>
-              <option
-                [ngValue]="n"
+              </mat-option>
+              <mat-option
+                [value]="n"
                 *ngFor="
                   let n of niederlassungsStatusValues;
                   trackBy: trackByIndex
@@ -326,99 +294,93 @@
                 {{
                   'gesuch-app.form.person.niederlassungsstatus.' + n | translate
                 }}
-              </option>
-            </select>
+              </mat-option>
+            </mat-select>
 
-            <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
-            </dv-shared-ui-form-message>
-          </dv-shared-ui-form-field>
-        </div>
-        <div *ngIf="form.controls.heimatort.enabled">
-          <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-            <dv-shared-ui-form-label>{{
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="form.controls.heimatort.enabled">
+          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-label>{{
               'gesuch-app.form.person.origin.label' | translate
-            }}</dv-shared-ui-form-label>
-            <input
-              class="form-control"
-              type="text"
-              dvSharedUiFormLabelTarget
-              formControlName="heimatort"
-            />
-            <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            }}</mat-label>
+            <input type="text" matInput formControlName="heimatort" />
+            <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
-            </dv-shared-ui-form-message>
-          </dv-shared-ui-form-field>
-        </div>
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
         <!-- VORMUNDSCHAFT -->
-        <dv-shared-ui-form-field
+        <div
           class="col-12 col-md-6 col-xl-4"
-          [isCheckbox]="true"
           *ngIf="form.controls.nationalitaet.value === nationalitaetCH"
         >
-          <dv-shared-ui-form-label
-            >{{ 'gesuch-app.form.person.guardianship.label' | translate }}
-          </dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              dvSharedUiFormLabelTarget
-              formControlName="vormundschaft"
-            />
-          </div>
-        </dv-shared-ui-form-field>
+          <mat-checkbox formControlName="vormundschaft">{{
+            'gesuch-app.form.person.guardianship.label' | translate
+          }}</mat-checkbox>
+        </div>
+        <div class="col-12 col-md-6 col-xl-8">
+          <ngb-alert
+            type="info"
+            [dismissible]="false"
+            *ngIf="form.controls.niederlassungsstatus.enabled"
+          >
+            <div class="d-flex gap-3">
+              <span class="material-symbols-rounded text-info"> info </span>
+              <span
+                [innerHTML]="
+                  'gesuch-app.form.person.niederlassungsstatus.info' | translate
+                "
+              ></span>
+            </div>
+          </ngb-alert>
+        </div>
       </div>
       <div class="row g-4 mt-1">
         <!-- ZIVILSTAND -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.person.marital-status.label' | translate
-          }}</dv-shared-ui-form-label>
-          <select
-            class="form-select"
-            dvSharedUiFormLabelTarget
-            formControlName="zivilstand"
-          >
-            <option [ngValue]="null" disabled selected>
+          }}</mat-label>
+          <mat-select formControlName="zivilstand">
+            <mat-option [value]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
-            </option>
-            <option
-              [ngValue]="z"
+            </mat-option>
+            <mat-option
+              [value]="z"
               *ngFor="let z of zivilstandValues; trackBy: trackByIndex"
             >
               {{ 'gesuch-app.form.person.zivilstand.' + z | translate }}
-            </option>
-          </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            </mat-option>
+          </mat-select>
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
 
         <!-- Wohnsitz -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <mat-label>{{
             'gesuch-app.form.shared.wohnsitz.label' | translate
-          }}</dv-shared-ui-form-label>
-          <select
-            class="form-select"
-            dvSharedUiFormLabelTarget
-            formControlName="wohnsitz"
-          >
-            <option [ngValue]="null" disabled selected>
+          }}</mat-label>
+          <mat-select formControlName="wohnsitz">
+            <mat-option [value]="null" disabled selected>
               {{ 'shared.form.select.empty' | translate }}
-            </option>
-            <option
-              [ngValue]="z"
+            </mat-option>
+            <mat-option
+              [value]="z"
               *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
             >
               {{ 'gesuch-app.form.shared.wohnsitz.' + z | translate }}
-            </option>
-          </select>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            </mat-option>
+          </mat-select>
+          <mat-error *dvSharedUiFormMessageError="'required'">
             {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          </mat-error>
+        </mat-form-field>
 
         <!-- Info Konkubinat -->
         <div class="col-12 col-md-6 col-xl-4">
@@ -438,14 +400,10 @@
       </div>
 
       <!-- WOHNSITZ AUFTEILUNG -->
-      <div class="row g-4 my-2">
-        <div
-          class="col-12 col-md-6 col-xl-4"
-          [hidden]="!showWohnsitzSplitterSig()"
-        >
+      <div class="row g-4 my-2" *ngIf="showWohnsitzSplitterSig()">
+        <div class="col-12 col-md-6 col-xl-4">
           <dv-shared-ui-wohnsitz-splitter
-            [updateValidity]="save$ | async"
-            [visible]="showWohnsitzSplitterSig()"
+            [updateValidity]="updateValidity$ | async"
             [controls]="form.controls"
           ></dv-shared-ui-wohnsitz-splitter>
         </div>
@@ -453,127 +411,83 @@
 
       <div class="row g-4 mt-1">
         <!-- Quellenbesteuerung -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <div class="col-12 col-md-6 col-xl-4">
+          <label>{{
             'gesuch-app.form.person.tax-at-source.label' | translate
-          }}</dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuert"
-              [value]="true"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuert"
-              id="quellenbesteuertJa"
-            />
-            <label class="form-check-label" for="quellenbesteuertJa">
-              {{ 'shared.form.radio.yes' | translate }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              formControlName="quellenbesteuert"
-              [value]="false"
-              class="form-check-input"
-              type="radio"
-              name="quellenbesteuert"
-              id="quellenbesteuertNein"
-            />
-            <label class="form-check-label" for="quellenbesteuerungNein">
-              {{ 'shared.form.radio.no' | translate }}
-            </label>
-          </div>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          }}</label>
+          <mat-radio-group
+            class="d-flex flex-column"
+            formControlName="quellenbesteuert"
+            dvSharedUiFormField
+          >
+            <mat-radio-button [value]="true">
+              {{ 'shared.form.radio.yes' | translate }}</mat-radio-button
+            >
+            <mat-radio-button [value]="false">{{
+              'shared.form.radio.no' | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
 
         <!-- Sozialhilfebeitraege -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <div class="col-12 col-md-6 col-xl-4">
+          <label>{{
             'gesuch-app.form.person.social-security.label' | translate
-          }}</dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              formControlName="sozialhilfebeitraege"
-              [value]="true"
-              class="form-check-input"
-              type="radio"
-              name="sozialhilfebeitraege"
-              id="sozialhilfebeitraegeJa"
-            />
-            <label class="form-check-label" for="sozialhilfebeitraegeJa">
-              {{ 'shared.form.radio.yes' | translate }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              formControlName="sozialhilfebeitraege"
-              [value]="false"
-              class="form-check-input"
-              type="radio"
-              name="sozialhilfebeitraege"
-              id="sozialhilfebeitraegeNein"
-            />
-            <label class="form-check-label" for="sozialhilfebeitraegeNein">
-              {{ 'shared.form.radio.no' | translate }}
-            </label>
-          </div>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+          }}</label>
+          <mat-radio-group
+            class="d-flex flex-column"
+            formControlName="sozialhilfebeitraege"
+            dvSharedUiFormField
+          >
+            <mat-radio-button [value]="true">{{
+              'shared.form.radio.yes' | translate
+            }}</mat-radio-button>
+            <mat-radio-button [value]="false">{{
+              'shared.form.radio.no' | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
       </div>
       <div class="row g-4 mt-1">
-        <!-- KorrespondenzSprache -->
-        <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4">
-          <dv-shared-ui-form-label>{{
+        <div class="col-12 col-md-6 col-xl-4">
+          <!-- KorrespondenzSprache -->
+          <label>{{
             'gesuch-app.form.person.korrespondenzSprache.label' | translate
-          }}</dv-shared-ui-form-label>
-          <div
-            class="form-check"
-            *ngFor="let s of spracheValues; trackBy: trackByIndex"
+          }}</label>
+          <mat-radio-group
+            class="d-flex flex-column"
+            formControlName="korrespondenzSprache"
+            dvSharedUiFormField
           >
-            <input
-              formControlName="korrespondenzSprache"
+            <mat-radio-button
+              *ngFor="let s of spracheValues; trackBy: trackByIndex"
               [value]="s"
-              class="form-check-input"
-              type="radio"
-              name="korrespondenzSprache"
-              [id]="'korrespondenzSprache' + s"
-            />
-            <label class="form-check-label" [for]="'korrespondenzSprache' + s">
-              {{
+              >{{
                 'gesuch-app.form.person.korrespondenzSprache.' + s | translate
-              }}
-            </label>
-          </div>
-          <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </dv-shared-ui-form-message>
-        </dv-shared-ui-form-field>
+              }}</mat-radio-button
+            >
+            <div class="group-errors">
+              <mat-error *dvSharedUiFormMessageError="'required'">
+                {{ 'shared.form.error.required' | translate }}
+              </mat-error>
+            </div>
+          </mat-radio-group>
+        </div>
       </div>
 
       <div class="row g-4 mt-1">
         <!-- digitale Kommunikation -->
-        <dv-shared-ui-form-field
-          class="col-12 col-md-6 col-xl-4"
-          [isCheckbox]="true"
-        >
-          <dv-shared-ui-form-label
-            >{{
-              'gesuch-app.form.person.digital-communication.label' | translate
-            }}
-          </dv-shared-ui-form-label>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              dvSharedUiFormLabelTarget
-              formControlName="digitaleKommunikation"
-            />
-          </div>
-        </dv-shared-ui-form-field>
+        <mat-checkbox formControlName="digitaleKommunikation">{{
+          'gesuch-app.form.person.digital-communication.label' | translate
+        }}</mat-checkbox>
       </div>
 
       <!-- Buttons -->

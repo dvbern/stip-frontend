@@ -3,6 +3,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -15,11 +17,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   addWohnsitzControls,
   wohnsitzAnteileNumber,
   SharedUiWohnsitzSplitterComponent,
   wohnsitzAnteileString,
+  updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -29,10 +34,7 @@ import {
   Wohnsitz,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
@@ -48,6 +50,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 import { Subject } from 'rxjs';
+import { SharedUtilFormService } from '@dv/shared/util/form';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_CHILD = 0;
@@ -59,13 +64,14 @@ const MEDIUM_AGE = 20;
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     TranslateModule,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormLabelComponent,
     NgbInputDatepicker,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
     SharedUiWohnsitzSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
@@ -76,7 +82,9 @@ const MEDIUM_AGE = 20;
 export class GesuchAppFeatureGesuchFormKinderEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   @Input({ required: true }) kind!: Partial<KindUpdate>;
 
@@ -85,7 +93,7 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
-  save$ = new Subject();
+  updateValidity$ = new Subject();
 
   form = this.formBuilder.group({
     nachname: ['', [Validators.required]],
@@ -122,6 +130,18 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
     return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
   });
 
+  constructor() {
+    effect(
+      () =>
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig()
+        ),
+      { allowSignalWrites: true }
+    );
+  }
+
   ngOnChanges() {
     this.form.patchValue({
       ...this.kind,
@@ -134,8 +154,9 @@ export class GesuchAppFeatureGesuchFormKinderEditorComponent
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
+    this.updateValidity$.next({});
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       this.form.getRawValue().geburtsdatum,
       this.languageSig(),

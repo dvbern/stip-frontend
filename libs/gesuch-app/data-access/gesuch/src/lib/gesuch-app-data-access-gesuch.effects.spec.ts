@@ -1,9 +1,10 @@
 import { TestScheduler } from 'rxjs/testing';
+import { Store } from '@ngrx/store';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+import { GesuchService } from '@dv/shared/model/gesuch';
 
 import { loadGesuchs } from './gesuch-app-data-access-gesuch.effects';
-import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 
 describe('GesuchAppDataAccessGesuch Effects', () => {
@@ -17,9 +18,12 @@ describe('GesuchAppDataAccessGesuch Effects', () => {
 
   it('loads Gesuch effect - success', () => {
     scheduler.run(({ expectObservable, hot, cold }) => {
-      const gesuchAppDataAccessGesuchServiceMock = {
-        getAll: () => cold('150ms a', { a: [] }),
-      } as unknown as GesuchAppDataAccessGesuchService;
+      const gesuchServiceMock = {
+        getGesucheForBenutzer$: () => cold('150ms a', { a: [] }),
+      } as unknown as GesuchService;
+      const gesuchStoreMock = {
+        select: () => cold('a', { a: '1234' }),
+      } as unknown as Store;
 
       const actionsMock$ = hot('10ms a', {
         a: GesuchAppEventCockpit.init(),
@@ -27,7 +31,8 @@ describe('GesuchAppDataAccessGesuch Effects', () => {
 
       const effectStream$ = loadGesuchs(
         actionsMock$,
-        gesuchAppDataAccessGesuchServiceMock
+        gesuchStoreMock,
+        gesuchServiceMock
       );
 
       expectObservable(effectStream$).toBe('160ms a', {

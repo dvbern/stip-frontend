@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
   Signal,
@@ -16,6 +17,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -28,10 +35,7 @@ import {
   Ausbildungsstaette,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import {
@@ -74,11 +78,14 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     ReactiveFormsModule,
     NgbInputDatepicker,
     NgbTypeahead,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
-    SharedUiFormLabelComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     GesuchAppUiStepFormButtonsComponent,
@@ -88,6 +95,7 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -101,12 +109,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungsland: this.formBuilder.control<Ausbildungsland | null>(null, {
       validators: Validators.required,
     }),
-    ausbildungsstaette: [<string | null>null, [Validators.required]],
-    ausbildungsgang: [<string | null>null, [Validators.required]],
+    ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
+    ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
     fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
-    alternativeAusbildungsgang: [<string | null>null],
-    alternativeAusbildungsstaette: [<string | null>null],
+    alternativeAusbildungsgang: [<string | undefined>undefined],
+    alternativeAusbildungsstaette: [<string | undefined>undefined],
     ausbildungBegin: [
       '',
       [
@@ -155,6 +163,16 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   ausbildungsstaett$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
+  ausbildungsstaettOptionsSig = computed(() => {
+    const currentAusbildungsstatte = this.ausbildungsstaett$();
+    return currentAusbildungsstatte
+      ? this.ausbildungsstaetteOptions$().filter((item) =>
+          item.name
+            .toLowerCase()
+            .includes(currentAusbildungsstatte.toLowerCase())
+        )
+      : this.ausbildungsstaetteOptions$();
+  });
   ausbildungNichtGefundenChanged$ = toSignal(
     this.form.controls.ausbildungNichtGefunden.valueChanges
   );
@@ -165,7 +183,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     return (
       this.ausbildungsstaetteOptions$().find(
         (item) => item.name === this.ausbildungsstaett$()
-      )?.ausbildungsgaenge || []
+      )?.ausbildungsgaenge ?? []
     );
   });
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
@@ -309,7 +327,7 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead!: NgbTypeahead;
 
   clearStaetteTypeahead(inputField: HTMLInputElement) {
-    this.form.controls.ausbildungsstaette.setValue('');
+    this.form.controls.ausbildungsstaette.reset();
     this.handleStaetteChangedByUser();
     this.ausbildungsstaetteTypeahead.dismissPopup();
     inputField.focus();
@@ -334,22 +352,14 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
         GesuchAppEventGesuchFormEducation.saveTriggered({
           origin: GesuchFormSteps.AUSBILDUNG,
           gesuchId,
-          gesuchFormular: {
-            ...gesuchFormular,
-            ausbildung: convertTempFormToRealValues(this.form, {
-              required: ['ausbildungsland', 'fachrichtung', 'pensum'],
-              undefinedIfEmpty: [
-                'alternativeAusbildungsgang',
-                'alternativeAusbildungsstaette',
-              ],
-            }),
-          },
+          gesuchFormular,
         })
       );
     }
@@ -361,23 +371,34 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
-    return {
+    const { ausbildungsgang, ausbildungsstaette, ...formValue } =
+      convertTempFormToRealValues(this.form, {
+        required: ['ausbildungsland', 'fachrichtung', 'pensum'],
+        undefinedIfEmpty: [
+          'alternativeAusbildungsgang',
+          'alternativeAusbildungsstaette',
+        ],
+      });
+    const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
         ausbildung: {
-          ...this.form.getRawValue(),
-          ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
-            .filter(
-              (ausbildungsstaette) =>
-                ausbildungsstaette.name ===
-                this.form.controls.ausbildungsstaette.value
-            )
-            .pop()?.id,
-          ausbildungsgangId: this.form.controls.ausbildungsgang.value,
+          ...formValue,
+          ausbildungsstaetteId:
+            this.ausbildungsstaetteOptions$()
+              .filter(
+                (ausbildungsstaette) =>
+                  ausbildungsstaette.name ===
+                  this.form.controls.ausbildungsstaette.value
+              )
+              .pop()?.id ?? undefined,
+          ausbildungsgangId:
+            this.form.controls.ausbildungsgang.value ?? undefined,
         },
       },
     };
+    return ret;
   }
 
   onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
