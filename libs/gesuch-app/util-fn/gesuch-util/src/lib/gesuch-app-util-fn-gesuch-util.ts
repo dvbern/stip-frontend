@@ -4,6 +4,7 @@ import {
   FamiliensituationUpdate,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
+import { lowercased } from '@dv/shared/util-fn/string-helper';
 
 export interface ElternSituation {
   expectVater: boolean;
@@ -33,16 +34,13 @@ function calculateElternSituation(
   };
 }
 
-const lowercase = <T extends string>(value: T) =>
-  value.toLocaleLowerCase() as Lowercase<T>;
-
 export function calculateExpectElternteil(
   type: ElternTyp,
   familienSituation: FamiliensituationUpdate | undefined
 ): boolean {
   if (familienSituation) {
     const elternteilLebt = familienSituation.elternteilUnbekanntVerstorben
-      ? familienSituation?.[`${lowercase(type)}UnbekanntVerstorben`] ===
+      ? familienSituation?.[`${lowercased(type)}UnbekanntVerstorben`] ===
         'WEDER_NOCH'
       : true;
     const elternteilZahltKeineAlimente =

@@ -24,6 +24,7 @@ import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-f
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { capitalized } from '@dv/shared/util-fn/string-helper';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
@@ -118,9 +119,11 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithDeletedElternteil(id: string) {
-    const { gesuch, gesuchFormular } = this.view$();
+    const { gesuch, gesuchFormular, expectMutter, expectVater } = this.view$();
     const updatedElterns = gesuchFormular?.elterns?.filter(
-      (entry) => entry.id !== id
+      (entry) =>
+        entry.id !== id &&
+        isElternTypeExpected(entry, { expectMutter, expectVater })
     );
 
     return {
@@ -133,16 +136,20 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithUpdatedElternteil(elternteil: ElternUpdate) {
-    const { gesuch, gesuchFormular } = this.view$();
+    const { gesuch, gesuchFormular, expectMutter, expectVater } = this.view$();
     // update existing elternteil if found
     const updatedElterns =
-      gesuchFormular?.elterns?.map((oldEltern) => {
-        if (oldEltern.id === elternteil.id) {
-          return elternteil;
-        } else {
-          return oldEltern;
-        }
-      }) ?? [];
+      gesuchFormular?.elterns
+        ?.map((oldEltern) => {
+          if (oldEltern.id === elternteil.id) {
+            return elternteil;
+          } else {
+            return oldEltern;
+          }
+        })
+        .filter((entry) =>
+          isElternTypeExpected(entry, { expectMutter, expectVater })
+        ) ?? [];
     // add new elternteil if not found
     if (!elternteil.id) {
       updatedElterns.push(elternteil);
@@ -173,4 +180,11 @@ export const setupElternTeil = (
       : {}),
     elternTyp,
   };
+};
+
+const isElternTypeExpected = (
+  eltern: ElternUpdate,
+  expected: { expectVater: boolean; expectMutter: boolean }
+) => {
+  return expected[`expect${capitalized(eltern.elternTyp)}`];
 };

@@ -79,6 +79,7 @@
       "@dv/shared/ui/wohnsitz-splitter": ["libs/shared/ui/wohnsitz-splitter/src/index.ts"],
       "@dv/shared/util-fn/error-transformer": ["libs/shared/util-fn/error-transformer/src/index.ts"],
       "@dv/shared/util-fn/local-storage-helper": ["libs/shared/util-fn/local-storage-helper/src/index.ts"],
+      "@dv/shared/util-fn/string-helper": ["libs/shared/util-fn/string-helper/src/index.ts"],
       "@dv/shared/util-fn/type-guards": ["libs/shared/util-fn/type-guards/src/index.ts"],
       "@dv/shared/util/countries": ["libs/shared/util/countries/src/index.ts"],
       "@dv/shared/util/form": ["libs/shared/util/form/src/index.ts"],
