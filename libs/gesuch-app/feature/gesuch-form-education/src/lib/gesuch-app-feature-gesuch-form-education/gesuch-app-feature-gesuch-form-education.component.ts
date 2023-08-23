@@ -38,7 +38,10 @@ import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
   maxDateValidatorForLocale,
@@ -369,16 +372,17 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
     const { ausbildungsgang, ausbildungsstaette, ...formValue } =
-      this.form.getRawValue();
+      convertTempFormToRealValues(this.form, [
+        'ausbildungsland',
+        'fachrichtung',
+        'pensum',
+      ]);
     const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
         ausbildung: {
           ...formValue,
-          ausbildungsland: formValue.ausbildungsland!,
-          fachrichtung: formValue.fachrichtung!,
-          pensum: formValue.pensum!,
           ausbildungsstaetteId:
             this.ausbildungsstaetteOptions$()
               .filter(
