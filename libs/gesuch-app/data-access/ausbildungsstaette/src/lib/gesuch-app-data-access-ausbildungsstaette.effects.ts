@@ -7,15 +7,13 @@ import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 
+import { AusbildungsstaetteService } from '@dv/shared/model/gesuch';
 import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
-import { GesuchAppDataAccessAusbildungsstaetteService } from './gesuch-app-data-access-ausbildungsstaette.service';
 
 export const loadAusbildungsstaettes = createEffect(
   (
     events$ = inject(Actions),
-    gesuchAppDataAccessAusbildungsstaetteService = inject(
-      GesuchAppDataAccessAusbildungsstaetteService
-    )
+    ausbildungsstaetteService = inject(AusbildungsstaetteService)
   ) => {
     return events$.pipe(
       ofType(
@@ -24,7 +22,7 @@ export const loadAusbildungsstaettes = createEffect(
         GesuchAppEventGesuchFormEinnahmenkosten.init
       ),
       switchMap(() =>
-        gesuchAppDataAccessAusbildungsstaetteService.getAll().pipe(
+        ausbildungsstaetteService.getAusbildungsstaetten$().pipe(
           map((ausbildungsstaettes) =>
             GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
               { ausbildungsstaettes }

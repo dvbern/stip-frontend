@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -80,8 +81,10 @@ const MEDIUM_AGE_ADULT = 40;
 export class GesuchAppFeatureGesuchFormElternEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private store = inject(Store);
 
   @Input({ required: true }) elternteil!: Omit<
     Partial<ElternUpdate>,
@@ -97,8 +100,6 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   readonly ElternTyp = ElternTyp;
 
-  private store = inject(Store);
-
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
@@ -108,8 +109,14 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    identischerZivilrechtlicherWohnsitzPLZ: ['', [Validators.required]],
-    identischerZivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
+    identischerZivilrechtlicherWohnsitzOrt: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
     telefonnummer: [
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
@@ -184,6 +191,7 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const formValues = this.form.getRawValue();
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       formValues.geburtsdatum,

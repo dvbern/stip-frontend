@@ -7,7 +7,6 @@ describe('selectGesuchAppDataAccessGesuchsView', () => {
       gesuch: undefined,
       gesuchs: [],
       gesuchFormular: undefined,
-      benutzer: undefined,
       loading: false,
       error: undefined,
     };

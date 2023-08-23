@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -34,8 +35,10 @@ import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
+  createOverlappingValidator,
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
   onMonthYearInputBlur,
@@ -73,11 +76,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
-
+  private formUtils = inject(SharedUtilFormService);
   private translateService = inject(TranslateService);
 
   @Input({ required: true }) item!: Partial<SharedModelLebenslauf>;
+  @Input({ required: true }) ausbildungen!: LebenslaufItemUpdate[];
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
 
@@ -151,6 +156,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const previousAusbildungen = this.ausbildungen
+      .filter((l) => !this.item.id || l.id !== this.item.id)
+      .map((a) => [a.von, a.bis] as const);
     // update date validators
     if (changes['minStartDate']) {
       this.form.controls.von.clearValidators();
@@ -184,6 +192,12 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
       ]);
       if (changes['maxEndDate'].currentValue) {
         this.form.controls.bis.addValidators([
+          createOverlappingValidator(
+            this.form.controls.von,
+            previousAusbildungen,
+            new Date(),
+            'monthYear'
+          ),
           maxDateValidatorForLocale(
             this.languageSig(),
             changes['maxEndDate'].currentValue,
@@ -195,12 +209,17 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
     // fill form
     this.form.patchValue(this.item);
+
+    if (this.item.von && this.item.bis) {
+      this.form.controls.bis.markAsTouched();
+    }
   }
 
   handleSave() {
     /* this.form.controls.von.updateValueAndValidity(); // TODO oder in effect
      this.form.controls.bis.updateValueAndValidity();*/
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.onDateBlur(this.form.controls.von);
     this.onDateBlur(this.form.controls.bis);
     if (this.form.valid) {

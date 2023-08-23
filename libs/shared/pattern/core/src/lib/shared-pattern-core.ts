@@ -17,10 +17,15 @@ import {
   HttpBackend,
   provideHttpClient,
   withInterceptors,
-  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideState, provideStore, Store } from '@ngrx/store';
+import {
+  ActionReducer,
+  MetaReducer,
+  provideState,
+  provideStore,
+  Store,
+} from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
@@ -51,6 +56,10 @@ import {
   sharedDataAccessStammdatensFeature,
 } from '@dv/shared/data-access/stammdaten';
 import { provideSharedPatternAppInitialization } from '@dv/shared/pattern/app-initialization';
+import {
+  sharedDataAccessBenutzerEffects,
+  sharedDataAccessBenutzersFeature,
+} from '@dv/shared/data-access/benutzer';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -59,6 +68,21 @@ export class ExplicitMissingTranslationHandler
     return `${params.key}`;
   }
 }
+
+export function debugReducers(
+  reducer: ActionReducer<unknown>
+): ActionReducer<unknown> {
+  return function (state, action) {
+    if (isDevMode()) {
+      console.log('state', state);
+      console.log('action', action);
+    }
+
+    return reducer(state, action);
+  };
+}
+
+export const metaReducers: MetaReducer<any>[] = [debugReducers];
 
 export function provideSharedPatternCore(appRoutes: Route[]) {
   return [
@@ -95,6 +119,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         router: routerReducer,
       },
       {
+        metaReducers,
         runtimeChecks: {
           strictStateImmutability: true,
           strictActionImmutability: true,
@@ -105,10 +130,12 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         },
       }
     ),
+    provideState(sharedDataAccessBenutzersFeature),
     provideState(sharedDataAccessConfigsFeature),
     provideState(sharedDataAccessLanguageFeature),
     provideState(sharedDataAccessStammdatensFeature),
     provideEffects(
+      sharedDataAccessBenutzerEffects,
       sharedDataAccessConfigEffects,
       sharedDataAccessLanguageEffects,
       sharedDataAccessStammdatenEffects

@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -45,6 +46,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { extractIBAN, ExtractIBANResult } from 'ibantools';
 import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-feature-gesuch-form-auszahlungen.selector';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-auszahlungen',
@@ -71,8 +73,10 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private fb = inject(NonNullableFormBuilder);
+  private formUtils = inject(SharedUtilFormService);
 
   MASK_IBAN = MASK_IBAN;
   language = 'de';
@@ -156,6 +160,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   handleSave(): void {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -235,7 +240,6 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
           ...this.form.getRawValue(),
           iban: 'CH' + this.form.getRawValue().iban,
         },
-        freigegeben: gesuchFormular?.freigegeben ?? false,
       },
     };
   }

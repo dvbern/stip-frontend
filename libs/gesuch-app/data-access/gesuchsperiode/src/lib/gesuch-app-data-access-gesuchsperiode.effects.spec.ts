@@ -1,9 +1,9 @@
 import { TestScheduler } from 'rxjs/testing';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+import { GesuchsperiodeService } from '@dv/shared/model/gesuch';
 
 import { loadGesuchsperiodes } from './gesuch-app-data-access-gesuchsperiode.effects';
-import { GesuchAppDataAccessGesuchsperiodeService } from './gesuch-app-data-access-gesuchsperiode.service';
 import { GesuchAppDataAccessGesuchsperiodeEvents } from './gesuch-app-data-access-gesuchsperiode.events';
 
 describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
@@ -17,9 +17,9 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
 
   it('loads Gesuchsperiode effect - success', () => {
     scheduler.run(({ expectObservable, hot, cold }) => {
-      const gesuchAppDataAccessGesuchsperiodeServiceMock = {
-        getAll: () => cold('150ms a', { a: [] }),
-      } as unknown as GesuchAppDataAccessGesuchsperiodeService;
+      const gesuchsperiodeServiceMock = {
+        getGesuchsperioden$: () => cold('150ms a', { a: [] }),
+      } as unknown as GesuchsperiodeService;
 
       const actionsMock$ = hot('10ms a', {
         a: GesuchAppEventCockpit.init(),
@@ -27,7 +27,7 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
 
       const effectStream$ = loadGesuchsperiodes(
         actionsMock$,
-        gesuchAppDataAccessGesuchsperiodeServiceMock
+        gesuchsperiodeServiceMock
       );
 
       expectObservable(effectStream$).toBe('160ms a', {

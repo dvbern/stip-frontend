@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -74,6 +75,7 @@ import { Subject } from 'rxjs';
 export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   implements OnInit
 {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -342,6 +344,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   handleSave(): void {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.updateValidity$.next({});
     const { gesuch } = this.view();
     if (this.form.valid && gesuch?.id) {

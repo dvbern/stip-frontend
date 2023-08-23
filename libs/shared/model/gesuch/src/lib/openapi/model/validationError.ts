@@ -10,9 +10,21 @@
  * Do not edit the class manually.
  */
 
-export interface Ausbildungsgang { 
-    id: string;
-    bezeichnungDe: string;
-    bezeichnungFr?: string;
+/**
+ * 
+ */
+export interface ValidationError { 
+    /**
+     * 
+     */
+    propertyPath?: string;
+    /**
+     * 
+     */
+    messageTemplate: string;
+    /**
+     * 
+     */
+    message: string;
 }
 

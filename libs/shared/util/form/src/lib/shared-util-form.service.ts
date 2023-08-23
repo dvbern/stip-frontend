@@ -1,11 +1,43 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, ElementRef, Injectable, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedUtilFormService {
+  private focusInput$ = new Subject<ElementRef<HTMLElement>>();
+  private appRef = inject(ApplicationRef);
+
+  constructor() {
+    this.focusInput$
+      .pipe(
+        switchMap((parent) =>
+          // Material components seem to take some time until they are marked as invalid
+          this.appRef.isStable.pipe(
+            filter((isStable) => isStable),
+            take(1),
+            map(() => parent)
+          )
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe((parent) => {
+        const input = parent.nativeElement.querySelector<HTMLElement>(
+          'input.ng-invalid, .mat-mdc-select-invalid, .mat-mdc-radio-group.ng-invalid input[type=radio]'
+        );
+        if (input) {
+          input.focus();
+        }
+      });
+  }
+
+  focusFirstInvalid(elementRef: ElementRef<HTMLElement>) {
+    this.focusInput$.next(elementRef);
+  }
+
   /**
    * Used to set the disabled state of the given control
    */
