@@ -30,6 +30,7 @@ export class SharedUtilFormService {
         );
         if (input) {
           input.focus();
+          input.scrollIntoView({ block: 'center' });
         }
       });
   }
