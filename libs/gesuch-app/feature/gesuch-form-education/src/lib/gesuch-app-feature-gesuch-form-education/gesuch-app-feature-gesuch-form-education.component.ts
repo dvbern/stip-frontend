@@ -372,13 +372,11 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
     const { ausbildungsgang, ausbildungsstaette, ...formValue } =
-      convertTempFormToRealValues(this.form, {
-        required: ['ausbildungsland', 'fachrichtung', 'pensum'],
-        undefinedIfEmpty: [
-          'alternativeAusbildungsgang',
-          'alternativeAusbildungsstaette',
-        ],
-      });
+      convertTempFormToRealValues(this.form, [
+        'ausbildungsland',
+        'fachrichtung',
+        'pensum',
+      ]);
     const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {

@@ -192,13 +192,11 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
   handleSave() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const formValues = convertTempFormToRealValues(this.form, {
-      required: [
-        'sozialhilfebeitraegeAusbezahlt',
-        'ausweisbFluechtling',
-        'ergaenzungsleistungAusbezahlt',
-      ],
-    });
+    const formValues = convertTempFormToRealValues(this.form, [
+      'sozialhilfebeitraegeAusbezahlt',
+      'ausweisbFluechtling',
+      'ergaenzungsleistungAusbezahlt',
+    ]);
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
       formValues.geburtsdatum,
       this.languageSig(),

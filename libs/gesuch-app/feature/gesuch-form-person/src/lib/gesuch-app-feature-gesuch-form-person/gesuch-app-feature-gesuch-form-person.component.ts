@@ -360,9 +360,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       gesuchFormular: {
         ...gesuchFormular,
         personInAusbildung: {
-          ...convertTempFormToRealValues(this.form, {
-            required: ['quellenbesteuert', 'sozialhilfebeitraege'],
-          }),
+          ...convertTempFormToRealValues(this.form, [
+            'quellenbesteuert',
+            'sozialhilfebeitraege',
+          ]),
           adresse: {
             id: gesuchFormular?.personInAusbildung?.adresse?.id,
             ...this.form.getRawValue().adresse,

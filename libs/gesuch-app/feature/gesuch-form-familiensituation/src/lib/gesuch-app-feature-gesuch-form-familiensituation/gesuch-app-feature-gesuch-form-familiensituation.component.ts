@@ -365,15 +365,13 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       ...(gesuchFormular ?? {}),
       familiensituation: {
         ...gesuchFormular?.familiensituation,
-        ...convertTempFormToRealValues(this.form, {
-          required: [
-            'elternVerheiratetZusammen',
-            'gerichtlicheAlimentenregelung',
-            'elternteilUnbekanntVerstorben',
-            'vaterWiederverheiratet',
-            'mutterWiederverheiratet',
-          ],
-        }),
+        ...convertTempFormToRealValues(this.form, [
+          'elternVerheiratetZusammen',
+          'gerichtlicheAlimentenregelung',
+          'elternteilUnbekanntVerstorben',
+          'vaterWiederverheiratet',
+          'mutterWiederverheiratet',
+        ]),
         // nicht form.value, sonst werden keine Werte auf null gesetzt!
         obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
         obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),

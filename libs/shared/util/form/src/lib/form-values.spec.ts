@@ -9,21 +9,9 @@ describe('prepareFormValues', () => {
       b: [1],
     });
     form.controls.a.setValue('1 ');
-    const values = convertTempFormToRealValues(form, {
-      required: ['a'],
-    });
+    const values = convertTempFormToRealValues(form, ['a']);
     // Pseudo test, this code would trigger a syntax error if values.a is nullable
     expect(values.a.trim()).toBe('1');
-  });
-  it('should transform empty string to undefined', () => {
-    const values = convertTempFormToRealValues(
-      fb.nonNullable.group({
-        a: [1, []],
-        b: ['', []],
-      }),
-      { undefinedIfEmpty: ['b'] }
-    );
-    expect(values.b).toBe(undefined);
   });
   it('should throw an error if no Validators.required is set', () => {
     const invalid = () =>
@@ -32,7 +20,7 @@ describe('prepareFormValues', () => {
           a: [1, []],
           b: ['', []],
         }),
-        { required: ['a'] }
+        ['a']
       );
     expect(invalid).toThrow();
   });
