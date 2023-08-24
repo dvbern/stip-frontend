@@ -40,9 +40,14 @@ $gesuch-app-theme: mat.define-light-theme(
 .mat-mdc-form-field.mat-mdc-form-field-label-always-float {
   align-self: flex-start;
   --mat-mdc-form-field-floating-label-scale: 1;
+
+  .mat-mdc-form-field-hint {
+    font-size: 0.75rem;
+  }
   .mat-mdc-text-field-wrapper.mdc-text-field--outlined
     .mdc-notched-outline--upgraded
     .mdc-floating-label--float-above {
+    font-size: 0.875rem;
     --mat-mdc-form-field-label-transform: translateY(-38.75px)
       scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
   }

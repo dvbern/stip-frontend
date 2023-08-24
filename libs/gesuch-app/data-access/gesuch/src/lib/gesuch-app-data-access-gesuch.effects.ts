@@ -23,6 +23,7 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
@@ -80,7 +81,8 @@ export const loadGesuch = createEffect(
         GesuchAppEventGesuchFormAuszahlung.init,
         GesuchAppEventGesuchFormGeschwister.init,
         GesuchAppEventGesuchFormKinder.init,
-        GesuchAppEventGesuchFormLebenslauf.init
+        GesuchAppEventGesuchFormLebenslauf.init,
+        GesuchAppEventGesuchFormEinnahmenkosten.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -148,7 +150,8 @@ export const updateGesuch = createEffect(
         GesuchAppEventGesuchFormPerson.saveTriggered,
         GesuchAppEventGesuchFormEducation.saveTriggered,
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-        GesuchAppEventGesuchFormAuszahlung.saveTriggered
+        GesuchAppEventGesuchFormAuszahlung.saveTriggered,
+        GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
         return gesuchService

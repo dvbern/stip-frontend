@@ -1,7 +1,10 @@
 import { CockpitPO } from '../support/po/cockpit.po';
 
 describe('gesuch-app cockpit', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => {
+    cy.visit('/');
+    cy.selectUser('Philipp');
+  });
 
   it('should redirect to cockpit on startup', () => {
     cy.url().should('include', 'gesuch-app-feature-cockpit');

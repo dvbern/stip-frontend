@@ -86,6 +86,14 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
+  {
+    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-einnahmenkosten').then(
+        (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
 ];
 
 export const routes: Route[] = [
