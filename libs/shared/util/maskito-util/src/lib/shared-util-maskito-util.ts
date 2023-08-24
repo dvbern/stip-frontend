@@ -14,6 +14,17 @@ export const maskitoNumber = maskitoNumberOptionsGenerator({
   thousandSeparator: NUMBER_THOUSAND_SEPARATOR,
 });
 
-export const fromFormatedNumber = (formatedNumber: string): number | null => {
-  return +formatedNumber.replace(NUMBER_THOUSAND_SEPARATOR, '');
-};
+export function fromFormatedNumber(formatedNumber: string): number;
+export function fromFormatedNumber(
+  formatedNumber: string | null
+): number | null;
+export function fromFormatedNumber(
+  formatedNumber: string | undefined
+): number | undefined;
+export function fromFormatedNumber(
+  formatedNumber: string | null | undefined
+): number | null | undefined {
+  return formatedNumber != null
+    ? +formatedNumber.replace(NUMBER_THOUSAND_SEPARATOR, '')
+    : formatedNumber;
+}

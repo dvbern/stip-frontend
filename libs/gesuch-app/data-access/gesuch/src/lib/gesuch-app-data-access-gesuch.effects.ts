@@ -150,7 +150,8 @@ export const updateGesuch = createEffect(
         GesuchAppEventGesuchFormPerson.saveTriggered,
         GesuchAppEventGesuchFormEducation.saveTriggered,
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-        GesuchAppEventGesuchFormAuszahlung.saveTriggered
+        GesuchAppEventGesuchFormAuszahlung.saveTriggered,
+        GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
         return gesuchService

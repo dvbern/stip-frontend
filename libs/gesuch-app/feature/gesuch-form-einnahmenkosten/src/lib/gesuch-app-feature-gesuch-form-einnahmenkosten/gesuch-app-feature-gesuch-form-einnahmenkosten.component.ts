@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   OnInit,
   computed,
   effect,
@@ -11,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MaskitoModule } from '@maskito/angular';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -25,14 +27,18 @@ import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { maskitoNumber } from '@dv/shared/util/maskito-util';
+import {
+  fromFormatedNumber,
+  maskitoNumber,
+} from '@dv/shared/util/maskito-util';
 import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
-
-import { selectGesuchAppFeatureGesuchFormEinnahmenkostenView } from './gesuch-app-feature-gesuch-form-einnahmenkosten.selector';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import { getDateDifference } from '@dv/shared/util/validator-date';
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { selectGesuchAppFeatureGesuchFormEinnahmenkostenView } from './gesuch-app-feature-gesuch-form-einnahmenkosten.selector';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-einnahmenkosten',
@@ -64,25 +70,26 @@ export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formService = inject(SharedUtilFormService);
+  private elementRef = inject(ElementRef);
   form = this.formBuilder.group({
-    nettoerwerbseinkommen: [<number | null>null, [Validators.required]],
-    alimente: [<number | null>null, [Validators.required]],
-    zulagen: [<number | null>null, [Validators.required]],
-    renten: [<number | null>null, [Validators.required]],
-    eoLeistungen: [<number | null>null, []],
-    ergaenzungsleistungen: [<number | null>null, []],
-    beitraege: [<number | null>null, []],
+    nettoerwerbseinkommen: [<string | null>null, [Validators.required]],
+    alimente: [<string | null>null, [Validators.required]],
+    zulagen: [<string | null>null, [Validators.required]],
+    renten: [<string | null>null, [Validators.required]],
+    eoLeistungen: [<string | undefined>undefined, []],
+    ergaenzungsleistungen: [<string | undefined>undefined, []],
+    beitraege: [<string | undefined>undefined, []],
     ausbildungskostenSekundarstufeZwei: [
-      <number | null>null,
+      <string | null>null,
       [Validators.required],
     ],
     ausbildungskostenTertiaerstufe: [
-      <number | null>null,
+      <string | null>null,
       [Validators.required],
     ],
-    fahrkosten: [<number | null>null, [Validators.required]],
-    wohnkosten: [<number | null>null, [Validators.required]],
-    personenImHaushalt: [<number | null>null, [Validators.required]],
+    fahrkosten: [<string | null>null, [Validators.required]],
+    wohnkosten: [<string | null>null, [Validators.required]],
+    personenImHaushalt: [<string | null>null, [Validators.required]],
     verdienstRealisiert: [<boolean | null>null, [Validators.required]],
     willDarlehen: [<boolean | null>null, [Validators.required]],
   });
@@ -145,6 +152,10 @@ export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent
     } as const;
   });
 
+  view$ = this.store.selectSignal(
+    selectGesuchAppFeatureGesuchFormEinnahmenkostenView
+  );
+
   constructor() {
     effect(
       () => {
@@ -200,6 +211,35 @@ export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent
       },
       { allowSignalWrites: true }
     );
+
+    // fill form
+    effect(
+      () => {
+        const { einnahmenKosten } = this.view$();
+        if (einnahmenKosten) {
+          this.form.patchValue({
+            ...einnahmenKosten,
+            nettoerwerbseinkommen:
+              einnahmenKosten.nettoerwerbseinkommen.toString(),
+            alimente: einnahmenKosten.alimente?.toString(),
+            zulagen: einnahmenKosten.zulagen?.toString(),
+            renten: einnahmenKosten.renten?.toString(),
+            eoLeistungen: einnahmenKosten.eoLeistungen?.toString(),
+            ergaenzungsleistungen:
+              einnahmenKosten.ergaenzungsleistungen?.toString(),
+            beitraege: einnahmenKosten.beitraege?.toString(),
+            ausbildungskostenSekundarstufeZwei:
+              einnahmenKosten.ausbildungskostenSekundarstufeZwei?.toString(),
+            ausbildungskostenTertiaerstufe:
+              einnahmenKosten.ausbildungskostenTertiaerstufe?.toString(),
+            fahrkosten: einnahmenKosten.fahrkosten.toString(),
+            wohnkosten: einnahmenKosten.wohnkosten.toString(),
+            personenImHaushalt: einnahmenKosten.personenImHaushalt.toString(),
+          });
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
@@ -212,6 +252,7 @@ export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent
 
   handleSave(): void {
     this.form.markAllAsTouched();
+    this.formService.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -226,12 +267,45 @@ export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent
 
   private buildUpdatedGesuchFromForm() {
     const { gesuch, gesuchFormular } = this.viewSig();
+    const formValues = convertTempFormToRealValues(this.form, [
+      'nettoerwerbseinkommen',
+      'alimente',
+      'zulagen',
+      'renten',
+      'ausbildungskostenSekundarstufeZwei',
+      'ausbildungskostenTertiaerstufe',
+      'fahrkosten',
+      'wohnkosten',
+      'personenImHaushalt',
+      'verdienstRealisiert',
+      'willDarlehen',
+    ]);
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
-        einnahmenkosten: {
-          ...this.form.getRawValue(),
+        einnahmenKosten: {
+          ...formValues,
+          nettoerwerbseinkommen: fromFormatedNumber(
+            formValues.nettoerwerbseinkommen
+          ),
+          alimente: fromFormatedNumber(formValues.alimente),
+          zulagen: fromFormatedNumber(formValues.zulagen),
+          renten: fromFormatedNumber(formValues.renten),
+          eoLeistungen: fromFormatedNumber(formValues.eoLeistungen),
+          ergaenzungsleistungen: fromFormatedNumber(
+            formValues.ergaenzungsleistungen
+          ),
+          beitraege: fromFormatedNumber(formValues.beitraege),
+          ausbildungskostenSekundarstufeZwei: fromFormatedNumber(
+            formValues.ausbildungskostenSekundarstufeZwei
+          ),
+          ausbildungskostenTertiaerstufe: fromFormatedNumber(
+            formValues.ausbildungskostenTertiaerstufe
+          ),
+          fahrkosten: fromFormatedNumber(formValues.fahrkosten),
+          wohnkosten: fromFormatedNumber(formValues.wohnkosten),
+          personenImHaushalt: fromFormatedNumber(formValues.personenImHaushalt),
         },
       },
     };
