@@ -60,7 +60,7 @@
             (closeOverlay)="isSozialversicherungsnummerInfoShown = false"
           >
             <h1 class="title h5 mb-4 d-flex">
-              <span class="text-info material-symbols-rounded me-2 mt-1">
+              <span class="text-info material-symbols-rounded me-2">
                 info
               </span>
               {{
@@ -313,32 +313,50 @@
       <div class="row g-4 mt-1">
         <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
         <ng-container *ngIf="form.controls.niederlassungsstatus.enabled">
-          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-            <mat-label>{{
-              'gesuch-app.form.person.niederlassungsstatus.label' | translate
-            }}</mat-label>
+          <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
+            <mat-form-field dvSharedUiFormField class="flex-grow-1">
+              <mat-label>{{
+                'gesuch-app.form.person.niederlassungsstatus.label' | translate
+              }}</mat-label>
 
-            <mat-select formControlName="niederlassungsstatus">
-              <mat-option [value]="null" disabled selected>
-                {{ 'shared.form.select.empty' | translate }}
-              </mat-option>
-              <mat-option
-                [value]="n"
-                *ngFor="
-                  let n of niederlassungsStatusValues;
-                  trackBy: trackByIndex
-                "
-              >
-                {{
-                  'gesuch-app.form.person.niederlassungsstatus.' + n | translate
-                }}
-              </mat-option>
-            </mat-select>
+              <mat-select formControlName="niederlassungsstatus">
+                <mat-option [value]="null" disabled selected>
+                  {{ 'shared.form.select.empty' | translate }}
+                </mat-option>
+                <mat-option
+                  [value]="n"
+                  *ngFor="
+                    let n of niederlassungsStatusValues;
+                    trackBy: trackByIndex
+                  "
+                >
+                  {{
+                    'gesuch-app.form.person.niederlassungsstatus.' + n
+                      | translate
+                  }}
+                </mat-option>
+              </mat-select>
 
-            <mat-error *dvSharedUiFormMessageError="'required'">
-              {{ 'shared.form.error.required' | translate }}
-            </mat-error>
-          </mat-form-field>
+              <mat-error *dvSharedUiFormMessageError="'required'">
+                {{ 'shared.form.error.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <button
+              type="button"
+              class="dv-button-icon dv-button-icon-md text-info mt-2"
+              [attr.aria-label]="
+                'shared.form-field.toggle-info-messages' | translate
+              "
+              [class.active]="isNiederlassungsstatusInfoShown"
+              (click)="
+                isNiederlassungsstatusInfoShown =
+                  !isNiederlassungsstatusInfoShown
+              "
+            >
+              <span class="material-symbols-rounded"> info </span>
+            </button>
+          </div>
         </ng-container>
         <ng-container *ngIf="form.controls.heimatort.enabled">
           <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
@@ -360,21 +378,27 @@
             'gesuch-app.form.person.guardianship.label' | translate
           }}</mat-checkbox>
         </div>
-        <div class="col-12 col-md-6 col-xl-8">
-          <ngb-alert
-            type="info"
-            [dismissible]="false"
-            *ngIf="form.controls.niederlassungsstatus.enabled"
+        <div class="d-none d-md-block col-12 col-md-6 col-xl-8">
+          <dv-shared-ui-info-overlay
+            [isOpen]="isNiederlassungsstatusInfoShown"
+            (closeOverlay)="isNiederlassungsstatusInfoShown = false"
           >
-            <div class="d-flex gap-3">
-              <span class="material-symbols-rounded text-info"> info </span>
-              <span
-                [innerHTML]="
-                  'gesuch-app.form.person.niederlassungsstatus.info' | translate
-                "
-              ></span>
-            </div>
-          </ngb-alert>
+            <h1 class="title h5 mb-4 d-flex">
+              <span class="text-info material-symbols-rounded me-2">
+                info
+              </span>
+              {{
+                'gesuch-app.form.person.niederlassungsstatus.infoTitle'
+                  | translate
+              }}
+            </h1>
+            <p
+              class="content"
+              [innerHTML]="
+                'gesuch-app.form.person.niederlassungsstatus.info' | translate
+              "
+            ></p>
+          </dv-shared-ui-info-overlay>
         </div>
       </div>
       <div class="row g-4 mt-1">

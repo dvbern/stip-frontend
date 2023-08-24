@@ -55,6 +55,7 @@
   "gesuch-app.form.person.zivilstand.AUFGELOESTE_PARTNERSCHAFT": "Aufgelöste Partnerschaft",
   "gesuch-app.form.person.zivilstand.VERWITWET": "Verwitwet",
   "gesuch-app.form.person.niederlassungsstatus.label": "Niederlassungsstatus",
+  "gesuch-app.form.person.niederlassungsstatus.infoTitle": "Informationen zu Niederlassungsstatus",
   "gesuch-app.form.person.niederlassungsstatus.info": "<strong>Niederlassungsbewilligung C</strong>: Sie besitzen die Niederlassungsbewilligung C<br><strong>Aufenthaltsbewilligung B</strong>: Sie leben seit 5 Jahren in der Schweiz und haben eine Aufenthaltsbewilligung B, durch den Kanton Bern ausgestellt<br><strong>Flüchtling</strong>: Sie sind anerkannter Flüchtling oder vorläufig aufgenommener Flüchtling und dem Kanton Bern zugewiesen",
   "gesuch-app.form.person.niederlassungsstatus.NIEDERLASSUNGSBEWILLIGUNG_C": "Niederlassungsbewilligung C",
   "gesuch-app.form.person.niederlassungsstatus.AUFENTHALTSBEWILLIGUNG_B": "Aufenthaltsbewilligung B",

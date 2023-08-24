@@ -135,6 +135,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   );
 
   isSozialversicherungsnummerInfoShown = false;
+  isNiederlassungsstatusInfoShown = false;
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
     return {
