@@ -77,6 +77,7 @@ import {
   updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
+import { SharedUiInfoOverlayComponent } from '@dv/shared/ui/info-overlay';
 import { SharedUtilCountriesService } from '@dv/shared/util/countries';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
@@ -96,6 +97,7 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     MatCheckboxModule,
     MatSelectModule,
     MatRadioModule,
+    SharedUiInfoOverlayComponent,
     NgbInputDatepicker,
     NgbAlert,
     SharedUiFormFieldDirective,
@@ -132,6 +134,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     switchMap((laender) => this.countriesService.getCountryList(laender))
   );
 
+  isSozialversicherungsnummerInfoShown = false;
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
     return {

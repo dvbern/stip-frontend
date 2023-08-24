@@ -57,3 +57,13 @@
     background: #fff;
   }
 }
+
+.cdk-overlay-container {
+  // TODO: Check if custom overlay container is viable
+  position: absolute;
+}
+@include media-breakpoint-down(md) {
+  .cdk-overlay-pane.full-height {
+    height: 100%;
+  }
+}

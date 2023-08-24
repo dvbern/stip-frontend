@@ -14,6 +14,7 @@
   "gesuch-app.form.shared.firstname.label": "Vorname",
   "gesuch-app.form.shared.andere.label": "Andere",
   "gesuch-app.form.shared.social-insurance-number.label": "Sozialversicherungsnummer",
+  "gesuch-app.form.shared.social-insurance-number.infoTitle": "Informationen zu Sozialversicherungsnummer",
   "gesuch-app.form.shared.social-insurance-number.info": "Sie finden Ihre AHV-Nummer auf Ihrer schweizerischen Krankenversicherungskarte.",
   "gesuch-app.form.shared.address.co.label": "Co-Adresse",
   "gesuch-app.form.shared.address.street.label": "Strasse",

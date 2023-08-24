@@ -20,24 +20,62 @@
     >
       <!-- AHV -->
       <div class="row g-4">
-        <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-          <mat-label>{{
-            'gesuch-app.form.shared.social-insurance-number.label' | translate
-          }}</mat-label>
-          <input
-            type="text"
-            matInput
-            formControlName="sozialversicherungsnummer"
-            placeholder="756.xxxx.xxxx.xx"
-            [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
-          />
-          <mat-error *dvSharedUiFormMessageError="'required'">
-            {{ 'shared.form.error.required' | translate }}
-          </mat-error>
-          <mat-error *dvSharedUiFormMessageError="'ahv'">
-            {{ 'shared.form.error.ahv' | translate }}
-          </mat-error>
-        </mat-form-field>
+        <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
+          <mat-form-field dvSharedUiFormField class="flex-grow-1">
+            <mat-label>{{
+              'gesuch-app.form.shared.social-insurance-number.label' | translate
+            }}</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="sozialversicherungsnummer"
+              placeholder="756.xxxx.xxxx.xx"
+              [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
+            />
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+            <mat-error *dvSharedUiFormMessageError="'ahv'">
+              {{ 'shared.form.error.ahv' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <button
+            type="button"
+            class="dv-button-icon dv-button-icon-md text-info mt-2"
+            [attr.aria-label]="
+              'shared.form-field.toggle-info-messages' | translate
+            "
+            [class.active]="isSozialversicherungsnummerInfoShown"
+            (click)="
+              isSozialversicherungsnummerInfoShown =
+                !isSozialversicherungsnummerInfoShown
+            "
+          >
+            <span class="material-symbols-rounded"> info </span>
+          </button>
+        </div>
+        <div class="d-none d-md-block col-md-6 col-xl-8">
+          <dv-shared-ui-info-overlay
+            [isOpen]="isSozialversicherungsnummerInfoShown"
+            (closeOverlay)="isSozialversicherungsnummerInfoShown = false"
+          >
+            <h1 class="title h5 mb-4 d-flex">
+              <span class="text-info material-symbols-rounded me-2 mt-1">
+                info
+              </span>
+              {{
+                'gesuch-app.form.shared.social-insurance-number.infoTitle'
+                  | translate
+              }}
+            </h1>
+            <p class="content">
+              {{
+                'gesuch-app.form.shared.social-insurance-number.info'
+                  | translate
+              }}
+            </p>
+          </dv-shared-ui-info-overlay>
+        </div>
       </div>
       <h3 class="pt-5 mb-4">
         {{ 'gesuch-app.form.shared.section.personal-details' | translate }}
