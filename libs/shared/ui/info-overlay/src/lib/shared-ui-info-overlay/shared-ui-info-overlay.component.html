@@ -6,12 +6,12 @@
 
 <ng-template
   cdkConnectedOverlay
+  #overlay="cdkConnectedOverlay"
   [cdkConnectedOverlayPanelClass]="'full-height'"
   [cdkConnectedOverlayGrowAfterOpen]="false"
   [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayPositions]="positions"
   [cdkConnectedOverlayOpen]="isOpen"
-  [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
 >
   <section
     class="overlay d-flex flex-column position-relative p-4 rounded shadow bg-white me-md-4"
