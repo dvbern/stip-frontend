@@ -191,13 +191,17 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         ),
       ]);
       if (changes['maxEndDate'].currentValue) {
+        if (this.item?.type === 'AUSBILDUNG') {
+          this.form.controls.bis.addValidators([
+            createOverlappingValidator(
+              this.form.controls.von,
+              previousAusbildungen,
+              new Date(),
+              'monthYear'
+            ),
+          ]);
+        }
         this.form.controls.bis.addValidators([
-          createOverlappingValidator(
-            this.form.controls.von,
-            previousAusbildungen,
-            new Date(),
-            'monthYear'
-          ),
           maxDateValidatorForLocale(
             this.languageSig(),
             changes['maxEndDate'].currentValue,
