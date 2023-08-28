@@ -1,9 +1,5 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
-import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
-import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import {
@@ -16,6 +12,10 @@ import {
   tap,
 } from 'rxjs';
 
+import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
+import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
+import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -27,11 +27,11 @@ import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/ge
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
+import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
-import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
-import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 export const loadGesuchs = createEffect(
   (
@@ -124,10 +124,10 @@ export const createGesuch = createEffect(
                 ({ gesuchsperiode: { id } }) => id === create.gesuchsperiodeId
               )?.id
           ),
-          filter((id) => id != null),
+          filter(sharedUtilFnTypeGuardsIsDefined),
           map((id) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
-              id: id!, // TODO cleanup quick workaround
+              id,
             })
           ),
           catchError((error) => [
