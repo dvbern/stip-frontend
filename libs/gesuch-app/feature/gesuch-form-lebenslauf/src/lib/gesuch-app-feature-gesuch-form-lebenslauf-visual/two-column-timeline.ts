@@ -1,3 +1,4 @@
+import { isDevMode } from '@angular/core';
 import { printDateAsMonthYear } from '@dv/shared/util/validator-date';
 import { addMonths, isAfter, isBefore, isEqual, subMonths } from 'date-fns';
 
@@ -115,7 +116,7 @@ export class TwoColumnTimeline {
           positionStartRow: startRow,
           positionRowSpan: 1,
         } as TimelineGapBlock);
-        console.log('added start gap to output');
+        debug('added start gap to output');
 
         startRow++;
       }
@@ -123,16 +124,13 @@ export class TwoColumnTimeline {
 
     // Loop
     while (inputSorted.length) {
-      console.log(' *************************************** ');
-      console.log(
-        'sorted input: ',
-        JSON.stringify(inputSorted.map((c) => c.label))
-      );
+      debug(' *************************************** ');
+      debug('sorted input: ', JSON.stringify(inputSorted.map((c) => c.label)));
 
       //- startDate = das erste startDate der Inputlisten (beide ersten Elemente, das frühere Datum nehmen)
       const startDate = inputSorted[0].von;
-      console.log('start date: ', printDateAsMonthYear(startDate));
-      console.log('start row: ', startRow);
+      debug('start date: ', printDateAsMonthYear(startDate));
+      debug('start row: ', startRow);
 
       // - aus beiden Listen alle Items mit diesem Startdatum in current-Left und current-Right schieben (als
       // busyBlocks mit rowspan=0) - alle in current mit diesem Startdatum erhalten positionStartRow=startRow
@@ -147,14 +145,14 @@ export class TwoColumnTimeline {
               (rawChild) => rawChild as TimelineBusyBlockChild
             ),
           } as TimelineBusyBlock);
-          console.log('moved from input to current: ', inputItem.label);
+          debug('moved from input to current: ', inputItem.label);
         }
       }
-      console.log('current: ', JSON.stringify(current.map((c) => c.label)));
+      debug('current: ', JSON.stringify(current.map((c) => c.label)));
 
       // alle in current erhalten rowspan++ (fuer ungleiche Starts)
       if (current.length) {
-        console.log('adding unevenStartHeight');
+        debug('adding unevenStartHeight');
         for (const each of current) {
           each.positionRowSpan += unevenStartHeight;
         }
@@ -164,10 +162,7 @@ export class TwoColumnTimeline {
       if (current.length) {
         // endDate = das früheste Enddatum aus current
         let endDate = TwoColumnTimeline.getEarliestEnddate(current);
-        console.log(
-          'earliest current end date: ',
-          printDateAsMonthYear(endDate)
-        );
+        debug('earliest current end date: ', printDateAsMonthYear(endDate));
         let ealiestStartDateInInput = inputSorted.length
           ? TwoColumnTimeline.getEarliestStartdate(inputSorted)
           : undefined;
@@ -182,7 +177,7 @@ export class TwoColumnTimeline {
             if (isEqual(each.bis, endDate)) {
               current.splice(current.indexOf(each), 1);
               output.push(each);
-              console.log(
+              debug(
                 'moved from current to output at row: ',
                 each.positionStartRow,
                 each.label
@@ -199,7 +194,7 @@ export class TwoColumnTimeline {
             if (!gaplessNextBlockFound) {
               // alle in current erhalten rowspan++
               if (current.length) {
-                console.log('adding abstandHeight');
+                debug('adding abstandHeight');
                 for (const each of current) {
                   each.positionRowSpan += abstandHeight;
                 }
@@ -211,10 +206,7 @@ export class TwoColumnTimeline {
           // endDate = das früheste Enddatum aus current
           if (current.length) {
             endDate = TwoColumnTimeline.getEarliestEnddate(current);
-            console.log(
-              'earliest current end date: ',
-              printDateAsMonthYear(endDate)
-            );
+            debug('earliest current end date: ', printDateAsMonthYear(endDate));
             ealiestStartDateInInput = inputSorted.length
               ? TwoColumnTimeline.getEarliestStartdate(inputSorted)
               : undefined;
@@ -230,12 +222,12 @@ export class TwoColumnTimeline {
       //- wenn current leer, Input nicht leer, und kein Item in Input vorhanden mit Startdatum=endDate: Gap erstellen
       // (von-bis)
       if (!current.length && inputSorted.length) {
-        console.log('current is empty');
+        debug('current is empty');
         const latestOutputEnddate = this.getLatestEnddate(output);
         const expectedNextStart = addMonths(latestOutputEnddate, 1);
         const gaplessNextBlockFound =
           inputSorted.length && isEqual(inputSorted[0].von, expectedNextStart);
-        console.log('gap found: ', !gaplessNextBlockFound);
+        debug('gap found: ', !gaplessNextBlockFound);
         if (!gaplessNextBlockFound) {
           output.push({
             col: 'BOTH',
@@ -244,7 +236,7 @@ export class TwoColumnTimeline {
             positionStartRow: startRow,
             positionRowSpan: 1,
           } as TimelineGapBlock);
-          console.log('added gap to output');
+          debug('added gap to output');
 
           startRow++;
         }
@@ -253,13 +245,10 @@ export class TwoColumnTimeline {
 
     // Spaltenpositionen
     for (const item of output) {
+      const currentCols = item.col === 'LEFT' ? leftCols : rightCols;
       item.positionStartCol = item.col === 'RIGHT' ? leftCols + 1 : 1;
       item.positionColSpan =
-        item.col === 'BOTH'
-          ? leftCols + rightCols
-          : item.col === 'LEFT'
-          ? leftCols
-          : rightCols;
+        item.col === 'BOTH' ? leftCols + rightCols : currentCols;
     }
 
     // nach Startdatum sortieren: dadurch kommen die spaeteren Boxen ueber die frueheren
@@ -271,12 +260,6 @@ export class TwoColumnTimeline {
       leftCols: leftCols,
       rightCols: rightCols,
     };
-    /*return {
-      items: this.dummyItems(),
-      rows: 20,
-      leftCols: 1,
-      rightCols: 1,
-    }*/
   }
 
   static sortAndMergeRawItems(
@@ -293,14 +276,14 @@ export class TwoColumnTimeline {
       return [];
     }
 
-    console.log('****** merging overlapping items into group ********');
+    debug('****** merging overlapping items into group ********');
 
     // ALGORITHM:
 
     while (inputSorted.length) {
-      console.log('**********************************************************');
+      debug('**********************************************************');
 
-      console.log('input: ', JSON.stringify(inputSorted.map((c) => c.label)));
+      debug('input: ', JSON.stringify(inputSorted.map((c) => c.label)));
 
       // start new group: copy the next item
       const groupdStarterItem = inputSorted[0];
@@ -309,7 +292,7 @@ export class TwoColumnTimeline {
         ...groupdStarterItem,
         children: [groupdStarterItem],
       } as TimelineMergedRawItem;
-      console.log('started groupd with: ', groupdStarterItem.label);
+      debug('started groupd with: ', groupdStarterItem.label);
 
       if (mode === 'MERGE') {
         // find all input items that overlap this range
@@ -320,14 +303,14 @@ export class TwoColumnTimeline {
           inputSorted
         );
         while (overlapping.length) {
-          console.log(
+          debug(
             'found overlapping: ',
             JSON.stringify(overlapping.map((c) => c.label))
           );
 
           for (const eachOverlapping of overlapping) {
             // move overlapping to group
-            console.log('added child to group: ', eachOverlapping.label);
+            debug('added child to group: ', eachOverlapping.label);
             inputSorted.splice(inputSorted.indexOf(eachOverlapping), 1);
             group.children.push(eachOverlapping);
 
@@ -339,7 +322,7 @@ export class TwoColumnTimeline {
               ? eachOverlapping.bis
               : group.bis;
 
-            console.log(
+            debug(
               'group date range: ',
               printDateAsMonthYear(group.von),
               ' ',
@@ -360,7 +343,7 @@ export class TwoColumnTimeline {
       // move group to output
       output.push(group);
 
-      console.log(
+      debug(
         'finished group: ',
         JSON.stringify(group.children.map((c) => c.label))
       );
@@ -415,115 +398,10 @@ export class TwoColumnTimeline {
         return !itemIsNotOverlapping;
       });
   }
-
-  static dummyItems() {
-    let leftIndex = 1;
-    let rightIndex = 1;
-
-    const items = [];
-
-    items.push(
-      // gap
-      {
-        col: 'BOTH',
-        von: new Date(2016, 1),
-        bis: new Date(2016, 6),
-        positionStartRow: leftIndex,
-        positionRowSpan: 1,
-        positionStartCol: 1,
-        positionColSpan: 2,
-      } as TimelineGapBlock
-    );
-    leftIndex += 1;
-    rightIndex += 1;
-
-    items.push(
-      // ausbildung
-      {
-        col: 'LEFT',
-        positionStartRow: leftIndex,
-        positionRowSpan: 3,
-        positionStartCol: 1,
-        positionColSpan: 1,
-        children: [
-          {
-            id: '1',
-            label: 'Informatiker EFZ',
-            von: new Date(2016, 7),
-            bis: new Date(2017, 11),
-            editable: true,
-          },
-        ],
-      } as TimelineBusyBlock
-    );
-    leftIndex += 6;
-
-    items.push(
-      // job
-      {
-        col: 'RIGHT',
-        positionStartRow: rightIndex,
-        positionRowSpan: 1,
-        positionStartCol: 2,
-        positionColSpan: 1,
-        children: [
-          {
-            id: '2',
-            label: 'Job A',
-            von: new Date(2016, 7),
-            bis: new Date(2016, 9),
-            editable: true,
-          },
-        ],
-      } as TimelineBusyBlock
-    );
-    rightIndex += 1;
-
-    rightIndex += 1;
-    items.push(
-      // job
-      {
-        id: 'group',
-        col: 'RIGHT',
-        label: 'group',
-        von: new Date(2017, 7),
-        bis: new Date(2017, 11),
-        editable: true,
-        positionStartRow: rightIndex,
-        positionRowSpan: 1,
-        positionStartCol: 2,
-        positionColSpan: 1,
-        children: [
-          {
-            id: '2',
-            col: 'RIGHT',
-            label: 'Job B',
-            von: new Date(2017, 7),
-            bis: new Date(2017, 10),
-            editable: true,
-          },
-          {
-            id: '3',
-            col: 'RIGHT',
-            label: 'Job C',
-            von: new Date(2017, 8),
-            bis: new Date(2017, 8),
-            editable: true,
-          } as TimelineBusyBlock,
-
-          {
-            id: '4',
-            col: 'RIGHT',
-            label: 'Job D',
-            von: new Date(2017, 10),
-            bis: new Date(2017, 11),
-            editable: true,
-          } as TimelineBusyBlock,
-        ],
-      } as TimelineBusyBlock
-    );
-    rightIndex += 1;
-
-    return items;
-  }
 }
+
+const debug = (msg: string, ...args: unknown[]) => {
+  if (isDevMode()) {
+    console.log(msg, args);
+  }
+};
