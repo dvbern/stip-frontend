@@ -216,8 +216,6 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   handleSave() {
-    /* this.form.controls.von.updateValueAndValidity(); // TODO oder in effect
-     this.form.controls.bis.updateValueAndValidity();*/
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
     this.onDateBlur(this.form.controls.von);
