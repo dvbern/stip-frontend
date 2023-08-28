@@ -1,4 +1,7 @@
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from '@angular/material/form-field';
 
 export function provideMaterialDefaultOptions() {
   return [
@@ -7,7 +10,8 @@ export function provideMaterialDefaultOptions() {
       useValue: {
         appearance: 'outline',
         floatLabel: 'always',
-      },
+        hideRequiredMarker: true,
+      } as MatFormFieldDefaultOptions,
     },
   ];
 }
