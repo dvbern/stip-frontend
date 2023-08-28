@@ -30,7 +30,7 @@ export const selectGesuchAppFeatureGesuchFormAuszahlungenView = createSelector(
 );
 
 function calculateHasNecessaryPreStepsGesuch(
-  formular: SharedModelGesuchFormular | undefined
+  formular: SharedModelGesuchFormular | null
 ) {
   if (!formular?.familiensituation) {
     return false;
@@ -51,7 +51,7 @@ export function calculateHasNecessaryPreSteps(
 }
 
 function calculateKontoinhaberValuesGesuch(
-  formular: SharedModelGesuchFormular | undefined
+  formular: SharedModelGesuchFormular | null
 ) {
   const elternSituation = calculateElternSituationGesuch(formular);
   return calculateKontoinhaberValues(elternSituation);

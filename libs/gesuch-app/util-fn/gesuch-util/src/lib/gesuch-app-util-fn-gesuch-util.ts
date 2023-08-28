@@ -14,7 +14,7 @@ export interface ElternSituation {
 }
 
 export function calculateElternSituationGesuch(
-  gesuch: SharedModelGesuchFormular | undefined
+  gesuch: SharedModelGesuchFormular | null
 ): ElternSituation {
   return calculateElternSituation(gesuch?.familiensituation, gesuch?.elterns);
 }

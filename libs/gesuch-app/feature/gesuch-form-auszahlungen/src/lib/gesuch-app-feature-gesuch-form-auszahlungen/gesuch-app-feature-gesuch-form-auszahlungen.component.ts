@@ -21,6 +21,11 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { MaskitoModule } from '@maskito/angular';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
@@ -28,6 +33,8 @@ import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form
 import { calculateElternSituationGesuch } from '@dv/gesuch-app/util-fn/gesuch-util';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { SharedUtilFormService } from '@dv/shared/util/form';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 import {
   ElternUpdate,
   Kontoinhaber,
@@ -40,13 +47,9 @@ import {
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { MaskitoModule } from '@maskito/angular';
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { extractIBAN, ExtractIBANResult } from 'ibantools';
 import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-feature-gesuch-form-auszahlungen.selector';
-import { SharedUtilFormService } from '@dv/shared/util/form';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-auszahlungen',
@@ -109,7 +112,7 @@ export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.view();
-        if (gesuchFormular !== undefined) {
+        if (sharedUtilFnTypeGuardsIsDefined(gesuchFormular)) {
           const initalValue = gesuchFormular.auszahlung;
           this.form.patchValue({
             ...initalValue,

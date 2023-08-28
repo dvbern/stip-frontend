@@ -169,7 +169,7 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
 
 export const setupElternTeil = (
   elternTyp: ElternTyp,
-  gesuchFormular?: GesuchFormularUpdate
+  gesuchFormular: GesuchFormularUpdate | null
 ) => {
   const adresse = gesuchFormular?.personInAusbildung?.adresse;
   const lebtBeiEltern =

@@ -18,16 +18,16 @@ import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch
 import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
 
 export interface State {
-  gesuch: SharedModelGesuch | undefined;
-  gesuchFormular: SharedModelGesuchFormular | undefined;
+  gesuch: SharedModelGesuch | null;
+  gesuchFormular: SharedModelGesuchFormular | null;
   gesuchs: SharedModelGesuch[];
   loading: boolean;
   error: SharedModelError | undefined;
 }
 
 const initialState: State = {
-  gesuch: undefined,
-  gesuchFormular: undefined,
+  gesuch: null,
+  gesuchFormular: null,
   gesuchs: [],
   loading: false,
   error: undefined,
@@ -58,8 +58,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormEinnahmenkosten.init,
       (state): State => ({
         ...state,
-        gesuch: undefined,
-        gesuchFormular: undefined,
+        gesuch: null,
+        gesuchFormular: null,
         loading: true,
       })
     ),
@@ -93,7 +93,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
               ...state.gesuchFormular,
               geschwisters: [],
             }
-          : undefined,
+          : null,
       })
     ),
 
@@ -165,7 +165,7 @@ export const {
 
 const getGesuchFormular = (
   gesuch: SharedModelGesuch
-): SharedModelGesuchFormular | undefined => {
+): SharedModelGesuchFormular | null => {
   const formular =
     // TODO: Fix mapping from GET GesuchFormular to PATCH GesuchFormularUpdate
     (gesuch.gesuch_formular_freigabe_copy ??
