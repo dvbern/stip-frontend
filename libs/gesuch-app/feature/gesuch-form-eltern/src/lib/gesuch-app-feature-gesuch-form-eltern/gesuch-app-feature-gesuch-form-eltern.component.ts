@@ -38,7 +38,6 @@ import { capitalized } from '@dv/shared/util-fn/string-helper';
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {

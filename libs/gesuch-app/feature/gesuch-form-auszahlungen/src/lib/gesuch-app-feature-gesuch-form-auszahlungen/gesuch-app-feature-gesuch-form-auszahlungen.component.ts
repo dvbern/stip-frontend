@@ -72,7 +72,6 @@ import { selectGesuchAppFeatureGesuchFormAuszahlungenView } from './gesuch-app-f
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-auszahlungen.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-auszahlungen.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormAuszahlungenComponent implements OnInit {

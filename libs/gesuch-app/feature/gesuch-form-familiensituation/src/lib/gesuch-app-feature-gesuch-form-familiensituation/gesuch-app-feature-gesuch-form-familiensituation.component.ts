@@ -67,9 +67,6 @@ import { Subject } from 'rxjs';
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',
-  styleUrls: [
-    './gesuch-app-feature-gesuch-form-familiensituation.component.scss',
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormFamiliensituationComponent

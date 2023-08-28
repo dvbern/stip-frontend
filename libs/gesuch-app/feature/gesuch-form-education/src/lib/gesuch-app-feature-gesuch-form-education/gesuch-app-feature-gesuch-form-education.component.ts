@@ -91,7 +91,6 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {

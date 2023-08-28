@@ -59,9 +59,6 @@ import { selectGesuchAppFeatureGesuchFormEinnahmenkostenView } from './gesuch-ap
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-einnahmenkosten.component.html',
-  styleUrls: [
-    './gesuch-app-feature-gesuch-form-einnahmenkosten.component.scss',
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormEinnahmenkostenComponent

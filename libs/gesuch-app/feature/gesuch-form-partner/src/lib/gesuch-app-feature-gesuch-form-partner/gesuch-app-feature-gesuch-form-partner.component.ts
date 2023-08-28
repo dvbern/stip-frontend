@@ -81,7 +81,6 @@ const MEDIUM_AGE_ADULT = 30;
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-partner.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-partner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {

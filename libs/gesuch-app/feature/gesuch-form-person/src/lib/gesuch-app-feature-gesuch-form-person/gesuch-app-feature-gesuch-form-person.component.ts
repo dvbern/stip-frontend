@@ -110,7 +110,6 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
