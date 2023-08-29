@@ -50,7 +50,7 @@ For external users, please uninstall the `@kibon/stip-contract` in order to use 
 1. `npm ci`
 2. Ensure that the API and everything else is running:
    - https://gitlab.dvbern.ch/kibon/stip-api
-   - Check if your user has been added to https://auth.stip.dev.apps.test.kibon.ch/admin/master/console/#/bern/users, if not:
+   - Check if your user has been added to https://auth.stip.dev.apps.test.kibon.ch/admin/master/console/#/bern/users (LastPass -> search `stip` -> `Keycload Admin (DEV)`), if not:
      1. `Add User`
      2. Set `Username`, `Email`, `First name` and `Last name`
      3. `Create`
