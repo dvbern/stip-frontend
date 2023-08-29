@@ -47,7 +47,7 @@ For external users, please uninstall the `@kibon/stip-contract` in order to use 
 
 **TLDR** local development:
 
-1. `npm ci`
+1. `npm ci` (check that `@kibon/stip-contract` is installable, as mentioned above)
 2. Ensure that the API and everything else is running:
    - https://gitlab.dvbern.ch/kibon/stip-api
    - Check if your user has been added to https://auth.stip.dev.apps.test.kibon.ch/admin/master/console/#/bern/users (LastPass -> search `stip` -> `Keycload Admin (DEV)`), if not:
