@@ -22,7 +22,7 @@ lint:
   stage: validate
   extends: .base
   script:
-    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=3
+    - NX_REJECT_UNKNOWN_LOCAL_CACHE=0 npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=3
 
 format-check:
   stage: validate
