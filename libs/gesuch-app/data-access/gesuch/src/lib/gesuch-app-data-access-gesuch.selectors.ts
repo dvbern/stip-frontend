@@ -1,7 +1,10 @@
 import { createSelector } from '@ngrx/store';
 import { getRouterSelectors } from '@ngrx/router-store';
 
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import {
+  GesuchFormSteps,
+  isStepDisabled,
+} from '@dv/gesuch-app/model/gesuch-form';
 
 import { gesuchAppDataAccessGesuchsFeature } from './gesuch-app-data-access-gesuch.feature';
 
@@ -14,16 +17,16 @@ export const selectGesuchAppDataAccessGesuchsView = createSelector(
   (state) => {
     return {
       ...state,
-      // TODO resolve which are disabled based on gescuh state
-      gesuchFormStepsInfo: Object.entries(GesuchFormSteps).map(
-        ([name, config]) => {
-          return {
-            name,
-            ...config,
-            disabled: false, // resolve based on gesuch state
-          };
-        }
-      ),
+      gesuchFormStepsInfo: (
+        Object.entries(GesuchFormSteps) as [
+          keyof GesuchFormSteps,
+          GesuchFormSteps[keyof GesuchFormSteps]
+        ][]
+      ).map(([name, step]) => ({
+        name,
+        ...step,
+        disabled: isStepDisabled(name, state.gesuchFormular),
+      })),
     };
   }
 );
