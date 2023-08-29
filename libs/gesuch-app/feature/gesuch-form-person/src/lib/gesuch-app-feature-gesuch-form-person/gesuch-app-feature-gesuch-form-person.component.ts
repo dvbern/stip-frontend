@@ -191,7 +191,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     nationalitaet: this.formBuilder.control<Land>('' as Land, {
       validators: Validators.required,
     }),
-    heimatort: ['', [Validators.required]],
+    heimatort: [<string | undefined>undefined, [Validators.required]],
     niederlassungsstatus: this.formBuilder.control<
       Niederlassungsstatus | undefined
     >(undefined, { validators: Validators.required }),
