@@ -367,6 +367,11 @@ the best tradeoff between effective / useful coverage and effort required to wri
 
 ### E2e
 
+Preparation:
+
+1. Copy `.env.template` to `.env`
+2. Fill the values DEV Keycloak Credentials from LastPass (`LastPass` -> `Stip E2E (DEV)`)
+
 You can run e2e tests in headless mode for all (`npm run e2e`) or for a specific app
 (`npm run e2e:<app-name>`, these have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 

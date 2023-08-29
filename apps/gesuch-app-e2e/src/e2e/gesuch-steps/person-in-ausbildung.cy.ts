@@ -8,8 +8,8 @@ import {
 
 describe('gesuch-app gesuch form', () => {
   beforeEach(() => {
+    cy.login();
     cy.visit('/');
-    cy.selectUser('Philipp');
   });
 
   it('should edit and revert person form', () => {

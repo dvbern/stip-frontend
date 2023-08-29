@@ -42,5 +42,6 @@ testem.log
 Thumbs.db
 
 .angular
+.env
 
 affected-apps.gitlab-ci.yml
