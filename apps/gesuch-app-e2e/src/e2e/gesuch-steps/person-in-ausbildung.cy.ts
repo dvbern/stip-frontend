@@ -7,15 +7,15 @@ import {
 } from '../../support/shared/gesuch-steps.nav.po';
 
 describe('gesuch-app gesuch form', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => {
+    cy.login();
+    cy.visit('/');
+  });
 
   it('should edit and revert person form', () => {
-    // erstes Gesuch oeffnen
-    CockpitPO.getGesuchEdit().first().click();
+    CockpitPO.openGesuch();
     getStepPersonInAusbildung().click();
     getStepTitle().should('contain.text', 'Person in Ausbildung');
-    PersonInAusbildungPO.getFormPersonLoading().should('exist');
-    PersonInAusbildungPO.getFormPersonName().should('exist');
     PersonInAusbildungPO.getFormPersonLoading().should('not.exist');
 
     // Name auslesen
@@ -25,13 +25,11 @@ describe('gesuch-app gesuch form', () => {
         // Name updaten
         PersonInAusbildungPO.getFormPersonName().focus();
         PersonInAusbildungPO.getFormPersonName().clear();
-        PersonInAusbildungPO.getFormPersonName().type('Updated name', {
-          force: true,
-        });
+        PersonInAusbildungPO.getFormPersonName().type('Updated name');
 
         // speichern und weiter
         cy.get('form').submit();
-        getStepTitle().invoke('text').should('equal', 'Ausbildung');
+        getStepTitle().should('contain.text', 'Ausbildung');
 
         // zurueck zu Person in Ausbildung
         getNavDashboard().click();
@@ -48,9 +46,7 @@ describe('gesuch-app gesuch form', () => {
             // RESET: Name zuruecksetzen
             PersonInAusbildungPO.getFormPersonName().focus();
             PersonInAusbildungPO.getFormPersonName().clear();
-            PersonInAusbildungPO.getFormPersonName().type(prevName, {
-              force: true,
-            });
+            PersonInAusbildungPO.getFormPersonName().type(prevName);
             cy.get('form').submit();
           });
       });

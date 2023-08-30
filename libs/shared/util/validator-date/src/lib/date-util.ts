@@ -1,6 +1,6 @@
 import { Language } from '@dv/shared/model/language';
 import { DateFormatVariant, getFormatDef, parseDateForVariant } from '../index';
-import { format, isValid, parse, parseISO } from 'date-fns';
+import { intervalToDuration, format, isValid, parse, parseISO } from 'date-fns';
 
 export function parseBackendLocalDateAndPrint(
   value: string | null | undefined,
@@ -93,4 +93,21 @@ export function dateFromMonthYearString(monthYearString?: string) {
 
 export function printDateAsMonthYear(date: Date) {
   return printDate(date, 'de', 'monthYear');
+}
+
+export function getDateDifference(
+  date: Date | string,
+  refDate: Date,
+  variant: DateFormatVariant = 'date'
+) {
+  const start =
+    typeof date === 'string'
+      ? parseDateForVariant(date, refDate, variant)
+      : date;
+  return !start
+    ? null
+    : intervalToDuration({
+        start,
+        end: refDate,
+      });
 }

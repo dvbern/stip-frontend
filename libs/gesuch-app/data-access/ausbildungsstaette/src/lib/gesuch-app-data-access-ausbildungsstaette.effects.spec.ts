@@ -1,9 +1,9 @@
-import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { TestScheduler } from 'rxjs/testing';
 
-import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
+import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
+import { AusbildungsstaetteService } from '@dv/shared/model/gesuch';
 
-import { GesuchAppDataAccessAusbildungsstaetteService } from './gesuch-app-data-access-ausbildungsstaette.service';
+import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './gesuch-app-data-access-ausbildungsstaette.events';
 import { loadAusbildungsstaettes } from './gesuch-app-data-access-ausbildungsstaette.effects';
 
 describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
@@ -17,9 +17,9 @@ describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
 
   it('loads Ausbildungsstaette effect - success', () => {
     scheduler.run(({ expectObservable, hot, cold }) => {
-      const gesuchAppDataAccessAusbildungsstaetteServiceMock = {
-        getAll: () => cold('150ms a', { a: [] }),
-      } as unknown as GesuchAppDataAccessAusbildungsstaetteService;
+      const ausbildungsstaetteServiceMock = {
+        getAusbildungsstaetten$: () => cold('150ms a', { a: [] }),
+      } as unknown as AusbildungsstaetteService;
 
       const eventsMock$ = hot('10ms a', {
         a: GesuchAppEventGesuchFormEducation.init(),
@@ -27,7 +27,7 @@ describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
 
       const effectStream$ = loadAusbildungsstaettes(
         eventsMock$,
-        gesuchAppDataAccessAusbildungsstaetteServiceMock
+        ausbildungsstaetteServiceMock
       );
 
       expectObservable(effectStream$).toBe('160ms a', {

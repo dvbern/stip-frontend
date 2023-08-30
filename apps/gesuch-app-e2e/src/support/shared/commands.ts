@@ -14,15 +14,37 @@ import Chainable = Cypress.Chainable;
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
-    login(email: string, password: string): void;
+    login(credentials?: { email: string; password: string }): void;
 
     getBySel(selector: string): Chainable;
   }
 }
-//
-// -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+
+Cypress.Commands.add('login', (credentials) => {
+  const E2E_USERNAME = Cypress.env('E2E_USERNAME');
+  const E2E_PASSWORD = Cypress.env('E2E_PASSWORD');
+  if (!E2E_USERNAME || !E2E_PASSWORD) {
+    throw new Error('Env E2E_USERNAME or E2E_PASSWORD not set');
+  }
+  const username = credentials?.email ?? E2E_USERNAME;
+  const password = credentials?.password ?? E2E_PASSWORD;
+  cy.session(
+    [username, password],
+    () => {
+      cy.visit('/');
+      cy.get('body').children('dv-root').should('not.exist');
+      cy.get('input#username').type(username, { log: false });
+      cy.get('input#password').type(password, { log: false });
+      cy.get('input[type=submit]').click();
+    },
+    {
+      validate() {
+        cy.request('/api/v1/ausbildungsstaette')
+          .its('status')
+          .should('eq', 200);
+      },
+    }
+  );
 });
 
 Cypress.Commands.add('getBySel', (selector, ...args): Chainable => {

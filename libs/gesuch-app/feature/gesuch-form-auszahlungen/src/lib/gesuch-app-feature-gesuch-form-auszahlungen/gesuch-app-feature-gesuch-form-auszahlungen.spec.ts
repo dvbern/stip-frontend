@@ -1,4 +1,4 @@
-import { KontoinhaberinType } from '@dv/shared/model/gesuch';
+import { Kontoinhaber } from '@dv/shared/model/gesuch';
 import {
   calculateHasNecessaryPreSteps,
   calculateKontoinhaberValues,
@@ -13,9 +13,9 @@ describe('gesuch util', () => {
       false,
       false,
       [
-        KontoinhaberinType.GESUCHSTELLERIN,
-        KontoinhaberinType.SOZIALDIENST_INSTITUTION,
-        KontoinhaberinType.ANDERE,
+        Kontoinhaber.GESUCHSTELLER,
+        Kontoinhaber.SOZIALDIENST_INSTITUTION,
+        Kontoinhaber.ANDERE,
       ],
     ],
     [
@@ -23,10 +23,10 @@ describe('gesuch util', () => {
       true,
       false,
       [
-        KontoinhaberinType.GESUCHSTELLERIN,
-        KontoinhaberinType.VATER,
-        KontoinhaberinType.SOZIALDIENST_INSTITUTION,
-        KontoinhaberinType.ANDERE,
+        Kontoinhaber.GESUCHSTELLER,
+        Kontoinhaber.VATER,
+        Kontoinhaber.SOZIALDIENST_INSTITUTION,
+        Kontoinhaber.ANDERE,
       ],
     ],
     [
@@ -34,10 +34,10 @@ describe('gesuch util', () => {
       false,
       true,
       [
-        KontoinhaberinType.GESUCHSTELLERIN,
-        KontoinhaberinType.MUTTER,
-        KontoinhaberinType.SOZIALDIENST_INSTITUTION,
-        KontoinhaberinType.ANDERE,
+        Kontoinhaber.GESUCHSTELLER,
+        Kontoinhaber.MUTTER,
+        Kontoinhaber.SOZIALDIENST_INSTITUTION,
+        Kontoinhaber.ANDERE,
       ],
     ],
     [
@@ -45,11 +45,11 @@ describe('gesuch util', () => {
       true,
       true,
       [
-        KontoinhaberinType.GESUCHSTELLERIN,
-        KontoinhaberinType.VATER,
-        KontoinhaberinType.MUTTER,
-        KontoinhaberinType.SOZIALDIENST_INSTITUTION,
-        KontoinhaberinType.ANDERE,
+        Kontoinhaber.GESUCHSTELLER,
+        Kontoinhaber.VATER,
+        Kontoinhaber.MUTTER,
+        Kontoinhaber.SOZIALDIENST_INSTITUTION,
+        Kontoinhaber.ANDERE,
       ],
     ],
   ])(
@@ -58,13 +58,13 @@ describe('gesuch util', () => {
       label: string,
       expectVater: boolean,
       expectMutter: boolean,
-      expectedList: KontoinhaberinType[]
+      expectedList: Kontoinhaber[]
     ) => {
       const list = calculateKontoinhaberValues({
         expectVater,
         expectMutter,
-        vater: null,
-        mutter: null,
+        vater: undefined,
+        mutter: undefined,
       });
 
       expect(list).toEqual(expectedList);

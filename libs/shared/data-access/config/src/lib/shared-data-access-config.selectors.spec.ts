@@ -5,7 +5,7 @@ describe('selectSharedDataAccessConfigsView', () => {
     const state = {
       deploymentConfig: undefined,
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result = selectSharedDataAccessConfigsView.projector(state);
     expect(result).toEqual(state);

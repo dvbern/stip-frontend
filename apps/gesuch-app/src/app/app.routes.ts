@@ -1,17 +1,8 @@
 import { Route } from '@angular/router';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
-import { hasBenutzer, hasNoBenutzer } from '@dv/shared/pattern/global-guards';
+import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
-  {
-    path: 'gesuch-app-feature-user-select',
-    canActivate: [hasNoBenutzer],
-    title: 'gesuch-app.user-select.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/user-select').then(
-        (m) => m.gesuchAppFeatureUserSelectRoutes
-      ),
-  },
   {
     path: 'gesuch-app-feature-gesuch-form-kinder',
     canActivate: [hasBenutzer],
@@ -95,13 +86,21 @@ export const appRoutes: Route[] = [
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
+  {
+    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-einnahmenkosten').then(
+        (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
 ];
 
 export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'gesuch-app-feature-user-select',
+    redirectTo: 'gesuch-app-feature-cockpit',
   },
   ...appRoutes,
   {

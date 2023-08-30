@@ -31,7 +31,6 @@ import { parseBackendLocalDateAndPrint } from '@dv/shared/util/validator-date';
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-kinder.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-kinder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormKinderComponent implements OnInit {

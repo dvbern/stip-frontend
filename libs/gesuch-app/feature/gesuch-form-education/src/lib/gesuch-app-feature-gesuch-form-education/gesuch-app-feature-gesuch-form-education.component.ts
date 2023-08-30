@@ -4,18 +4,25 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
   Signal,
+  ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -28,13 +35,13 @@ import {
   Ausbildungsstaette,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { SharedUtilFormService } from '@dv/shared/util/form';
+import {
+  convertTempFormToRealValues,
+  SharedUtilFormService,
+} from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
   maxDateValidatorForLocale,
@@ -44,12 +51,14 @@ import {
 } from '@dv/shared/util/validator-date';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap/typeahead/typeahead';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { addYears, subMonths } from 'date-fns';
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   merge,
   Observable,
@@ -69,20 +78,23 @@ import { selectGesuchAppFeatureGesuchFormEducationView } from './gesuch-app-feat
     ReactiveFormsModule,
     NgbInputDatepicker,
     NgbTypeahead,
-    SharedUiFormComponent,
-    SharedUiFormMessageComponent,
-    SharedUiFormLabelComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
-    SharedUiFormLabelTargetDirective,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
     MaskitoModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-education.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-education.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -93,18 +105,15 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: this.formBuilder.control<Ausbildungsland>(
-      '' as Ausbildungsland,
-      {
-        validators: Validators.required,
-      }
-    ),
+    ausbildungsland: this.formBuilder.control<Ausbildungsland | null>(null, {
+      validators: Validators.required,
+    }),
     ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
-    alternativeAusbildungsstaette: [<string | undefined>undefined],
     ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
-    alternativeAusbildungsgang: [<string | undefined>undefined],
-    fachrichtung: ['', [Validators.required]],
+    fachrichtung: [<string | null>null, [Validators.required]],
     ausbildungNichtGefunden: [false, []],
+    alternativeAusbildungsgang: [<string | undefined>undefined],
+    alternativeAusbildungsstaette: [<string | undefined>undefined],
     ausbildungBegin: [
       '',
       [
@@ -135,12 +144,9 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
       ],
       [],
     ],
-    pensum: this.formBuilder.control<AusbildungsPensum>(
-      '' as AusbildungsPensum,
-      {
-        validators: Validators.required,
-      }
-    ),
+    pensum: this.formBuilder.control<AusbildungsPensum | null>(null, {
+      validators: Validators.required,
+    }),
   });
 
   view$ = this.store.selectSignal(
@@ -156,18 +162,40 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   ausbildungsstaett$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
-  ausbildungsgangOptions$ = computed(() => {
-    return (
-      this.ausbildungsstaetteOptions$().find(
-        (item) => item.name === this.ausbildungsstaett$()
-      )?.ausbildungsgaenge || []
-    );
+  ausbildungsstaettOptionsSig = computed(() => {
+    const currentAusbildungsstatte = this.ausbildungsstaett$();
+    return currentAusbildungsstatte
+      ? this.ausbildungsstaetteOptions$().filter((item) =>
+          item.name
+            .toLowerCase()
+            .includes(currentAusbildungsstatte.toLowerCase())
+        )
+      : this.ausbildungsstaetteOptions$();
   });
   ausbildungNichtGefundenChanged$ = toSignal(
     this.form.controls.ausbildungNichtGefunden.valueChanges
   );
   startChanged$ = toSignal(this.form.controls.ausbildungBegin.valueChanges);
   endChanged$ = toSignal(this.form.controls.ausbildungEnd.valueChanges);
+
+  ausbildungsgangOptions$ = computed(() => {
+    return (
+      this.ausbildungsstaetteOptions$().find(
+        (item) => item.name === this.ausbildungsstaett$()
+      )?.ausbildungsgaenge ?? []
+    );
+  });
+  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
+  ausbildungsstaetteTypeaheadFn$: Signal<
+    OperatorFunction<string, readonly any[]>
+  > = computed(() => {
+    return this.createAusbildungsstaetteTypeaheadFn(
+      this.ausbildungsstaetteOptions$()
+    );
+  });
+
+  focusAusbildungsstaette$ = new Subject<string>();
+  clickAusbildungstaette$ = new Subject<string>();
 
   constructor() {
     // add multi-control validators
@@ -292,10 +320,25 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
   handleLandChangedByUser() {
     this.form.controls.ausbildungsstaette.reset();
     this.form.controls.ausbildungsgang.reset();
+    this.form.controls.fachrichtung.reset();
+  }
+
+  @ViewChild(NgbTypeahead) ausbildungsstaetteTypeahead!: NgbTypeahead;
+
+  clearStaetteTypeahead(inputField: HTMLInputElement) {
+    this.form.controls.ausbildungsstaette.reset();
+    this.handleStaetteChangedByUser();
+    this.ausbildungsstaetteTypeahead.dismissPopup();
+    inputField.focus();
   }
 
   handleStaetteChangedByUser() {
     this.form.controls.ausbildungsgang.reset();
+    this.form.controls.fachrichtung.reset();
+  }
+
+  handleGangChangedByUser() {
+    this.form.controls.fachrichtung.reset();
   }
 
   handleManuellChangedByUser() {
@@ -303,10 +346,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.form.controls.alternativeAusbildungsstaette.reset();
     this.form.controls.ausbildungsgang.reset();
     this.form.controls.alternativeAusbildungsgang.reset();
+    this.form.controls.fachrichtung.reset();
   }
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -325,35 +370,41 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
-    return {
+    const { ausbildungsgang, ausbildungsstaette, ...formValue } =
+      convertTempFormToRealValues(this.form, [
+        'ausbildungsland',
+        'fachrichtung',
+        'pensum',
+      ]);
+    const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
         ausbildung: {
-          ...this.form.getRawValue(),
-          ausbildungsstaetteId: this.ausbildungsstaetteOptions$()
-            .filter(
-              (ausbildungsstaette) =>
-                ausbildungsstaette.name ===
-                this.form.controls.ausbildungsstaette.value
-            )
-            .pop()?.id,
-          ausbildungsgangId: this.form.controls.ausbildungsgang.value,
+          ...formValue,
+          ausbildungsstaetteId:
+            this.ausbildungsstaetteOptions$()
+              .filter(
+                (ausbildungsstaette) =>
+                  ausbildungsstaette.name ===
+                  this.form.controls.ausbildungsstaette.value
+              )
+              .pop()?.id ?? undefined,
+          ausbildungsgangId:
+            this.form.controls.ausbildungsgang.value ?? undefined,
         },
       },
     };
+    return ret;
   }
 
-  // the typeahead function needs to be a computed because it needs to change when the available options$ change.
-  ausbildungsstaetteTypeaheadFn$: Signal<
-    OperatorFunction<string, readonly any[]>
-  > = computed(() => {
-    return this.createAusbildungsstaetteTypeaheadFn(
-      this.ausbildungsstaetteOptions$()
-    );
-  });
-
-  focusAusbildungsstaette$ = new Subject<string>();
+  onAusbildungsstaetteTypeaheadSelect(event: NgbTypeaheadSelectItemEvent) {
+    // Grund wieso wir (selectItem) verwenden und nicht (change): change wird nicht immer ausgeloest. Dafuer muessen
+    // wir hier noch selber pruefen, ob der Wert geaendert hat.
+    if (event.item !== this.form.getRawValue().ausbildungsstaette) {
+      this.handleStaetteChangedByUser();
+    }
+  }
 
   createAusbildungsstaetteTypeaheadFn(list: Ausbildungsstaette[]) {
     console.log('computing typeaheading function for list ', list);
@@ -362,8 +413,12 @@ export class GesuchAppFeatureGesuchFormEducationComponent implements OnInit {
         debounceTime(200),
         distinctUntilChanged()
       );
-      const inputFocus$ = this.focusAusbildungsstaette$;
-      return merge(debouncedText$, inputFocus$).pipe(
+      const click$ = this.clickAusbildungstaette$;
+      const clicksWithClosedPopup$ = click$.pipe(
+        filter(() => !this.ausbildungsstaetteTypeahead.isPopupOpen())
+      );
+      const focus$ = this.focusAusbildungsstaette$;
+      return merge(debouncedText$, focus$, clicksWithClosedPopup$).pipe(
         map((term) => {
           console.log('typeaheading term ', term, list);
           return (

@@ -6,36 +6,34 @@
 
   <div class="row gy-0 mt-2">
     <!-- LEFT -->
-    <dv-shared-ui-form-field class="col-6">
-      <ng-content select=".label-a"></ng-content>
+    <mat-form-field dvSharedUiFormField class="col-6">
+      <mat-label><ng-content select=".label-a"></ng-content></mat-label>
 
       <input
-        class="form-control"
         type="text"
         data-testid="component-percentage-splitter-a"
-        dvSharedUiFormLabelTarget
+        matInput
         [formControl]="controlA"
         [maskito]="maskitoOptionsPercent"
       />
-      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-        {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-message>
-    </dv-shared-ui-form-field>
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
+    </mat-form-field>
 
     <!-- RIGHT -->
-    <dv-shared-ui-form-field class="col-6">
-      <ng-content select=".label-b"></ng-content>
+    <mat-form-field dvSharedUiFormField class="col-6">
+      <mat-label><ng-content select=".label-b"></ng-content></mat-label>
       <input
-        class="form-control"
         type="text"
         data-testid="component-percentage-splitter-b"
-        dvSharedUiFormLabelTarget
+        matInput
         [formControl]="controlB"
         [maskito]="maskitoOptionsPercent"
       />
-      <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-        {{ 'shared.form.error.required' | translate }}
-      </dv-shared-ui-form-message>
-    </dv-shared-ui-form-field>
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
+    </mat-form-field>
   </div>
 </div>

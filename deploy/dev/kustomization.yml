@@ -4,11 +4,10 @@ kind: Kustomization
 resources:
 - ../base
 - ingress-config.yml
-- basicauth.yml
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: "08881066"
+  newTag: 2e1a00a3
 
 # TODO: OpenShift
 # patches:
@@ -28,6 +27,16 @@ replacements:
   - fieldPaths:
     - spec.rules.0.host
     - spec.tls.0.hosts.0
+    select:
+      kind: Ingress
+      name: www
+- source:
+    fieldPath: data.identityHost
+    kind: ConfigMap
+    name: ingress-config
+  targets:
+  - fieldPaths:
+    - spec.tls.0.hosts.1
     select:
       kind: Ingress
       name: www

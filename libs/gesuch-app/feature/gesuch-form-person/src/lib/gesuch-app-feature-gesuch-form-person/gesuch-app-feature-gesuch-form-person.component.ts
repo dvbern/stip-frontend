@@ -4,15 +4,23 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -35,19 +43,14 @@ import {
   SharedPatternDocumentUploadComponent,
 } from '@dv/shared/pattern/document-upload';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
-  SharedUiFormMessageInfoDirective,
 } from '@dv/shared/ui/form';
 
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
 import {
-  optionalRequiredBoolean,
+  convertTempFormToRealValues,
   SharedUtilFormService,
-  unsetString,
 } from '@dv/shared/util/form';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
 import {
@@ -73,8 +76,9 @@ import {
   wohnsitzAnteileNumber,
   updateWohnsitzControlsState,
 } from '@dv/shared/ui/wohnsitz-splitter';
-import { Subject } from 'rxjs';
 import { SharedUiFormCountryComponent } from '@dv/shared/ui/form-country';
+import { SharedUiInfoOverlayComponent } from '@dv/shared/ui/info-overlay';
+import { SharedUtilCountriesService } from '@dv/shared/util/countries';
 
 const MIN_AGE_GESUCHSSTELLER = 10;
 const MAX_AGE_GESUCHSSTELLER = 130;
@@ -88,13 +92,15 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     ReactiveFormsModule,
     TranslateModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatRadioModule,
+    SharedUiInfoOverlayComponent,
     NgbInputDatepicker,
     NgbAlert,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
-    SharedUiFormMessageInfoDirective,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     SharedUiFormCountryComponent,
     SharedUiWohnsitzSplitterComponent,
@@ -104,13 +110,14 @@ const MEDIUM_AGE_GESUCHSSTELLER = 20;
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-person.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-person.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private countriesService = inject(SharedUtilCountriesService);
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
   readonly anredeValues = Object.values(Anrede);
   readonly Zivilstand = Zivilstand;
@@ -118,13 +125,16 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   readonly zivilstandValues = Object.values(Zivilstand);
   readonly wohnsitzValues = Object.values(Wohnsitz);
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
-  laenderSig = computed(() => {
-    return this.view().laender;
-  });
   languageSig = this.store.selectSignal(selectLanguage);
   view = this.store.selectSignal(selectGesuchAppFeatureGesuchFormEducationView);
-  save$ = new Subject();
+  updateValidity$ = new Subject<unknown>();
+  laenderSig = computed(() => this.view().laender);
+  translatedLaender$ = toObservable(this.laenderSig).pipe(
+    switchMap((laender) => this.countriesService.getCountryList(laender))
+  );
 
+  isSozialversicherungsnummerInfoShown = false;
+  isNiederlassungsstatusInfoShown = false;
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptions = computed(() => {
     return {
@@ -149,11 +159,11 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
     identischerZivilrechtlicherWohnsitzPLZ: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     identischerZivilrechtlicherWohnsitzOrt: [
-      unsetString,
+      <string | undefined>undefined,
       [Validators.required],
     ],
     email: ['', [Validators.required, Validators.pattern(PATTERN_EMAIL)]],
@@ -181,7 +191,7 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
     nationalitaet: this.formBuilder.control<Land>('' as Land, {
       validators: Validators.required,
     }),
-    heimatort: ['', [Validators.required]],
+    heimatort: [<string | undefined>undefined, [Validators.required]],
     niederlassungsstatus: this.formBuilder.control<
       Niederlassungsstatus | undefined
     >(undefined, { validators: Validators.required }),
@@ -190,8 +200,8 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       validators: Validators.required,
     }),
     ...addWohnsitzControls(this.formBuilder),
-    quellenbesteuert: [optionalRequiredBoolean, [Validators.required]],
-    sozialhilfebeitraege: [optionalRequiredBoolean, [Validators.required]],
+    quellenbesteuert: [<boolean | null>null, [Validators.required]],
+    sozialhilfebeitraege: [<boolean | null>null, [Validators.required]],
     digitaleKommunikation: [true, []],
     korrespondenzSprache: this.formBuilder.control<Sprache>('' as Sprache, {
       validators: Validators.required,
@@ -319,8 +329,9 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   handleSave() {
-    this.save$.next({});
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
+    this.updateValidity$.next({});
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -352,7 +363,10 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
       gesuchFormular: {
         ...gesuchFormular,
         personInAusbildung: {
-          ...this.form.getRawValue(),
+          ...convertTempFormToRealValues(this.form, [
+            'quellenbesteuert',
+            'sozialhilfebeitraege',
+          ]),
           adresse: {
             id: gesuchFormular?.personInAusbildung?.adresse?.id,
             ...this.form.getRawValue().adresse,
@@ -366,7 +380,6 @@ export class GesuchAppFeatureGesuchFormPersonComponent implements OnInit {
 
           // TODO missing fields that exist on the Adresse:
           quellenbesteuert: false,
-          kinder: false,
         },
       },
     };

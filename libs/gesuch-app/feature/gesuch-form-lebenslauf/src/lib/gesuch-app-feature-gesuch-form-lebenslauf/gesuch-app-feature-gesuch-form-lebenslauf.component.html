@@ -3,6 +3,7 @@
   <dv-gesuch-app-feature-gesuch-form-lebenslauf-editor
     *ngIf="editedItem"
     [item]="editedItem"
+    [ausbildungen]="ausbildungenSig()"
     (saveTriggered)="handleEditorSave($event)"
     (closeTriggered)="handleEditorClose()"
     (deleteTriggered)="handleDeleteItem($event)"

@@ -1,9 +1,5 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
-import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
-import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { Store } from '@ngrx/store';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import {
@@ -16,6 +12,10 @@ import {
   tap,
 } from 'rxjs';
 
+import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
+import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
+import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
+import { GesuchAppEventGesuchFormAuszahlung } from '@dv/gesuch-app/event/gesuch-form-auszahlung';
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
 import { GesuchAppEventGesuchFormEducation } from '@dv/gesuch-app/event/gesuch-form-education';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
@@ -23,25 +23,31 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppEventGesuchFormEltern } from '@dv/gesuch-app/event/gesuch-form-eltern';
+import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
+import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
+import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
+import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 import { selectRouteId } from './gesuch-app-data-access-gesuch.selectors';
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
-import { GesuchAppDataAccessGesuchService } from './gesuch-app-data-access-gesuch.service';
-import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
-import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
 
 export const loadGesuchs = createEffect(
   (
     actions$ = inject(Actions),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
+    store = inject(Store),
+    gesuchService = inject(GesuchService)
   ) => {
     return actions$.pipe(
       ofType(
         GesuchAppEventCockpit.init,
         GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
-      concatMap(() =>
-        gesuchAppDataAccessGesuchService.getAll().pipe(
+      switchMap(() => store.select(selectCurrentBenutzer)),
+      filter(sharedUtilFnTypeGuardsIsDefined),
+      concatMap((benutzer) =>
+        gesuchService.getGesucheForBenutzer$({ benutzerId: benutzer.id }).pipe(
           map((gesuchs) =>
             GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
               gesuchs,
@@ -63,7 +69,7 @@ export const loadGesuch = createEffect(
   (
     actions$ = inject(Actions),
     store = inject(Store),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
+    gesuchService = inject(GesuchService)
   ) => {
     return actions$.pipe(
       ofType(
@@ -75,7 +81,8 @@ export const loadGesuch = createEffect(
         GesuchAppEventGesuchFormAuszahlung.init,
         GesuchAppEventGesuchFormGeschwister.init,
         GesuchAppEventGesuchFormKinder.init,
-        GesuchAppEventGesuchFormLebenslauf.init
+        GesuchAppEventGesuchFormLebenslauf.init,
+        GesuchAppEventGesuchFormEinnahmenkosten.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -84,7 +91,7 @@ export const loadGesuch = createEffect(
             'Load Gesuch without id, make sure that the route is correct and contains the gesuch :id'
           );
         }
-        return gesuchAppDataAccessGesuchService.get(id).pipe(
+        return gesuchService.getGesuch$({ gesuchId: id }).pipe(
           map((gesuch) =>
             GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess({ gesuch })
           ),
@@ -101,16 +108,15 @@ export const loadGesuch = createEffect(
 );
 
 export const createGesuch = createEffect(
-  (
-    actions$ = inject(Actions),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
-  ) => {
+  (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(GesuchAppEventCockpit.newTriggered),
       exhaustMap(({ create }) =>
-        gesuchAppDataAccessGesuchService.create(create).pipe(
+        gesuchService.createGesuch$({ gesuchCreate: create }).pipe(
           switchMap(() =>
-            gesuchAppDataAccessGesuchService.getByFallId(create.fallId)
+            gesuchService.getGesucheForFall$({
+              fallId: create.fallId,
+            })
           ),
           map(
             (gesuche) =>
@@ -118,10 +124,10 @@ export const createGesuch = createEffect(
                 ({ gesuchsperiode: { id } }) => id === create.gesuchsperiodeId
               )?.id
           ),
-          filter((id) => id != null),
+          filter(sharedUtilFnTypeGuardsIsDefined),
           map((id) =>
             GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
-              id: id!, // TODO cleanup quick workaround
+              id,
             })
           ),
           catchError((error) => [
@@ -137,21 +143,22 @@ export const createGesuch = createEffect(
 );
 
 export const updateGesuch = createEffect(
-  (
-    actions$ = inject(Actions),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
-  ) => {
+  (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(
         GesuchAppEventGesuchFormPartner.nextStepTriggered,
         GesuchAppEventGesuchFormPerson.saveTriggered,
         GesuchAppEventGesuchFormEducation.saveTriggered,
         GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-        GesuchAppEventGesuchFormAuszahlung.saveTriggered
+        GesuchAppEventGesuchFormAuszahlung.saveTriggered,
+        GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
-        return gesuchAppDataAccessGesuchService
-          .update(gesuchId, gesuchFormular)
+        return gesuchService
+          .updateGesuch$({
+            gesuchId,
+            gesuchUpdate: prepareFormularData(gesuchFormular),
+          })
           .pipe(
             map(() =>
               GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
@@ -172,10 +179,7 @@ export const updateGesuch = createEffect(
 );
 
 export const updateGesuchSubform = createEffect(
-  (
-    actions$ = inject(Actions),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
-  ) => {
+  (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(
         GesuchAppEventGesuchFormEltern.saveSubformTriggered,
@@ -184,8 +188,11 @@ export const updateGesuchSubform = createEffect(
         GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
-        return gesuchAppDataAccessGesuchService
-          .update(gesuchId, gesuchFormular)
+        return gesuchService
+          .updateGesuch$({
+            gesuchId,
+            gesuchUpdate: prepareFormularData(gesuchFormular),
+          })
           .pipe(
             map(() =>
               GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
@@ -206,14 +213,11 @@ export const updateGesuchSubform = createEffect(
 );
 
 export const removeGesuch = createEffect(
-  (
-    actions$ = inject(Actions),
-    gesuchAppDataAccessGesuchService = inject(GesuchAppDataAccessGesuchService)
-  ) => {
+  (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(GesuchAppEventCockpit.removeTriggered),
       concatMap(({ id }) =>
-        gesuchAppDataAccessGesuchService.remove(id).pipe(
+        gesuchService.deleteGesuch$({ gesuchId: id }).pipe(
           map(() => GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess()),
           catchError((error) => [
             GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure({
@@ -285,4 +289,30 @@ export const gesuchAppDataAccessGesuchEffects = {
   redirectToGesuchForm,
   redirectToGesuchFormNextStep,
   refreshGesuchFormStep,
+};
+
+const prepareFormularData = (gesuchFormular: GesuchFormularUpdate) => {
+  const { lebenslaufItems, geschwisters, elterns, kinds, ...formular } =
+    gesuchFormular;
+  return {
+    gesuch_formular_to_work_with: {
+      ...formular,
+      lebenslaufItems: lebenslaufItems?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      elterns: elterns?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      kinds: kinds?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+      geschwisters: geschwisters?.map((i) => ({
+        ...i,
+        copyOfId: undefined,
+      })),
+    },
+  };
 };

@@ -1,5 +1,5 @@
-import { Gesuch } from './openapi/gesuch';
-import { GesuchFormularUpdate } from './openapi/gesuchFormularUpdate';
+import { Gesuch } from './openapi/model/gesuch';
+import { GesuchFormularUpdate } from './openapi/model/gesuchFormularUpdate';
 
 export interface SharedModelGesuch extends Gesuch {
   view?: {
@@ -7,9 +7,7 @@ export interface SharedModelGesuch extends Gesuch {
   };
 }
 
-export interface SharedModelGesuchFormular extends GesuchFormularUpdate {
-  freigegeben: boolean;
-}
+export type SharedModelGesuchFormular = GesuchFormularUpdate;
 
 // TODO extract to env or generate with OpenAPI?
 export const SHARED_MODEL_GESUCH_RESOURCE = `/gesuch`;

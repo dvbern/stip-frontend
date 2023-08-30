@@ -4,10 +4,9 @@ import { selectGesuchAppDataAccessGesuchsView } from './gesuch-app-data-access-g
 describe('selectGesuchAppDataAccessGesuchsView', () => {
   it('selects view', () => {
     const state: State = {
-      gesuch: undefined,
+      gesuch: null,
       gesuchs: [],
-      gesuchFormular: undefined,
-      benutzer: undefined,
+      gesuchFormular: null,
       loading: false,
       error: undefined,
     };

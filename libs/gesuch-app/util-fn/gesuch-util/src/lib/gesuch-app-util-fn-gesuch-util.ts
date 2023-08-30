@@ -1,10 +1,10 @@
 import {
-  Anrede,
   ElternTyp,
   ElternUpdate,
   FamiliensituationUpdate,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
+import { lowercased } from '@dv/shared/util-fn/string-helper';
 
 export interface ElternSituation {
   expectVater: boolean;
@@ -14,7 +14,7 @@ export interface ElternSituation {
 }
 
 export function calculateElternSituationGesuch(
-  gesuch: SharedModelGesuchFormular | undefined
+  gesuch: SharedModelGesuchFormular | null
 ): ElternSituation {
   return calculateElternSituation(gesuch?.familiensituation, gesuch?.elterns);
 }
@@ -24,31 +24,30 @@ function calculateElternSituation(
   elterns: ElternUpdate[] | undefined
 ): ElternSituation {
   return {
-    expectVater: calculateExpectElternteil(Anrede.HERR, familienSituation),
-    expectMutter: calculateExpectElternteil(Anrede.FRAU, familienSituation),
+    expectVater: calculateExpectElternteil(ElternTyp.VATER, familienSituation),
+    expectMutter: calculateExpectElternteil(
+      ElternTyp.MUTTER,
+      familienSituation
+    ),
     vater: findElternteil(ElternTyp.VATER, elterns),
     mutter: findElternteil(ElternTyp.MUTTER, elterns),
   };
 }
 
 export function calculateExpectElternteil(
-  geschlecht: Anrede,
+  type: ElternTyp,
   familienSituation: FamiliensituationUpdate | undefined
 ): boolean {
-  let expectMutter = false;
-
   if (familienSituation) {
-    if (familienSituation.elternteilUnbekanntVerstorben) {
-      const elternteilStatus =
-        geschlecht === 'HERR'
-          ? familienSituation?.vaterUnbekanntVerstorben
-          : familienSituation?.mutterUnbekanntVerstorben;
-      expectMutter = elternteilStatus === 'WEDER_NOCH';
-    } else {
-      expectMutter = true;
-    }
+    const elternteilLebt = familienSituation.elternteilUnbekanntVerstorben
+      ? familienSituation?.[`${lowercased(type)}UnbekanntVerstorben`] ===
+        'WEDER_NOCH'
+      : true;
+    const elternteilZahltKeineAlimente =
+      familienSituation.werZahltAlimente !== type;
+    return elternteilLebt && elternteilZahltKeineAlimente;
   }
-  return expectMutter;
+  return false;
 }
 
 export function findElternteil(

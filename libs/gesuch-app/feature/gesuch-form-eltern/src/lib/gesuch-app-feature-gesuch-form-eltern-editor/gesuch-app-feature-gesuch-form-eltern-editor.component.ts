@@ -3,25 +3,26 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
   OnChanges,
   Output,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiFormAddressComponent } from '@dv/shared/ui/form-address';
@@ -32,7 +33,7 @@ import {
   MASK_SOZIALVERSICHERUNGSNUMMER,
 } from '@dv/shared/model/gesuch';
 import {
-  optionalRequiredBoolean,
+  convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
 import { sharedUtilValidatorTelefonNummer } from '@dv/shared/util/validator-telefon-nummer';
@@ -64,10 +65,11 @@ const MEDIUM_AGE_ADULT = 40;
     TranslateModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     SharedUiFormAddressComponent,
     GesuchAppUiStepFormButtonsComponent,
@@ -79,8 +81,10 @@ const MEDIUM_AGE_ADULT = 40;
 export class GesuchAppFeatureGesuchFormElternEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private store = inject(Store);
 
   @Input({ required: true }) elternteil!: Omit<
     Partial<ElternUpdate>,
@@ -96,8 +100,6 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   readonly ElternTyp = ElternTyp;
 
-  private store = inject(Store);
-
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
@@ -107,8 +109,14 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       this.formBuilder
     ),
     identischerZivilrechtlicherWohnsitz: [true, []],
-    identischerZivilrechtlicherWohnsitzPLZ: ['', [Validators.required]],
-    identischerZivilrechtlicherWohnsitzOrt: ['', [Validators.required]],
+    identischerZivilrechtlicherWohnsitzPLZ: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
+    identischerZivilrechtlicherWohnsitzOrt: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
     telefonnummer: [
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
@@ -135,12 +143,12 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
       ],
     ],
     sozialhilfebeitraegeAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
-    ausweisbFluechtling: [optionalRequiredBoolean, [Validators.required]],
+    ausweisbFluechtling: [<boolean | null>null, [Validators.required]],
     ergaenzungsleistungAusbezahlt: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
   });
@@ -183,14 +191,24 @@ export class GesuchAppFeatureGesuchFormElternEditorComponent
 
   handleSave() {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
+    const formValues = convertTempFormToRealValues(this.form, [
+      'sozialhilfebeitraegeAusbezahlt',
+      'ausweisbFluechtling',
+      'ergaenzungsleistungAusbezahlt',
+    ]);
     const geburtsdatum = parseStringAndPrintForBackendLocalDate(
-      this.form.getRawValue().geburtsdatum,
+      formValues.geburtsdatum,
       this.languageSig(),
       subYears(new Date(), MEDIUM_AGE_ADULT)
     );
     if (this.form.valid && geburtsdatum) {
       this.saveTriggered.emit({
-        ...this.form.getRawValue(),
+        ...formValues,
+        adresse: {
+          ...formValues.adresse,
+          id: this.elternteil.adresse?.id,
+        },
         id: this.elternteil.id,
         elternTyp: this.elternteil.elternTyp,
         geburtsdatum,

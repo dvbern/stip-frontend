@@ -19,7 +19,13 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideState, provideStore, Store } from '@ngrx/store';
+import {
+  ActionReducer,
+  MetaReducer,
+  provideState,
+  provideStore,
+  Store,
+} from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
@@ -41,6 +47,7 @@ import {
   sharedDataAccessLanguageEffects,
   sharedDataAccessLanguageFeature,
 } from '@dv/shared/data-access/language';
+import { provideMaterialDefaultOptions } from '@dv/shared/pattern/angular-material-config';
 import { provideSharedPatternI18nTitleStrategy } from '@dv/shared/pattern/i18n-title-strategy';
 import { provideSharedPatternNgbDatepickerAdapter } from '@dv/shared/pattern/ngb-datepicker-adapter';
 import { provideSharedPatternRouteReuseStrategyConfigurable } from '@dv/shared/pattern/route-reuse-strategy-configurable';
@@ -48,6 +55,11 @@ import {
   sharedDataAccessStammdatenEffects,
   sharedDataAccessStammdatensFeature,
 } from '@dv/shared/data-access/stammdaten';
+import { provideSharedPatternAppInitialization } from '@dv/shared/pattern/app-initialization';
+import {
+  sharedDataAccessBenutzerEffects,
+  sharedDataAccessBenutzersFeature,
+} from '@dv/shared/data-access/benutzer';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -57,11 +69,33 @@ export class ExplicitMissingTranslationHandler
   }
 }
 
+export function debugReducers(
+  reducer: ActionReducer<unknown>
+): ActionReducer<unknown> {
+  return function (state, action) {
+    if (isDevMode()) {
+      console.log('state', state);
+      console.log('action', action);
+    }
+
+    return reducer(state, action);
+  };
+}
+
+export const metaReducers: MetaReducer<any>[] = [debugReducers];
+
 export function provideSharedPatternCore(appRoutes: Route[]) {
   return [
     // providers
+    provideSharedPatternAppInitialization(),
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true, runCoalescing: true }),
+    provideHttpClient(
+      withInterceptors([
+        SharedPatternInterceptorDeploymentConfig,
+        // STUB add global interceptors for auth, error handling, ...
+      ])
+    ),
     provideRouter(
       appRoutes,
       withRouterConfig({
@@ -74,15 +108,10 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         scrollPositionRestoration: 'top',
       })
     ),
-    provideHttpClient(
-      withInterceptors([
-        SharedPatternInterceptorDeploymentConfig,
-        // STUB add global interceptors for auth, error handling, ...
-      ])
-    ),
     provideSharedPatternI18nTitleStrategy(),
     provideSharedPatternNgbDatepickerAdapter(),
     provideSharedPatternRouteReuseStrategyConfigurable(),
+    provideMaterialDefaultOptions(),
 
     // state management
     provideStore(
@@ -90,6 +119,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         router: routerReducer,
       },
       {
+        metaReducers,
         runtimeChecks: {
           strictStateImmutability: true,
           strictActionImmutability: true,
@@ -100,10 +130,12 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         },
       }
     ),
+    provideState(sharedDataAccessBenutzersFeature),
     provideState(sharedDataAccessConfigsFeature),
     provideState(sharedDataAccessLanguageFeature),
     provideState(sharedDataAccessStammdatensFeature),
     provideEffects(
+      sharedDataAccessBenutzerEffects,
       sharedDataAccessConfigEffects,
       sharedDataAccessLanguageEffects,
       sharedDataAccessStammdatenEffects

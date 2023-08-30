@@ -12,16 +12,15 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { maskitoPercent } from '@dv/shared/util/maskito-util';
 import { MaskitoModule } from '@maskito/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { percentStringToNumber } from '../utils/form';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'dv-shared-ui-percentage-splitter',
@@ -29,11 +28,10 @@ import { percentStringToNumber } from '../utils/form';
   imports: [
     CommonModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatInputModule,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     TranslateModule,
   ],
@@ -42,6 +40,7 @@ import { percentStringToNumber } from '../utils/form';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiPercentageSplitterComponent implements OnInit {
+  @Input({ required: true }) updateValidity: unknown;
   @Input({ required: true })
   controlA!: FormControl<string | undefined>;
 

@@ -31,7 +31,6 @@ import { selectLanguage } from '@dv/shared/data-access/language';
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-geschwister.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-geschwister.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormGeschwisterComponent implements OnInit {

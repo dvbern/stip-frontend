@@ -5,7 +5,7 @@ describe('selectSharedDataAccessStammdatensView', () => {
     const state = {
       laender: [],
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result = selectSharedDataAccessStammdatensView.projector(state);
     expect(result).toEqual(state);

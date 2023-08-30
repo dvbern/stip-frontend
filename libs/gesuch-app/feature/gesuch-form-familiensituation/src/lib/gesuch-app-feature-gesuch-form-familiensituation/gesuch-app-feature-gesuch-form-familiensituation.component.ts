@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -12,6 +13,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
@@ -30,20 +34,18 @@ import {
   GesuchFormularUpdate,
 } from '@dv/shared/model/gesuch';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 import {
-  optionalRequiredBoolean,
+  convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-familiensituation',
@@ -53,11 +55,11 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
     MaskitoModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatSelectModule,
     SharedUiProgressBarComponent,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiPercentageSplitterComponent,
@@ -65,14 +67,12 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',
-  styleUrls: [
-    './gesuch-app-feature-gesuch-form-familiensituation.component.scss',
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   implements OnInit
 {
+  private elementRef = inject(ElementRef);
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
@@ -82,16 +82,16 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
   form = this.formBuilder.group({
-    elternVerheiratetZusammen: [optionalRequiredBoolean, [Validators.required]],
+    elternVerheiratetZusammen: [<boolean | null>null, [Validators.required]],
     gerichtlicheAlimentenregelung: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
     werZahltAlimente: this.formBuilder.control<
       Elternschaftsteilung | undefined
     >(undefined, { validators: Validators.required }),
     elternteilUnbekanntVerstorben: [
-      optionalRequiredBoolean,
+      <boolean | null>null,
       [Validators.required],
     ],
     mutterUnbekanntVerstorben: this.formBuilder.control<
@@ -106,8 +106,8 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     vaterUnbekanntGrund: this.formBuilder.control<
       ElternUnbekanntheitsGrund | undefined
     >(undefined, { validators: Validators.required }),
-    vaterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
-    mutterWiederverheiratet: [optionalRequiredBoolean, [Validators.required]],
+    vaterWiederverheiratet: [<boolean | null>null, [Validators.required]],
+    mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
     sorgerecht: this.formBuilder.control<Elternschaftsteilung | undefined>(
       undefined,
       { validators: Validators.required }
@@ -121,6 +121,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   });
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
+  updateValidity$ = new Subject<unknown>();
 
   ngOnInit(): void {
     this.store.dispatch(GesuchAppEventGesuchFormFamiliensituation.init());
@@ -340,6 +341,8 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   handleSave(): void {
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
+    this.updateValidity$.next({});
     const { gesuch } = this.view();
     if (this.form.valid && gesuch?.id) {
       const gesuchFormular = this.buildSharedModelAdresseFromForm();
@@ -359,7 +362,14 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       ...(gesuchFormular ?? {}),
       familiensituation: {
         ...gesuchFormular?.familiensituation,
-        ...this.form.getRawValue(), // nicht form.value, sonst werden keine Werte auf null gesetzt!
+        ...convertTempFormToRealValues(this.form, [
+          'elternVerheiratetZusammen',
+          'gerichtlicheAlimentenregelung',
+          'elternteilUnbekanntVerstorben',
+          'vaterWiederverheiratet',
+          'mutterWiederverheiratet',
+        ]),
+        // nicht form.value, sonst werden keine Werte auf null gesetzt!
         obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
         obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),
       },

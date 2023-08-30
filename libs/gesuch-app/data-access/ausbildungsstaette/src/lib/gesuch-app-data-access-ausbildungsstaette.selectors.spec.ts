@@ -5,7 +5,7 @@ describe('selectGesuchAppDataAccessAusbildungsstaettesView', () => {
     const state = {
       ausbildungsstaettes: [],
       loading: false,
-      error: null,
+      error: undefined,
     };
     const result =
       selectGesuchAppDataAccessAusbildungsstaettesView.projector(state);

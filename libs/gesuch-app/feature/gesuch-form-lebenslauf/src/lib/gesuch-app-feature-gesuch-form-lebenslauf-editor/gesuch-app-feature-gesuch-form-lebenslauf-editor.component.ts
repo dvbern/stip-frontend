@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -18,6 +19,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -28,14 +32,13 @@ import {
 } from '@dv/shared/model/gesuch';
 import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import {
-  SharedUiFormComponent,
-  SharedUiFormLabelComponent,
-  SharedUiFormLabelTargetDirective,
-  SharedUiFormMessageComponent,
+  SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
+import { SharedUtilFormService } from '@dv/shared/util/form';
 import {
   createDateDependencyValidator,
+  createOverlappingValidator,
   maxDateValidatorForLocale,
   minDateValidatorForLocale,
   onMonthYearInputBlur,
@@ -54,12 +57,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     FormsModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
-    SharedUiFormComponent,
-    SharedUiFormLabelComponent,
-    SharedUiFormLabelTargetDirective,
-    SharedUiFormMessageComponent,
+    SharedUiFormFieldDirective,
     SharedUiFormMessageErrorDirective,
     TranslateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     MaskitoModule,
     GesuchAppUiStepFormButtonsComponent,
   ],
@@ -73,11 +76,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   implements OnChanges
 {
+  private elementRef = inject(ElementRef);
   private formBuilder = inject(NonNullableFormBuilder);
-
+  private formUtils = inject(SharedUtilFormService);
   private translateService = inject(TranslateService);
 
   @Input({ required: true }) item!: Partial<SharedModelLebenslauf>;
+  @Input({ required: true }) ausbildungen!: LebenslaufItemUpdate[];
   @Input({ required: true }) minStartDate?: Date | null;
   @Input({ required: true }) maxEndDate?: Date | null;
 
@@ -151,6 +156,9 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const previousAusbildungen = this.ausbildungen
+      .filter((l) => !this.item.id || l.id !== this.item.id)
+      .map((a) => [a.von, a.bis] as const);
     // update date validators
     if (changes['minStartDate']) {
       this.form.controls.von.clearValidators();
@@ -183,6 +191,16 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
         ),
       ]);
       if (changes['maxEndDate'].currentValue) {
+        if (this.item?.type === 'AUSBILDUNG') {
+          this.form.controls.bis.addValidators([
+            createOverlappingValidator(
+              this.form.controls.von,
+              previousAusbildungen,
+              new Date(),
+              'monthYear'
+            ),
+          ]);
+        }
         this.form.controls.bis.addValidators([
           maxDateValidatorForLocale(
             this.languageSig(),
@@ -195,12 +213,15 @@ export class GesuchAppFeatureGesuchFormLebenslaufEditorComponent
 
     // fill form
     this.form.patchValue(this.item);
+
+    if (this.item.von && this.item.bis) {
+      this.form.controls.bis.markAsTouched();
+    }
   }
 
   handleSave() {
-    /* this.form.controls.von.updateValueAndValidity(); // TODO oder in effect
-     this.form.controls.bis.updateValueAndValidity();*/
     this.form.markAllAsTouched();
+    this.formUtils.focusFirstInvalid(this.elementRef);
     this.onDateBlur(this.form.controls.von);
     this.onDateBlur(this.form.controls.bis);
     if (this.form.valid) {

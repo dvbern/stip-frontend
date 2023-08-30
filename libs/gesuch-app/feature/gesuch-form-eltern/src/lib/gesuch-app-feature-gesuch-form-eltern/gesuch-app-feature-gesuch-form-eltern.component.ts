@@ -15,11 +15,16 @@ import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/patter
 import { ElternteilCardComponent } from './elternteil-card/elternteil-card.component';
 
 import { selectGesuchAppFeatureGesuchFormElternView } from './gesuch-app-feature-gesuch-form-eltern.selector';
-import { ElternTyp, ElternUpdate } from '@dv/shared/model/gesuch';
+import {
+  ElternTyp,
+  ElternUpdate,
+  GesuchFormularUpdate,
+} from '@dv/shared/model/gesuch';
 import { GesuchAppFeatureGesuchFormElternEditorComponent } from '../gesuch-app-feature-gesuch-form-eltern-editor/gesuch-app-feature-gesuch-form-eltern-editor.component';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import { capitalized } from '@dv/shared/util-fn/string-helper';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-eltern',
@@ -33,7 +38,6 @@ import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stam
     GesuchAppUiStepFormButtonsComponent,
   ],
   templateUrl: './gesuch-app-feature-gesuch-form-eltern.component.html',
-  styleUrls: ['./gesuch-app-feature-gesuch-form-eltern.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
@@ -63,9 +67,8 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   handleAddElternteil(elternTyp: ElternTyp) {
-    this.editedElternteil = {
-      elternTyp,
-    };
+    const { gesuchFormular } = this.view$();
+    this.editedElternteil = setupElternTeil(elternTyp, gesuchFormular);
   }
 
   handleEditorSave(elternteil: ElternUpdate) {
@@ -115,9 +118,11 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithDeletedElternteil(id: string) {
-    const { gesuch, gesuchFormular } = this.view$();
+    const { gesuch, gesuchFormular, expectMutter, expectVater } = this.view$();
     const updatedElterns = gesuchFormular?.elterns?.filter(
-      (entry) => entry.id !== id
+      (entry) =>
+        entry.id !== id &&
+        isElternTypeExpected(entry, { expectMutter, expectVater })
     );
 
     return {
@@ -130,16 +135,20 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   }
 
   private buildUpdatedGesuchWithUpdatedElternteil(elternteil: ElternUpdate) {
-    const { gesuch, gesuchFormular } = this.view$();
+    const { gesuch, gesuchFormular, expectMutter, expectVater } = this.view$();
     // update existing elternteil if found
     const updatedElterns =
-      gesuchFormular?.elterns?.map((oldEltern) => {
-        if (oldEltern.id === elternteil.id) {
-          return elternteil;
-        } else {
-          return oldEltern;
-        }
-      }) ?? [];
+      gesuchFormular?.elterns
+        ?.map((oldEltern) => {
+          if (oldEltern.id === elternteil.id) {
+            return elternteil;
+          } else {
+            return oldEltern;
+          }
+        })
+        .filter((entry) =>
+          isElternTypeExpected(entry, { expectMutter, expectVater })
+        ) ?? [];
     // add new elternteil if not found
     if (!elternteil.id) {
       updatedElterns.push(elternteil);
@@ -156,3 +165,25 @@ export class GesuchAppFeatureGesuchFormElternComponent implements OnInit {
   protected readonly GesuchFormSteps = GesuchFormSteps;
   protected readonly ElternTyp = ElternTyp;
 }
+
+export const setupElternTeil = (
+  elternTyp: ElternTyp,
+  gesuchFormular: GesuchFormularUpdate | null
+) => {
+  const adresse = gesuchFormular?.personInAusbildung?.adresse;
+  const lebtBeiEltern =
+    gesuchFormular?.personInAusbildung?.wohnsitz === 'FAMILIE';
+  return {
+    ...(adresse && lebtBeiEltern
+      ? { adresse: { ...adresse, id: undefined } }
+      : {}),
+    elternTyp,
+  };
+};
+
+const isElternTypeExpected = (
+  eltern: ElternUpdate,
+  expected: { expectVater: boolean; expectMutter: boolean }
+) => {
+  return expected[`expect${capitalized(eltern.elternTyp)}`];
+};

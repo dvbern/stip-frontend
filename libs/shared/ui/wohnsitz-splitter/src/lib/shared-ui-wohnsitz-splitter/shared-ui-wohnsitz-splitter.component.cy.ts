@@ -1,6 +1,8 @@
 import { SharedUiWohnsitzSplitterComponent } from './shared-ui-wohnsitz-splitter.component';
 import { FormBuilder } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+
 import { addWohnsitzControls } from '../utils/form';
 
 const getInput = (type: 'a' | 'b') =>
@@ -16,7 +18,10 @@ describe(SharedUiWohnsitzSplitterComponent.name, () => {
 
   it('should show component with empty values', () => {
     cy.mount(SharedUiWohnsitzSplitterComponent, {
-      imports: [TranslateTestingModule.withTranslations({})],
+      imports: [
+        TranslateTestingModule.withTranslations({}),
+        NoopAnimationsModule,
+      ],
       componentProperties: {
         controls: initializeControls().controls,
       },
@@ -36,11 +41,15 @@ describe(SharedUiWohnsitzSplitterComponent.name, () => {
     it(`should show component with valueA: [${value}] to be A('${expectedA}') B('${expectedB}')`, () => {
       const { controls } = initializeControls();
       cy.mount(SharedUiWohnsitzSplitterComponent, {
-        imports: [TranslateTestingModule.withTranslations({})],
+        imports: [
+          TranslateTestingModule.withTranslations({}),
+          NoopAnimationsModule,
+        ],
         componentProperties: {
           controls,
         },
       });
+      getInput('a').focus();
       getInput('a').type(value.toString());
       getInput('a').should('have.value', expectedA);
       getInput('b').should('have.value', expectedB);

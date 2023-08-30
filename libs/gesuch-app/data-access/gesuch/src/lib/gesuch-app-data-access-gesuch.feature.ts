@@ -5,10 +5,10 @@ import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/
 import { GesuchAppEventGesuchFormGeschwister } from '@dv/gesuch-app/event/gesuch-form-geschwister';
 import { GesuchAppEventGesuchFormLebenslauf } from '@dv/gesuch-app/event/gesuch-form-lebenslauf';
 import { GesuchAppEventGesuchFormPerson } from '@dv/gesuch-app/event/gesuch-form-person';
+import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/gesuch-app/event/gesuch-form-einnahmenkosten';
 
 import { SharedModelError } from '@dv/shared/model/error';
 import {
-  Benutzer,
   SharedModelGesuch,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
@@ -16,22 +16,19 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { GesuchAppDataAccessGesuchEvents } from './gesuch-app-data-access-gesuch.events';
 import { GesuchAppEventGesuchFormKinder } from '@dv/gesuch-app/event/gesuch-form-kinder';
-import { GesuchAppEventBenutzer } from '@dv/gesuch-app/event/benutzer';
 
 export interface State {
-  gesuch: SharedModelGesuch | undefined;
-  gesuchFormular: SharedModelGesuchFormular | undefined;
+  gesuch: SharedModelGesuch | null;
+  gesuchFormular: SharedModelGesuchFormular | null;
   gesuchs: SharedModelGesuch[];
-  benutzer: Benutzer | undefined;
   loading: boolean;
   error: SharedModelError | undefined;
 }
 
 const initialState: State = {
-  gesuch: undefined,
-  gesuchFormular: undefined,
+  gesuch: null,
+  gesuchFormular: null,
   gesuchs: [],
-  benutzer: undefined,
   loading: false,
   error: undefined,
 };
@@ -50,22 +47,6 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppEventBenutzer.init,
-      (state): State => ({
-        ...state,
-        benutzer: undefined,
-      })
-    ),
-
-    on(
-      GesuchAppEventBenutzer.setBenutzer,
-      (state, benutzer): State => ({
-        ...state,
-        benutzer,
-      })
-    ),
-
-    on(
       GesuchAppEventCockpit.init,
       GesuchAppEventGesuchFormPerson.init,
       GesuchAppEventGesuchFormEducation.init,
@@ -74,10 +55,11 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormGeschwister.init,
       GesuchAppEventGesuchFormKinder.init,
       GesuchAppEventGesuchFormLebenslauf.init,
+      GesuchAppEventGesuchFormEinnahmenkosten.init,
       (state): State => ({
         ...state,
-        gesuch: undefined,
-        gesuchFormular: undefined,
+        gesuch: null,
+        gesuchFormular: null,
         loading: true,
       })
     ),
@@ -93,6 +75,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
       GesuchAppEventGesuchFormKinder.saveSubformTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveTriggered,
       GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered,
+      GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered,
       GesuchAppEventCockpit.removeTriggered,
       (state): State => ({
         ...state,
@@ -110,7 +93,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
               ...state.gesuchFormular,
               geschwisters: [],
             }
-          : undefined,
+          : null,
       })
     ),
 
@@ -176,19 +159,16 @@ export const {
   selectGesuchsState,
   selectGesuch,
   selectGesuchs,
-  selectBenutzer,
   selectLoading,
   selectError,
 } = gesuchAppDataAccessGesuchsFeature;
 
 const getGesuchFormular = (
   gesuch: SharedModelGesuch
-): SharedModelGesuchFormular | undefined => {
+): SharedModelGesuchFormular | null => {
   const formular =
     // TODO: Fix mapping from GET GesuchFormular to PATCH GesuchFormularUpdate
     (gesuch.gesuch_formular_freigabe_copy ??
       gesuch.gesuch_formular_to_work_with) as SharedModelGesuchFormular;
-  return formular
-    ? { ...formular, freigegeben: !!gesuch.gesuch_formular_freigabe_copy }
-    : undefined;
+  return formular;
 };

@@ -81,6 +81,10 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     return null;
   });
 
+  ausbildungenSig: Signal<LebenslaufItemUpdate[]> = computed(() => {
+    return this.view$().lebenslaufItems.filter((l) => l.bildungsart);
+  });
+
   protected readonly GesuchFormSteps = GesuchFormSteps;
 
   editedItem?: SharedModelLebenslauf;
@@ -165,7 +169,7 @@ export class GesuchAppFeatureGesuchFormLebenslaufComponent implements OnInit {
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
-        ...gesuch,
+        ...gesuchFormular,
         lebenslaufItems: updatedItems,
       },
     };
