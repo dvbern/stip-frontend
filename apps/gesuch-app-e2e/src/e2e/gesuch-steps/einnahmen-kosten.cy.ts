@@ -11,7 +11,7 @@ describe('gesuch-app einnahmen & kosten form', () => {
     cy.visit('/');
   });
 
-  it('should edit and revert person form', () => {
+  it('should edit einnahmen und kosten with correct number formatting', () => {
     CockpitPO.openGesuch();
     getStepEinnahmenKostenAusbildung().click();
     getStepTitle().should('contain.text', 'Einnahmen & Kosten');
