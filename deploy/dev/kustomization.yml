@@ -7,7 +7,7 @@ resources:
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: 998f2ce9
+  newTag: 2e1a00a3
 
 # TODO: OpenShift
 # patches:
