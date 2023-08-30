@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namePrefix: kibon-stip-
-
 commonLabels:
   project: stip
   app: gesuch-app
@@ -15,7 +13,10 @@ commonAnnotations:
 resources:
   - deployment.yml
   - service.yml
-  - route.yml
+  - ingress.yml
+  # TODO: OpenShift
+  # - route.yml
 
-crds:
-  - crds/openshift-route.json
+# TODO: OpenShift
+# crds:
+#  - crds/openshift-route.json

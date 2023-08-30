@@ -1,11 +1,22 @@
-<p>in Bearbeitung durch</p>
-<p>Eva Mendes</p>
-
-<a
-  class="d-block mb-3"
+<ng-container
   *ngFor="let step of view$().gesuchFormStepsInfo; trackBy: trackByIndex"
-  [class.disabled]="step.disabled"
-  [routerLink]="['/', step.route, view$().gesuch?.id]"
 >
-  {{ step.translationKey | translate }}
-</a>
+  <ng-container
+    *ngIf="{ active: route.isActive(step.route, false) } as stepRoute"
+  >
+    <a
+      type="button"
+      class="btn btn-nav btn-warning mb-3 w-100 d-flex justify-content-start align-items-center fw-normal"
+      [class.btn-light]="!stepRoute.active"
+      [class.shadow-none]="!stepRoute.active"
+      [class.disabled]="step.disabled"
+      [routerLink]="['/', step.route, view$().gesuch?.id]"
+      [attr.data-testid]="'step-nav-' + step.route"
+    >
+      <i class="material-symbols-rounded me-3">{{ step.iconSymbolName }}</i>
+      <span class="text-start">
+        {{ step.translationKey | translate }}
+      </span>
+    </a>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,105 @@
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.KINDER">
+  <!-- loading -->
+  <div
+    data-testid="form-kinder-loading"
+    *ngIf="view$().loading"
+    class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+  >
+    <div class="dv-progress-bar-indeterminate">
+      <div></div>
+    </div>
+  </div>
+
+  <!-- kinder editor -->
+  <dv-gesuch-app-feature-gesuch-form-kinder-editor
+    *ngIf="editedKind"
+    [kind]="editedKind"
+    (saveTriggered)="handleEditorSave($event)"
+    (closeTriggered)="handleEditorClose()"
+  />
+
+  <ng-container *ngIf="!editedKind">
+    <div class="row g-4 my-2">
+      <!-- Table -->
+      <div class="col-12 col-xl-8" *ngIf="sortedKinderSig() as kinder">
+        <table
+          class="table"
+          *ngIf="kinder.length"
+          aria-describedby="List von Kinder"
+        >
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">
+                {{ 'gesuch-app.form.geschwister.name' | translate }}
+              </th>
+              <th scope="col">
+                {{
+                  'gesuch-app.form.geschwister.geburtsdatum.label' | translate
+                }}
+              </th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let kindRaw of kinder; trackBy: trackByIndex">
+              <ng-container *ngIf="kindRaw as kinder">
+                <th scope="row">
+                  <i class="material-symbols-rounded">done</i>
+                </th>
+                <td>{{ kinder.vorname }} {{ kinder.nachname }}</td>
+                <td>
+                  {{
+                    parseBackendLocalDateAndPrint(
+                      kinder.geburtsdatum,
+                      languageSig()
+                    )
+                  }}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 lh-1"
+                    (click)="handleEditKinder(kinder)"
+                    [title]="'gesuch-app.form.kinder.edit' | translate"
+                  >
+                    <i class="material-symbols-rounded">edit</i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 lh-1"
+                    (click)="handleDeleteKinder(kinder)"
+                    [title]="'gesuch-app.form.kinder.delete' | translate"
+                  >
+                    <i class="material-symbols-rounded">delete</i>
+                  </button>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ADD -->
+    <div class="d-flex flex-column flex-md-row">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="handleAddKinder()"
+      >
+        {{ 'gesuch-app.form.kinder.add' | translate }}
+      </button>
+    </div>
+
+    <!-- Buttons -->
+    <dv-gesuch-app-ui-step-form-buttons>
+      <button type="button" class="btn btn-primary" (click)="handleContinue()">
+        {{ 'gesuch-app.form.gonext' | translate }}
+      </button>
+    </dv-gesuch-app-ui-step-form-buttons>
+  </ng-container>
+</dv-gesuch-app-pattern-gesuch-step-layout>

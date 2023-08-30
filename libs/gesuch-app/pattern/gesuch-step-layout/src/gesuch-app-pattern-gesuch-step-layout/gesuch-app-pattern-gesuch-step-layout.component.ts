@@ -1,11 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { GesuchAppModelGesuchFormStep } from '@dv/gesuch-app/model/gesuch-form';
 
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
+import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
+import {
+  selectLanguage,
+  SharedDataAccessLanguageEvents,
+} from '@dv/shared/data-access/language';
+import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
+import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { Store } from '@ngrx/store';
 
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -18,6 +33,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedUiProgressBarComponent,
     TranslateModule,
     SharedUiIconChipComponent,
+    SharedUiLanguageSelectorComponent,
     GesuchAppPatternMainLayoutComponent,
     RouterLink,
   ],
@@ -27,17 +43,18 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class GesuchAppPatternGesuchStepLayoutComponent {
   @Input({ required: true })
-  currentStepNumber!: number; // TODO from store?
+  step!: GesuchAppModelGesuchFormStep;
 
-  @Input({ required: true })
-  maxStepNumber!: number; // TODO from store?
+  navClicked = new EventEmitter();
 
-  @Input({ required: true })
-  currentStepTitle!: string;
+  private store = inject(Store);
 
-  @Input({ required: true })
-  nextStepSubtitle!: string;
+  stepManager = inject(GesuchAppUtilGesuchFormStepManagerService);
+  languageSig = this.store.selectSignal(selectLanguage);
 
-  @Input({ required: true })
-  stepIconSymbolName!: string;
+  handleLanguageChangeHeader(language: Language) {
+    this.store.dispatch(
+      SharedDataAccessLanguageEvents.headerMenuSelectorChange({ language })
+    );
+  }
 }

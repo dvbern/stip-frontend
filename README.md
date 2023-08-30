@@ -38,9 +38,26 @@ Welcome to DV Stip Workspace!
 ## Getting Started
 
 Install global `nx` CLI with `npm i -g nx` as it will make running of some commands easier.
-Install the dependencies with `npm ci` (append `--legacy-peer-deps` or `--force`)
+Install the dependencies with `npm ci` (append `--legacy-peer-deps` or `--force` if necessary)
 
 > The `--legacy-peer-deps` flag might need to used in case the dependencies available at the time of last workspace update did not fulfill their peerDependencies ranges perfectly. This might change again in the future as newer versions of the libraries are released and the `--legacy-peer-deps` flag might not be needed anymore.
+
+In order to install the dependency `@kibon/stip-contract` a DvBern internal access is needed. Follow [this](https://intra.dvbern.ch/display/DEV/GitLab%3A+NPM+Registry+verwenden) tutorial to setup the access to the private `npm` registry.  
+For external users, please uninstall the `@kibon/stip-contract` in order to use this repository. It is only required to update the models and interfaces.
+
+**TLDR** local development:
+
+1. `npm ci` (check that `@kibon/stip-contract` is installable, as mentioned above)
+2. Ensure that the API and everything else is running:
+   - https://gitlab.dvbern.ch/kibon/stip-api
+   - Check if your user has been added to https://auth.stip.dev.apps.test.kibon.ch/admin/master/console/#/bern/users (LastPass -> search `stip` -> `Keycload Admin (DEV)`), if not:
+     1. `Add User`
+     2. Set `Username`, `Email`, `First name` and `Last name`
+     3. `Create`
+     4. Select newly created user
+     5. Go to `Credentials` tab -> `Set password` -> fill new password -> Disable `Temporary`
+     6. Set Roles for the user `Role mapping` -> `Assign role` -> `Admin` (or whatever required)
+3. `npm run start`
 
 ## Workspace generators & Executors
 
@@ -350,6 +367,11 @@ the best tradeoff between effective / useful coverage and effort required to wri
 
 ### E2e
 
+Preparation:
+
+1. Copy `.env.template` to `.env`
+2. Fill the values DEV Keycloak Credentials from LastPass (`LastPass` -> `Stip E2E (DEV)`)
+
 You can run e2e tests in headless mode for all (`npm run e2e`) or for a specific app
 (`npm run e2e:<app-name>`, these have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
@@ -357,7 +379,7 @@ Besides that it is also possible to serve desired app in the dev mode (eg `npm r
 and then start e2e tests in GUI mode with `npm run e2e:gesuch-app:open` which will start Cypress GUI.
 (again, these scripts have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
-> When writing E2E tests, always make sure to use `data-test-id="some-id"` attributes instead of
+> When writing E2E tests, always make sure to use `data-testid="some-id"` attributes instead of
 > component selectors, classes or other attributes. This way we can make sure that tests are not
 > brittle and will not break when we change the component structure or styling.
 

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, EMPTY, map, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { DEFAULT_LANGUAGE } from '@dv/shared/model/language';
 

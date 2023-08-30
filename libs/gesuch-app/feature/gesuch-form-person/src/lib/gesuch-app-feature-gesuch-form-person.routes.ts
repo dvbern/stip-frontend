@@ -1,14 +1,21 @@
 import { Route } from '@angular/router';
 
 import { GesuchAppFeatureGesuchFormPersonComponent } from './gesuch-app-feature-gesuch-form-person/gesuch-app-feature-gesuch-form-person.component';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import {
+  sharedDataAccessStammdatenEffects,
+  sharedDataAccessStammdatensFeature,
+} from '@dv/shared/data-access/stammdaten';
 
 export const gesuchAppFeatureGesuchFormPersonRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'prefix',
     providers: [
-      // feature specific services and other providers
-      // always remove { providedIn: 'root' } from the feature specific services
+      // ausbildungsstaette needed for the planned ausbildung at the bottom of lebenslauf
+      provideState(sharedDataAccessStammdatensFeature),
+      provideEffects(sharedDataAccessStammdatenEffects),
     ],
     children: [
       {

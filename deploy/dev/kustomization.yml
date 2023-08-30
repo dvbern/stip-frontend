@@ -1,16 +1,42 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-nameSuffix: -dev
-
 resources:
 - ../base
+- ingress-config.yml
 
 images:
-- name: docker-registry.dvbern.ch/kibon/stip/gesuch-app
-  newTag: "76823144"
+- name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
+  newTag: 2e1a00a3
 
-patches:
-- path: route-patch.yml
-  target:
-    kind: Route
+# TODO: OpenShift
+# patches:
+# - path: route-patch.yml
+#  target:
+#    kind: Route
+
+patchesStrategicMerge:
+- ingress.yml
+
+replacements:
+- source:
+    fieldPath: data.host
+    kind: ConfigMap
+    name: ingress-config
+  targets:
+  - fieldPaths:
+    - spec.rules.0.host
+    - spec.tls.0.hosts.0
+    select:
+      kind: Ingress
+      name: www
+- source:
+    fieldPath: data.identityHost
+    kind: ConfigMap
+    name: ingress-config
+  targets:
+  - fieldPaths:
+    - spec.tls.0.hosts.1
+    select:
+      kind: Ingress
+      name: www

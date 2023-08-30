@@ -1,13 +1,7 @@
-<dv-gesuch-app-pattern-gesuch-step-layout
-  [currentStepNumber]="2"
-  [maxStepNumber]="12"
-  [currentStepTitle]="'gesuch-app.form.education.title' | translate"
-  [nextStepSubtitle]="'gesuch-app.form.cv.title' | translate"
-  stepIconSymbolName="school"
->
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.AUSBILDUNG">
   <!-- loading -->
   <div
-    data-test-id="form-ausbildung-loading"
+    data-testid="form-ausbildung-loading"
     *ngIf="view$().loading"
     class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
   >
@@ -30,174 +24,159 @@
 
     <!-- LAND -->
     <div class="row">
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
+        <mat-label>
           {{ 'gesuch-app.form.education.ausbildungsland.label' | translate }}
-        </dv-shared-ui-form-label>
-        <select
-          class="form-select"
-          dvSharedUiFormLabelTarget
+        </mat-label>
+        <mat-select
           formControlName="ausbildungsland"
           (change)="handleLandChangedByUser()"
         >
-          <option [ngValue]="''" selected>
+          <mat-option [value]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
-          </option>
-          <option
-            [value]="l.name"
-            *ngFor="
-              let l of view$().ausbildungsgangLands;
-              trackBy: trackByIndex
-            "
+          </mat-option>
+          <mat-option
+            [value]="l"
+            *ngFor="let l of ausbildungslandValues; trackBy: trackByIndex"
           >
-            {{
-              'gesuch-app.form.education.ausbildungsland.' + l.name | translate
-            }}
-          </option>
-        </select>
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+            {{ 'gesuch-app.form.education.ausbildungsland.' + l | translate }}
+          </mat-option>
+        </mat-select>
+        <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <!-- STAETTE -->
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.value['ausbildungNichtGefunden']"
+        class="col-12 col-md-6 col-xl-4 mt-3"
+      >
+        <mat-label>
           {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
-        </dv-shared-ui-form-label>
-
-        <!-- Typeahead -->
-        <div class="position-relative" *ngIf="!form.value['manuell']">
-          <input
-            id="typeahead-focus"
-            type="text"
-            class="form-control form-select"
-            formControlName="ausbildungsstaette"
-            [ngbTypeahead]="ausbildungsstaetteTypeaheadFn$()"
-            (focus)="focusAusbildungsstaette$.next($any($event).target.value)"
-            [editable]="false"
-            (change)="handleStaetteChangedByUser()"
-            popupClass="dv-typeahead-popup"
-            #staetteTypeahead
-          />
-          <button
-            *ngIf="form.controls.ausbildungsstaette.value"
-            type="button"
-            class="btn btn-light dv-typeahead-clear-btn"
-            (click)="
-              form.controls.ausbildungsstaette.setValue('');
-              staetteTypeahead.focus();
-              handleStaetteChangedByUser()
-            "
-            [tabIndex]="-1"
-          >
-            <span class="material-symbols-rounded align-middle">clear</span>
-          </button>
-        </div>
-
-        <!-- <select
-          *ngIf="!form.value['manuell']"
-          class="form-select"
-          dvSharedUiFormLabelTarget
-          formControlName="ausbildungsstaette"
-          (change)="handleStaetteChangedByUser()"
-        >
-          <option [ngValue]="''" selected>
-            {{ 'shared.form.select.empty' | translate }}
-          </option>
-          <option
-            [value]="l.name"
-            *ngFor="
-              let l of ausbildungsstaetteOptions$();
-              trackBy: trackByIndex
-            "
-          >
-            {{ l.name }}
-          </option>
-        </select> -->
+        </mat-label>
 
         <input
-          *ngIf="form.value['manuell']"
-          class="form-control"
+          id="typeahead-focus"
           type="text"
-          dvSharedUiFormLabelTarget
           formControlName="ausbildungsstaette"
+          matInput
+          [matAutocomplete]="staetten"
+          [placeholder]="'shared.form.select.empty' | translate"
+          (change)="handleStaetteChangedByUser()"
         />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        <button
+          type="button"
+          *ngIf="form.controls.ausbildungsstaette.value"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="form.controls.ausbildungsstaette.reset()"
+        >
+          <span class="material-symbols-rounded align-middle">clear</span>
+        </button>
+        <mat-autocomplete #staetten>
+          <mat-option
+            *ngFor="
+              let group of ausbildungsstaettOptionsSig();
+              trackBy: trackByIndex
+            "
+            [value]="group.name"
+          >
+            {{ group.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <!-- Alternative STAETTE -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="form.value['ausbildungNichtGefunden']"
+        class="col-12 col-md-6 col-xl-4 mt-3"
+      >
+        <mat-label>
+          {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
+        </mat-label>
+
+        <input
+          matInput
+          type="text"
+          formControlName="alternativeAusbildungsstaette"
+        />
+      </mat-form-field>
     </div>
 
     <!-- GANG -->
     <div class="row">
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+      <mat-form-field
+        dvSharedUiFormField
+        class="col-12 col-md-6 col-xl-4 mt-3"
+        *ngIf="!form.value['ausbildungNichtGefunden']"
+      >
+        <mat-label>
           {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
-        </dv-shared-ui-form-label>
+        </mat-label>
 
-        <select
-          *ngIf="!form.value['manuell']"
-          class="form-select"
-          dvSharedUiFormLabelTarget
+        <!-- AUsbildungsgang Select -->
+        <mat-select
           formControlName="ausbildungsgang"
+          (change)="handleGangChangedByUser()"
         >
-          <option [ngValue]="''" selected>
+          <mat-option [value]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
-          </option>
-          <option
-            [value]="l.name"
+          </mat-option>
+          <mat-option
+            [value]="l.id"
             *ngFor="let l of ausbildungsgangOptions$(); trackBy: trackByIndex"
           >
-            {{ l.name }}
-          </option>
-        </select>
+            {{ l.bezeichnungDe }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        dvSharedUiFormField
+        class="col-12 col-md-6 col-xl-4 mt-3"
+        *ngIf="form.value['ausbildungNichtGefunden']"
+      >
+        <mat-label>
+          {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
+        </mat-label>
 
+        <!-- alternativer Ausbildungsgang -->
         <input
-          *ngIf="form.value['manuell']"
-          class="form-control"
+          *ngIf="form.value['ausbildungNichtGefunden']"
           type="text"
-          dvSharedUiFormLabelTarget
-          formControlName="ausbildungsgang"
+          matInput
+          formControlName="alternativeAusbildungsgang"
         />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <!-- FACHRICHTUNG -->
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
+        <mat-label>
           {{ 'gesuch-app.form.education.fachrichtung.label' | translate }}
-        </dv-shared-ui-form-label>
-        <input
-          class="form-control"
-          type="text"
-          dvSharedUiFormLabelTarget
-          formControlName="fachrichtung"
-        />
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        </mat-label>
+        <input type="text" matInput formControlName="fachrichtung" />
+        <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        </mat-error>
+      </mat-form-field>
     </div>
 
     <!-- MANUELL -->
     <div class="row g-4">
-      <dv-shared-ui-form-field class="col-12" [isCheckbox]="true">
-        <dv-shared-ui-form-label
-          >{{ 'gesuch-app.form.education.manuell.label' | translate }}
-        </dv-shared-ui-form-label>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            dvSharedUiFormLabelTarget
-            formControlName="manuell"
-            (change)="handleManuellChangedByUser()"
-          />
-        </div>
-      </dv-shared-ui-form-field>
+      <div class="col-12">
+        <mat-checkbox
+          formControlName="ausbildungNichtGefunden"
+          (change)="handleManuellChangedByUser()"
+          >{{
+            'gesuch-app.form.education.manuell.label' | translate
+          }}</mat-checkbox
+        >
+      </div>
     </div>
 
     <h3 class="mt-4">
@@ -206,105 +185,101 @@
 
     <div class="row">
       <!-- START -->
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>{{
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
+        <mat-label>{{
           'gesuch-app.form.education.start.label' | translate
-        }}</dv-shared-ui-form-label>
+        }}</mat-label>
 
         <input
-          class="form-control"
-          dvSharedUiFormLabelTarget
-          formControlName="start"
+          matInput
+          formControlName="ausbildungBegin"
           placeholder="MM.YYYY"
-          [maskito]="MASK_MM_YYYY"
+          (blur)="onDateBlur(form.controls.ausbildungBegin)"
         />
 
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
-        >
-          {{ 'shared.form.error.monthYearMonth' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearYearMin'"
-        >
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'dateFormat'">
+          {{ 'shared.form.error.dateFormat' | translate }}
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'minDate'">
           {{
             'gesuch-app.form.education.form.error.monthYearNotPast' | translate
           }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
-
-      <!-- ENDE -->
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>{{
-          'gesuch-app.form.education.ende.label' | translate
-        }}</dv-shared-ui-form-label>
-
-        <input
-          class="form-control"
-          dvSharedUiFormLabelTarget
-          formControlName="ende"
-          placeholder="MM.YYYY"
-          [maskito]="MASK_MM_YYYY"
-        />
-
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'monthYearMonth'"
-        >
-          {{ 'shared.form.error.monthYearMonth' | translate }}
-        </dv-shared-ui-form-message>
-        <dv-shared-ui-form-message
-          *dvSharedUiFormMessageError="'endDateAfterStart'"
-        >
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
           {{
             'gesuch-app.form.education.form.error.monthYearAfterStart'
               | translate
           }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'maxDate'">
+          {{ 'shared.form.error.maxDateFuture' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- ENDE -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
+        <mat-label>{{
+          'gesuch-app.form.education.ende.label' | translate
+        }}</mat-label>
+
+        <input
+          matInput
+          formControlName="ausbildungEnd"
+          placeholder="MM.YYYY"
+          (blur)="onDateBlur(form.controls.ausbildungEnd)"
+        />
+
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'dateFormat'">
+          {{ 'shared.form.error.dateFormat' | translate }}
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
+          {{
+            'gesuch-app.form.education.form.error.monthYearAfterStart'
+              | translate
+          }}
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'maxDate'">
+          {{ 'shared.form.error.maxDateFuture' | translate }}
+        </mat-error>
+      </mat-form-field>
     </div>
 
     <div class="row">
       <!-- PENSUM -->
-      <dv-shared-ui-form-field class="col-12 col-md-6 col-xl-4 mt-3">
-        <dv-shared-ui-form-label>
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
+        <mat-label>
           {{ 'gesuch-app.form.education.pensum.label' | translate }}
-        </dv-shared-ui-form-label>
+        </mat-label>
 
-        <select
-          class="form-select"
-          dvSharedUiFormLabelTarget
-          formControlName="pensum"
-        >
-          <option [ngValue]="''" selected>
+        <mat-select formControlName="pensum">
+          <mat-option [value]="null" selected>
             {{ 'shared.form.select.empty' | translate }}
-          </option>
-          <option
+          </mat-option>
+          <mat-option
             [value]="l"
-            *ngFor="let l of pensumOptions; trackBy: trackByIndex"
+            *ngFor="let l of ausbildungspensumValues; trackBy: trackByIndex"
           >
-            {{
-              'gesuch-app.form.education.pensum.' + l.toLowerCase() | translate
-            }}
-          </option>
-        </select>
+            {{ 'gesuch-app.form.education.pensum.' + l | translate }}
+          </mat-option>
+        </mat-select>
 
-        <dv-shared-ui-form-message *dvSharedUiFormMessageError="'required'">
+        <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
-        </dv-shared-ui-form-message>
-      </dv-shared-ui-form-field>
+        </mat-error>
+      </mat-form-field>
     </div>
 
-    <!-- buttons -->
-    <div class="mt-5 d-flex flex-column gap-3 flex-md-row justify-content-end">
+    <!-- Buttons -->
+    <dv-gesuch-app-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
       </button>
-    </div>
+    </dv-gesuch-app-ui-step-form-buttons>
   </form>
 </dv-gesuch-app-pattern-gesuch-step-layout>

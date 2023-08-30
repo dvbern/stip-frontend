@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { SharedDataAccessBenutzerApiEvents } from '@dv/shared/data-access/benutzer';
 
 @Component({
   standalone: true,
@@ -8,4 +11,9 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor() {
+    const store = inject(Store);
+    store.dispatch(SharedDataAccessBenutzerApiEvents.loadCurrentBenutzer());
+  }
+}

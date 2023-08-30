@@ -2,6 +2,8 @@
 
 # compiled output
 dist
+coverage
+junit.xml
 tmp
 /out-tsc
 /dv-example/
@@ -40,3 +42,6 @@ testem.log
 Thumbs.db
 
 .angular
+.env
+
+affected-apps.gitlab-ci.yml

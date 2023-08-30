@@ -5,25 +5,18 @@
   },
   "gesuchsperiode": [
     {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
-      "gueltigAb": "2022-02-01",
-      "gueltigBis": "2023-01-31",
-      "einreichfrist": "2022-06-30",
-      "aufschaltdatum": "2022-06-01"
-    },
-    {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "gueltigAb": "2023-02-01",
-      "gueltigBis": "2024-01-31",
-      "einreichfrist": "2023-06-30",
+      "gueltigAb": "2023-08-01",
+      "gueltigBis": "2024-06-30",
+      "einreichfrist": "2023-12-31",
       "aufschaltdatum": "2023-06-01"
     },
     {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      "gueltigAb": "2023-08-01",
-      "gueltigBis": "2024-07-31",
-      "einreichfrist": "2023-12-31",
-      "aufschaltdatum": "2023-06-01"
+      "gueltigAb": "2022-12-01",
+      "gueltigBis": "2023-10-31",
+      "einreichfrist": "2023-06-30",
+      "aufschaltdatum": "2022-11-01"
     }
   ],
   "gesuch": [
@@ -42,165 +35,175 @@
         },
         "gesuchsperiodeStatus": "string"
       },
-      "personInAusbildungContainer": {
-        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "personInAusbildungGS": {
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "adresse": {
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "version": 0,
-            "timestampErstellt": "2023-05-24T07:45:26.573Z",
-            "timestampMutiert": "2023-05-24T07:45:26.573Z",
-            "userErstellt": "string",
-            "userMutiert": "string",
-            "vorgaengerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "land": "CH",
-            "coAdresse": "string",
-            "strasse": "string",
-            "nummer": "string",
-            "plz": "string",
-            "ort": "string"
-          },
-          "sozialversicherungsnummer": "string",
-          "name": "string",
-          "vorname": "string",
-          "anrede": "HERR",
-          "identischerZivilrechtlicherWohnsitz": true,
-          "izvOrt": "string",
-          "izvPLZ": "string",
-          "email": "string",
-          "telefonnummer": "string",
-          "geburtsdatum": "2023-05-24",
-          "nationalitaet": "CH",
-          "heimatort": "string",
-          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
-          "zivilstand": "LEDIG",
-          "wohnsitz": "ELTERN",
-          "sozialhilfebeitraege": true,
-          "quellenbesteuerung": true,
-          "kinder": true,
-          "digitaleKommunikation": true
-        },
-        "personInAusbildungSB": {
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "adresse": {
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "version": 0,
-            "timestampErstellt": "2023-05-24T07:45:26.573Z",
-            "timestampMutiert": "2023-05-24T07:45:26.573Z",
-            "userErstellt": "string",
-            "userMutiert": "string",
-            "vorgaengerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "land": "CH",
-            "coAdresse": "string",
-            "strasse": "string",
-            "nummer": "string",
-            "plz": "string",
-            "ort": "string"
-          },
-          "sozialversicherungsnummer": "756.5936.9071.73",
-          "name": "Trajan",
-          "vorname": "Tomasdfgdfgfdg",
-          "anrede": "HERR",
-          "identischerZivilrechtlicherWohnsitz": false,
-          "izvOrt": "string",
-          "izvPLZ": "string",
-          "email": "hallo@dvbern.ch",
-          "telefonnummer": "0780000000",
-          "geburtsdatum": "2023-05-06",
-          "nationalitaet": "CH",
-          "heimatort": "Glarus",
-          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_L",
-          "zivilstand": "LEDIG",
-          "wohnsitz": "ELTERN",
-          "sozialhilfebeitraege": true,
-          "quellenbesteuerung": true,
-          "kinder": true,
-          "digitaleKommunikation": true,
-          "addresse": {
-            "coAdresse": "c/o Hans Müller",
-            "strasse": "Hohlstrasse",
-            "nummer": "511",
-            "plz": "8048",
-            "ort": "sdfsdf",
-            "land": "CH"
-          },
-          "vormundschaft": false
-        }
-      },
       "gesuchStatus": "OFFEN",
       "gesuchNummer": 0,
-      "ausbildung": {
+      "ausbildungContainer": {
         "ausbildungSB": {
-          "ausbildungsland": "ausland",
-          "ausbildungsstaette": "Hochschule für Musik und Theater Leipzig",
-          "ausbildungsgang": "Master",
+          "ausbildungsland": "SCHWEIZ",
+          "ausbildungsstaette": "Universität Bern",
+          "ausbildungsgang": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
           "fachrichtung": "Die Welt retten",
-          "manuell": false,
-          "start": "10.2023",
-          "ende": "01.2024",
-          "pensum": "FULLTIME"
+          "ausbildungNichtGefunden": false,
+          "ausbildungBegin": "07.2023",
+          "ausbildungEnd": "07.2023",
+          "pensum": "VOLLZEIT",
+          "ausbildungsstaetteId": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+          "ausbildungsgangId": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a"
         }
       },
       "familiensituationContainer": {
         "familiensituationSB": {
-          "leiblicheElternVerheiratetKonkubinat": false,
+          "elternVerheiratetZusammen": false,
           "gerichtlicheAlimentenregelung": false,
-          "elternteilVerstorbenUnbekannt": false,
-          "vaterWiederverheiratet": true,
+          "elternteilUnbekanntVerstorben": false,
+          "vaterWiederverheiratet": false,
           "mutterWiederverheiratet": false,
           "sorgerecht": "VATER",
-          "obhut": "MUTTER"
+          "obhut": "VATER",
+          "werZahltAlimente": null,
+          "mutterUnbekanntVerstorben": null,
+          "vaterUnbekanntVerstorben": null,
+          "mutterUnbekanntGrund": null,
+          "vaterUnbekanntGrund": null,
+          "obhutMutter": null,
+          "obhutVater": null,
+          "sorgerechtMutter": null,
+          "sorgerechtVater": null
         }
       },
-      "elternContainers": [
+      "elternContainers": [],
+      "geschwisterContainers": [
         {
-          "gesuchId": "rx_ZMda",
-          "id": "rx_ZMdc",
-          "elternSB": {
-            "sozialversicherungsnummer": "756.5936.9071.75",
-            "geschlecht": "FRAU",
-            "name": "Herich",
-            "vorname": "Kathy",
-            "addresse": {
-              "coAdresse": "",
-              "strasse": "Hohlstrasse",
-              "nummer": "511",
-              "plz": "8048",
-              "ort": "Zurich",
-              "land": "CH"
-            },
-            "identischerZivilrechtlicherWohnsitz": false,
-            "telefonnummer": "+41787342091",
-            "geburtsdatum": "1987-07-17",
-            "sozialhilfebeitraegeAusbezahlt": false,
-            "ausweisbFluechtling": false,
-            "ergaenzungsleistungAusbezahlt": true
-          }
+          "geschwisterSB": {
+            "name": "Hester",
+            "vorname": "Nehru",
+            "geburtsdatum": "2018-03-29",
+            "wohnsitz": "FAMILIE",
+            "ausbildungssituation": "IN_AUSBILDUNG",
+            "id": "generated by backend? or FE uuid?Nehru"
+          },
+          "id": "generated by backend? or FE uuid?Nehru"
         },
         {
-          "gesuchId": "rx_ZMda",
-          "id": "rx_ZMdd",
-          "elternSB": {
-            "sozialversicherungsnummer": "756.5936.9071.74",
-            "geschlecht": "HERR",
-            "name": "Herich",
-            "vorname": "Tom",
-            "addresse": {
-              "coAdresse": "",
-              "strasse": "Hohlstrasse",
-              "nummer": "511",
-              "plz": "8048",
-              "ort": "Zurich",
-              "land": "CH"
-            },
-            "identischerZivilrechtlicherWohnsitz": false,
-            "telefonnummer": "+41787342091",
-            "geburtsdatum": "1987-08-17",
-            "sozialhilfebeitraegeAusbezahlt": false,
-            "ausweisbFluechtling": false,
-            "ergaenzungsleistungAusbezahlt": true
-          }
+          "geschwisterSB": {
+            "name": "Mclaughlin",
+            "vorname": "Hasad",
+            "geburtsdatum": "2005-02-05",
+            "wohnsitz": "FAMILIE",
+            "ausbildungssituation": "SCHULPFLICHTIG",
+            "id": "generated by backend? or FE uuid?Hasad"
+          },
+          "id": "generated by backend? or FE uuid?Hasad"
+        },
+        {
+          "geschwisterSB": {
+            "name": "Weibel",
+            "vorname": "Xaver",
+            "geburtsdatum": "1988-05-05",
+            "wohnsitz": "EIGENER_HAUSHALT",
+            "ausbildungssituation": "SCHULPFLICHTIG",
+            "id": "generated by backend? or FE uuid?Xaver"
+          },
+          "id": "generated by backend? or FE uuid?Xaver"
+        }
+      ],
+      "lebenslaufItemContainers": [
+        {
+          "lebenslaufItemSB": {
+            "id": "generated by backend? or FE uuid?test",
+            "type": "AUSBILDUNG",
+            "name": "test",
+            "subtype": "GYMNASIALE_MATURITAETSSCHULEN",
+            "dateStart": "10.2022",
+            "dateEnd": "11.2022",
+            "wohnsitz": "AI"
+          },
+          "id": "generated by backend? or FE uuid?test"
+        },
+        {
+          "lebenslaufItemSB": {
+            "id": "generated by backend? or FE uuid?dfgd",
+            "type": "AUSBILDUNG",
+            "name": "dfgd",
+            "subtype": "SCHULEN_FUER_ALLGEMEINBILDUNG",
+            "dateStart": "02.2006",
+            "dateEnd": "09.2022",
+            "wohnsitz": "AUSLAND"
+          },
+          "id": "generated by backend? or FE uuid?dfgd"
+        },
+        {
+          "lebenslaufItemSB": {
+            "id": "generated by backend? or FE uuid?dfgdfg",
+            "type": "TAETIGKEIT",
+            "name": "dfgdfg",
+            "subtype": "ANDERE_TAETIGKEIT",
+            "dateStart": "12.2022",
+            "dateEnd": "06.2023",
+            "wohnsitz": "AR"
+          },
+          "id": "generated by backend? or FE uuid?dfgdfg"
+        }
+      ],
+      "personInAusbildungContainer": {
+        "id": "abc",
+        "personInAusbildungSB": {
+          "id": "abc",
+          "sozialversicherungsnummer": "756.1234.5678.97",
+          "anrede": "HERR",
+          "name": "Conner",
+          "vorname": "Ivan",
+          "adresse": {
+            "id": "iuiu",
+            "coAdresse": "Perferendis voluptat",
+            "strasse": "Qui id sint assume",
+            "hausnummer": "588",
+            "plz": "3535",
+            "ort": "Zürich",
+            "land": "CH"
+          },
+          "identischerZivilrechtlicherWohnsitz": false,
+          "izvPLZ": "1234",
+          "izvOrt": "Vessy",
+          "email": "mypyrew@mailbucket.dvbern.ch",
+          "telefonnummer": "+41 78 868 59 53",
+          "geburtsdatum": "1990-03-03",
+          "nationalitaet": "FR",
+          "heimatort": "",
+          "niederlassungsstatus": "NIEDERLASSUNGSBEWILLIGUNG_B",
+          "vormundschaft": true,
+          "zivilstand": "VERHEIRATET",
+          "wohnsitz": "ELTERN",
+          "sozialhilfebeitraege": false,
+          "quellenbesteuerung": true,
+          "digitaleKommunikation": false,
+          "korrespondenzSprache": "DEUTSCH",
+          "quellenbesteuert": false,
+          "kinder": false
+        }
+      },
+      "kindContainers": [
+        {
+          "kindSB": {
+            "name": "Conner",
+            "vorname": "John",
+            "geburtsdatum": "1999-06-10",
+            "wohnsitz": "EIGENER_HAUSHALT",
+            "ausbildungssituation": "KEINE",
+            "id": "generated by backend? or FE uuid?Fred"
+          },
+          "id": "generated by backend? or FE uuid?Fred"
+        },
+        {
+          "kindSB": {
+            "name": "Conner",
+            "vorname": "Fred",
+            "geburtsdatum": "1994-01-02",
+            "wohnsitz": "FAMILIE",
+            "ausbildungssituation": "IN_AUSBILDUNG",
+            "id": "generated by backend? or FE uuid?Laeti"
+          },
+          "id": "generated by backend? or FE uuid?Laeti"
         }
       ]
     },
@@ -212,7 +215,7 @@
           "anrede": "FRAU",
           "name": "Herich",
           "vorname": "Tomas",
-          "addresse": {
+          "adresse": {
             "coAdresse": "",
             "strasse": "Hohlstrasse",
             "nummer": "511",
@@ -230,7 +233,6 @@
           "zivilstand": "LEDIG",
           "sozialhilfebeitraege": false,
           "quellenbesteuerung": false,
-          "kinder": false,
           "digitaleKommunikation": true
         }
       }
@@ -238,83 +240,147 @@
     {
       "periodeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "id": "Dx2NYX-"
-    }
-  ],
-  "ausbildungsgangTree": [
-    {
-      "name": "CH",
-      "staettes": [
-        {
-          "name": "Universität Bern",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
-        },
-        {
-          "name": "Universität Basel",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
-        },
-        {
-          "name": "Gymnasium Interlaken",
-          "ausbildungsgangs": [
-            {
-              "name": "Maturität"
-            }
-          ]
-        },
-        {
-          "name": "Haarakademie",
-          "ausbildungsgangs": [
-            {
-              "name": "Berufsvorbereitendes Schuljahr"
-            }
-          ]
-        },
-        {
-          "name": "GIBB Bern",
-          "ausbildungsgangs": [
-            {
-              "name": "Berufsmaturität"
-            }
-          ]
-        }
-      ]
     },
     {
-      "name": "ausland",
-      "staettes": [
+      "fall": {
+        "id": "",
+        "fallNummer": 1,
+        "mandant": "bern"
+      },
+      "gesuchsperiode": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+        "gueltigAb": "2023-08-01",
+        "gueltigBis": "2024-06-30",
+        "einreichfrist": "2023-12-31",
+        "aufschaltdatum": "2023-06-01",
+        "semester": "HERBST",
+        "yearsLabel": "2023/2024",
+        "gesuchLoading": false
+      },
+      "id": "uZwfxjt"
+    }
+  ],
+  "ausbildungsstaettes": [
+    {
+      "id": "9477487f-3ac4-4d02-b57c-e0cefb292ae5",
+      "ausbildungsgaenge": [
         {
-          "name": "Desingskolen Kolding",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            }
-          ]
+          "id": "3a8c2023-f29e-4466-a2d7-411a7d032f42",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
         },
         {
-          "name": "Hochschule für Musik und Theater Leipzig",
-          "ausbildungsgangs": [
-            {
-              "name": "Bachelor"
-            },
-            {
-              "name": "Master"
-            }
-          ]
+          "id": "384ba33a-eb4e-44e4-ac20-8e11101bbf3a",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
         }
-      ]
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Universität Bern"
+    },
+    {
+      "id": "71c1e040-6ed3-4ce6-b90f-176b173c9c20",
+      "ausbildungsgaenge": [
+        {
+          "id": "b18d06fb-1dd4-4929-8470-e9e44b0bc4a7",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
+        },
+        {
+          "id": "b319953d-f5a9-4a1a-a0f6-69bd3f745e02",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Universität Basel"
+    },
+    {
+      "id": "fdd81cd3-0d93-464a-b5e8-ef4496c9f633",
+      "ausbildungsgaenge": [
+        {
+          "id": "345ef0b1-b62e-4fdd-abf4-cb789d4296ee",
+          "bezeichnungDe": "Maturität",
+          "bezeichnungFr": "Maturität"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Gymnasium Interlaken"
+    },
+    {
+      "id": "d843ba46-2b0c-4c83-997a-2ac80fab303b",
+      "ausbildungsgaenge": [
+        {
+          "id": "44779764-e6d6-455c-8667-0d0b40f05dd9",
+          "bezeichnungDe": "Berufsvorbereitendes Schuljahr",
+          "bezeichnungFr": "Berufsvorbereitendes Schuljahr"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "Haarakademie"
+    },
+    {
+      "id": "92fc250e-bcf3-49f5-af20-0854376e8d79",
+      "ausbildungsgaenge": [
+        {
+          "id": "abc07eed-19d4-4e1e-9899-6d5893556b1b",
+          "bezeichnungDe": "Berufsmaturität",
+          "bezeichnungFr": "Berufsmaturität"
+        }
+      ],
+      "ausbildungsland": "SCHWEIZ",
+      "name": "GIBB Bern"
+    },
+    {
+      "id": "0f9820db-b7b3-43af-8dae-15af9601ac10",
+      "ausbildungsgaenge": [
+        {
+          "id": "52e9577c-732a-4f1b-ae74-de2e477c01e9",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
+        }
+      ],
+      "ausbildungsland": "AUSLAND",
+      "name": "Desingskolen Kolding"
+    },
+    {
+      "id": "8da6325b-d65d-4dd2-87ce-f10cab6fb81c",
+      "ausbildungsgaenge": [
+        {
+          "id": "3dac8f59-533c-4b99-9b13-210503c34595",
+          "bezeichnungDe": "Bachelor",
+          "bezeichnungFr": "Bachelor"
+        },
+        {
+          "id": "c69c6712-9bd9-4533-a685-44fddefd5937",
+          "bezeichnungDe": "Master",
+          "bezeichnungFr": "Master"
+        }
+      ],
+      "ausbildungsland": "AUSLAND",
+      "name": "Hochschule für Musik und Theater Leipzig"
+    }
+  ],
+  "lands": [
+    {
+      "landCode": "CH",
+      "landDE": "Schweiz",
+      "landFR": "Suisse"
+    },
+    {
+      "landCode": "DE",
+      "landDE": "Deutsch",
+      "landFR": "Allemand"
+    },
+    {
+      "landCode": "FR",
+      "landDE": "Frankreich",
+      "landFR": "France"
+    },
+    {
+      "landCode": "IT",
+      "landDE": "Italien",
+      "landFR": "Italie"
     }
   ]
 }

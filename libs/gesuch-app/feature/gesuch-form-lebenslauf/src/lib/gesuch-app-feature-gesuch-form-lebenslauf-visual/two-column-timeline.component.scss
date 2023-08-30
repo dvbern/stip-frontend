@@ -1,0 +1,135 @@
+:host {
+  display: block;
+
+  .wrapper {
+    display: grid;
+
+    grid-gap: 8px var(--dv-gutter-x);
+    @media screen and (max-width: 992px) {
+      grid-gap: 8px 8px;
+    }
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .box {
+    position: relative;
+
+    --dv-alert-padding-x: 1rem;
+    --dv-alert-padding-y: 1rem;
+    --dv-alert-margin-bottom: 1rem;
+    --dv-alert-border: 1px solid var(--dv-alert-border-color);
+    --dv-alert-border-radius: var(--dv-border-radius);
+
+    --dv-alert-color: var(--dv-info-text-emphasis);
+    --dv-alert-bg: var(--dv-info-bg-subtle);
+    --dv-alert-border-color: var(--dv-info-border-subtle);
+    --dv-alert-link-color: var(--dv-info-text-emphasis);
+
+    padding: var(--dv-alert-padding-y) var(--dv-alert-padding-x);
+    background-color: var(--dv-alert-bg);
+    border: var(--dv-alert-border);
+    border-radius: var(--dv-border-radius);
+
+    h5 {
+      @media screen and (max-width: 992px) {
+        font-size: 16px;
+      }
+
+      overflow: hidden;
+    }
+
+    small {
+      color: #7f7f8b;
+      @media screen and (max-width: 992px) {
+        font-size: 12px;
+      }
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.right {
+      background-color: #fff;
+      border-color: #aaa;
+    }
+
+    &.left {
+      background-color: var(--dv-secondary-bg-subtle);
+      border-color: var(--dv-secondary);
+    }
+
+    &.both {
+      background-color: var(--dv-red-bg-subtle);
+      border-color: var(--dv-red);
+    }
+  }
+
+  .show-contents-on-hover {
+    .hiding-wrapper {
+      display: block;
+      overflow: hidden;
+      padding: 10px 10px; // sonst verschwinden die button shadows
+      position: relative;
+    }
+
+    .show-on-hover {
+      display: flex;
+      opacity: 0;
+      transition: 0.3s;
+      right: -100%;
+      position: relative;
+    }
+
+    .hide-on-hover {
+      opacity: 1;
+      transition: 0.3s;
+    }
+    .rotate-on-hover {
+      transition: 0.3s;
+    }
+
+    &:hover {
+      .show-on-hover {
+        display: flex;
+        opacity: 1;
+        right: 0;
+      }
+
+      .hide-on-hover {
+        opacity: 0;
+      }
+
+      .rotate-on-hover {
+        transform: rotate(45deg);
+        transition: 0.5s;
+      }
+    }
+
+    .plus-and-buttons {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+
+  .add-chip {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    background-color: var(--dv-red);
+    color: #fff;
+  }
+  .add-button-40 {
+    border-radius: 40px;
+    height: 40px;
+  }
+}

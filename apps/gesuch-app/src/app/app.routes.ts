@@ -1,9 +1,44 @@
 import { Route } from '@angular/router';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
   {
+    path: 'gesuch-app-feature-gesuch-form-kinder',
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-kinder').then(
+        (m) => m.gesuchAppFeatureGesuchFormKinderRoutes
+      ),
+  },
+  {
+    path: 'gesuch-app-feature-gesuch-form-lebenslauf',
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-lebenslauf').then(
+        (m) => m.gesuchAppFeatureGesuchFormLebenslaufRoutes
+      ),
+  },
+  {
+    path: 'gesuch-app-feature-gesuch-form-geschwister',
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-geschwister').then(
+        (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
+      ),
+  },
+  {
+    path: GesuchFormSteps.AUSZAHLUNGEN.route,
+    canActivate: [hasBenutzer],
+    title: 'gesuch-app.auszahlung.title',
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
+        (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
+      ),
+  },
+  {
     path: GesuchFormSteps.FAMILIENSITUATION.route,
+    canActivate: [hasBenutzer],
     title: 'gesuch-app.familiensituation.title',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
@@ -12,18 +47,15 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'gesuch-app-feature-gesuch-form-partner',
+    canActivate: [hasBenutzer],
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-partner').then(
         (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
       ),
   },
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'gesuch-app-feature-cockpit',
-  },
-  {
     path: 'gesuch-app-feature-cockpit',
+    canActivate: [hasBenutzer],
     title: 'gesuch-app.cockpit.title',
     loadChildren: () =>
       import('@dv/gesuch-app/feature/cockpit').then(
@@ -32,6 +64,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'gesuch-app-feature-gesuch-form-eltern',
+    canActivate: [hasBenutzer],
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
         (m) => m.gesuchAppFeatureGesuchFormElternRoutes
@@ -39,6 +72,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'gesuch-app-feature-gesuch-form-person',
+    canActivate: [hasBenutzer],
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-person').then(
         (m) => m.gesuchAppFeatureGesuchFormPersonRoutes
@@ -46,11 +80,29 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'gesuch-app-feature-gesuch-form-education',
+    canActivate: [hasBenutzer],
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form-education').then(
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
+  {
+    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    canActivate: [hasBenutzer],
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-einnahmenkosten').then(
+        (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
+];
+
+export const routes: Route[] = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'gesuch-app-feature-cockpit',
+  },
+  ...appRoutes,
   {
     path: '**',
     redirectTo: 'gesuch-app-feature-cockpit',

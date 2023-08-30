@@ -1,5 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
+import { SharedModelError } from '@dv/shared/model/error';
 import { SharedModelDeploymentConfig } from '@dv/shared/model/config';
 
 import { SharedDataAccessConfigEvents } from './shared-data-access-config.events';
@@ -7,7 +8,7 @@ import { SharedDataAccessConfigEvents } from './shared-data-access-config.events
 export interface State {
   deploymentConfig: SharedModelDeploymentConfig | undefined;
   loading: boolean;
-  error: string | undefined;
+  error: SharedModelError | undefined;
 }
 
 const initialState: State = {

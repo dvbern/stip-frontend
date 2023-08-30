@@ -2,6 +2,7 @@ import { Tree } from '@nx/devkit';
 import { Generator } from 'nx/src/config/misc-interfaces';
 
 import { LibGeneratorSchema } from './schema';
+import { Schema } from '@nx/angular/src/generators/library/schema';
 
 export type LibType =
   | 'feature'
@@ -28,9 +29,12 @@ export interface DefaultOptions {
 }
 
 export interface LibTypeGenerator {
-  libGenerator: Generator;
+  libGenerator: Generator<Schema>;
   libDefaultOptions: DefaultOptions;
-  generators: { generator: Generator; defaultOptions: DefaultOptions }[];
+  generators: {
+    generator: Generator<Schema>;
+    defaultOptions: DefaultOptions;
+  }[];
   postprocess(tree: Tree, options: NormalizedSchema): void;
 }
 

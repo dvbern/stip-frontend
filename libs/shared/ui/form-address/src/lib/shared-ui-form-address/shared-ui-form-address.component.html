@@ -1,0 +1,80 @@
+<div class="row g-4" [formGroup]="group" [class.touched]="touchedSig()">
+  <!-- touchedSig muessen wir irgendwo lesen, damit die change detection funktioniert, deshalb hier im html -->
+
+  <!-- Strasse -->
+  <mat-form-field dvSharedUiFormField class="col-8 col-lg-4 pe-0">
+    <mat-label
+      >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
+    </mat-label>
+    <input matInput type="text" formControlName="strasse" />
+    <mat-error *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Nr -->
+  <mat-form-field dvSharedUiFormField class="col-4 col-lg-2 ps-2">
+    <mat-label
+      >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
+    </mat-label>
+    <input matInput type="text" formControlName="hausnummer" />
+    <mat-error *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- PLZ -->
+  <mat-form-field dvSharedUiFormField class="col-5 col-md-4 col-lg-2 pe-2">
+    <mat-label
+      >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+    </mat-label>
+    <input matInput type="text" formControlName="plz" />
+    <mat-error *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.requiredShort' | translate }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Ort -->
+  <mat-form-field dvSharedUiFormField class="col-7 col-md-8 col-lg-4 ps-0">
+    <mat-label
+      >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+    </mat-label>
+    <input matInput type="text" formControlName="ort" />
+    <mat-error *dvSharedUiFormMessageError="'required'">
+      {{ 'shared.form.error.required' | translate }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- c/o -->
+  <mat-form-field dvSharedUiFormField class="col-12 col-md-6">
+    <mat-label
+      >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
+        'shared.form.optional.label' | translate
+      }})
+    </mat-label>
+    <input matInput type="text" formControlName="coAdresse" />
+  </mat-form-field>
+
+  <!-- Land -->
+  <div class="col-12 col-md-6">
+    <mat-form-field dvSharedUiFormField class="w-100">
+      <mat-label>{{
+        'gesuch-app.form.shared.address.country.label' | translate
+      }}</mat-label>
+      <mat-select formControlName="land">
+        <mat-option [value]="null" disabled selected>
+          {{ 'shared.form.select.empty' | translate }}
+        </mat-option>
+        <mat-option
+          [value]="l.code"
+          *ngFor="let l of translatedLaender$ | async; trackBy: trackByIndex"
+        >
+          {{ l.text }}
+        </mat-option>
+      </mat-select>
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<mat-form-field dvSharedUiFormField class="w-100">
+  <mat-label>{{ labelText }}</mat-label>
+  <mat-select [formControl]="ngControl.control">
+    <mat-option [value]="null" disabled selected>
+      {{ 'shared.form.select.empty' | translate }}
+    </mat-option>
+    <mat-option
+      [value]="l.code"
+      *ngFor="let l of translatedLaender$ | async; trackBy: trackByIndex"
+    >
+      {{ l.text }}
+    </mat-option>
+  </mat-select>
+  <mat-error *dvSharedUiFormMessageError="'required'">
+    {{ 'shared.form.error.required' | translate }}
+  </mat-error>
+</mat-form-field>

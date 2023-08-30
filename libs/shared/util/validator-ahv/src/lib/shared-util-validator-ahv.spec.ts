@@ -12,6 +12,9 @@ describe('sharedUtilIsValidAhv', () => {
   it('invalid ahv', () => {
     expect(sharedUtilIsValidAhv('756.9217.0769.40')).toBe(false);
   });
+  it('invalid start digits ahv', () => {
+    expect(sharedUtilIsValidAhv('125.1000.0000.05')).toBe(false);
+  });
 });
 
 describe('sharedUtilAhvValidator', () => {

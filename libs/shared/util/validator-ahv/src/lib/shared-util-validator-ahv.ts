@@ -1,7 +1,8 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 
-// https://www.sozialversicherungsnummer.ch/aufbau-neu.htm
+const START_DIGITS = '756';
 
+// https://www.sozialversicherungsnummer.ch/aufbau-neu.htm
 export function sharedUtilIsValidAhv(ahv: string) {
   const digits = ahv
     .replace(/\./g, '')
@@ -23,7 +24,9 @@ export function sharedUtilIsValidAhv(ahv: string) {
   const calculatedCheckDigit = relevantDigitsRounded - relevantDigitsSum;
   const checkDigit = digits[12];
 
-  return checkDigit === calculatedCheckDigit;
+  const startDigits = ahv.slice(0, 3);
+
+  return checkDigit === calculatedCheckDigit && startDigits === START_DIGITS;
 }
 
 export function sharedUtilValidatorAhv(

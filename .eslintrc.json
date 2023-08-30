@@ -107,7 +107,7 @@
               {
                 "sourceTag": "type:model",
                 "onlyDependOnLibsWithTags": ["type:model"],
-                "bannedExternalImports": ["@angular/*", "@ngrx/*"]
+                "bannedExternalImports": ["@ngrx/*"]
               },
               {
                 "sourceTag": "type:e2e",

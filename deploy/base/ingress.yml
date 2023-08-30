@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: www
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: "<overlay-specific>"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              service:
+                name: gesuch-app
+                port:
+                  name: http
+            pathType: Prefix
+  tls:
+    - hosts:
+      - "<overlay-specific>"
+      - "<overlay-specific>"
+      secretName: stip-ingress-cert

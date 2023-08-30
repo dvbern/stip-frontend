@@ -1,6 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import { SharedModelDeploymentConfig } from '@dv/shared/model/config';
+import { SharedModelError } from '@dv/shared/model/error';
 
 export const SharedDataAccessConfigEvents = createActionGroup({
   source: 'Config API',
@@ -9,6 +10,6 @@ export const SharedDataAccessConfigEvents = createActionGroup({
     deploymentConfigLoadedSuccess: props<{
       deploymentConfig: SharedModelDeploymentConfig;
     }>(),
-    deploymentConfigLoadedFailure: props<{ error: string }>(),
+    deploymentConfigLoadedFailure: props<{ error: SharedModelError }>(),
   },
 });

@@ -1,4 +1,17 @@
 :host {
   display: block;
   height: 100%;
+
+  .sidenav {
+    width: 296px;
+  }
+
+  .title-icon {
+    color: var(--dv-blue);
+  }
+
+  .step-title {
+    letter-spacing: 1.13px;
+    margin-bottom: 4px;
+  }
 }

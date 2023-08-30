@@ -1,0 +1,111 @@
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="GesuchFormSteps.LEBENSLAUF">
+  <!-- item editor -->
+  <dv-gesuch-app-feature-gesuch-form-lebenslauf-editor
+    *ngIf="editedItem"
+    [item]="editedItem"
+    [ausbildungen]="ausbildungenSig()"
+    (saveTriggered)="handleEditorSave($event)"
+    (closeTriggered)="handleEditorClose()"
+    (deleteTriggered)="handleDeleteItem($event)"
+    [minStartDate]="minDate$()"
+    [maxEndDate]="maxDate$()"
+  />
+
+  <ng-container *ngIf="!editedItem">
+    <!-- loading -->
+    <div
+      data-testid="form-item-loading"
+      *ngIf="view$().loading"
+      class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+    >
+      <div class="dv-progress-bar-indeterminate">
+        <div></div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!view$().loading">
+      <ng-template #missingInfo>
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <ngb-alert type="info" [dismissible]="false">{{
+              'gesuch-app.form.lebenslauf.top.missing-dates' | translate
+            }}</ngb-alert>
+          </div>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="minDate$() && maxDate$(); else missingInfo">
+        <!-- Infobx -->
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <span>{{
+              'gesuch-app.form.lebenslauf.top.info'
+                | translate
+                  : {
+                      von: minDate$() ? printDateAsMonthYear(minDate$()!) : '?',
+                      bis: maxDate$() ? printDateAsMonthYear(maxDate$()!) : '?'
+                    }
+            }}</span>
+          </div>
+        </div>
+
+        <!-- ADD -->
+        <div class="row">
+          <div class="col-12 col-xl-8 my-3">
+            <div class="row add-buttons">
+              <div class="col-6 my-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
+                  (click)="handleAddAusbildung(undefined)"
+                >
+                  <i class="material-symbols-rounded fs-1">school</i>
+                  {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
+                </button>
+              </div>
+              <div class="col-6 my-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
+                  (click)="handleAddTaetigkeit(undefined)"
+                >
+                  <i class="material-symbols-rounded fs-1">work</i>
+                  {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- visual -->
+        <div class="row" *ngIf="view$().lebenslaufItems as items">
+          <div
+            class="col-12 col-xl-8 my-3"
+            *ngIf="view$().ausbildung as ausbildung"
+          >
+            <dv-gesuch-app-feature-gesuch-form-lebenslauf-visual
+              [startDate]="minDate$()"
+              [lebenslaufItems]="items"
+              [ausbildung]="ausbildung"
+              (addAusbildungTriggered)="handleAddAusbildung($event)"
+              (addTaetigkeitTriggered)="handleAddTaetigkeit($event)"
+              (editItemTriggered)="handleEditItemId($event, items)"
+              (deleteItemTriggered)="handleDeleteItem($event)"
+              [ausbildungsstaettes]="view$().ausbildungsstaettes"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <dv-gesuch-app-ui-step-form-buttons>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="handleContinue()"
+          >
+            {{ 'gesuch-app.form.gonext' | translate }}
+          </button>
+        </dv-gesuch-app-ui-step-form-buttons>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</dv-gesuch-app-pattern-gesuch-step-layout>
