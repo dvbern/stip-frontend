@@ -153,6 +153,8 @@ async function validateProjectTagsMatchProjectLocation(
   if (appsOrLibs === 'apps') {
     if (!scopeOrName.endsWith('-e2e')) {
       expectedTags.push(`type:app`, `scope:${scopeOrName}`);
+    } else {
+      expectedTags.push(`type:e2e`, `scope:${scopeOrName.replace('-e2e', '')}`);
     }
   }
   if (appsOrLibs === 'libs') {

@@ -57,6 +57,7 @@
                   type="button"
                   class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
                   (click)="handleAddAusbildung(undefined)"
+                  data-testid="lebenslauf-add-ausbildung"
                 >
                   <i class="material-symbols-rounded fs-1">school</i>
                   {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
@@ -67,6 +68,7 @@
                   type="button"
                   class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
                   (click)="handleAddTaetigkeit(undefined)"
+                  data-testid="lebenslauf-add-taetigkeit"
                 >
                   <i class="material-symbols-rounded fs-1">work</i>
                   {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
