@@ -17,7 +17,25 @@
     *ngIf="!view().loading"
     (ngSubmit)="handleSave()"
   >
-    <div class="row g-4 mt-3">
+    <i
+      class="material-symbols-rounded title-icon"
+      *ngIf="hasPreviousStep()"
+      (click)="goPreviousStep()"
+      >arrow_back</i
+    >
+    <i
+      class="material-symbols-rounded title-icon"
+      *ngIf="hasNextStep()"
+      (click)="goNextStep()"
+      >arrow_forward</i
+    >
+    <div
+      class="row g-4 mt-3"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ELTERN_VERHEIRATET_ZUSAMMEN
+      "
+    >
       <mat-radio-group
         formControlName="elternVerheiratetZusammen"
         dvSharedUiFormField
@@ -44,7 +62,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.gerichtlicheAlimentenregelung.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ALIMENTENREGELUNG
+      "
     >
       <mat-radio-group
         formControlName="gerichtlicheAlimentenregelung"
@@ -71,7 +92,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.elternteilUnbekanntVerstorben.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ELTERN_UNBEKANNT_VERSTORBEN
+      "
     >
       <mat-radio-group
         formControlName="elternteilUnbekanntVerstorben"
@@ -96,7 +120,13 @@
       </mat-radio-group>
     </div>
 
-    <div class="row g-4 mt-3" *ngIf="!form.controls.werZahltAlimente.disabled">
+    <div
+      class="row g-4 mt-3"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.WER_ZAHLT_ALIMENTE
+      "
+    >
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
           'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
@@ -125,7 +155,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.mutterUnbekanntVerstorben.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.WELCHER_ELTERNTEIL_UNBEKANNT_VERSTORBEN
+      "
     >
       <span>{{
         'gesuch-app.form.familiensituation.elternteil-verstorben.label'
@@ -163,7 +196,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.mutterUnbekanntGrund.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.WIESO_MUTTER_UNBEKANNT
+      "
     >
       <mat-radio-group
         formControlName="mutterUnbekanntGrund"
@@ -199,7 +235,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.mutterWiederverheiratet.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.MUTTER_WIEDERVERHEIRATET
+      "
     >
       <mat-radio-group
         formControlName="mutterWiederverheiratet"
@@ -227,7 +266,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.vaterUnbekanntVerstorben.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.WELCHER_ELTERNTEIL_UNBEKANNT_VERSTORBEN
+      "
     >
       <mat-radio-group
         formControlName="vaterUnbekanntVerstorben"
@@ -261,7 +303,10 @@
 
     <div
       class="row g-4 mt-3"
-      *ngIf="!form.controls.vaterWiederverheiratet.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.VATER_WIEDERVERHEIRATET
+      "
     >
       <mat-radio-group
         formControlName="vaterWiederverheiratet"
@@ -288,7 +333,10 @@
     </div>
 
     <div
-      *ngIf="!form.controls.vaterUnbekanntGrund.disabled"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.WIESO_VATER_UNBEKANNT
+      "
       class="row g-4 mt-3"
     >
       <mat-radio-group
@@ -323,7 +371,13 @@
       </mat-radio-group>
     </div>
 
-    <div class="row g-4 mt-3" *ngIf="!form.controls.sorgerecht.disabled">
+    <div
+      class="row g-4 mt-3"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
+      "
+    >
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
           'gesuch-app.form.familiensituation.sorgerecht.label' | translate
@@ -349,7 +403,13 @@
       </mat-form-field>
     </div>
 
-    <div class="row g-4 mt-3" *ngIf="!form.controls.obhut.disabled">
+    <div
+      class="row g-4 mt-3"
+      *ngIf="
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
+      "
+    >
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
           'gesuch-app.form.familiensituation.obhut.label' | translate
@@ -377,8 +437,8 @@
 
     <div
       *ngIf="
-        !form.controls.obhutVater.disabled &&
-        !form.controls.obhutMutter.disabled
+        currentFamiliensituationFormStep ===
+        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
       "
       class="row g-4 mt-3"
     >
