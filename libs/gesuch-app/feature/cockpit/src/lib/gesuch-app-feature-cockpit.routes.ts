@@ -5,7 +5,7 @@ import { provideEffects } from '@ngrx/effects';
 import {
   gesuchAppDataAccessGesuchsperiodeEffects,
   gesuchAppDataAccessGesuchsperiodesFeature,
-} from '@dv/gesuch-app/data-access/gesuchsperiode';
+} from '@dv/shared/data-access/gesuchsperiode';
 
 import { GesuchAppFeatureCockpitComponent } from './gesuch-app-feature-cockpit/gesuch-app-feature-cockpit.component';
 

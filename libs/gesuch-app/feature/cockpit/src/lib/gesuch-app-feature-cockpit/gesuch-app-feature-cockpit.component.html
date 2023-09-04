@@ -123,10 +123,7 @@
                   <a
                     class="btn btn-primary mt-3 w-100"
                     data-testid="cockpit-gesuch-edit"
-                    [routerLink]="[
-                      '/gesuch-app-feature-gesuch-form-person',
-                      periode.gesuchId
-                    ]"
+                    [routerLink]="['/gesuch/person', periode.gesuchId]"
                   >
                     {{ 'gesuch-app.cockpit.gesuch.edit' | translate }}
                   </a>

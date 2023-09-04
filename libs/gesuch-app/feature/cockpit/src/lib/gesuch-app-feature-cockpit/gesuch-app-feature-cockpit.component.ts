@@ -7,14 +7,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
-import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
-import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
-import { SharedDataAccessLanguageEvents } from '@dv/shared/data-access/language';
-import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
-import { Language } from '@dv/shared/model/language';
-import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
-import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -23,6 +15,18 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
+import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
+import { SharedDataAccessLanguageEvents } from '@dv/shared/data-access/language';
+import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
+import { Language } from '@dv/shared/model/language';
+import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
+import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
+import { GesuchAppDataAccessGesuchEvents } from '@dv/shared/data-access/gesuch';
+import { GesuchAppDataAccessGesuchsperiodeEvents } from '@dv/shared/data-access/gesuchsperiode';
+
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
 
 // TODO: Refactor once services and landing page exist
@@ -88,11 +92,13 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventCockpit.init());
+    this.store.dispatch(GesuchAppDataAccessGesuchEvents.init());
+    this.store.dispatch(GesuchAppDataAccessGesuchsperiodeEvents.init());
   }
 
   handleCreate(periode: Gesuchsperiode, fallId: string) {
     this.store.dispatch(
-      GesuchAppEventCockpit.newTriggered({
+      GesuchAppDataAccessGesuchEvents.newTriggered({
         create: {
           fallId,
           gesuchsperiodeId: periode.id,
@@ -102,7 +108,9 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   }
 
   handleRemove(id: string) {
-    this.store.dispatch(GesuchAppEventCockpit.removeTriggered({ id }));
+    this.store.dispatch(
+      GesuchAppDataAccessGesuchEvents.removeTriggered({ id })
+    );
   }
 
   trackByPerioden(

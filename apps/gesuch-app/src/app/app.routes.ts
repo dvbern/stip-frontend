@@ -1,58 +1,9 @@
 import { Route } from '@angular/router';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { GesuchAppPatternGesuchStepWrapperComponent } from '@dv/gesuch-app/pattern/gesuch-step-wrapper';
 import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
-  {
-    path: 'gesuch-app-feature-gesuch-form-kinder',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-kinder').then(
-        (m) => m.gesuchAppFeatureGesuchFormKinderRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-lebenslauf',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-lebenslauf').then(
-        (m) => m.gesuchAppFeatureGesuchFormLebenslaufRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-geschwister',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-geschwister').then(
-        (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.AUSZAHLUNGEN.route,
-    canActivate: [hasBenutzer],
-    title: 'gesuch-app.auszahlung.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-auszahlungen').then(
-        (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.FAMILIENSITUATION.route,
-    canActivate: [hasBenutzer],
-    title: 'gesuch-app.familiensituation.title',
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-familiensituation').then(
-        (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-partner',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-partner').then(
-        (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
-      ),
-  },
   {
     path: 'gesuch-app-feature-cockpit',
     canActivate: [hasBenutzer],
@@ -63,35 +14,12 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: 'gesuch-app-feature-gesuch-form-eltern',
+    path: 'gesuch',
     canActivate: [hasBenutzer],
+    component: GesuchAppPatternGesuchStepWrapperComponent,
     loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-eltern').then(
-        (m) => m.gesuchAppFeatureGesuchFormElternRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-person',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-person').then(
-        (m) => m.gesuchAppFeatureGesuchFormPersonRoutes
-      ),
-  },
-  {
-    path: 'gesuch-app-feature-gesuch-form-education',
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-education').then(
-        (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
-      ),
-  },
-  {
-    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
-    canActivate: [hasBenutzer],
-    loadChildren: () =>
-      import('@dv/gesuch-app/feature/gesuch-form-einnahmenkosten').then(
-        (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      import('@dv/gesuch-app/feature/gesuch-form').then(
+        (m) => m.gesuchAppFeatureGesuchFormRoutes
       ),
   },
 ];

@@ -1,0 +1,16 @@
+{
+  "name": "shared-model-gesuch-form",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/model/gesuch-form/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/model/gesuch-form/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:model"]
+}

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
+import { selectGesuchAppDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 
 export const gesuchAppPatternGesuchStepNavView = createSelector(
   selectGesuchAppDataAccessGesuchsView,
