@@ -1,0 +1,27 @@
+<dv-shared-pattern-app-header [closeMenu]="closeMenu">
+  <div class="header-desktop-left d-flex gap-3 align-items-center">
+    <a
+      routerLink="/"
+      class="active btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
+      data-testid="gesuch-step-nav-overview"
+    >
+      <i class="material-symbols-rounded text-white me-2">check-list</i>
+      <span>{{ 'sachbearbeitung-app.header.antraege' | translate }}</span>
+    </a>
+  </div>
+  <div class="header-desktop-left d-flex gap-3 align-items-center ms-5">
+    <a
+      routerLink="/"
+      class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
+      data-testid="gesuch-step-nav-overview"
+    >
+      <i class="material-symbols-rounded text-white me-2">calculator</i>
+      <span>{{ 'sachbearbeitung-app.header.berechnung' | translate }}</span>
+    </a>
+  </div>
+</dv-shared-pattern-app-header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <ng-content></ng-content>
+</main>

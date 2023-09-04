@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { SharedDataAccessBenutzerApiEvents } from '@dv/shared/data-access/benutzer';
 
 @Component({
   standalone: true,
@@ -9,5 +12,8 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'sachbearbeitung-app';
+  constructor() {
+    const store = inject(Store);
+    store.dispatch(SharedDataAccessBenutzerApiEvents.loadCurrentBenutzer());
+  }
 }

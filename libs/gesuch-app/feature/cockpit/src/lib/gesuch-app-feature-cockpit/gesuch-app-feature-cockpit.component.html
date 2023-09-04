@@ -222,57 +222,12 @@
   </div>
 
   <!-- MOBILE NAV -->
-  <div class="mobile-nav-header">
-    <dv-shared-ui-language-selector
-      [language]="languageSig()"
-      (languageChange)="handleLanguageChangeHeader($event)"
-    />
-  </div>
-  <div class="mobile-nav-content">
-    <div class="d-flex flex-column align-items-start">
-      <ul class="nav flex-column w-100">
-        <li class="nav-item">
-          <span class="nav-link mb-4">{{ benutzerNameSig() }}</span>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link">Profil</a>
-        </li>
-        <li class="nav-item">
-          <button type="button" class="nav-link" (click)="logout()">
-            Logout
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <div class="mobile-nav-header"></div>
+  <div class="mobile-nav-content"></div>
 
   <!-- DESKTOP HEADER (LEFT) -->
   <div class="header-desktop-left d-flex flex-grow-1 ms-3"></div>
 
   <!-- DESKTOP HEADER (RIGHT) -->
-  <div class="header-desktop-right d-flex gap-4 align-items-center">
-    <dv-shared-ui-language-selector
-      class="p-3"
-      [language]="languageSig()"
-      (languageChange)="handleLanguageChangeHeader($event)"
-    />
-
-    <div ngbDropdown>
-      <button
-        type="button"
-        class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
-        id="userMenu"
-        ngbDropdownToggle
-      >
-        <span>{{ benutzerNameSig() }}</span>
-        <i class="material-symbols-rounded ms-2">expand_more</i>
-      </button>
-
-      <div ngbDropdownMenu aria-labelledby="userMenu">
-        <button type="button" ngbDropdownItem>Profil</button>
-        <button type="button" ngbDropdownItem (click)="logout()">Logout</button>
-      </div>
-    </div>
-  </div>
+  <div class="header-desktop-right d-flex gap-4 align-items-center"></div>
 </dv-gesuch-app-pattern-main-layout>
