@@ -85,11 +85,11 @@ export default async function (tree: Tree, options: LibGeneratorSchema) {
   await formatFiles(tree);
 
   return async () => {
-    console.log(`\nProject: --project ${normalizedOptions.projectName}\n`);
-    console.log(
+    console['log'](`\nProject: --project ${normalizedOptions.projectName}\n`);
+    console['log'](
       `Can be used to generate additional components, service or perform other commands like`
     );
-    console.log(
+    console['log'](
       `eg "nx g remove --project ${normalizedOptions.projectName}"\n`
     );
   };

@@ -76,7 +76,7 @@ export default async function validate(
   return () => {
     if (aggregateViolations.filter(Boolean)?.length > 0) {
       if (aggregateFixes.filter(Boolean)?.length > 0) {
-        console.log('\n');
+        console['log']('\n');
       }
       console.error(chalk.red.bold(aggregateViolations.join('\n\n'), '\n\n'));
       throw new Error('Module boundaries validation failed');
