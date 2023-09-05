@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GesuchAppUtilGesuchFormStepManagerService } from './gesuch-app-util-gesuch-form-step-manager.service';
+import { GesuchAppUtilGesuchFormStepManagerService } from './shared-util-gesuch-form-step-manager.service';
 
 describe('GesuchAppUtilGesuchFormStepManagerService', () => {
   let service: GesuchAppUtilGesuchFormStepManagerService;
