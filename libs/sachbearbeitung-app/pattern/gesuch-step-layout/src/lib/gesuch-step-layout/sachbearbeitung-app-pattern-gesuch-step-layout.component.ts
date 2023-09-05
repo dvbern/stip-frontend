@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedPatternAppHeaderComponent } from '@dv/shared/pattern/app-header';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
+
+import { SharedPatternAppHeaderComponent } from '@dv/shared/pattern/app-header';
+import { SharedUiSearchComponent } from '@dv/shared/ui/search';
 
 @Component({
   selector: 'dv-sachbearbeitung-app-pattern-gesuch-step-layout',
@@ -11,6 +13,7 @@ import { RouterLink } from '@angular/router';
     CommonModule,
     RouterLink,
     SharedPatternAppHeaderComponent,
+    SharedUiSearchComponent,
     TranslateModule,
   ],
   templateUrl:

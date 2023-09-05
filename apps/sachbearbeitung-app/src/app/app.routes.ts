@@ -10,6 +10,13 @@ export const appRoutes: Route[] = [
         (m) => m.sachbearbeitungAppFeatureCockpitRoutes
       ),
   },
+  {
+    path: 'sachbearbeitung-app-feature-gesuch-form',
+    loadChildren: () =>
+      import('@dv/sachbearbeitung-app/feature/gesuch-form').then(
+        (m) => m.sachbearbeitungAppFeatureGesuchFormRoutes
+      ),
+  },
 ];
 
 export const routes: Route[] = [

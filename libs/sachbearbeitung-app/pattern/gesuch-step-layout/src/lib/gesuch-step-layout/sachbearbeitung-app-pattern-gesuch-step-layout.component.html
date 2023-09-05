@@ -5,7 +5,7 @@
       class="active btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
       data-testid="gesuch-step-nav-overview"
     >
-      <i class="material-symbols-rounded text-white me-2">check-list</i>
+      <i class="material-symbols-rounded text-white me-2">checklist</i>
       <span>{{ 'sachbearbeitung-app.header.antraege' | translate }}</span>
     </a>
   </div>
@@ -15,10 +15,13 @@
       class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
       data-testid="gesuch-step-nav-overview"
     >
-      <i class="material-symbols-rounded text-white me-2">calculator</i>
+      <i class="material-symbols-rounded text-white me-2">contract_edit</i>
       <span>{{ 'sachbearbeitung-app.header.berechnung' | translate }}</span>
     </a>
   </div>
+  <dv-shared-ui-search
+    class="header-desktop-right col-auto align-self-center"
+  ></dv-shared-ui-search>
 </dv-shared-pattern-app-header>
 
 <!-- MAIN CONTENT -->

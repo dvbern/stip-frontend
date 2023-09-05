@@ -47,32 +47,36 @@
       </div>
 
       <!-- top right -->
-      <dv-shared-ui-language-selector
-        class="p-3"
-        [language]="languageSig()"
-        (languageChange)="handleLanguageChangeHeader($event)"
-      />
+      <div
+        class="d-flex flex-grow-1 ms-3 justify-content-end align-items-center"
+      >
+        <ng-content select=".header-desktop-right"></ng-content>
+        <dv-shared-ui-language-selector
+          class="p-3"
+          [language]="languageSig()"
+          (languageChange)="handleLanguageChangeHeader($event)"
+        />
 
-      <div class="d-flex gap-4 align-items-center">
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
-            id="userMenu"
-            ngbDropdownToggle
-          >
-            <span>{{ benutzerNameSig() }}</span>
-            <i class="material-symbols-rounded ms-2">expand_more</i>
-          </button>
-
-          <div ngbDropdownMenu aria-labelledby="userMenu">
-            <button type="button" ngbDropdownItem>Profil</button>
-            <button type="button" ngbDropdownItem (click)="logout()">
-              Logout
+        <div class="d-flex gap-4 align-items-center">
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
+              id="userMenu"
+              ngbDropdownToggle
+            >
+              <span>{{ benutzerNameSig() }}</span>
+              <i class="material-symbols-rounded ms-2">expand_more</i>
             </button>
+
+            <div ngbDropdownMenu aria-labelledby="userMenu">
+              <button type="button" ngbDropdownItem>Profil</button>
+              <button type="button" ngbDropdownItem (click)="logout()">
+                Logout
+              </button>
+            </div>
           </div>
         </div>
-        <ng-content select=".header-desktop-right"></ng-content>
       </div>
     </div>
   </div>

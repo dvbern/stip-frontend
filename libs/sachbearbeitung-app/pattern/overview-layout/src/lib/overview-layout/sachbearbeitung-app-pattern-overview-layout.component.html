@@ -9,9 +9,19 @@
       <span>{{ 'sachbearbeitung-app.header.antraege' | translate }}</span>
     </a>
   </div>
-  <div class="header-desktop-left d-flex gap-3 align-items-center ms-5">
+  <div class="header-desktop-left d-flex gap-3 align-items-center ms-4">
     <a
       routerLink="/"
+      class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
+      data-testid="gesuch-step-nav-overview"
+    >
+      <i class="material-symbols-rounded text-white me-2">mail</i>
+      <span>{{ 'sachbearbeitung-app.header.posteingang' | translate }}</span>
+    </a>
+  </div>
+  <div class="header-desktop-left d-flex gap-3 align-items-center ms-4">
+    <a
+      routerLink="/sachbearbeitung-app-feature-gesuch-form"
       class="btn btn-light btn-nav fw-normal px-2 d-flex align-items-center shadow-none"
       data-testid="gesuch-step-nav-overview"
     >
@@ -19,6 +29,9 @@
       <span>{{ 'sachbearbeitung-app.header.administration' | translate }}</span>
     </a>
   </div>
+  <dv-shared-ui-search
+    class="header-desktop-right col-auto align-self-center"
+  ></dv-shared-ui-search>
 </dv-shared-pattern-app-header>
 
 <!-- MAIN CONTENT -->
