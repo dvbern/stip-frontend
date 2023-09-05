@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gesuch-app
+  name: sachbearbeitung-app
   labels:
-    app: gesuch-app
+    app: sachbearbeitung-app
 spec:
   replicas: 1
   progressDeadlineSeconds: 120
@@ -13,14 +13,14 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: gesuch-app
+      app: sachbearbeitung-app
   template:
     spec:
       restartPolicy: Always
       containers:
-        - name: gesuch-app
+        - name: sachbearbeitung-app
           imagePullPolicy: Always
-          image: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app:latest
+          image: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app:latest
           ports:
             - name: http
               protocol: TCP

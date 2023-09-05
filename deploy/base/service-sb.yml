@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gesuch-app
+  name: sachbearbeitung-app
   labels:
-    app: gesuch-app
+    app: sachbearbeitung-app
 spec:
   ports:
       - port: 80
         name: http
   selector:
-    app: gesuch-app
+    app: sachbearbeitung-app
   type: ClusterIP
