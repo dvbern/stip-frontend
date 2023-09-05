@@ -41,12 +41,12 @@ export default async function (tree: Tree, options: AppGeneratorSchema) {
   await formatFiles(tree);
 
   return async () => {
-    console.log(
+    console['log'](
       `\nℹ️ Scope for "${projectName}" added to ".eslintrc.json" and "libs/tooling/nx-plugin/src/generators/lib/schema.json"\n\n`
     );
-    console.log(`Project: --project ${projectName}\n`);
-    console.log(`Can be used to run additional commands like`);
-    console.log(`eg "nx g remove --project ${projectName}"\n`);
+    console['log'](`Project: --project ${projectName}\n`);
+    console['log'](`Can be used to run additional commands like`);
+    console['log'](`eg "nx g remove --project ${projectName}"\n`);
   };
 }
 
