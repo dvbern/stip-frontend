@@ -105,12 +105,6 @@
               {
                 "sourceTag": "type:e2e",
                 "onlyDependOnLibsWithTags": [
-                  "type:app",
-                  "type:feature",
-                  "type:pattern",
-                  "type:data-access",
-                  "type:event",
-                  "type:ui",
                   "type:util",
                   "type:util-fn",
                   "type:model"
