@@ -1,5 +1,12 @@
 // noinspection PointlessBooleanExpressionJS
 
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -8,6 +15,8 @@ import {
   ElementRef,
   inject,
   OnInit,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -18,7 +27,10 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MaskitoModule } from '@maskito/angular';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 import { selectGesuchAppDataAccessGesuchsView } from '@dv/gesuch-app/data-access/gesuch';
 import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/gesuch-app/event/gesuch-form-familiensituation';
 import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
@@ -44,11 +56,17 @@ import {
   convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
-import { MaskitoModule } from '@maskito/angular';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { FamiliensituationFormSteps } from './FamiliensituationFormSteps';
+import {
+  FamiliensituationFormStep,
+  FamiliensituationFormSteps,
+} from './FamiliensituationFormSteps';
+
+type FamSitStepMeta = {
+  [P in keyof FamiliensituationFormSteps]?: FamSitAnimationState;
+};
+type FamSitAnimationState = 'in' | 'right' | 'left' | 'hidden';
+
+const animationTime = 500;
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-familiensituation',
@@ -70,7 +88,23 @@ import { FamiliensituationFormSteps } from './FamiliensituationFormSteps';
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',
+  styleUrls: [
+    './gesuch-app-feature-gesuch-form-familiensituation.component.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('inOutPaneAnimation', [
+      state('in', style({ position: 'relative', left: 0, right: 0 })),
+      state('right', style({ left: '100%', display: 'none' })),
+      state('left', style({ left: '-100%', display: 'none' })),
+      state(
+        'hidden',
+        style({ position: 'absolute', left: '100%', display: 'none' })
+      ),
+      transition('void => *', []),
+      transition('* => *', [animate(`${animationTime}ms ease-in`)]),
+    ]),
+  ],
 })
 export class GesuchAppFeatureGesuchFormFamiliensituationComponent
   implements OnInit
@@ -131,7 +165,11 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
 
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
   updateValidity$ = new Subject<unknown>();
-  currentFamiliensituationFormStep =
+  stateSig: WritableSignal<FamSitStepMeta> = signal({
+    ELTERN_VERHEIRATET_ZUSAMMEN: 'in',
+    ALIMENTENREGELUNG: 'right',
+  });
+  private currentFamiliensituationFormStep =
     FamiliensituationFormSteps.ELTERN_VERHEIRATET_ZUSAMMEN;
 
   ngOnInit(): void {
@@ -175,8 +213,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       mutterUnbekanntVerstorben.valueChanges
     );
     const obhutSig = toSignal(obhut.valueChanges);
-    const vaterUnbekanntGrundSig = toSignal(vaterUnbekanntGrund.valueChanges);
-    const mutterUnbekanntGrundSig = toSignal(mutterUnbekanntGrund.valueChanges);
 
     effect(
       () => {
@@ -211,7 +247,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
       { allowSignalWrites: true }
     );
 
-    // effect for werZahltAlimente
     effect(
       () => {
         const gerichtlicheAlimentenregelung =
@@ -270,7 +305,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           vaterUnbekanntVerstorben !== ElternAbwesenheitsGrund.UNBEKANNT,
           true
         );
-        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
@@ -283,16 +317,9 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           mutterUnbekanntVerstorben !== ElternAbwesenheitsGrund.UNBEKANNT,
           true
         );
-        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
-
-    effect(() => {
-      if (mutterUnbekanntGrundSig() || vaterUnbekanntGrundSig()) {
-        this.goNextStep();
-      }
-    });
 
     effect(
       () => {
@@ -326,7 +353,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           !showVaterVerheiratedFrage,
           true
         );
-        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
@@ -354,8 +380,6 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           !showMutterVerheiratedFrage,
           true
         );
-
-        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
@@ -391,8 +415,12 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     if (familiensituation === undefined) {
       return;
     }
-    this.currentFamiliensituationFormStep =
+    const newCurrent =
       this.currentFamiliensituationFormStep.getPrevious(familiensituation);
+    const newPrev = newCurrent.getPrevious(familiensituation);
+    const newNext = this.currentFamiliensituationFormStep;
+
+    this.updateSteps(newCurrent, newNext, newPrev);
   }
 
   goNextStep(): void {
@@ -401,8 +429,11 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     if (familiensituation === undefined) {
       return;
     }
-    this.currentFamiliensituationFormStep =
+    const newCurrent =
       this.currentFamiliensituationFormStep.getNext(familiensituation);
+    const newPrev = this.currentFamiliensituationFormStep;
+    const newNext = newCurrent.getNext(familiensituation);
+    this.updateSteps(newCurrent, newNext, newPrev);
   }
 
   handleSave(): void {
@@ -438,6 +469,39 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     };
   }
 
+  private updateSteps(
+    newCurrent: FamiliensituationFormStep,
+    newNext: FamiliensituationFormStep,
+    newPrev: FamiliensituationFormStep
+  ): void {
+    if (this.currentFamiliensituationFormStep === newCurrent) {
+      return;
+    }
+
+    this.currentFamiliensituationFormStep = newCurrent;
+
+    this.stateSig.set({
+      [this.getKeyByValue(newCurrent)]: 'in',
+      ...(newCurrent !== newNext && { [this.getKeyByValue(newNext)]: 'right' }),
+      ...(newCurrent !== newPrev && { [this.getKeyByValue(newPrev)]: 'left' }),
+    });
+  }
+
+  private getKeyByValue(
+    value: FamiliensituationFormStep
+  ): keyof FamiliensituationFormSteps {
+    const key = (
+      Object.keys(
+        FamiliensituationFormSteps
+      ) as (keyof FamiliensituationFormSteps)[]
+    ).find((key) => FamiliensituationFormSteps[key] === value);
+
+    if (key === undefined) {
+      throw new Error();
+    }
+
+    return key;
+  }
+
   protected readonly GesuchFormSteps = GesuchFormSteps;
-  protected readonly FamiliensituationFormSteps = FamiliensituationFormSteps;
 }

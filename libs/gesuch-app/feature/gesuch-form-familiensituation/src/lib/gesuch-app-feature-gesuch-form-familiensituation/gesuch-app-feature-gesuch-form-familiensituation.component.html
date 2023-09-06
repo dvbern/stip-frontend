@@ -17,459 +17,449 @@
     *ngIf="!view().loading"
     (ngSubmit)="handleSave()"
   >
-    <i
-      class="material-symbols-rounded title-icon"
-      *ngIf="hasPreviousStep()"
-      (click)="goPreviousStep()"
-      >arrow_back</i
-    >
-    <i
-      class="material-symbols-rounded title-icon"
-      *ngIf="hasNextStep()"
-      (click)="goNextStep()"
-      >arrow_forward</i
-    >
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ELTERN_VERHEIRATET_ZUSAMMEN
-      "
-    >
-      <mat-radio-group
-        formControlName="elternVerheiratetZusammen"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+    <div class="fam-stepper-navigation">
+      <i
+        class="material-symbols-rounded title-icon"
+        *ngIf="hasPreviousStep()"
+        (click)="goPreviousStep()"
+        >arrow_back</i
       >
-        <label>{{
-          'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
-            | translate
-        }}</label>
-
-        <mat-radio-button [value]="true">{{
-          'shared.form.radio.yes' | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="false">{{
-          'shared.form.radio.no' | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ALIMENTENREGELUNG
-      "
-    >
-      <mat-radio-group
-        formControlName="gerichtlicheAlimentenregelung"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+      <i
+        class="material-symbols-rounded title-icon"
+        *ngIf="hasNextStep()"
+        (click)="goNextStep()"
+        >arrow_forward</i
       >
-        <label>{{
-          'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
-            | translate
-        }}</label>
-        <mat-radio-button [value]="true">{{
-          'shared.form.radio.yes' | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="false">{{
-          'shared.form.radio.no' | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
     </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ELTERN_UNBEKANNT_VERSTORBEN
-      "
-    >
-      <mat-radio-group
-        formControlName="elternteilUnbekanntVerstorben"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+    <div class="questions-wrapper">
+      <div
+        class="row g-4 mt-3"
+        [@inOutPaneAnimation]="
+          stateSig()['ELTERN_VERHEIRATET_ZUSAMMEN'] ?? 'hidden'
+        "
       >
-        <label>{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
-            | translate
-        }}</label>
-        <mat-radio-button [value]="true">{{
-          'shared.form.radio.yes' | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="false">{{
-          'shared.form.radio.no' | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.WER_ZAHLT_ALIMENTE
-      "
-    >
-      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-        <mat-label>{{
-          'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
-            | translate
-        }}</mat-label>
-        <mat-select formControlName="werZahltAlimente">
-          <mat-option [value]="null" disabled selected>
-            {{ 'shared.form.select.empty' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-            {{ 'gesuch-app.form.familiensituation.vater' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-            {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-            {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
-          </mat-option>
-        </mat-select>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.WELCHER_ELTERNTEIL_UNBEKANNT_VERSTORBEN
-      "
-    >
-      <span>{{
-        'gesuch-app.form.familiensituation.elternteil-verstorben.label'
-          | translate
-      }}</span>
-      <mat-radio-group
-        formControlName="mutterUnbekanntVerstorben"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.mutter' | translate
-        }}</label>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.WIESO_MUTTER_UNBEKANNT
-      "
-    >
-      <mat-radio-group
-        formControlName="mutterUnbekanntGrund"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
-            | translate
-        }}</label>
-
-        <mat-radio-button
-          [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
-          >{{
-            'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
-              | translate
-          }}</mat-radio-button
-        >
-
-        <mat-radio-button
-          [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
-          >{{
-            'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
-              | translate
-          }}</mat-radio-button
-        >
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.MUTTER_WIEDERVERHEIRATET
-      "
-    >
-      <mat-radio-group
-        formControlName="mutterWiederverheiratet"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
-            | translate
-        }}</label>
-
-        <mat-radio-button [value]="true">{{
-          'shared.form.radio.yes' | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="false">{{
-          'shared.form.radio.no' | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.WELCHER_ELTERNTEIL_UNBEKANNT_VERSTORBEN
-      "
-    >
-      <mat-radio-group
-        formControlName="vaterUnbekanntVerstorben"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.vater' | translate
-        }}</label>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
-          'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
-            | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.VATER_WIEDERVERHEIRATET
-      "
-    >
-      <mat-radio-group
-        formControlName="vaterWiederverheiratet"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'
-            | translate
-        }}</label>
-
-        <mat-radio-button [value]="true">{{
-          'shared.form.radio.yes' | translate
-        }}</mat-radio-button>
-
-        <mat-radio-button [value]="false">{{
-          'shared.form.radio.no' | translate
-        }}</mat-radio-button>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.WIESO_VATER_UNBEKANNT
-      "
-      class="row g-4 mt-3"
-    >
-      <mat-radio-group
-        formControlName="vaterUnbekanntGrund"
-        dvSharedUiFormField
-        class="col-12 col-md-6 col-xl-4 d-flex flex-column"
-      >
-        <label>{{
-          'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
-            | translate
-        }}</label>
-
-        <mat-radio-button
-          [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
-          >{{
-            'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
-              | translate
-          }}</mat-radio-button
-        >
-
-        <mat-radio-button
-          [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
-          >{{
-            'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'
-              | translate
-          }}</mat-radio-button
-        >
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-radio-group>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
-      "
-    >
-      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-        <mat-label>{{
-          'gesuch-app.form.familiensituation.sorgerecht.label' | translate
-        }}</mat-label>
-        <mat-select formControlName="sorgerecht">
-          <mat-option [value]="null" disabled selected>
-            {{ 'shared.form.select.empty' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-            {{ 'gesuch-app.form.familiensituation.vater' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-            {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-            {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
-          </mat-option>
-        </mat-select>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div
-      class="row g-4 mt-3"
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
-      "
-    >
-      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
-        <mat-label>{{
-          'gesuch-app.form.familiensituation.obhut.label' | translate
-        }}</mat-label>
-        <mat-select formControlName="obhut">
-          <mat-option [value]="null" disabled selected>
-            {{ 'shared.form.select.empty' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-            {{ 'gesuch-app.form.familiensituation.vater' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-            {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
-          </mat-option>
-          <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-            {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
-          </mat-option>
-        </mat-select>
-
-        <mat-error *dvSharedUiFormMessageError="'required'">
-          {{ 'shared.form.error.required' | translate }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div
-      *ngIf="
-        currentFamiliensituationFormStep ===
-        FamiliensituationFormSteps.ZWEI_FAMILIENBUDGET
-      "
-      class="row g-4 mt-3"
-    >
-      <div class="col-12 col-md-6 col-xl-4">
-        <!-- OBHUT AUFTEILUNG -->
-        <dv-shared-ui-percentage-splitter
-          [updateValidity]="updateValidity$ | async"
-          [controlA]="form.controls.obhutMutter"
-          [controlB]="form.controls.obhutVater"
+        <mat-radio-group
+          formControlName="elternVerheiratetZusammen"
+          dvSharedUiFormField
+          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
         >
           <label>{{
-            'gesuch-app.form.familiensituation.obhutsaufteilung.label'
+            'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
               | translate
           }}</label>
-          <span class="label-a">{{
-            'gesuch-app.form.familiensituation.obhutsaufteilung.mutter'
+
+          <mat-radio-button [value]="true">{{
+            'shared.form.radio.yes' | translate
+          }}</mat-radio-button>
+
+          <mat-radio-button [value]="false">{{
+            'shared.form.radio.no' | translate
+          }}</mat-radio-button>
+
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-radio-group>
+      </div>
+
+      <div [@inOutPaneAnimation]="stateSig()['ALIMENTENREGELUNG'] ?? 'hidden'">
+        <div class="row g-4 mt-3">
+          <mat-radio-group
+            formControlName="gerichtlicheAlimentenregelung"
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
+                | translate
+            }}</label>
+            <mat-radio-button [value]="true">{{
+              'shared.form.radio.yes' | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="false">{{
+              'shared.form.radio.no' | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <div
+          *ngIf="form.controls.werZahltAlimente.enabled"
+          class="row g-4 mt-3"
+        >
+          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-label>{{
+              'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
+                | translate
+            }}</mat-label>
+            <mat-select formControlName="werZahltAlimente">
+              <mat-option [value]="null" disabled selected>
+                {{ 'shared.form.select.empty' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <ng-container
+          *ngIf="
+            form.controls.mutterWiederverheiratet.enabled &&
+            form.value.gerichtlicheAlimentenregelung
+          "
+          [ngTemplateOutlet]="mutterWiederverheiratet"
+        ></ng-container>
+        <ng-container
+          *ngIf="
+            form.controls.vaterWiederverheiratet.enabled &&
+            form.value.gerichtlicheAlimentenregelung
+          "
+          [ngTemplateOutlet]="vaterWiederverheiratet"
+        ></ng-container>
+      </div>
+      <div
+        [@inOutPaneAnimation]="
+          stateSig()['ELTERN_UNBEKANNT_VERSTORBEN'] ?? 'hidden'
+        "
+      >
+        <div class="row g-4 mt-3">
+          <mat-radio-group
+            formControlName="elternteilUnbekanntVerstorben"
+            dvSharedUiFormField
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
+                | translate
+            }}</label>
+            <mat-radio-button [value]="true">{{
+              'shared.form.radio.yes' | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="false">{{
+              'shared.form.radio.no' | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <div
+          *ngIf="form.controls.mutterUnbekanntVerstorben.enabled"
+          class="row g-4 mt-3"
+        >
+          <span>{{
+            'gesuch-app.form.familiensituation.elternteil-verstorben.label'
               | translate
           }}</span>
-          <span class="label-b">{{
-            'gesuch-app.form.familiensituation.obhutsaufteilung.vater'
-              | translate
-          }}</span>
-        </dv-shared-ui-percentage-splitter>
+          <mat-radio-group
+            formControlName="mutterUnbekanntVerstorben"
+            dvSharedUiFormField
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.mutter' | translate
+            }}</label>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <div
+          *ngIf="form.controls.mutterUnbekanntGrund.enabled"
+          class="row g-4 mt-3"
+        >
+          <mat-radio-group
+            formControlName="mutterUnbekanntGrund"
+            dvSharedUiFormField
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
+                | translate
+            }}</label>
+
+            <mat-radio-button
+              [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
+              >{{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                  | translate
+              }}</mat-radio-button
+            >
+
+            <mat-radio-button
+              [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
+              >{{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
+                  | translate
+              }}</mat-radio-button
+            >
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <ng-container
+          *ngIf="
+            form.controls.mutterWiederverheiratet.enabled &&
+            form.value.elternteilUnbekanntVerstorben
+          "
+          [ngTemplateOutlet]="mutterWiederverheiratet"
+        ></ng-container>
+        <div
+          *ngIf="form.controls.vaterUnbekanntVerstorben.enabled"
+          class="row g-4 mt-3"
+        >
+          <mat-radio-group
+            formControlName="vaterUnbekanntVerstorben"
+            dvSharedUiFormField
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.vater' | translate
+            }}</label>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
+              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+                | translate
+            }}</mat-radio-button>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <div
+          *ngIf="form.controls.vaterUnbekanntGrund.enabled"
+          class="row g-4 mt-3"
+        >
+          <mat-radio-group
+            formControlName="vaterUnbekanntGrund"
+            dvSharedUiFormField
+            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          >
+            <label>{{
+              'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
+                | translate
+            }}</label>
+
+            <mat-radio-button
+              [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
+              >{{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                  | translate
+              }}</mat-radio-button
+            >
+
+            <mat-radio-button
+              [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
+              >{{
+                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'
+                  | translate
+              }}</mat-radio-button
+            >
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-radio-group>
+        </div>
+        <ng-container
+          *ngIf="
+            form.controls.vaterWiederverheiratet.enabled &&
+            form.value.elternteilUnbekanntVerstorben
+          "
+          [ngTemplateOutlet]="vaterWiederverheiratet"
+        ></ng-container>
+      </div>
+
+      <div
+        [@inOutPaneAnimation]="stateSig()['ZWEI_FAMILIENBUDGET'] ?? 'hidden'"
+      >
+        <ng-container
+          *ngIf="form.controls.mutterWiederverheiratet.enabled"
+          [ngTemplateOutlet]="mutterWiederverheiratet"
+        ></ng-container>
+        <ng-container
+          *ngIf="form.controls.vaterWiederverheiratet.enabled"
+          [ngTemplateOutlet]="vaterWiederverheiratet"
+        ></ng-container>
+        <div class="row g-4 mt-3">
+          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-label>{{
+              'gesuch-app.form.familiensituation.sorgerecht.label' | translate
+            }}</mat-label>
+            <mat-select formControlName="sorgerecht">
+              <mat-option [value]="null" disabled selected>
+                {{ 'shared.form.select.empty' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row g-4 mt-3">
+          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-label>{{
+              'gesuch-app.form.familiensituation.obhut.label' | translate
+            }}</mat-label>
+            <mat-select formControlName="obhut">
+              <mat-option [value]="null" disabled selected>
+                {{ 'shared.form.select.empty' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
+                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
+                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+              </mat-option>
+              <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
+                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *dvSharedUiFormMessageError="'required'">
+              {{ 'shared.form.error.required' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row g-4 mt-3">
+          <div class="col-12 col-md-6 col-xl-4">
+            <!-- OBHUT AUFTEILUNG -->
+            <dv-shared-ui-percentage-splitter
+              [updateValidity]="updateValidity$ | async"
+              [controlA]="form.controls.obhutMutter"
+              [controlB]="form.controls.obhutVater"
+            >
+              <label>{{
+                'gesuch-app.form.familiensituation.obhutsaufteilung.label'
+                  | translate
+              }}</label>
+              <span class="label-a">{{
+                'gesuch-app.form.familiensituation.obhutsaufteilung.mutter'
+                  | translate
+              }}</span>
+              <span class="label-b">{{
+                'gesuch-app.form.familiensituation.obhutsaufteilung.vater'
+                  | translate
+              }}</span>
+            </dv-shared-ui-percentage-splitter>
+          </div>
+        </div>
       </div>
     </div>
-
     <!-- buttons -->
     <dv-gesuch-app-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
         {{ 'gesuch-app.form.save-and-continue' | translate }}
       </button>
     </dv-gesuch-app-ui-step-form-buttons>
+
+    <ng-template #mutterWiederverheiratet>
+      <div class="row g-4 mt-3">
+        <mat-radio-group
+          formControlName="mutterWiederverheiratet"
+          dvSharedUiFormField
+          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+        >
+          <label>{{
+            'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
+              | translate
+          }}</label>
+
+          <mat-radio-button [value]="true">{{
+            'shared.form.radio.yes' | translate
+          }}</mat-radio-button>
+
+          <mat-radio-button [value]="false">{{
+            'shared.form.radio.no' | translate
+          }}</mat-radio-button>
+
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-radio-group>
+      </div>
+    </ng-template>
+
+    <ng-template #vaterWiederverheiratet>
+      <div class="row g-4 mt-3">
+        <mat-radio-group
+          formControlName="vaterWiederverheiratet"
+          dvSharedUiFormField
+          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+        >
+          <label>{{
+            'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'
+              | translate
+          }}</label>
+
+          <mat-radio-button [value]="true">{{
+            'shared.form.radio.yes' | translate
+          }}</mat-radio-button>
+
+          <mat-radio-button [value]="false">{{
+            'shared.form.radio.no' | translate
+          }}</mat-radio-button>
+
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-radio-group>
+      </div>
+    </ng-template>
   </form>
 </dv-gesuch-app-pattern-gesuch-step-layout>
