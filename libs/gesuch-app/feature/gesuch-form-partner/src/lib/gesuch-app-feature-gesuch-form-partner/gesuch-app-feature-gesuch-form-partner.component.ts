@@ -20,7 +20,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { GesuchAppEventGesuchFormPartner } from '@dv/gesuch-app/event/gesuch-form-partner';
-import { GesuchFormSteps } from '@dv/gesuch-app/model/gesuch-form';
+import {
+  GesuchFormSteps,
+  isStepDisabled,
+} from '@dv/gesuch-app/model/gesuch-form';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/gesuch-app/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -151,6 +154,25 @@ export class GesuchAppFeatureGesuchFormPartnerComponent implements OnInit {
         });
       }
     });
+    effect(
+      () => {
+        const { gesuch, gesuchFormular } = this.view();
+        if (
+          gesuch &&
+          gesuchFormular &&
+          isStepDisabled('PARTNER', gesuchFormular)
+        ) {
+          this.store.dispatch(
+            GesuchAppEventGesuchFormPartner.nextStepTriggered({
+              gesuchId: gesuch?.id,
+              gesuchFormular,
+              origin: GesuchFormSteps.PARTNER,
+            })
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
