@@ -3,7 +3,7 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { SharedModelError } from '@dv/shared/model/error';
 import { Gesuchsperiode } from '@dv/shared/model/gesuch';
 
-import { GesuchAppDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
+import { sharedDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
 
 export interface State {
   gesuchsperiodes: Gesuchsperiode[];
@@ -17,12 +17,12 @@ const initialState: State = {
   error: undefined,
 };
 
-export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
+export const sharedDataAccessGesuchsperiodesFeature = createFeature({
   name: 'gesuchsperiodes',
   reducer: createReducer(
     initialState,
     on(
-      GesuchAppDataAccessGesuchsperiodeEvents.init,
+      sharedDataAccessGesuchsperiodeEvents.init,
       (state): State => ({
         ...state,
         loading: true,
@@ -31,7 +31,7 @@ export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess,
+      sharedDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess,
       (state, { gesuchsperiodes }): State => ({
         ...state,
         gesuchsperiodes,
@@ -40,7 +40,7 @@ export const gesuchAppDataAccessGesuchsperiodesFeature = createFeature({
       })
     ),
     on(
-      GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure,
+      sharedDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,
@@ -59,4 +59,4 @@ export const {
   selectGesuchsperiodes,
   selectLoading,
   selectError,
-} = gesuchAppDataAccessGesuchsperiodesFeature;
+} = sharedDataAccessGesuchsperiodesFeature;

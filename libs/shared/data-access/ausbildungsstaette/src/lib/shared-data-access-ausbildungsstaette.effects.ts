@@ -2,13 +2,13 @@ import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs';
 
-import { GesuchAppEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
+import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
+import { SharedEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
-import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
-
+import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { AusbildungsstaetteService } from '@dv/shared/model/gesuch';
-import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
+
+import { SharedDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
 
 export const loadAusbildungsstaettes = createEffect(
   (
@@ -17,19 +17,19 @@ export const loadAusbildungsstaettes = createEffect(
   ) => {
     return events$.pipe(
       ofType(
-        GesuchAppEventGesuchFormEducation.init,
-        GesuchAppEventGesuchFormLebenslauf.init,
-        GesuchAppEventGesuchFormEinnahmenkosten.init
+        SharedEventGesuchFormEducation.init,
+        SharedEventGesuchFormLebenslauf.init,
+        SharedEventGesuchFormEinnahmenkosten.init
       ),
       switchMap(() =>
         ausbildungsstaetteService.getAusbildungsstaetten$().pipe(
           map((ausbildungsstaettes) =>
-            GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
+            SharedDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
               { ausbildungsstaettes }
             )
           ),
           catchError((error) => [
-            GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure(
+            SharedDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure(
               { error: sharedUtilFnErrorTransformer(error) }
             ),
           ])

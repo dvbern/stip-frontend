@@ -1,1 +1,1 @@
-export * from './lib/gesuch-app-event-gesuch-form-education';
+export * from './lib/shared-event-gesuch-form-education';

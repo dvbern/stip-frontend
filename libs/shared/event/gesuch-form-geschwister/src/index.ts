@@ -1,1 +1,1 @@
-export * from './lib/gesuch-app-event-gesuch-form-geschwister';
+export * from './lib/shared-event-gesuch-form-geschwister';

@@ -1,6 +1,6 @@
-import { selectGesuchAppDataAccessAusbildungsstaettesView } from './shared-data-access-ausbildungsstaette.selectors';
+import { selectSharedDataAccessAusbildungsstaettesView } from './shared-data-access-ausbildungsstaette.selectors';
 
-describe('selectGesuchAppDataAccessAusbildungsstaettesView', () => {
+describe('selectSharedDataAccessAusbildungsstaettesView', () => {
   it('selects view', () => {
     const state = {
       ausbildungsstaettes: [],
@@ -8,7 +8,7 @@ describe('selectGesuchAppDataAccessAusbildungsstaettesView', () => {
       error: undefined,
     };
     const result =
-      selectGesuchAppDataAccessAusbildungsstaettesView.projector(state);
+      selectSharedDataAccessAusbildungsstaettesView.projector(state);
     expect(result).toEqual(state);
   });
 });

@@ -3,14 +3,14 @@ import { getRouterSelectors } from '@ngrx/router-store';
 
 import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
 
-import { gesuchAppDataAccessGesuchsFeature } from './shared-data-access-gesuch.feature';
+import { sharedDataAccessGesuchsFeature } from './shared-data-access-gesuch.feature';
 
 const { selectRouteParam } = getRouterSelectors();
 
 export const selectRouteId = selectRouteParam('id');
 
-export const selectGesuchAppDataAccessGesuchsView = createSelector(
-  gesuchAppDataAccessGesuchsFeature.selectGesuchsState,
+export const selectSharedDataAccessGesuchsView = createSelector(
+  sharedDataAccessGesuchsFeature.selectGesuchsState,
   (state) => {
     return {
       ...state,

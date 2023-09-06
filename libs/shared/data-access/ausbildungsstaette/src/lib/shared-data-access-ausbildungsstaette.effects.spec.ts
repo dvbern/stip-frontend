@@ -1,12 +1,12 @@
 import { TestScheduler } from 'rxjs/testing';
 
-import { GesuchAppEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
+import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
 import { AusbildungsstaetteService } from '@dv/shared/model/gesuch';
 
-import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
+import { SharedDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
 import { loadAusbildungsstaettes } from './shared-data-access-ausbildungsstaette.effects';
 
-describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
+describe('SharedDataAccessAusbildungsgang Effects', () => {
   let scheduler: TestScheduler;
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
       } as unknown as AusbildungsstaetteService;
 
       const eventsMock$ = hot('10ms a', {
-        a: GesuchAppEventGesuchFormEducation.init(),
+        a: SharedEventGesuchFormEducation.init(),
       });
 
       const effectStream$ = loadAusbildungsstaettes(
@@ -31,7 +31,7 @@ describe('GesuchAppDataAccessAusbildungsgang Effects', () => {
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
+        a: SharedDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess(
           { ausbildungsstaettes: [] }
         ),
       });

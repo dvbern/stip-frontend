@@ -3,9 +3,9 @@ import { TestScheduler } from 'rxjs/testing';
 import { GesuchsperiodeService } from '@dv/shared/model/gesuch';
 
 import { loadGesuchsperiodes } from './shared-data-access-gesuchsperiode.effects';
-import { GesuchAppDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
+import { sharedDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
 
-describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
+describe('sharedDataAccessGesuchsperiode Effects', () => {
   let scheduler: TestScheduler;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
       } as unknown as GesuchsperiodeService;
 
       const actionsMock$ = hot('10ms a', {
-        a: GesuchAppDataAccessGesuchsperiodeEvents.init(),
+        a: sharedDataAccessGesuchsperiodeEvents.init(),
       });
 
       const effectStream$ = loadGesuchsperiodes(
@@ -30,9 +30,9 @@ describe('GesuchAppDataAccessGesuchsperiode Effects', () => {
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess(
-          { gesuchsperiodes: [] }
-        ),
+        a: sharedDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess({
+          gesuchsperiodes: [],
+        }),
       });
     });
   });

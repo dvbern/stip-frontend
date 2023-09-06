@@ -7,8 +7,8 @@ export * from './lib/shared-data-access-gesuchsperiode.events';
  * Register only once in core (global state) OR lazy loaded feature (state of feature)
  *
  * providers: [
- *   provideState(gesuchAppDataAccessGesuchsperiodesFeature),
- *   provideEffects(gesuchAppDataAccessGesuchsperiodeEffects)
+ *   provideState(sharedDataAccessGesuchsperiodesFeature),
+ *   provideEffects(sharedDataAccessGesuchsperiodeEffects)
  * ]
  *
  * Search for // TODO and replace placeholder interfaces with real ones from a model lib

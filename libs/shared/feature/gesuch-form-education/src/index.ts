@@ -1,3 +1,3 @@
-export * from './lib/gesuch-app-feature-gesuch-form-education.routes';
+export * from './lib/shared-feature-gesuch-form-education.routes';
 
-export * from './lib/gesuch-app-feature-gesuch-form-education/gesuch-app-feature-gesuch-form-education.component';
+export * from './lib/shared-feature-gesuch-form-education/shared-feature-gesuch-form-education.component';

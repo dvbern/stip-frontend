@@ -1,7 +1,7 @@
 import { State } from './shared-data-access-gesuch.feature';
-import { selectGesuchAppDataAccessGesuchsView } from './shared-data-access-gesuch.selectors';
+import { selectSharedDataAccessGesuchsView } from './shared-data-access-gesuch.selectors';
 
-describe('selectGesuchAppDataAccessGesuchsView', () => {
+describe('selectSharedDataAccessGesuchsView', () => {
   it('selects view', () => {
     const state: State = {
       gesuch: null,
@@ -10,7 +10,7 @@ describe('selectGesuchAppDataAccessGesuchsView', () => {
       loading: false,
       error: undefined,
     };
-    const result = selectGesuchAppDataAccessGesuchsView.projector(state);
+    const result = selectSharedDataAccessGesuchsView.projector(state);
     expect(result.gesuchFormStepsInfo.length).toBeTruthy();
   });
 });

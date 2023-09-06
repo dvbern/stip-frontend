@@ -1,1 +1,1 @@
-export * from './lib/gesuch-app-event-gesuch-form-familiensituation';
+export * from './lib/shared-event-gesuch-form-familiensituation';

@@ -3,8 +3,8 @@ import { provideState } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 
 import {
-  gesuchAppDataAccessGesuchsperiodeEffects,
-  gesuchAppDataAccessGesuchsperiodesFeature,
+  sharedDataAccessGesuchsperiodeEffects,
+  sharedDataAccessGesuchsperiodesFeature,
 } from '@dv/shared/data-access/gesuchsperiode';
 
 import { GesuchAppFeatureCockpitComponent } from './gesuch-app-feature-cockpit/gesuch-app-feature-cockpit.component';
@@ -14,8 +14,8 @@ export const gesuchAppFeatureCockpitRoutes: Route[] = [
     path: '',
     pathMatch: 'prefix',
     providers: [
-      provideState(gesuchAppDataAccessGesuchsperiodesFeature),
-      provideEffects(gesuchAppDataAccessGesuchsperiodeEffects),
+      provideState(sharedDataAccessGesuchsperiodesFeature),
+      provideEffects(sharedDataAccessGesuchsperiodeEffects),
     ],
     children: [
       {

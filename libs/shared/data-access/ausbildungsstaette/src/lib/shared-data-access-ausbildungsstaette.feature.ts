@@ -1,11 +1,11 @@
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
+import { SharedEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
 import { SharedModelError } from '@dv/shared/model/error';
 
-import { GesuchAppEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
+import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
 
-import { GesuchAppDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
+import { SharedDataAccessAusbildungsstaetteApiEvents } from './shared-data-access-ausbildungsstaette.events';
 import { Ausbildungsstaette } from '@dv/shared/model/gesuch';
 
 export interface State {
@@ -26,8 +26,8 @@ export const gesuchAppDataAccessAusbildungsstaettesFeature = createFeature({
     initialState,
 
     on(
-      GesuchAppEventGesuchFormEducation.init,
-      GesuchAppEventGesuchFormLebenslauf.init,
+      SharedEventGesuchFormEducation.init,
+      SharedEventGesuchFormLebenslauf.init,
       (state): State => ({
         ...state,
         loading: true,
@@ -36,7 +36,7 @@ export const gesuchAppDataAccessAusbildungsstaettesFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess,
+      SharedDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedSuccess,
       (state, { ausbildungsstaettes }): State => ({
         ...state,
         ausbildungsstaettes: ausbildungsstaettes,
@@ -45,7 +45,7 @@ export const gesuchAppDataAccessAusbildungsstaettesFeature = createFeature({
       })
     ),
     on(
-      GesuchAppDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure,
+      SharedDataAccessAusbildungsstaetteApiEvents.ausbildungsstaettesLoadedFailure,
       // add other failure events here (if handled the same way)
       (state, { error }): State => ({
         ...state,

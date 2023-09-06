@@ -4,7 +4,7 @@ import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 import { GesuchCreate, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { SharedModelError } from '@dv/shared/model/error';
 
-export const GesuchAppDataAccessGesuchEvents = createActionGroup({
+export const sharedDataAccessGesuchEvents = createActionGroup({
   source: 'Gesuch API',
   events: {
     init: emptyProps(),

@@ -12,25 +12,25 @@ import {
   tap,
 } from 'rxjs';
 
-import { GesuchAppEventGesuchFormGeschwister } from '@dv/shared/event/gesuch-form-geschwister';
-import { GesuchAppEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
-import { GesuchAppEventGesuchFormAuszahlung } from '@dv/shared/event/gesuch-form-auszahlung';
-import { GesuchAppEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
-import { GesuchAppEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
-import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
+import { SharedEventGesuchFormGeschwister } from '@dv/shared/event/gesuch-form-geschwister';
+import { SharedEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
+import { SharedEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
+import { SharedEventGesuchFormAuszahlung } from '@dv/shared/event/gesuch-form-auszahlung';
+import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
+import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
+import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
 import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
-import { GesuchAppEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
-import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
+import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
+import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
-import { GesuchAppEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
+import { SharedEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
 import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 
 import { selectRouteId } from './shared-data-access-gesuch.selectors';
-import { GesuchAppDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
+import { sharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
 export const loadGesuchs = createEffect(
   (
@@ -40,20 +40,20 @@ export const loadGesuchs = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppDataAccessGesuchEvents.init,
-        GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess
+        sharedDataAccessGesuchEvents.init,
+        sharedDataAccessGesuchEvents.gesuchRemovedSuccess
       ),
       switchMap(() => store.select(selectCurrentBenutzer)),
       filter(sharedUtilFnTypeGuardsIsDefined),
       concatMap((benutzer) =>
         gesuchService.getGesucheForBenutzer$({ benutzerId: benutzer.id }).pipe(
           map((gesuchs) =>
-            GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess({
+            sharedDataAccessGesuchEvents.gesuchsLoadedSuccess({
               gesuchs,
             })
           ),
           catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure({
+            sharedDataAccessGesuchEvents.gesuchsLoadedFailure({
               error: sharedUtilFnErrorTransformer(error),
             }),
           ])
@@ -72,16 +72,16 @@ export const loadGesuch = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppEventGesuchFormPartner.init,
-        GesuchAppEventGesuchFormPerson.init,
-        GesuchAppEventGesuchFormEducation.init,
-        GesuchAppEventGesuchFormEltern.init,
-        GesuchAppEventGesuchFormFamiliensituation.init,
-        GesuchAppEventGesuchFormAuszahlung.init,
-        GesuchAppEventGesuchFormGeschwister.init,
-        GesuchAppEventGesuchFormKinder.init,
-        GesuchAppEventGesuchFormLebenslauf.init,
-        GesuchAppEventGesuchFormEinnahmenkosten.init
+        SharedEventGesuchFormPartner.init,
+        SharedEventGesuchFormPerson.init,
+        SharedEventGesuchFormEducation.init,
+        SharedEventGesuchFormEltern.init,
+        SharedEventGesuchFormFamiliensituation.init,
+        SharedEventGesuchFormAuszahlung.init,
+        SharedEventGesuchFormGeschwister.init,
+        SharedEventGesuchFormKinder.init,
+        SharedEventGesuchFormLebenslauf.init,
+        SharedEventGesuchFormEinnahmenkosten.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -92,10 +92,10 @@ export const loadGesuch = createEffect(
         }
         return gesuchService.getGesuch$({ gesuchId: id }).pipe(
           map((gesuch) =>
-            GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess({ gesuch })
+            sharedDataAccessGesuchEvents.gesuchLoadedSuccess({ gesuch })
           ),
           catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure({
+            sharedDataAccessGesuchEvents.gesuchLoadedFailure({
               error: sharedUtilFnErrorTransformer(error),
             }),
           ])
@@ -109,7 +109,7 @@ export const loadGesuch = createEffect(
 export const createGesuch = createEffect(
   (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchEvents.newTriggered),
+      ofType(sharedDataAccessGesuchEvents.newTriggered),
       exhaustMap(({ create }) =>
         gesuchService.createGesuch$({ gesuchCreate: create }).pipe(
           switchMap(() =>
@@ -125,12 +125,12 @@ export const createGesuch = createEffect(
           ),
           filter(sharedUtilFnTypeGuardsIsDefined),
           map((id) =>
-            GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess({
+            sharedDataAccessGesuchEvents.gesuchCreatedSuccess({
               id,
             })
           ),
           catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure({
+            sharedDataAccessGesuchEvents.gesuchCreatedFailure({
               error: sharedUtilFnErrorTransformer(error),
             }),
           ])
@@ -145,12 +145,12 @@ export const updateGesuch = createEffect(
   (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(
-        GesuchAppEventGesuchFormPartner.nextStepTriggered,
-        GesuchAppEventGesuchFormPerson.saveTriggered,
-        GesuchAppEventGesuchFormEducation.saveTriggered,
-        GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-        GesuchAppEventGesuchFormAuszahlung.saveTriggered,
-        GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered
+        SharedEventGesuchFormPartner.nextStepTriggered,
+        SharedEventGesuchFormPerson.saveTriggered,
+        SharedEventGesuchFormEducation.saveTriggered,
+        SharedEventGesuchFormFamiliensituation.saveTriggered,
+        SharedEventGesuchFormAuszahlung.saveTriggered,
+        SharedEventGesuchFormEinnahmenkosten.saveTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
         return gesuchService
@@ -160,13 +160,13 @@ export const updateGesuch = createEffect(
           })
           .pipe(
             map(() =>
-              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess({
+              sharedDataAccessGesuchEvents.gesuchUpdatedSuccess({
                 id: gesuchId,
                 origin,
               })
             ),
             catchError((error) => [
-              GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure({
+              sharedDataAccessGesuchEvents.gesuchUpdatedFailure({
                 error: sharedUtilFnErrorTransformer(error),
               }),
             ])
@@ -181,10 +181,10 @@ export const updateGesuchSubform = createEffect(
   (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
       ofType(
-        GesuchAppEventGesuchFormEltern.saveSubformTriggered,
-        GesuchAppEventGesuchFormGeschwister.saveSubformTriggered,
-        GesuchAppEventGesuchFormKinder.saveSubformTriggered,
-        GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered
+        SharedEventGesuchFormEltern.saveSubformTriggered,
+        SharedEventGesuchFormGeschwister.saveSubformTriggered,
+        SharedEventGesuchFormKinder.saveSubformTriggered,
+        SharedEventGesuchFormLebenslauf.saveSubformTriggered
       ),
       concatMap(({ gesuchId, gesuchFormular, origin }) => {
         return gesuchService
@@ -194,13 +194,13 @@ export const updateGesuchSubform = createEffect(
           })
           .pipe(
             map(() =>
-              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
+              sharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess({
                 id: gesuchId,
                 origin,
               })
             ),
             catchError((error) => [
-              GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
+              sharedDataAccessGesuchEvents.gesuchUpdatedSubformFailure({
                 error: sharedUtilFnErrorTransformer(error),
               }),
             ])
@@ -214,12 +214,12 @@ export const updateGesuchSubform = createEffect(
 export const removeGesuch = createEffect(
   (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchEvents.removeTriggered),
+      ofType(sharedDataAccessGesuchEvents.removeTriggered),
       concatMap(({ id }) =>
         gesuchService.deleteGesuch$({ gesuchId: id }).pipe(
-          map(() => GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess()),
+          map(() => sharedDataAccessGesuchEvents.gesuchRemovedSuccess()),
           catchError((error) => [
-            GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure({
+            sharedDataAccessGesuchEvents.gesuchRemovedFailure({
               error: sharedUtilFnErrorTransformer(error),
             }),
           ])
@@ -233,7 +233,7 @@ export const removeGesuch = createEffect(
 export const redirectToGesuchForm = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchEvents.gesuchCreatedSuccess),
+      ofType(sharedDataAccessGesuchEvents.gesuchCreatedSuccess),
       tap(({ id }) => {
         router.navigate([GesuchFormSteps.PERSON.route, id]);
       })
@@ -250,11 +250,11 @@ export const redirectToGesuchFormNextStep = createEffect(
   ) => {
     return actions$.pipe(
       ofType(
-        GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
-        GesuchAppEventGesuchFormEltern.nextTriggered,
-        GesuchAppEventGesuchFormGeschwister.nextTriggered,
-        GesuchAppEventGesuchFormKinder.nextTriggered,
-        GesuchAppEventGesuchFormLebenslauf.nextTriggered
+        sharedDataAccessGesuchEvents.gesuchUpdatedSuccess,
+        SharedEventGesuchFormEltern.nextTriggered,
+        SharedEventGesuchFormGeschwister.nextTriggered,
+        SharedEventGesuchFormKinder.nextTriggered,
+        SharedEventGesuchFormLebenslauf.nextTriggered
       ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);
@@ -268,7 +268,7 @@ export const redirectToGesuchFormNextStep = createEffect(
 export const refreshGesuchFormStep = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess),
+      ofType(sharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess),
       tap(({ id, origin }) => {
         router.navigate([origin.route, id]);
       })
@@ -278,7 +278,7 @@ export const refreshGesuchFormStep = createEffect(
 );
 
 // add effects here
-export const gesuchAppDataAccessGesuchEffects = {
+export const sharedDataAccessGesuchEffects = {
   loadGesuchs,
   loadGesuch,
   createGesuch,

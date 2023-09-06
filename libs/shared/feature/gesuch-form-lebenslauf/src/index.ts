@@ -1,3 +1,3 @@
-export * from './lib/gesuch-app-feature-gesuch-form-lebenslauf.routes';
+export * from './lib/shared-feature-gesuch-form-lebenslauf.routes';
 
-export * from './lib/gesuch-app-feature-gesuch-form-lebenslauf/gesuch-app-feature-gesuch-form-lebenslauf.component';
+export * from './lib/shared-feature-gesuch-form-lebenslauf/shared-feature-gesuch-form-lebenslauf.component';

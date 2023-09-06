@@ -1,1 +1,1 @@
-export * from './lib/gesuch-app-event-gesuch-form-auszahlung';
+export * from './lib/shared-event-gesuch-form-auszahlung';

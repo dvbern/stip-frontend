@@ -1,10 +1,10 @@
 import { GesuchsperiodeSemester } from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 import { format, getMonth } from 'date-fns';
-import { gesuchAppDataAccessGesuchsperiodesFeature } from './shared-data-access-gesuchsperiode.feature';
+import { sharedDataAccessGesuchsperiodesFeature } from './shared-data-access-gesuchsperiode.feature';
 
-export const selectGesuchAppDataAccessGesuchsperiodesView = createSelector(
-  gesuchAppDataAccessGesuchsperiodesFeature.selectGesuchsperiodesState,
+export const selectSharedDataAccessGesuchsperiodesView = createSelector(
+  sharedDataAccessGesuchsperiodesFeature.selectGesuchsperiodesState,
   (state) => ({
     ...state,
     gesuchsperiodes: state.gesuchsperiodes.map((p) => ({

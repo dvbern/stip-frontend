@@ -1,14 +1,13 @@
-import { selectGesuchAppDataAccessGesuchsperiodesView } from './shared-data-access-gesuchsperiode.selectors';
+import { selectSharedDataAccessGesuchsperiodesView } from './shared-data-access-gesuchsperiode.selectors';
 
-describe('selectGesuchAppDataAccessGesuchsperiodesView', () => {
+describe('selectSharedDataAccessGesuchsperiodesView', () => {
   it('selects view', () => {
     const state = {
       gesuchsperiodes: [],
       loading: false,
       error: undefined,
     };
-    const result =
-      selectGesuchAppDataAccessGesuchsperiodesView.projector(state);
+    const result = selectSharedDataAccessGesuchsperiodesView.projector(state);
     expect(result).toEqual(state);
   });
 });

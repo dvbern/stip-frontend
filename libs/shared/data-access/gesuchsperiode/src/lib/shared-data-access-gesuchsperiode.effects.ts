@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { GesuchsperiodeService } from '@dv/shared/model/gesuch';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 
-import { GesuchAppDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
+import { sharedDataAccessGesuchsperiodeEvents } from './shared-data-access-gesuchsperiode.events';
 
 export const loadGesuchsperiodes = createEffect(
   (
@@ -13,18 +13,18 @@ export const loadGesuchsperiodes = createEffect(
     gesuchsperiodeService = inject(GesuchsperiodeService)
   ) => {
     return actions$.pipe(
-      ofType(GesuchAppDataAccessGesuchsperiodeEvents.init),
+      ofType(sharedDataAccessGesuchsperiodeEvents.init),
       switchMap(() =>
         gesuchsperiodeService.getGesuchsperioden$().pipe(
           map((gesuchsperiodes) =>
-            GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess(
-              { gesuchsperiodes }
-            )
+            sharedDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedSuccess({
+              gesuchsperiodes,
+            })
           ),
           catchError((error) => [
-            GesuchAppDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure(
-              { error: sharedUtilFnErrorTransformer(error) }
-            ),
+            sharedDataAccessGesuchsperiodeEvents.gesuchsperiodesLoadedFailure({
+              error: sharedUtilFnErrorTransformer(error),
+            }),
           ])
         )
       )
@@ -34,4 +34,4 @@ export const loadGesuchsperiodes = createEffect(
 );
 
 // add effects here
-export const gesuchAppDataAccessGesuchsperiodeEffects = { loadGesuchsperiodes };
+export const sharedDataAccessGesuchsperiodeEffects = { loadGesuchsperiodes };

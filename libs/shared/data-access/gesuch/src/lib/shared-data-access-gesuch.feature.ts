@@ -1,20 +1,20 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
-import { GesuchAppEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
-import { GesuchAppEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
-import { GesuchAppEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
-import { GesuchAppEventGesuchFormGeschwister } from '@dv/shared/event/gesuch-form-geschwister';
-import { GesuchAppEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
-import { GesuchAppEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
-import { GesuchAppEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
+import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
+import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
+import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
+import { SharedEventGesuchFormGeschwister } from '@dv/shared/event/gesuch-form-geschwister';
+import { SharedEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
+import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
+import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { SharedModelError } from '@dv/shared/model/error';
 import {
   SharedModelGesuch,
   SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
-import { GesuchAppEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
+import { SharedEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
 
-import { GesuchAppDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
+import { sharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
 export interface State {
   gesuch: SharedModelGesuch | null;
@@ -32,13 +32,13 @@ const initialState: State = {
   error: undefined,
 };
 
-export const gesuchAppDataAccessGesuchsFeature = createFeature({
+export const sharedDataAccessGesuchsFeature = createFeature({
   name: 'gesuchs',
   reducer: createReducer(
     initialState,
 
     on(
-      GesuchAppDataAccessGesuchEvents.init,
+      sharedDataAccessGesuchEvents.init,
       (state): State => ({
         ...state,
         gesuchs: [],
@@ -46,15 +46,15 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.init,
-      GesuchAppEventGesuchFormPerson.init,
-      GesuchAppEventGesuchFormEducation.init,
-      GesuchAppEventGesuchFormFamiliensituation.init,
-      GesuchAppEventGesuchFormEltern.init,
-      GesuchAppEventGesuchFormGeschwister.init,
-      GesuchAppEventGesuchFormKinder.init,
-      GesuchAppEventGesuchFormLebenslauf.init,
-      GesuchAppEventGesuchFormEinnahmenkosten.init,
+      sharedDataAccessGesuchEvents.init,
+      SharedEventGesuchFormPerson.init,
+      SharedEventGesuchFormEducation.init,
+      SharedEventGesuchFormFamiliensituation.init,
+      SharedEventGesuchFormEltern.init,
+      SharedEventGesuchFormGeschwister.init,
+      SharedEventGesuchFormKinder.init,
+      SharedEventGesuchFormLebenslauf.init,
+      SharedEventGesuchFormEinnahmenkosten.init,
       (state): State => ({
         ...state,
         gesuch: null,
@@ -64,18 +64,18 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.removeTriggered,
-      GesuchAppEventGesuchFormPerson.saveTriggered,
-      GesuchAppEventGesuchFormEducation.saveTriggered,
-      GesuchAppEventGesuchFormFamiliensituation.saveTriggered,
-      GesuchAppEventGesuchFormEltern.saveTriggered,
-      GesuchAppEventGesuchFormEltern.saveSubformTriggered,
-      GesuchAppEventGesuchFormGeschwister.saveTriggered,
-      GesuchAppEventGesuchFormKinder.saveTriggered,
-      GesuchAppEventGesuchFormKinder.saveSubformTriggered,
-      GesuchAppEventGesuchFormLebenslauf.saveTriggered,
-      GesuchAppEventGesuchFormLebenslauf.saveSubformTriggered,
-      GesuchAppEventGesuchFormEinnahmenkosten.saveTriggered,
+      sharedDataAccessGesuchEvents.removeTriggered,
+      SharedEventGesuchFormPerson.saveTriggered,
+      SharedEventGesuchFormEducation.saveTriggered,
+      SharedEventGesuchFormFamiliensituation.saveTriggered,
+      SharedEventGesuchFormEltern.saveTriggered,
+      SharedEventGesuchFormEltern.saveSubformTriggered,
+      SharedEventGesuchFormGeschwister.saveTriggered,
+      SharedEventGesuchFormKinder.saveTriggered,
+      SharedEventGesuchFormKinder.saveSubformTriggered,
+      SharedEventGesuchFormLebenslauf.saveTriggered,
+      SharedEventGesuchFormLebenslauf.saveSubformTriggered,
+      SharedEventGesuchFormEinnahmenkosten.saveTriggered,
       (state): State => ({
         ...state,
         loading: true,
@@ -83,7 +83,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppEventGesuchFormGeschwister.saveSubformTriggered,
+      SharedEventGesuchFormGeschwister.saveSubformTriggered,
       (state): State => ({
         ...state,
         loading: true,
@@ -97,7 +97,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.gesuchsLoadedSuccess,
+      sharedDataAccessGesuchEvents.gesuchsLoadedSuccess,
       (state, { gesuchs }): State => ({
         ...state,
         gesuchs,
@@ -107,7 +107,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.gesuchLoadedSuccess,
+      sharedDataAccessGesuchEvents.gesuchLoadedSuccess,
       (state, { gesuch }): State => ({
         ...state,
         gesuch,
@@ -118,8 +118,8 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSuccess,
-      GesuchAppDataAccessGesuchEvents.gesuchRemovedSuccess,
+      sharedDataAccessGesuchEvents.gesuchUpdatedSuccess,
+      sharedDataAccessGesuchEvents.gesuchRemovedSuccess,
       (state): State => ({
         ...state,
         loading: false,
@@ -128,7 +128,7 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
+      sharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
       (state): State => ({
         ...state,
         error: undefined,
@@ -136,12 +136,12 @@ export const gesuchAppDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      GesuchAppDataAccessGesuchEvents.gesuchsLoadedFailure,
-      GesuchAppDataAccessGesuchEvents.gesuchLoadedFailure,
-      GesuchAppDataAccessGesuchEvents.gesuchCreatedFailure,
-      GesuchAppDataAccessGesuchEvents.gesuchUpdatedFailure,
-      GesuchAppDataAccessGesuchEvents.gesuchUpdatedSubformFailure,
-      GesuchAppDataAccessGesuchEvents.gesuchRemovedFailure,
+      sharedDataAccessGesuchEvents.gesuchsLoadedFailure,
+      sharedDataAccessGesuchEvents.gesuchLoadedFailure,
+      sharedDataAccessGesuchEvents.gesuchCreatedFailure,
+      sharedDataAccessGesuchEvents.gesuchUpdatedFailure,
+      sharedDataAccessGesuchEvents.gesuchUpdatedSubformFailure,
+      sharedDataAccessGesuchEvents.gesuchRemovedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,
@@ -160,7 +160,7 @@ export const {
   selectGesuchs,
   selectLoading,
   selectError,
-} = gesuchAppDataAccessGesuchsFeature;
+} = sharedDataAccessGesuchsFeature;
 
 const getGesuchFormular = (
   gesuch: SharedModelGesuch
