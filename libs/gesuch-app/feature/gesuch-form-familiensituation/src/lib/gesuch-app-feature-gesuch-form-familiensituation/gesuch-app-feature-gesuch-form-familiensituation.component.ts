@@ -59,7 +59,7 @@ import {
 import {
   FamiliensituationFormStep,
   FamiliensituationFormSteps,
-} from './FamiliensituationFormSteps';
+} from './familiensituation-form-steps';
 
 type FamSitStepMeta = {
   [P in keyof FamiliensituationFormSteps]?: FamSitAnimationState;
@@ -340,13 +340,13 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           mutterVerstorbenUnbekanntSig() ===
             ElternAbwesenheitsGrund.VERSTORBEN ||
           mutterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.UNBEKANNT;
-        const elternAnwesend = elternteilUnbekanntVerstorbenSig() === false;
+        const keinElternTeilUnbekanntVerstorben =
+          elternteilUnbekanntVerstorbenSig() === false;
 
         const showVaterVerheiratedFrage =
+          keinElternTeilUnbekanntVerstorben ||
           zahltMutterAlimente ||
-          (mutterVerstorbenOderUnbekannt &&
-            vaterWederVerstorbenNochUnbekannt) ||
-          elternAnwesend;
+          (mutterVerstorbenOderUnbekannt && vaterWederVerstorbenNochUnbekannt);
 
         this.formUtils.setDisabledState(
           vaterWiederverheiratet,
@@ -367,13 +367,13 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
           vaterVerstorbenUnbekanntSig() ===
             ElternAbwesenheitsGrund.VERSTORBEN ||
           vaterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.UNBEKANNT;
-        const elternAnwesend = elternteilUnbekanntVerstorbenSig() === false;
+        const keinElternTeilUnbekanntVerstorben =
+          elternteilUnbekanntVerstorbenSig() === false;
 
         const showMutterVerheiratedFrage =
+          keinElternTeilUnbekanntVerstorben ||
           zahltVaterAlimente ||
-          (vaterVerstorbenOderUnbekannt &&
-            mutterWederVerstorbenNochUnbekannt) ||
-          elternAnwesend;
+          (vaterVerstorbenOderUnbekannt && mutterWederVerstorbenNochUnbekannt);
 
         this.formUtils.setDisabledState(
           mutterWiederverheiratet,
