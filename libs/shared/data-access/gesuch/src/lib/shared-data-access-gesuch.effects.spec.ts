@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { GesuchService } from '@dv/shared/model/gesuch';
 
 import { loadGesuchs } from './shared-data-access-gesuch.effects';
-import { sharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
+import { SharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
 describe('sharedDataAccessGesuch Effects', () => {
   let scheduler: TestScheduler;
@@ -25,7 +25,7 @@ describe('sharedDataAccessGesuch Effects', () => {
       } as unknown as Store;
 
       const actionsMock$ = hot('10ms a', {
-        a: sharedDataAccessGesuchEvents.init(),
+        a: SharedDataAccessGesuchEvents.init(),
       });
 
       const effectStream$ = loadGesuchs(
@@ -35,7 +35,7 @@ describe('sharedDataAccessGesuch Effects', () => {
       );
 
       expectObservable(effectStream$).toBe('160ms a', {
-        a: sharedDataAccessGesuchEvents.gesuchsLoadedSuccess({
+        a: SharedDataAccessGesuchEvents.gesuchsLoadedSuccess({
           gesuchs: [],
         }),
       });

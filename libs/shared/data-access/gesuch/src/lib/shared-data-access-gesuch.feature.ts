@@ -14,7 +14,7 @@ import {
 } from '@dv/shared/model/gesuch';
 import { SharedEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
 
-import { sharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
+import { SharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
 export interface State {
   gesuch: SharedModelGesuch | null;
@@ -38,7 +38,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     initialState,
 
     on(
-      sharedDataAccessGesuchEvents.init,
+      SharedDataAccessGesuchEvents.init,
       (state): State => ({
         ...state,
         gesuchs: [],
@@ -46,7 +46,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.init,
+      SharedDataAccessGesuchEvents.init,
       SharedEventGesuchFormPerson.init,
       SharedEventGesuchFormEducation.init,
       SharedEventGesuchFormFamiliensituation.init,
@@ -64,7 +64,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.removeTriggered,
+      SharedDataAccessGesuchEvents.removeTriggered,
       SharedEventGesuchFormPerson.saveTriggered,
       SharedEventGesuchFormEducation.saveTriggered,
       SharedEventGesuchFormFamiliensituation.saveTriggered,
@@ -97,7 +97,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.gesuchsLoadedSuccess,
+      SharedDataAccessGesuchEvents.gesuchsLoadedSuccess,
       (state, { gesuchs }): State => ({
         ...state,
         gesuchs,
@@ -107,7 +107,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.gesuchLoadedSuccess,
+      SharedDataAccessGesuchEvents.gesuchLoadedSuccess,
       (state, { gesuch }): State => ({
         ...state,
         gesuch,
@@ -118,8 +118,8 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.gesuchUpdatedSuccess,
-      sharedDataAccessGesuchEvents.gesuchRemovedSuccess,
+      SharedDataAccessGesuchEvents.gesuchUpdatedSuccess,
+      SharedDataAccessGesuchEvents.gesuchRemovedSuccess,
       (state): State => ({
         ...state,
         loading: false,
@@ -128,7 +128,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
+      SharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess,
       (state): State => ({
         ...state,
         error: undefined,
@@ -136,12 +136,12 @@ export const sharedDataAccessGesuchsFeature = createFeature({
     ),
 
     on(
-      sharedDataAccessGesuchEvents.gesuchsLoadedFailure,
-      sharedDataAccessGesuchEvents.gesuchLoadedFailure,
-      sharedDataAccessGesuchEvents.gesuchCreatedFailure,
-      sharedDataAccessGesuchEvents.gesuchUpdatedFailure,
-      sharedDataAccessGesuchEvents.gesuchUpdatedSubformFailure,
-      sharedDataAccessGesuchEvents.gesuchRemovedFailure,
+      SharedDataAccessGesuchEvents.gesuchsLoadedFailure,
+      SharedDataAccessGesuchEvents.gesuchLoadedFailure,
+      SharedDataAccessGesuchEvents.gesuchCreatedFailure,
+      SharedDataAccessGesuchEvents.gesuchUpdatedFailure,
+      SharedDataAccessGesuchEvents.gesuchUpdatedSubformFailure,
+      SharedDataAccessGesuchEvents.gesuchRemovedFailure,
       // add other failure actions here (if handled the same way)
       (state, { error }): State => ({
         ...state,

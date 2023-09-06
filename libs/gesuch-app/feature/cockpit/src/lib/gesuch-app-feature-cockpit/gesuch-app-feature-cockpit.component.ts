@@ -24,7 +24,7 @@ import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
 import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
-import { sharedDataAccessGesuchEvents } from '@dv/shared/data-access/gesuch';
+import { SharedDataAccessGesuchEvents } from '@dv/shared/data-access/gesuch';
 import { sharedDataAccessGesuchsperiodeEvents } from '@dv/shared/data-access/gesuchsperiode';
 
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
@@ -92,13 +92,13 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(GesuchAppEventCockpit.init());
-    this.store.dispatch(sharedDataAccessGesuchEvents.init());
+    this.store.dispatch(SharedDataAccessGesuchEvents.init());
     this.store.dispatch(sharedDataAccessGesuchsperiodeEvents.init());
   }
 
   handleCreate(periode: Gesuchsperiode, fallId: string) {
     this.store.dispatch(
-      sharedDataAccessGesuchEvents.newTriggered({
+      SharedDataAccessGesuchEvents.newTriggered({
         create: {
           fallId,
           gesuchsperiodeId: periode.id,
@@ -108,7 +108,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   }
 
   handleRemove(id: string) {
-    this.store.dispatch(sharedDataAccessGesuchEvents.removeTriggered({ id }));
+    this.store.dispatch(SharedDataAccessGesuchEvents.removeTriggered({ id }));
   }
 
   trackByPerioden(
