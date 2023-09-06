@@ -28,6 +28,6 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["type:e2e", "scope:gesuch-app"],
   "implicitDependencies": ["gesuch-app"]
 }

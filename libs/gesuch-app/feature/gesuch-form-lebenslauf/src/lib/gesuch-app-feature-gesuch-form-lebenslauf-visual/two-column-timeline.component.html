@@ -61,7 +61,11 @@
     </ng-container>
 
     <!-- gap -->
-    <div *ngIf="isTimelineGapBlock(item)" class="position-relative">
+    <div
+      *ngIf="isTimelineGapBlock(item)"
+      class="position-relative"
+      data-testid="timeline-gap-block"
+    >
       <div class="hide-on-hover">
         <h5>Fehlende Einträge</h5>
         <small>{{
