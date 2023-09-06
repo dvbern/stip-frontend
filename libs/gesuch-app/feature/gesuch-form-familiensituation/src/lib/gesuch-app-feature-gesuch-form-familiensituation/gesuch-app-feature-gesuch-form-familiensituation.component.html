@@ -17,21 +17,12 @@
     *ngIf="!view().loading"
     (ngSubmit)="handleSave()"
   >
-    <div class="stepper-navigation">
-      <i
-        class="material-symbols-rounded title-icon"
-        *ngIf="hasPreviousStep()"
-        (click)="goPreviousStep()"
-        >west</i
-      >
-      <div class="flex-grow-1"></div>
-      <i
-        class="material-symbols-rounded title-icon"
-        *ngIf="hasNextStep()"
-        (click)="goNextStep()"
-        >east</i
-      >
-    </div>
+    <dv-gesuch-app-ui-stepper-navigation
+      [nextStepVisible]="hasNextStep()"
+      [prevStepVisible]="hasPreviousStep()"
+      (nextStep)="goNextStep()"
+      (prevStep)="goPreviousStep()"
+    ></dv-gesuch-app-ui-stepper-navigation>
     <div class="questions-wrapper">
       <div
         class="row g-4 mt-3"

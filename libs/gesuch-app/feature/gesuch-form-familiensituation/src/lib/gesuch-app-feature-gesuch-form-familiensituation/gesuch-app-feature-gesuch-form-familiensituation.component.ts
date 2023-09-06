@@ -27,6 +27,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { GesuchAppUiStepperNavigationComponent } from '@dv/gesuch-app/ui/stepper-navigation';
 import { MaskitoModule } from '@maskito/angular';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -85,6 +86,7 @@ const animationTime = 500;
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiPercentageSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
+    GesuchAppUiStepperNavigationComponent,
   ],
   templateUrl:
     './gesuch-app-feature-gesuch-form-familiensituation.component.html',

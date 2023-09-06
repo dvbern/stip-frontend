@@ -19,14 +19,3 @@ dv-gesuch-app-ui-step-form-buttons {
 form {
   overflow: hidden;
 }
-
-.stepper-navigation {
-  display: flex;
-  justify-content: center;
-  min-height: 1.5rem;
-
-  & > *:not(.flex-grow-1) {
-    cursor: pointer;
-    flex: 0 0 auto;
-  }
-}

@@ -48,6 +48,7 @@
       "@dv/gesuch-app/pattern/main-layout": ["libs/gesuch-app/pattern/main-layout/src/index.ts"],
       "@dv/gesuch-app/pattern/step-head-mobile": ["libs/gesuch-app/pattern/step-head-mobile/src/index.ts"],
       "@dv/gesuch-app/ui/step-form-buttons": ["libs/gesuch-app/ui/step-form-buttons/src/index.ts"],
+      "@dv/gesuch-app/ui/stepper-navigation": ["libs/gesuch-app/ui/stepper-navigation/src/index.ts"],
       "@dv/gesuch-app/util-fn/gesuch-util": ["libs/gesuch-app/util-fn/gesuch-util/src/index.ts"],
       "@dv/gesuch-app/util/gesuch-form-step-manager": ["libs/gesuch-app/util/gesuch-form-step-manager/src/index.ts"],
       "@dv/shared/data-access/benutzer": ["libs/shared/data-access/benutzer/src/index.ts"],
