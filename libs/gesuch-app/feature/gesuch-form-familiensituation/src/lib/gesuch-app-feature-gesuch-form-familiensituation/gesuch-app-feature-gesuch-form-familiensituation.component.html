@@ -17,18 +17,19 @@
     *ngIf="!view().loading"
     (ngSubmit)="handleSave()"
   >
-    <div class="fam-stepper-navigation">
+    <div class="stepper-navigation">
       <i
         class="material-symbols-rounded title-icon"
         *ngIf="hasPreviousStep()"
         (click)="goPreviousStep()"
-        >arrow_back</i
+        >west</i
       >
+      <div class="flex-grow-1"></div>
       <i
         class="material-symbols-rounded title-icon"
         *ngIf="hasNextStep()"
         (click)="goNextStep()"
-        >arrow_forward</i
+        >east</i
       >
     </div>
     <div class="questions-wrapper">
