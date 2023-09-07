@@ -16,6 +16,7 @@ import { mount } from 'cypress/angular';
 
 // Import commands.ts using ES2015 syntax:
 import './commands';
+import '@cypress/code-coverage/support';
 
 // add component testing only related command here, such as mount
 declare global {
