@@ -383,6 +383,46 @@ and then start e2e tests in GUI mode with `npm run e2e:gesuch-app:open` which wi
 > component selectors, classes or other attributes. This way we can make sure that tests are not
 > brittle and will not break when we change the component structure or styling.
 
+### Component tests
+
+Generate a new test for a library:
+
+```bash
+nx g @nx/angular:cypress-component-configuration --project=your-project --build-target=your-build-configuration:build
+```
+
+where your-project is the project name of your library and your-build-configuration is the chosen
+[build target](https://angular.io/guide/build) build target, e.g. "gesuch-app:build"
+This generates the cypress files with the necessary configurations. If you don't need the
+[fixtures folder](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Fixture-Files),
+you can remove it manually.
+
+You then have to make the following adaptions to enable code coverage:
+
+```typescript
+// cypress/support/component.ts
+// add line
+import '@cypress/code-coverage/support';
+```
+
+```typescript
+// cypress.config.ts
+// replace
+import task from '@cypress/code-coverage/task';
+import { nxComponentTestingPreset } from '@nx/angular/plugins/component-testing';
+import { defineConfig } from 'cypress';
+
+export default defineConfig({
+  component: {
+    ...nxComponentTestingPreset(__filename),
+    setupNodeEvents(on, config) {
+      task(on, config);
+      return config;
+    },
+  },
+});
+```
+
 ## Troubleshooting
 
 NX monorepo is a great piece of technology, but it is not perfect. Even though caching leads to great performance
