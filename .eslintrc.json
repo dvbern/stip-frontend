@@ -111,7 +111,11 @@
               },
               {
                 "sourceTag": "type:e2e",
-                "onlyDependOnLibsWithTags": []
+                "onlyDependOnLibsWithTags": [
+                  "type:util",
+                  "type:util-fn",
+                  "type:model"
+                ]
               },
               {
                 "sourceTag": "type:styles",
