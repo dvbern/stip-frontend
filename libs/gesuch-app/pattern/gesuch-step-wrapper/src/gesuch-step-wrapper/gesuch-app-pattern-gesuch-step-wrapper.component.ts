@@ -23,9 +23,9 @@ import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/patter
 })
 export class GesuchAppPatternGesuchStepWrapperComponent {
   @ViewChild('outlet', { read: RouterOutlet, static: true })
-  public outlet!: RouterOutlet;
-  public activated$ = new EventEmitter();
-  public step$ = this.activated$.pipe(
+  outlet!: RouterOutlet;
+  activated$ = new EventEmitter();
+  step$ = this.activated$.pipe(
     map(() => this.outlet.activatedRoute.snapshot.data['step'])
   );
 }
