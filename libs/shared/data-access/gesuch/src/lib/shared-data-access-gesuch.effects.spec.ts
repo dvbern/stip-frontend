@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { GesuchService } from '@dv/shared/model/gesuch';
 
-import { loadGesuchs } from './shared-data-access-gesuch.effects';
+import { loadOwnGesuchs } from './shared-data-access-gesuch.effects';
 import { SharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
 describe('sharedDataAccessGesuch Effects', () => {
@@ -28,7 +28,7 @@ describe('sharedDataAccessGesuch Effects', () => {
         a: SharedDataAccessGesuchEvents.init(),
       });
 
-      const effectStream$ = loadGesuchs(
+      const effectStream$ = loadOwnGesuchs(
         actionsMock$,
         gesuchStoreMock,
         gesuchServiceMock

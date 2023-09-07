@@ -2,16 +2,4 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-
-  main {
-    margin-top: 109px;
-
-    // small screens: header not sticky
-    // TODO import breakpoint instead of hardcoding it
-    @media screen and (max-width: 992px) {
-      margin-top: 0;
-    }
-
-    flex: 1;
-  }
 }

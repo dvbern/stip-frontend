@@ -1,31 +1,21 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
+import { SharedUiGesuchStepWrapperComponent } from '@dv/shared/ui/gesuch-step-wrapper';
+import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 
 @Component({
   selector: 'dv-gesuch-app-pattern-gesuch-step-wrapper',
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
     GesuchAppPatternGesuchStepLayoutComponent,
+    SharedUiGesuchStepWrapperComponent,
   ],
   templateUrl: './gesuch-app-pattern-gesuch-step-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppPatternGesuchStepWrapperComponent {
-  @ViewChild('outlet', { read: RouterOutlet, static: true })
-  public outlet!: RouterOutlet;
-  public activated$ = new EventEmitter();
-  public step$ = this.activated$.pipe(
-    map(() => this.outlet.activatedRoute.snapshot.data['step'])
-  );
+  step?: GesuchAppModelGesuchFormStep;
 }

@@ -8,6 +8,7 @@ export const SharedDataAccessGesuchEvents = createActionGroup({
   source: 'Gesuch API',
   events: {
     init: emptyProps(),
+    loadAll: emptyProps(),
     newTriggered: props<{
       create: GesuchCreate;
     }>(),

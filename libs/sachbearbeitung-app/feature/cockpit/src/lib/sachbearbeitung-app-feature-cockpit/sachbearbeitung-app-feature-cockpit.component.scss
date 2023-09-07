@@ -1,0 +1,25 @@
+:host {
+  .card {
+    border-radius: 1rem;
+  }
+  .card-title {
+    font-weight: bold;
+  }
+
+  .chip {
+    width: 66px;
+    height: 66px;
+
+    .icon {
+      font-size: 2rem;
+    }
+    &.in_bearbeitung {
+      background-color: var(--dv-blue-bg-subtle);
+      color: var(--dv-blue-bg);
+    }
+    &.offen {
+      background-color: var(--dv-green-bg-subtle);
+      color: var(--dv-green-bg);
+    }
+  }
+}

@@ -9,7 +9,7 @@ import { withLatestFrom } from 'rxjs';
 
 const { selectTitle, selectUrl } = getRouterSelectors();
 
-const APP_NAME_I18N_KEY = 'gesuch-app.name';
+const APP_NAME_I18N_KEY = 'app-name';
 
 @Injectable()
 export class SharedPatternI18nTitleStrategy extends TitleStrategy {

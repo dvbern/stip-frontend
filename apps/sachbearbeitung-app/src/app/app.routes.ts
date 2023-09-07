@@ -1,4 +1,6 @@
 import { Route } from '@angular/router';
+
+import { SachbearbeitungAppPatternGesuchStepWrapperComponent } from '@dv/sachbearbeitung-app/pattern/gesuch-step-wrapper';
 import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
@@ -11,10 +13,12 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: 'sachbearbeitung-app-feature-gesuch-form',
+    path: 'gesuch',
+    canActivate: [hasBenutzer],
+    component: SachbearbeitungAppPatternGesuchStepWrapperComponent,
     loadChildren: () =>
       import('@dv/sachbearbeitung-app/feature/gesuch-form').then(
-        (m) => m.sachbearbeitungAppFeatureGesuchFormRoutes
+        (m) => m.gesuchAppFeatureGesuchFormRoutes
       ),
   },
 ];

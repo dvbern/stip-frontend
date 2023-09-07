@@ -1,3 +1,6 @@
+@use '@angular/cdk' as cdk;
+@use '@angular/material' as mat;
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -23,6 +26,7 @@ $gesuch-app-theme: mat.define-light-theme(
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($gesuch-app-theme);
+@include cdk.a11y-visually-hidden();
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--invalid)
   .mdc-floating-label {
@@ -73,4 +77,15 @@ $gesuch-app-theme: mat.define-light-theme(
 }
 .dense-control {
   @include mat.form-field-density(-2);
+}
+
+.cdk-row.active,
+table tr.mat-mdc-row {
+  &.active,
+  &.highlightable:hover {
+    background-color: var(--mat-option-hover-state-layer-color);
+  }
+  &.highlightable {
+    cursor: pointer;
+  }
 }
