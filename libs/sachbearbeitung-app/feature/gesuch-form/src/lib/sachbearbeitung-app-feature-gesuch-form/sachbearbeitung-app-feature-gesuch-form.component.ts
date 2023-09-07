@@ -7,7 +7,6 @@ import { SachbearbeitungAppPatternGesuchStepLayoutComponent } from '@dv/sachbear
   standalone: true,
   imports: [CommonModule, SachbearbeitungAppPatternGesuchStepLayoutComponent],
   templateUrl: './sachbearbeitung-app-feature-gesuch-form.component.html',
-  styleUrls: ['./sachbearbeitung-app-feature-gesuch-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SachbearbeitungAppFeatureGesuchFormComponent {}

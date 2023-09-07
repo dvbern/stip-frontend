@@ -11,17 +11,17 @@ import { map } from 'rxjs/operators';
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 
 @Component({
-  selector: 'dv-gesuch-app-pattern-gesuch-step-wrapper',
+  selector: 'dv-gesuch-app-feature-gesuch-form',
   standalone: true,
   imports: [
     CommonModule,
     RouterOutlet,
     GesuchAppPatternGesuchStepLayoutComponent,
   ],
-  templateUrl: './gesuch-app-pattern-gesuch-step-wrapper.component.html',
+  templateUrl: './gesuch-app-feature-gesuch-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppPatternGesuchStepWrapperComponent {
+export class GesuchAppFeatureGesuchFormComponent {
   @ViewChild('outlet', { read: RouterOutlet, static: true })
   outlet!: RouterOutlet;
   activated$ = new EventEmitter();
