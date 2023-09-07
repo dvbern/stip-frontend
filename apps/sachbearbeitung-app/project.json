@@ -1,0 +1,123 @@
+{
+  "name": "sachbearbeitung-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "dv",
+  "sourceRoot": "apps/sachbearbeitung-app/src",
+  "tags": ["type:app", "scope:sachbearbeitung-app"],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/sachbearbeitung-app",
+        "index": "apps/sachbearbeitung-app/src/index.html",
+        "main": "apps/sachbearbeitung-app/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/sachbearbeitung-app/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/i18n/src",
+            "output": "assets/i18n"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/images/src",
+            "output": "assets/images"
+          },
+          "apps/sachbearbeitung-app/src/favicon.ico",
+          "apps/sachbearbeitung-app/src/assets"
+        ],
+        "styles": ["apps/sachbearbeitung-app/src/styles.scss"],
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/shared/styles/theme/src",
+            "libs/shared/styles/components/src"
+          ]
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "sachbearbeitung-app:build:production"
+        },
+        "development": {
+          "browserTarget": "sachbearbeitung-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "sachbearbeitung-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/sachbearbeitung-app/**/*.ts",
+          "apps/sachbearbeitung-app/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/sachbearbeitung-app/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "sachbearbeitung-app:build"
+      }
+    }
+  },
+  "implicitDependencies": [
+    "libs/shared/assets/i18n",
+    "libs/shared/assets/images",
+    "libs/shared/styles/theme",
+    "libs/shared/styles/components"
+  ]
+}

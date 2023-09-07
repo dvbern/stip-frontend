@@ -7,17 +7,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
-import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
-import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
-import {
-  selectLanguage,
-  SharedDataAccessLanguageEvents,
-} from '@dv/shared/data-access/language';
-import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
-import { Language } from '@dv/shared/model/language';
-import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
-import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 import {
   NgbDropdown,
   NgbDropdownItem,
@@ -26,6 +15,18 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
+import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
+import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
+import { SharedDataAccessLanguageEvents } from '@dv/shared/data-access/language';
+import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
+import { Language } from '@dv/shared/model/language';
+import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
+import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
+import { SharedDataAccessGesuchEvents } from '@dv/shared/data-access/gesuch';
+import { sharedDataAccessGesuchsperiodeEvents } from '@dv/shared/data-access/gesuchsperiode';
+
 import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.selector';
 
 // TODO: Refactor once services and landing page exist
@@ -33,7 +34,6 @@ import { selectGesuchAppFeatureCockpitView } from './gesuch-app-feature-cockpit.
 import { HttpClient } from '@angular/common/http';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
-import { KeycloakService } from 'keycloak-angular';
 import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 // -----
 
@@ -61,7 +61,6 @@ import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 export class GesuchAppFeatureCockpitComponent implements OnInit {
   private store = inject(Store);
   private benutzerSig = this.store.selectSignal(selectCurrentBenutzer);
-  private keyCloakService = inject(KeycloakService);
 
   // TODO: Refactor once services and landing page exist
   // -----
@@ -91,15 +90,15 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
     return `${benutzer?.vorname} ${benutzer?.nachname}`;
   });
 
-  languageSig = this.store.selectSignal(selectLanguage);
-
   ngOnInit() {
     this.store.dispatch(GesuchAppEventCockpit.init());
+    this.store.dispatch(SharedDataAccessGesuchEvents.init());
+    this.store.dispatch(sharedDataAccessGesuchsperiodeEvents.init());
   }
 
   handleCreate(periode: Gesuchsperiode, fallId: string) {
     this.store.dispatch(
-      GesuchAppEventCockpit.newTriggered({
+      SharedDataAccessGesuchEvents.newTriggered({
         create: {
           fallId,
           gesuchsperiodeId: periode.id,
@@ -109,7 +108,7 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
   }
 
   handleRemove(id: string) {
-    this.store.dispatch(GesuchAppEventCockpit.removeTriggered({ id }));
+    this.store.dispatch(SharedDataAccessGesuchEvents.removeTriggered({ id }));
   }
 
   trackByPerioden(
@@ -121,10 +120,6 @@ export class GesuchAppFeatureCockpitComponent implements OnInit {
 
   trackByIndex(index: number) {
     return index;
-  }
-
-  logout() {
-    this.keyCloakService.logout();
   }
 
   handleLanguageChangeHeader(language: Language) {

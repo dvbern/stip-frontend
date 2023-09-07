@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sachbearbeitung-app
+  labels:
+    app: sachbearbeitung-app
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 120
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sachbearbeitung-app
+  template:
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: sachbearbeitung-app
+          imagePullPolicy: Always
+          image: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app:latest
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              scheme: HTTP
+              path: /_health
+              port: http
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              scheme: HTTP
+              path: /_health
+              port: http
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+      imagePullSecrets:
+        - name: dvbern-public-registry
