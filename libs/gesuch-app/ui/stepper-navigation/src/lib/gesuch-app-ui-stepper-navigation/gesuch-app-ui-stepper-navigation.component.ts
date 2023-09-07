@@ -6,11 +6,12 @@ import {
   Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-ui-stepper-navigation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './gesuch-app-ui-stepper-navigation.component.html',
   styleUrls: ['./gesuch-app-ui-stepper-navigation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

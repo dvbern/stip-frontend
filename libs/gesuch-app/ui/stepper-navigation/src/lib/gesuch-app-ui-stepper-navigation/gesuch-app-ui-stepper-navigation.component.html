@@ -1,15 +1,27 @@
 <div class="stepper-navigation">
-  <i
-    class="material-symbols-rounded title-icon"
+  <button
+    type="button"
+    class="navigation-button d-flex justify-content-start align-items-center"
     *ngIf="prevStepVisible"
     (click)="prevStep.emit()"
-    >west</i
+    data-testid="stepper-previous"
   >
+    <i class="material-symbols-rounded title-icon" aria-hidden="true">west</i>
+    <span class="visually-hidden">{{
+      'gesuch-app.form.previous' | translate
+    }}</span>
+  </button>
   <div class="flex-grow-1"></div>
-  <i
-    class="material-symbols-rounded title-icon"
+  <button
+    type="button"
+    class="navigation-button d-flex justify-content-start align-items-center"
     *ngIf="nextStepVisible"
     (click)="nextStep.emit()"
-    >east</i
+    data-testid="stepper-next"
   >
+    <i class="material-symbols-rounded title-icon" aria-hidden="true">east</i>
+    <span class="visually-hidden">{{
+      'gesuch-app.form.next' | translate
+    }}</span>
+  </button>
 </div>
