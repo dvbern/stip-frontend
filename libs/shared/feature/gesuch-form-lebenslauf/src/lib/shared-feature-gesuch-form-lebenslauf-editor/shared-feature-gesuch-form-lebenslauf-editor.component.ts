@@ -93,19 +93,8 @@ export class SharedFeatureGesuchFormLebenslaufEditorComponent
 
   form = this.formBuilder.group({
     beschreibung: ['', [Validators.required]],
-    bildungsart: this.formBuilder.control<Bildungsart | undefined>(undefined, [
-      this.item?.type === 'AUSBILDUNG'
-        ? Validators.required
-        : Validators.nullValidator,
-    ]),
-    taetigskeitsart: this.formBuilder.control<Taetigskeitsart | undefined>(
-      undefined,
-      [
-        this.item?.type === 'TAETIGKEIT'
-          ? Validators.required
-          : Validators.nullValidator,
-      ]
-    ),
+    bildungsart: [<Bildungsart | undefined>undefined, []],
+    taetigskeitsart: [<Taetigskeitsart | undefined>undefined, []],
     von: ['', []],
     bis: ['', []],
     wohnsitz: this.formBuilder.control<WohnsitzKanton>('' as WohnsitzKanton, [
@@ -205,6 +194,20 @@ export class SharedFeatureGesuchFormLebenslaufEditorComponent
             changes['maxEndDate'].currentValue,
             'monthYear'
           ),
+        ]);
+      }
+      if (changes['item'].currentValue) {
+        this.form.controls.bildungsart.clearValidators();
+        this.form.controls.bildungsart.setValidators([
+          this.item.type === 'AUSBILDUNG'
+            ? Validators.required
+            : Validators.nullValidator,
+        ]);
+        this.form.controls.taetigskeitsart.clearValidators();
+        this.form.controls.taetigskeitsart.setValidators([
+          this.item.type === 'TAETIGKEIT'
+            ? Validators.required
+            : Validators.nullValidator,
         ]);
       }
     }

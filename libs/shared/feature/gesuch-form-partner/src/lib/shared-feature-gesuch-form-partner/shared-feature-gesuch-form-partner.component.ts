@@ -25,7 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { SharedEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { GesuchFormSteps, isStepDisabled } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -150,6 +150,25 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         });
       }
     });
+    effect(
+      () => {
+        const { gesuch, gesuchFormular } = this.view();
+        if (
+          gesuch &&
+          gesuchFormular &&
+          isStepDisabled('PARTNER', gesuchFormular)
+        ) {
+          this.store.dispatch(
+            SharedEventGesuchFormPartner.nextStepTriggered({
+              gesuchId: gesuch?.id,
+              gesuchFormular,
+              origin: GesuchFormSteps.PARTNER,
+            })
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
