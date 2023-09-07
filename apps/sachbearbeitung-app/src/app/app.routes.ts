@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { SachbearbeitungAppPatternGesuchStepWrapperComponent } from '@dv/sachbearbeitung-app/pattern/gesuch-step-wrapper';
+import { SachbearbeitungAppFeatureGesuchFormComponent } from '@dv/sachbearbeitung-app/pattern/gesuch-step-wrapper';
 import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
@@ -15,7 +15,7 @@ export const appRoutes: Route[] = [
   {
     path: 'gesuch',
     canActivate: [hasBenutzer],
-    component: SachbearbeitungAppPatternGesuchStepWrapperComponent,
+    component: SachbearbeitungAppFeatureGesuchFormComponent,
     loadChildren: () =>
       import('@dv/sachbearbeitung-app/feature/gesuch-form').then(
         (m) => m.gesuchAppFeatureGesuchFormRoutes

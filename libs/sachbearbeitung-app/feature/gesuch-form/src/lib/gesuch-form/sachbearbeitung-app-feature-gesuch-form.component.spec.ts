@@ -4,18 +4,18 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
-import { SachbearbeitungAppPatternGesuchStepWrapperComponent } from './sachbearbeitung-app-pattern-gesuch-step-wrapper.component';
+import { SachbearbeitungAppFeatureGesuchFormComponent } from './sachbearbeitung-app-feature-gesuch-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-describe('SachbearbeitungAppPatternGesuchStepWrapperComponent', () => {
-  let component: SachbearbeitungAppPatternGesuchStepWrapperComponent;
-  let fixture: ComponentFixture<SachbearbeitungAppPatternGesuchStepWrapperComponent>;
+describe('SachbearbeitungAppFeatureGesuchFormComponent', () => {
+  let component: SachbearbeitungAppFeatureGesuchFormComponent;
+  let fixture: ComponentFixture<SachbearbeitungAppFeatureGesuchFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [provideMockStore()],
       imports: [
-        SachbearbeitungAppPatternGesuchStepWrapperComponent,
+        SachbearbeitungAppFeatureGesuchFormComponent,
         KeycloakAngularModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
@@ -24,7 +24,7 @@ describe('SachbearbeitungAppPatternGesuchStepWrapperComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(
-      SachbearbeitungAppPatternGesuchStepWrapperComponent
+      SachbearbeitungAppFeatureGesuchFormComponent
     );
     component = fixture.componentInstance;
     fixture.detectChanges();

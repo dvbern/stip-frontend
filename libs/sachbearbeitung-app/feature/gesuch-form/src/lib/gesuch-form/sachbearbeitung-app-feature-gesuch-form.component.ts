@@ -4,15 +4,14 @@ import { SharedUiGesuchStepWrapperComponent } from '@dv/shared/ui/gesuch-step-wr
 import { SachbearbeitungAppPatternGesuchStepLayoutComponent } from '@dv/sachbearbeitung-app/pattern/gesuch-step-layout';
 
 @Component({
-  selector: 'dv-sachbearbeitung-app-pattern-gesuch-step-wrapper',
+  selector: 'dv-sachbearbeitung-app-feature-gesuch-form',
   standalone: true,
   imports: [
     CommonModule,
     SharedUiGesuchStepWrapperComponent,
     SachbearbeitungAppPatternGesuchStepLayoutComponent,
   ],
-  templateUrl:
-    './sachbearbeitung-app-pattern-gesuch-step-wrapper.component.html',
+  templateUrl: './sachbearbeitung-app-feature-gesuch-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SachbearbeitungAppPatternGesuchStepWrapperComponent {}
+export class SachbearbeitungAppFeatureGesuchFormComponent {}

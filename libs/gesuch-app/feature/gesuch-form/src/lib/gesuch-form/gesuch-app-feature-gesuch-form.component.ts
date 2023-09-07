@@ -6,16 +6,16 @@ import { SharedUiGesuchStepWrapperComponent } from '@dv/shared/ui/gesuch-step-wr
 import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 
 @Component({
-  selector: 'dv-gesuch-app-pattern-gesuch-step-wrapper',
+  selector: 'dv-gesuch-app-feature-gesuch-form',
   standalone: true,
   imports: [
     CommonModule,
     GesuchAppPatternGesuchStepLayoutComponent,
     SharedUiGesuchStepWrapperComponent,
   ],
-  templateUrl: './gesuch-app-pattern-gesuch-step-wrapper.component.html',
+  templateUrl: './gesuch-app-feature-gesuch-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppPatternGesuchStepWrapperComponent {
+export class GesuchAppFeatureGesuchFormComponent {
   step?: GesuchAppModelGesuchFormStep;
 }

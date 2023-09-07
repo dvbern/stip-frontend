@@ -4,11 +4,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
-import { GesuchAppPatternGesuchStepWrapperComponent } from './gesuch-app-pattern-gesuch-step-wrapper.component';
+import { GesuchAppFeatureGesuchFormComponent } from './gesuch-app-feature-gesuch-form.component';
 
-describe('GesuchAppPatternGesuchStepWrapperComponent', () => {
-  let component: GesuchAppPatternGesuchStepWrapperComponent;
-  let fixture: ComponentFixture<GesuchAppPatternGesuchStepWrapperComponent>;
+describe('GesuchAppFeatureGesuchFormComponent', () => {
+  let component: GesuchAppFeatureGesuchFormComponent;
+  let fixture: ComponentFixture<GesuchAppFeatureGesuchFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,13 +17,11 @@ describe('GesuchAppPatternGesuchStepWrapperComponent', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
         KeycloakAngularModule,
-        GesuchAppPatternGesuchStepWrapperComponent,
+        GesuchAppFeatureGesuchFormComponent,
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(
-      GesuchAppPatternGesuchStepWrapperComponent
-    );
+    fixture = TestBed.createComponent(GesuchAppFeatureGesuchFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

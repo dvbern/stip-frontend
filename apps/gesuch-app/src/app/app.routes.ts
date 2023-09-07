@@ -1,6 +1,4 @@
 import { Route } from '@angular/router';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { GesuchAppPatternGesuchStepWrapperComponent } from '@dv/gesuch-app/pattern/gesuch-step-wrapper';
 import { hasBenutzer } from '@dv/shared/pattern/global-guards';
 
 export const appRoutes: Route[] = [
@@ -16,7 +14,10 @@ export const appRoutes: Route[] = [
   {
     path: 'gesuch',
     canActivate: [hasBenutzer],
-    component: GesuchAppPatternGesuchStepWrapperComponent,
+    loadComponent: () =>
+      import('@dv/gesuch-app/feature/gesuch-form').then(
+        (m) => m.GesuchAppFeatureGesuchFormComponent
+      ),
     loadChildren: () =>
       import('@dv/gesuch-app/feature/gesuch-form').then(
         (m) => m.gesuchAppFeatureGesuchFormRoutes
