@@ -281,7 +281,7 @@ export const redirectToGesuchFormNextStep = createEffect(
       ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);
-        router.navigate([target.route, id]);
+        router.navigate(['gesuch', target.route, id]);
       })
     );
   },

@@ -86,6 +86,7 @@
       "@dv/shared/ui/progress-bar": ["libs/shared/ui/progress-bar/src/index.ts"],
       "@dv/shared/ui/search": ["libs/shared/ui/search/src/index.ts"],
       "@dv/shared/ui/step-form-buttons": ["libs/shared/ui/step-form-buttons/src/index.ts"],
+      "@dv/shared/ui/stepper-navigation": ["libs/shared/ui/stepper-navigation/src/index.ts"],
       "@dv/shared/ui/wohnsitz-splitter": ["libs/shared/ui/wohnsitz-splitter/src/index.ts"],
       "@dv/shared/util-fn/error-transformer": ["libs/shared/util-fn/error-transformer/src/index.ts"],
       "@dv/shared/util-fn/gesuch-util": ["libs/shared/util-fn/gesuch-util/src/index.ts"],

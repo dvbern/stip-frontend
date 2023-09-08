@@ -8,20 +8,20 @@ import {
   Input,
   OnInit,
   runInInjectionContext,
+  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MaskitoModule } from '@maskito/angular';
+import { TranslateModule } from '@ngx-translate/core';
+import { maskitoPercent } from '@dv/shared/util/maskito-util';
 import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
 } from '@dv/shared/ui/form';
-import { maskitoPercent } from '@dv/shared/util/maskito-util';
-import { MaskitoModule } from '@maskito/angular';
-import { TranslateModule } from '@ngx-translate/core';
 import { percentStringToNumber } from '../utils/form';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-
 @Component({
   selector: 'dv-shared-ui-percentage-splitter',
   standalone: true,
@@ -49,6 +49,8 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
 
   private injector = inject(Injector);
 
+  spliterEnabled = signal(false);
+
   public ngOnInit(): void {
     runInInjectionContext(this.injector, () => {
       const controlAChangedSig = toSignal(this.controlA.valueChanges, {
@@ -56,6 +58,12 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
       });
       const controlBChangedSig = toSignal(this.controlB.valueChanges, {
         initialValue: undefined,
+      });
+      const statusAChangedSig = toSignal(this.controlA.statusChanges, {
+        initialValue: this.controlA.status,
+      });
+      const statusBChangedSig = toSignal(this.controlB.statusChanges, {
+        initialValue: this.controlB.status,
       });
 
       effect(
@@ -74,6 +82,16 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
           if (anteilB !== undefined && anteilB !== null) {
             this.controlA.setValue((100 - anteilB)?.toString());
           }
+        },
+        { allowSignalWrites: true }
+      );
+
+      effect(
+        () => {
+          this.spliterEnabled.set(
+            statusAChangedSig() !== 'DISABLED' &&
+              statusBChangedSig() !== 'DISABLED'
+          );
         },
         { allowSignalWrites: true }
       );
