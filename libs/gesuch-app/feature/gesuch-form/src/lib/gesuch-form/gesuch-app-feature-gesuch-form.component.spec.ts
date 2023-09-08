@@ -12,7 +12,11 @@ describe('GesuchAppFeatureGesuchFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideMockStore()],
+      providers: [
+        provideMockStore({
+          initialState: { gesuchs: { gesuchFormular: {} } },
+        }),
+      ],
       imports: [
         RouterTestingModule,
         TranslateModule.forRoot(),
