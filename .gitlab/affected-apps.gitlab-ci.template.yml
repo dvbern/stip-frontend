@@ -36,12 +36,13 @@ build:{{ this }}:image:
   extends: .docker-build
   variables:
     IMAGE_PATH: $DVB_PUBLIC_DOCKER_REGISTRY/$CI_PROJECT_ROOT_NAMESPACE/stip/{{ this }}:$VERSION
+    KANIKO_ARGS: '--build-arg APP={{ this }}'
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH
       variables:
-        KANIKO_ARGS: '--no-push'
+        KANIKO_ARGS: '--no-push --build-arg APP={{ this }}'
   needs:
     - job: build:{{ this }}
       artifacts: true
