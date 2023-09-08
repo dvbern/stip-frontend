@@ -42,7 +42,7 @@ build:{{ this }}:image:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH
       variables:
-        KANIKO_ARGS: '--no-push --build-arg "APP={{ this }}"'
+        KANIKO_ARGS: '--no-push --build-arg \"APP={{ this }}\"'
   needs:
     - job: build:{{ this }}
       artifacts: true
