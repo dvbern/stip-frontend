@@ -15,6 +15,9 @@ spec:
     matchLabels:
       app: gesuch-app
   template:
+    metadata:
+      labels:
+        app: gesuch-app
     spec:
       restartPolicy: Always
       containers:

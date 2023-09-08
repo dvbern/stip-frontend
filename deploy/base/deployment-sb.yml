@@ -15,6 +15,9 @@ spec:
     matchLabels:
       app: sachbearbeitung-app
   template:
+    metadata:
+      labels:
+        app: sachbearbeitung-app
     spec:
       restartPolicy: Always
       containers:
