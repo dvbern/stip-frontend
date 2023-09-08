@@ -1,0 +1,118 @@
+<!-- loading -->
+<div
+  data-testid="form-geschwister-loading"
+  *ngIf="view$().loading"
+  class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+>
+  <div class="dv-progress-bar-indeterminate">
+    <div></div>
+  </div>
+</div>
+
+<!-- geschwister editor -->
+<dv-shared-feature-gesuch-form-geschwister-editor
+  *ngIf="editedGeschwister"
+  [geschwister]="editedGeschwister"
+  (saveTriggered)="handleEditorSave($event)"
+  (closeTriggered)="handleEditorClose()"
+/>
+
+<ng-container *ngIf="!editedGeschwister">
+  <!-- Infobx -->
+  <div class="row">
+    <div class="col-12 col-xl-8 my-3">
+      <ngb-alert type="info" [dismissible]="false">
+        <div class="d-flex gap-3">
+          <span class="material-symbols-rounded text-info"> info </span>
+          <span>{{ 'gesuch-app.form.geschwister.top.info' | translate }}</span>
+        </div>
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Table -->
+    <div
+      class="col-12 col-xl-8"
+      *ngIf="sortedGeschwistersSig() as geschwisters"
+    >
+      <table
+        class="table"
+        *ngIf="geschwisters.length"
+        aria-describedby="List von Geschwister"
+      >
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">
+              {{ 'gesuch-app.form.geschwister.name' | translate }}
+            </th>
+            <th scope="col">
+              {{ 'gesuch-app.form.geschwister.geburtsdatum.label' | translate }}
+            </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let geschwisterRaw of geschwisters; trackBy: trackByIndex"
+          >
+            <ng-container *ngIf="asGeschwister(geschwisterRaw) as geschwister">
+              <th scope="row">
+                <i class="material-symbols-rounded">done</i>
+              </th>
+              <td>{{ geschwister.vorname }} {{ geschwister.nachname }}</td>
+              <td>
+                {{
+                  parseBackendLocalDateAndPrint(
+                    geschwister.geburtsdatum,
+                    languageSig()
+                  )
+                }}
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-link p-0 lh-1"
+                  (click)="handleEditGeschwister(geschwister)"
+                  [title]="'gesuch-app.form.geschwister.edit' | translate"
+                >
+                  <i class="material-symbols-rounded">edit</i>
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-link p-0 lh-1"
+                  (click)="handleDeleteGeschwister(geschwister)"
+                  [title]="'gesuch-app.form.geschwister.delete' | translate"
+                >
+                  <i class="material-symbols-rounded">delete</i>
+                </button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD -->
+  <div class="d-flex flex-column flex-md-row">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="handleAddGeschwister()"
+    >
+      {{ 'gesuch-app.form.geschwister.add' | translate }}
+    </button>
+  </div>
+
+  <!-- Buttons -->
+  <dv-shared-ui-step-form-buttons>
+    <button type="button" class="btn btn-primary" (click)="handleContinue()">
+      {{ 'gesuch-app.form.gonext' | translate }}
+    </button>
+  </dv-shared-ui-step-form-buttons>
+</ng-container>

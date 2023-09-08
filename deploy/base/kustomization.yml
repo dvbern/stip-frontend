@@ -3,7 +3,6 @@ kind: Kustomization
 
 commonLabels:
   project: stip
-  app: gesuch-app
 
 commonAnnotations:
   billing.dvbern.ch/customer: dvbern
@@ -12,7 +11,9 @@ commonAnnotations:
 
 resources:
   - deployment.yml
+  - deployment-sb.yml
   - service.yml
+  - service-sb.yml
   - ingress.yml
   # TODO: OpenShift
   # - route.yml

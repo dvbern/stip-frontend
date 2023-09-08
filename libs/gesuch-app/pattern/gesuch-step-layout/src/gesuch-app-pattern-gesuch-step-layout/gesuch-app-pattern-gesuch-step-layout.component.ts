@@ -7,11 +7,13 @@ import {
   Input,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GesuchAppModelGesuchFormStep } from '@dv/gesuch-app/model/gesuch-form';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
-import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/gesuch-app/util/gesuch-form-step-manager';
+import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
+import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
 import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
@@ -20,9 +22,6 @@ import { Language } from '@dv/shared/model/language';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { SharedUiLanguageSelectorComponent } from '@dv/shared/ui/language-selector';
 import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
-import { Store } from '@ngrx/store';
-
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dv-gesuch-app-pattern-gesuch-step-layout',
@@ -42,8 +41,8 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppPatternGesuchStepLayoutComponent {
-  @Input({ required: true })
-  step!: GesuchAppModelGesuchFormStep;
+  @Input()
+  step: GesuchAppModelGesuchFormStep | null = null;
 
   navClicked = new EventEmitter();
 

@@ -1,0 +1,123 @@
+<!-- HEADER -->
+<header
+  class="top-0 border-bottom w-100 z-3"
+  [class.shadow-sm]="isScroll && !compactHeader"
+>
+  <!-- Small screens Header -->
+  <div class="container-md d-lg-none">
+    <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+
+      <!-- search and burgermenu -->
+      <div class="d-flex gap-2 align-items-center">
+        <ng-content select=".header-mobile-addons"></ng-content>
+
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.menu' | translate"
+          (click)="openMenu()"
+        >
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Large screens Header -->
+  <div class="d-none d-lg-block">
+    <div class="p-4 d-flex gap-2 justify-content-between">
+      <a routerLink="/" class="me-3">
+        <img
+          src="assets/images/logo_kanton_bern_full.svg"
+          alt="Logo Kanton Bern"
+          height="60"
+        />
+      </a>
+
+      <!-- top left -->
+      <div class="d-flex flex-grow-1 ms-3">
+        <ng-content select=".header-desktop-left"></ng-content>
+      </div>
+
+      <!-- top right -->
+      <div
+        class="d-flex flex-grow-1 ms-3 justify-content-end align-items-center"
+      >
+        <ng-content select=".header-desktop-right"></ng-content>
+        <dv-shared-ui-language-selector
+          class="p-3"
+          [language]="languageSig()"
+          (languageChange)="handleLanguageChangeHeader($event)"
+        />
+
+        <div class="d-flex gap-4 align-items-center">
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light btn-nav shadow-none d-flex align-items-center pe-1"
+              id="userMenu"
+              ngbDropdownToggle
+            >
+              <span>{{ benutzerNameSig() }}</span>
+              <i class="material-symbols-rounded ms-2">expand_more</i>
+            </button>
+
+            <div ngbDropdownMenu aria-labelledby="userMenu">
+              <button type="button" ngbDropdownItem>Profil</button>
+              <button type="button" ngbDropdownItem (click)="logout()">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<ng-template #menu let-offcanvas>
+  <div class="offcanvas-header justify-content-between">
+    <div>
+      <dv-shared-ui-language-selector
+        [language]="languageSig()"
+        (languageChange)="handleLanguageChangeHeader($event)"
+      />
+      <ng-content select=".mobile-nav-header"></ng-content>
+    </div>
+    <button
+      type="button"
+      class="btn-close"
+      [attr.aria-label]="'shared.close' | translate"
+      (click)="offcanvas.dismiss()"
+    ></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="d-flex flex-column align-items-start">
+      <ul class="nav flex-column w-100">
+        <li class="nav-item">
+          <span class="nav-link mb-4">{{ benutzerNameSig() }}</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link">Profil</a>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="nav-link" (click)="logout()">
+            Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+    "
+    <ng-content select=".mobile-nav-content"></ng-content>
+    "
+  </div>
+</ng-template>

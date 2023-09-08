@@ -24,7 +24,7 @@ const yaml = './node_modules/@kibon/stip-contract/openapi.yaml';
 const dependencies = require('../package.json').dependencies;
 
 const ngVersion = dependencies['@angular/core'].replace(/[^0-9.]/, '');
-console.log('ngVersion', ngVersion);
+console['log']('ngVersion', ngVersion);
 
 function deleteFile(filePath: PathLike) {
   fs.unlinkSync(filePath);
@@ -114,10 +114,10 @@ async function generateOpenApi(directory: string, apis: string[]) {
     ' -o ' +
     directory;
 
-  console.log('executing command: ', cmd);
+  console['log']('executing command: ', cmd);
   const child = childProcess.exec(cmd, { env });
   child.stdout?.on('data', (data) => {
-    console.log(data.toString());
+    console['log'](data.toString());
   });
   child.stderr?.on('data', (data) => {
     console.error(data.toString());

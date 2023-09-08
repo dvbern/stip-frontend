@@ -1,0 +1,21 @@
+.questions-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: 11rem;
+  position: relative;
+
+  & > div {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+dv-shared-ui-step-form-buttons {
+  top: 100%;
+}
+
+form {
+  overflow: hidden;
+}

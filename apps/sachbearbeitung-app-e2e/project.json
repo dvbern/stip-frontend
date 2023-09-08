@@ -1,0 +1,33 @@
+{
+  "name": "sachbearbeitung-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/sachbearbeitung-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/sachbearbeitung-app-e2e/cypress.config.ts",
+        "devServerTarget": "sachbearbeitung-app:serve:development",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "sachbearbeitung-app:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "sachbearbeitung-app:serve-static"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/sachbearbeitung-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": ["type:e2e", "scope:sachbearbeitung-app"],
+  "implicitDependencies": ["sachbearbeitung-app"]
+}

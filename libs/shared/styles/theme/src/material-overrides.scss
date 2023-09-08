@@ -71,3 +71,6 @@ $gesuch-app-theme: mat.define-light-theme(
       $gesuch-app-warn
     )};
 }
+.dense-control {
+  @include mat.form-field-density(-2);
+}

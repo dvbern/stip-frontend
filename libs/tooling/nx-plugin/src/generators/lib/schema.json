@@ -62,6 +62,10 @@
           {
             "value": "gesuch-app",
             "label": "gesuch-app - used only by gesuch-app"
+          },
+          {
+            "value": "sachbearbeitung-app",
+            "label": "sachbearbeitung-app - used only by sachbearbeitung-app"
           }
         ]
       }
