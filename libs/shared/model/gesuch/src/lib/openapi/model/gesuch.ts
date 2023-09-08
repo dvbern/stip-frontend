@@ -28,6 +28,11 @@ export interface Gesuch {
     id: string;
     gesuch_formular_freigabe_copy?: GesuchFormular;
     gesuch_formular_to_work_with?: GesuchFormular;
+    aenderungsdatum: string;
+    /**
+     * Zuständiger Sachbearbeiter des Gesuchs
+     */
+    bearbeiter?: string;
 }
 
 

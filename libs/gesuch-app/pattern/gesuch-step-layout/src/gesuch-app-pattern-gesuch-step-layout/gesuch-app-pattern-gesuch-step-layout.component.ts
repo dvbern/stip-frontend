@@ -42,7 +42,7 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 })
 export class GesuchAppPatternGesuchStepLayoutComponent {
   @Input()
-  step: GesuchAppModelGesuchFormStep | null = null;
+  step?: GesuchAppModelGesuchFormStep;
 
   navClicked = new EventEmitter();
 

@@ -1,7 +1,15 @@
 // add your global styles here
 
-* {
-  outline: none;
+main.page-body {
+  margin-top: 120px;
+
+  // small screens: header not sticky
+  // TODO import breakpoint instead of hardcoding it
+  @media screen and (max-width: 992px) {
+    margin-top: 0;
+  }
+
+  flex: 1;
 }
 
 // Typeahead popup (ng-bootstrap with custom popup class)

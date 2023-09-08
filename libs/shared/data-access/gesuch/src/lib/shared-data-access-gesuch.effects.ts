@@ -32,7 +32,7 @@ import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
 import { selectRouteId } from './shared-data-access-gesuch.selectors';
 import { SharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
 
-export const loadGesuchs = createEffect(
+export const loadOwnGesuchs = createEffect(
   (
     actions$ = inject(Actions),
     store = inject(Store),
@@ -47,6 +47,29 @@ export const loadGesuchs = createEffect(
       filter(sharedUtilFnTypeGuardsIsDefined),
       concatMap((benutzer) =>
         gesuchService.getGesucheForBenutzer$({ benutzerId: benutzer.id }).pipe(
+          map((gesuchs) =>
+            SharedDataAccessGesuchEvents.gesuchsLoadedSuccess({
+              gesuchs,
+            })
+          ),
+          catchError((error) => [
+            SharedDataAccessGesuchEvents.gesuchsLoadedFailure({
+              error: sharedUtilFnErrorTransformer(error),
+            }),
+          ])
+        )
+      )
+    );
+  },
+  { functional: true }
+);
+export const loadAllGesuchs = createEffect(
+  (actions$ = inject(Actions), gesuchService = inject(GesuchService)) => {
+    return actions$.pipe(
+      ofType(SharedDataAccessGesuchEvents.loadAll),
+      filter(sharedUtilFnTypeGuardsIsDefined),
+      concatMap(() =>
+        gesuchService.getGesuche$().pipe(
           map((gesuchs) =>
             SharedDataAccessGesuchEvents.gesuchsLoadedSuccess({
               gesuchs,
@@ -279,7 +302,8 @@ export const refreshGesuchFormStep = createEffect(
 
 // add effects here
 export const sharedDataAccessGesuchEffects = {
-  loadGesuchs,
+  loadOwnGesuchs,
+  loadAllGesuchs,
   loadGesuch,
   createGesuch,
   updateGesuch,

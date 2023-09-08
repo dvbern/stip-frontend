@@ -1,3 +1,5 @@
-<dv-gesuch-app-pattern-gesuch-step-layout [step]="step$ | async">
-  <router-outlet #outlet (activate)="activated$.emit($event)"></router-outlet>
+<dv-gesuch-app-pattern-gesuch-step-layout [step]="step">
+  <dv-shared-ui-gesuch-step-wrapper
+    (step)="step = $event"
+  ></dv-shared-ui-gesuch-step-wrapper>
 </dv-gesuch-app-pattern-gesuch-step-layout>
