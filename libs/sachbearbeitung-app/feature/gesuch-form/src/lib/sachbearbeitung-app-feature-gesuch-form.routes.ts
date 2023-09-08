@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
 
-export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
+export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
   {
     path: GesuchFormSteps.KINDER.route,
     resolve: {
