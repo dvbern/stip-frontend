@@ -1,0 +1,28 @@
+@import 'apps/gesuch-app/src/styles';
+
+:host {
+  display: block;
+}
+
+.stepper-navigation {
+  display: flex;
+  justify-content: center;
+  min-height: 1.5rem;
+
+  & > *:not(.flex-grow-1) {
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+}
+
+.navigation-button {
+  background-color: transparent;
+  border: transparent solid 2px;
+  padding: 2px;
+
+  &:focus {
+    background-color: $secondary-bg-subtle;
+    border: $secondary solid 2px;
+    border-radius: 100%;
+  }
+}

@@ -1,3 +1,12 @@
+// noinspection PointlessBooleanExpressionJS
+
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -6,6 +15,8 @@ import {
   ElementRef,
   inject,
   OnInit,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -16,6 +27,11 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedUiStepperNavigationComponent } from '@dv/shared/ui/stepper-navigation';
+import { MaskitoModule } from '@maskito/angular';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 
 import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
@@ -41,10 +57,17 @@ import {
   convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
-import { MaskitoModule } from '@maskito/angular';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import {
+  FamiliensituationFormStep,
+  FamiliensituationFormSteps,
+} from './familiensituation-form-steps';
+
+type FamSitStepMeta = {
+  [P in keyof FamiliensituationFormSteps]?: FamSitAnimationState;
+};
+type FamSitAnimationState = 'in' | 'right' | 'left' | 'hidden';
+
+const animationTime = 500;
 
 @Component({
   selector: 'dv-shared-feature-gesuch-form-familiensituation',
@@ -62,9 +85,30 @@ import { Subject } from 'rxjs';
     SharedUiFormMessageErrorDirective,
     SharedUiPercentageSplitterComponent,
     GesuchAppUiStepFormButtonsComponent,
+    SharedUiStepperNavigationComponent,
   ],
   templateUrl: './shared-feature-gesuch-form-familiensituation.component.html',
+  styleUrls: ['./shared-feature-gesuch-form-familiensituation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('inOutPaneAnimation', [
+      state('in', style({ position: 'relative', left: 0, right: 0 })),
+      state('right', style({ left: '100%', display: 'none' })),
+      state('left', style({ left: '-100%', display: 'none' })),
+      state(
+        'hidden',
+        style({ position: 'absolute', left: '100%', display: 'none' })
+      ),
+      transition('void => *', []),
+      transition('* => *', [animate(`${animationTime}ms ease-in`)]),
+    ]),
+    trigger('hideDuringAnimation', [
+      state('hide', style({ opacity: 0 })),
+      state('show', style({ opacity: 1 })),
+      transition('* => *', [animate(`150ms ease-in`)]),
+      transition('void => *', []),
+    ]),
+  ],
 })
 export class SharedFeatureGesuchFormFamiliensituationComponent
   implements OnInit
@@ -81,14 +125,14 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
   form = this.formBuilder.group({
     elternVerheiratetZusammen: [<boolean | null>null, [Validators.required]],
     gerichtlicheAlimentenregelung: [
-      <boolean | null>null,
+      <boolean | undefined>undefined,
       [Validators.required],
     ],
     werZahltAlimente: this.formBuilder.control<
       Elternschaftsteilung | undefined
     >(undefined, { validators: Validators.required }),
     elternteilUnbekanntVerstorben: [
-      <boolean | null>null,
+      <boolean | undefined>undefined,
       [Validators.required],
     ],
     mutterUnbekanntVerstorben: this.formBuilder.control<
@@ -103,8 +147,14 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
     vaterUnbekanntGrund: this.formBuilder.control<
       ElternUnbekanntheitsGrund | undefined
     >(undefined, { validators: Validators.required }),
-    vaterWiederverheiratet: [<boolean | null>null, [Validators.required]],
-    mutterWiederverheiratet: [<boolean | null>null, [Validators.required]],
+    vaterWiederverheiratet: [
+      <boolean | undefined>undefined,
+      [Validators.required],
+    ],
+    mutterWiederverheiratet: [
+      <boolean | undefined>undefined,
+      [Validators.required],
+    ],
     sorgerecht: this.formBuilder.control<Elternschaftsteilung | undefined>(
       undefined,
       { validators: Validators.required }
@@ -117,8 +167,15 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
     obhutVater: ['', [Validators.required]],
   });
 
+  duringAnimation: 'show' | 'hide' = 'show';
   view = this.store.selectSignal(selectSharedDataAccessGesuchsView);
   updateValidity$ = new Subject<unknown>();
+  stateSig: WritableSignal<FamSitStepMeta> = signal({
+    ELTERN_VERHEIRATET_ZUSAMMEN: 'in',
+    ALIMENTENREGELUNG: 'right',
+  });
+  private currentFamiliensituationFormStep =
+    FamiliensituationFormSteps.ELTERN_VERHEIRATET_ZUSAMMEN;
 
   ngOnInit(): void {
     this.store.dispatch(SharedEventGesuchFormFamiliensituation.init());
@@ -190,11 +247,11 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           elternVerheiratetZusammenSig() !== false,
           true
         );
+        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
 
-    // effect for werZahltAlimente
     effect(
       () => {
         const gerichtlicheAlimentenregelung =
@@ -205,20 +262,12 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           gerichtlicheAlimentenregelung !== true,
           true
         );
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
-        const gerichtlicheAlimentenregelung =
-          gerichtlicheAlimentenregelungSig();
-
         this.formUtils.setDisabledState(
           elternteilUnbekanntVerstorben,
           gerichtlicheAlimentenregelung !== false,
           true
         );
+        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
@@ -237,6 +286,18 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           elternteilUnbekanntVerstorben !== true,
           true
         );
+        this.formUtils.setDisabledState(
+          sorgerecht,
+          elternteilUnbekanntVerstorben !== false,
+          true
+        );
+        this.formUtils.setDisabledState(
+          obhut,
+          elternteilUnbekanntVerstorben !== false,
+          true
+        );
+
+        this.goNextStep();
       },
       { allowSignalWrites: true }
     );
@@ -267,25 +328,6 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
 
     effect(
       () => {
-        const elternteilUnbekanntVerstorben =
-          elternteilUnbekanntVerstorbenSig() ?? true;
-
-        this.formUtils.setDisabledState(
-          sorgerecht,
-          !!elternteilUnbekanntVerstorben,
-          true
-        );
-        this.formUtils.setDisabledState(
-          obhut,
-          !!elternteilUnbekanntVerstorben,
-          true
-        );
-      },
-      { allowSignalWrites: true }
-    );
-
-    effect(
-      () => {
         const notGemeinsam = obhutSig() !== Elternschaftsteilung.GEMEINSAM;
         this.formUtils.setDisabledState(obhutVater, notGemeinsam, true);
         this.formUtils.setDisabledState(obhutMutter, notGemeinsam, true);
@@ -299,11 +341,17 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           werZahltAlimenteSig() === Elternschaftsteilung.MUTTER;
         const vaterWederVerstorbenNochUnbekannt =
           vaterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.WEDER_NOCH;
-        const elternAnwesend = elternteilUnbekanntVerstorbenSig() === false;
+        const mutterVerstorbenOderUnbekannt =
+          mutterVerstorbenUnbekanntSig() ===
+            ElternAbwesenheitsGrund.VERSTORBEN ||
+          mutterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.UNBEKANNT;
+        const keinElternTeilUnbekanntVerstorben =
+          elternteilUnbekanntVerstorbenSig() === false;
+
         const showVaterVerheiratedFrage =
+          keinElternTeilUnbekanntVerstorben ||
           zahltMutterAlimente ||
-          vaterWederVerstorbenNochUnbekannt ||
-          elternAnwesend;
+          (mutterVerstorbenOderUnbekannt && vaterWederVerstorbenNochUnbekannt);
 
         this.formUtils.setDisabledState(
           vaterWiederverheiratet,
@@ -320,11 +368,17 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           werZahltAlimenteSig() === Elternschaftsteilung.VATER;
         const mutterWederVerstorbenNochUnbekannt =
           mutterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.WEDER_NOCH;
-        const elternAnwesend = elternteilUnbekanntVerstorbenSig() === false;
+        const vaterVerstorbenOderUnbekannt =
+          vaterVerstorbenUnbekanntSig() ===
+            ElternAbwesenheitsGrund.VERSTORBEN ||
+          vaterVerstorbenUnbekanntSig() === ElternAbwesenheitsGrund.UNBEKANNT;
+        const keinElternTeilUnbekanntVerstorben =
+          elternteilUnbekanntVerstorbenSig() === false;
+
         const showMutterVerheiratedFrage =
+          keinElternTeilUnbekanntVerstorben ||
           zahltVaterAlimente ||
-          mutterWederVerstorbenNochUnbekannt ||
-          elternAnwesend;
+          (vaterVerstorbenOderUnbekannt && mutterWederVerstorbenNochUnbekannt);
 
         this.formUtils.setDisabledState(
           mutterWiederverheiratet,
@@ -334,6 +388,57 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
       },
       { allowSignalWrites: true }
     );
+  }
+
+  hasPreviousStep(): boolean {
+    const familiensituation =
+      this.buildSharedModelAdresseFromForm().familiensituation;
+    if (familiensituation === undefined) {
+      return false;
+    }
+    return (
+      this.currentFamiliensituationFormStep !==
+      this.currentFamiliensituationFormStep.getPrevious(familiensituation)
+    );
+  }
+
+  hasNextStep(): boolean {
+    const familiensituation =
+      this.buildSharedModelAdresseFromForm().familiensituation;
+    if (familiensituation === undefined) {
+      return false;
+    }
+    return (
+      this.currentFamiliensituationFormStep !==
+      this.currentFamiliensituationFormStep.getNext(familiensituation)
+    );
+  }
+
+  goPreviousStep(): void {
+    const familiensituation =
+      this.buildSharedModelAdresseFromForm().familiensituation;
+    if (familiensituation === undefined) {
+      return;
+    }
+    const newCurrent =
+      this.currentFamiliensituationFormStep.getPrevious(familiensituation);
+    const newPrev = newCurrent.getPrevious(familiensituation);
+    const newNext = this.currentFamiliensituationFormStep;
+
+    this.updateSteps(newCurrent, newNext, newPrev);
+  }
+
+  goNextStep(): void {
+    const familiensituation =
+      this.buildSharedModelAdresseFromForm().familiensituation;
+    if (familiensituation === undefined) {
+      return;
+    }
+    const newCurrent =
+      this.currentFamiliensituationFormStep.getNext(familiensituation);
+    const newPrev = this.currentFamiliensituationFormStep;
+    const newNext = newCurrent.getNext(familiensituation);
+    this.updateSteps(newCurrent, newNext, newPrev);
   }
 
   handleSave(): void {
@@ -361,16 +466,46 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
         ...gesuchFormular?.familiensituation,
         ...convertTempFormToRealValues(this.form, [
           'elternVerheiratetZusammen',
-          'gerichtlicheAlimentenregelung',
-          'elternteilUnbekanntVerstorben',
-          'vaterWiederverheiratet',
-          'mutterWiederverheiratet',
         ]),
         // nicht form.value, sonst werden keine Werte auf null gesetzt!
         obhutVater: percentStringToNumber(this.form.getRawValue().obhutVater),
         obhutMutter: percentStringToNumber(this.form.getRawValue().obhutMutter),
       },
     };
+  }
+
+  private updateSteps(
+    newCurrent: FamiliensituationFormStep,
+    newNext: FamiliensituationFormStep,
+    newPrev: FamiliensituationFormStep
+  ): void {
+    if (this.currentFamiliensituationFormStep === newCurrent) {
+      return;
+    }
+
+    this.currentFamiliensituationFormStep = newCurrent;
+
+    this.stateSig.set({
+      [this.getKeyByValue(newCurrent)]: 'in',
+      ...(newCurrent !== newNext && { [this.getKeyByValue(newNext)]: 'right' }),
+      ...(newCurrent !== newPrev && { [this.getKeyByValue(newPrev)]: 'left' }),
+    });
+  }
+
+  private getKeyByValue(
+    value: FamiliensituationFormStep
+  ): keyof FamiliensituationFormSteps {
+    const key = (
+      Object.keys(
+        FamiliensituationFormSteps
+      ) as (keyof FamiliensituationFormSteps)[]
+    ).find((key) => FamiliensituationFormSteps[key] === value);
+
+    if (key === undefined) {
+      throw new Error();
+    }
+
+    return key;
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
