@@ -106,6 +106,12 @@ const animationTime = 500;
       transition('void => *', []),
       transition('* => *', [animate(`${animationTime}ms ease-in`)]),
     ]),
+    trigger('hideDuringAnimation', [
+      state('hide', style({ opacity: 0 })),
+      state('show', style({ opacity: 1 })),
+      transition('* => *', [animate(`150ms ease-in`)]),
+      transition('void => *', []),
+    ]),
   ],
 })
 export class GesuchAppFeatureGesuchFormFamiliensituationComponent
@@ -165,6 +171,7 @@ export class GesuchAppFeatureGesuchFormFamiliensituationComponent
     obhutVater: ['', [Validators.required]],
   });
 
+  duringAnimation: 'show' | 'hide' = 'show';
   view = this.store.selectSignal(selectGesuchAppDataAccessGesuchsView);
   updateValidity$ = new Subject<unknown>();
   stateSig: WritableSignal<FamSitStepMeta> = signal({
