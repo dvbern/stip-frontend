@@ -17,6 +17,7 @@
     *ngIf="!view().loading"
     (ngSubmit)="handleSave()"
   >
+    <div class="col-12 col-xl-6 col-md-9">
     <dv-gesuch-app-ui-stepper-navigation
       [nextStepVisible]="hasNextStep()"
       [prevStepVisible]="hasPreviousStep()"
@@ -33,7 +34,7 @@
         <mat-radio-group
           formControlName="elternVerheiratetZusammen"
           dvSharedUiFormField
-          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+            class="d-flex flex-column"
         >
           <label>{{
             'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
@@ -58,7 +59,7 @@
         <div class="row g-4 mt-3">
           <mat-radio-group
             formControlName="gerichtlicheAlimentenregelung"
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
@@ -79,9 +80,9 @@
         </div>
         <div
           *ngIf="form.controls.werZahltAlimente.enabled"
-          class="row g-4 mt-3"
+            class="row g-4 mt-3 col-xl-8"
         >
-          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-form-field dvSharedUiFormField>
             <mat-label>{{
               'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
                 | translate
@@ -97,7 +98,9 @@
                 {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                  {{
+                    'gesuch-app.form.familiensituation.gemeinsam' | translate
+                  }}
               </mat-option>
             </mat-select>
 
@@ -130,7 +133,7 @@
           <mat-radio-group
             formControlName="elternteilUnbekanntVerstorben"
             dvSharedUiFormField
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
@@ -160,26 +163,32 @@
           <mat-radio-group
             formControlName="mutterUnbekanntVerstorben"
             dvSharedUiFormField
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.mutter' | translate
             }}</label>
 
-            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
+              <mat-radio-button
+                [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN"
+                >{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
                 | translate
-            }}</mat-radio-button>
+                }}</mat-radio-button
+              >
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
                 | translate
             }}</mat-radio-button>
 
-            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
+              <mat-radio-button
+                [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH"
+                >{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
                 | translate
-            }}</mat-radio-button>
+                }}</mat-radio-button
+              >
 
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
@@ -193,7 +202,7 @@
           <mat-radio-group
             formControlName="mutterUnbekanntGrund"
             dvSharedUiFormField
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
@@ -235,26 +244,32 @@
           <mat-radio-group
             formControlName="vaterUnbekanntVerstorben"
             dvSharedUiFormField
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.vater' | translate
             }}</label>
 
-            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
+              <mat-radio-button
+                [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN"
+                >{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
                 | translate
-            }}</mat-radio-button>
+                }}</mat-radio-button
+              >
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
                 | translate
             }}</mat-radio-button>
 
-            <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
+              <mat-radio-button
+                [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH"
+                >{{
               'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
                 | translate
-            }}</mat-radio-button>
+                }}</mat-radio-button
+              >
 
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
@@ -268,7 +283,7 @@
           <mat-radio-group
             formControlName="vaterUnbekanntGrund"
             dvSharedUiFormField
-            class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+              class="d-flex flex-column"
           >
             <label>{{
               'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
@@ -316,8 +331,8 @@
           *ngIf="form.controls.vaterWiederverheiratet.enabled"
           [ngTemplateOutlet]="vaterWiederverheiratet"
         ></ng-container>
-        <div class="row g-4 mt-3">
-          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+          <div class="row g-4 mt-3 col-xl-8">
+            <mat-form-field dvSharedUiFormField>
             <mat-label>{{
               'gesuch-app.form.familiensituation.sorgerecht.label' | translate
             }}</mat-label>
@@ -332,7 +347,9 @@
                 {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                  {{
+                    'gesuch-app.form.familiensituation.gemeinsam' | translate
+                  }}
               </mat-option>
             </mat-select>
 
@@ -343,7 +360,7 @@
         </div>
 
         <div class="row g-4 mt-3">
-          <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+            <mat-form-field dvSharedUiFormField>
             <mat-label>{{
               'gesuch-app.form.familiensituation.obhut.label' | translate
             }}</mat-label>
@@ -358,7 +375,9 @@
                 {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                  {{
+                    'gesuch-app.form.familiensituation.gemeinsam' | translate
+                  }}
               </mat-option>
             </mat-select>
 
@@ -369,7 +388,6 @@
         </div>
 
         <div class="row g-4 mt-3">
-          <div class="col-12 col-md-6 col-xl-4">
             <!-- OBHUT AUFTEILUNG -->
             <dv-shared-ui-percentage-splitter
               [updateValidity]="updateValidity$ | async"
@@ -405,7 +423,7 @@
         <mat-radio-group
           formControlName="mutterWiederverheiratet"
           dvSharedUiFormField
-          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          class="d-flex flex-column"
         >
           <label>{{
             'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
@@ -432,7 +450,7 @@
         <mat-radio-group
           formControlName="vaterWiederverheiratet"
           dvSharedUiFormField
-          class="col-12 col-md-6 col-xl-4 d-flex flex-column"
+          class="d-flex flex-column"
         >
           <label>{{
             'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'

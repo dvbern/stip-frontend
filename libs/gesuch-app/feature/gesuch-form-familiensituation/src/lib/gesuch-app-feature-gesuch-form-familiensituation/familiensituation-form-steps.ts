@@ -1,5 +1,11 @@
 import { FamiliensituationUpdate } from '@dv/shared/model/gesuch';
 
+export type FamiliensituationFormStepName =
+  | 'ELTERN_VERHEIRATET_ZUSAMMEN'
+  | 'ALIMENTENREGELUNG'
+  | 'ELTERN_UNBEKANNT_VERSTORBEN'
+  | 'ZWEI_FAMILIENBUDGET';
+
 export interface FamiliensituationFormStep {
   getNext(
     familiensituation: FamiliensituationUpdate
@@ -8,7 +14,7 @@ export interface FamiliensituationFormStep {
   getPrevious(
     familienstituation: FamiliensituationUpdate
   ): FamiliensituationFormStep;
-  name: string;
+  name: FamiliensituationFormStepName;
 }
 
 // Helper function to ensure type safety in our map
