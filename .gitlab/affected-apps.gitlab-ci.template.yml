@@ -43,8 +43,9 @@ build:{{ this }}:image:
     - if: $CI_COMMIT_BRANCH
       variables:
         KANIKO_ARGS: '--no-push --build-arg "APP={{ this }}"'
-  needs: --build-arg 'APP=\"{{ this }}\"'"
-tifacts: true
+  needs:
+    - job: build:{{ this }}
+      artifacts: true
 
 deploy:{{ this }}:
   stage: deploy
