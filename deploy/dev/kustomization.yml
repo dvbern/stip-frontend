@@ -7,7 +7,7 @@ resources:
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: 70e33c5c
+  newTag: 3ed8da55
 - name: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
   newTag: ef6b0626
 
