@@ -4,7 +4,7 @@ const handlebars = require('handlebars');
 const templatePipeline = () => {
   const [stringifiedAffected] = process.argv.slice(2);
 
-  const { projects } = JSON.parse(stringifiedAffected);
+  const projects = stringifiedAffected.split('\n');
 
   const source = readFileSync(
     '.gitlab/affected-apps.gitlab-ci.template.yml'
