@@ -21,7 +21,7 @@ build:{{ this }}:
   stage: build
   extends: .base
   script:
-    - NX REJECT_UNKNOWN_LOCAL_CACHE=0 npx nx build --project {{this}}
+    - NX_REJECT_UNKNOWN_LOCAL_CACHE=0 npx nx build --project {{this}}
   artifacts:
     paths:
       - 'dist/apps/{{ this }}'
