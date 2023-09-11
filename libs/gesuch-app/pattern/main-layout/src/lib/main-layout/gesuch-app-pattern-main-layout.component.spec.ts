@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { GesuchAppPatternMainLayoutComponent } from './gesuch-app-pattern-main-layout.component';
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('MainLayoutComponent', () => {
   let component: GesuchAppPatternMainLayoutComponent;
@@ -15,6 +16,7 @@ describe('MainLayoutComponent', () => {
       imports: [
         GesuchAppPatternMainLayoutComponent,
         TranslateModule.forRoot(),
+        KeycloakAngularModule,
         RouterTestingModule,
       ],
     }).compileComponents();

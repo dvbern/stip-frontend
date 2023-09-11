@@ -74,8 +74,8 @@ export function debugReducers(
 ): ActionReducer<unknown> {
   return function (state, action) {
     if (isDevMode()) {
-      console.log('state', state);
-      console.log('action', action);
+      console['log']('state', state);
+      console['log']('action', action);
     }
 
     return reducer(state, action);

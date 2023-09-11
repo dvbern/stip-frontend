@@ -1,76 +1,27 @@
-<!-- HEADER -->
-<header
-  class="top-0 border-bottom w-100 z-3"
-  [class.shadow-sm]="isScroll && !compactHeader"
->
-  <!-- Small screens Header -->
-  <div class="container-md d-lg-none">
-    <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
-      <a routerLink="/">
-        <img
-          src="assets/images/logo_kanton_bern_full.svg"
-          alt="Logo Kanton Bern"
-          height="60"
-        />
-      </a>
-
-      <!-- search and burgermenu -->
-      <div class="d-flex gap-2 align-items-center">
-        <ng-content select=".header-mobile-addons"></ng-content>
-
-        <button
-          class="dv-button-icon"
-          type="button"
-          [attr.aria-label]="'shared.menu' | translate"
-          (click)="openMenu()"
-        >
-          <span class="material-symbols-rounded">menu</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Large screens Header -->
-  <div class="d-none d-lg-block">
-    <div class="p-4 d-flex gap-2 justify-content-between">
-      <a routerLink="/" class="me-3">
-        <img
-          src="assets/images/logo_kanton_bern_full.svg"
-          alt="Logo Kanton Bern"
-          height="60"
-        />
-      </a>
-
-      <!-- top left -->
-      <div class="d-flex flex-grow-1 ms-3">
-        <ng-content select=".header-desktop-left"></ng-content>
-      </div>
-
-      <!-- top right -->
-      <ng-content select=".header-desktop-right"></ng-content>
-    </div>
-  </div>
-
-  <ng-template #menu let-offcanvas>
-    <div class="offcanvas-header justify-content-between">
-      <div>
-        <ng-content select=".mobile-nav-header"></ng-content>
-      </div>
-      <button
-        type="button"
-        class="btn-close"
-        [attr.aria-label]="'shared.close' | translate"
-        (click)="offcanvas.dismiss()"
-      ></button>
-    </div>
-
-    <div class="offcanvas-body">
-      <ng-content select=".mobile-nav-content"></ng-content>
-    </div>
-  </ng-template>
-</header>
+<dv-shared-pattern-app-header [closeMenu]="closeMenu">
+  <ng-content
+    select=".header-mobile-addons"
+    ngProjectAs=".header-mobile-addons"
+  ></ng-content>
+  <ng-content
+    select=".header-desktop-left"
+    ngProjectAs=".header-desktop-left"
+  ></ng-content>
+  <ng-content
+    select=".header-desktop-right"
+    ngProjectAs=".header-desktop-right"
+  ></ng-content>
+  <ng-content
+    select=".mobile-nav-header"
+    ngProjectAs=".mobile-nav-header"
+  ></ng-content>
+  <ng-content
+    select=".mobile-nav-content"
+    ngProjectAs=".mobile-nav-content"
+  ></ng-content>
+</dv-shared-pattern-app-header>
 
 <!-- MAIN CONTENT -->
-<main>
+<main class="page-body">
   <ng-content></ng-content>
 </main>

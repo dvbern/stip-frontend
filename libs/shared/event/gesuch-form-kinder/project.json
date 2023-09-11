@@ -1,0 +1,16 @@
+{
+  "name": "shared-event-gesuch-form-kinder",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/event/gesuch-form-kinder/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/event/gesuch-form-kinder/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:event"]
+}

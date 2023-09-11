@@ -1,13 +1,13 @@
-import { gesuchAppDataAccessGesuchsFeature } from '@dv/gesuch-app/data-access/gesuch';
-
-import { selectGesuchAppDataAccessGesuchsperiodesView } from '@dv/gesuch-app/data-access/gesuchsperiode';
 import { createSelector } from '@ngrx/store';
 import { addDays, isAfter, isBefore } from 'date-fns';
 
+import { sharedDataAccessGesuchsFeature } from '@dv/shared/data-access/gesuch';
+import { selectSharedDataAccessGesuchsperiodesView } from '@dv/shared/data-access/gesuchsperiode';
+
 export const selectGesuchAppFeatureCockpitView = createSelector(
-  selectGesuchAppDataAccessGesuchsperiodesView,
-  gesuchAppDataAccessGesuchsFeature.selectGesuchs,
-  gesuchAppDataAccessGesuchsFeature.selectLoading,
+  selectSharedDataAccessGesuchsperiodesView,
+  sharedDataAccessGesuchsFeature.selectGesuchs,
+  sharedDataAccessGesuchsFeature.selectLoading,
   (gesuchsPerioden, gesuche, gesucheLoading) => ({
     ...gesuchsPerioden,
 

@@ -1,8 +1,9 @@
 {
-  "gesuch-app.name": "Stipendien Online",
+  "app-name": "Stipendien Online",
   "gesuch-app.header.menu.title": "Stipendien Online",
   "gesuch-app.cockpit.title": "Cockpit",
   "gesuch-app.form.next": "Nächstes",
+  "gesuch-app.form.previous": "Vorheriges",
   "gesuch-app.form.gonext": "Speichern und weiter",
   "gesuch-app.form.save-and-continue": "Speichern und weiter",
   "gesuch-app.form.save-and-back": "Speichern und weiter",

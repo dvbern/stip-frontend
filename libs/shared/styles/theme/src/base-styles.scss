@@ -1,0 +1,52 @@
+// add your global styles here
+
+main.page-body {
+  margin-top: 120px;
+
+  // small screens: header not sticky
+  // TODO import breakpoint instead of hardcoding it
+  @media screen and (max-width: 992px) {
+    margin-top: 0;
+  }
+
+  flex: 1;
+}
+
+// Typeahead popup (ng-bootstrap with custom popup class)
+.dv-typeahead-popup {
+  width: 100%;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+// Typeahead "Bitte wählen" soll gleich aussehen wie bei Dropdowns
+.form-control[role='combobox']::placeholder {
+  color: #000;
+}
+
+.dv-typeahead-clear-btn.btn {
+  position: absolute;
+  top: var(--dv-border-width);
+  right: 34px;
+  height: calc(100% - var(--dv-border-width) - var(--dv-border-width));
+  border-color: transparent;
+  background: #fff;
+  border-radius: 0;
+  color: #666;
+  padding: 0 0.5rem 1px;
+  box-shadow: none;
+
+  &:hover,
+  &:active {
+    color: #000;
+    border-color: transparent;
+    background: #fff;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .cdk-overlay-pane.full-height {
+    height: 100%;
+  }
+}

@@ -10,7 +10,7 @@
       [class.btn-light]="!stepRoute.active"
       [class.shadow-none]="!stepRoute.active"
       [class.disabled]="step.disabled"
-      [routerLink]="['/', step.route, view$().gesuch?.id]"
+      [routerLink]="['/', 'gesuch', step.route, view$().gesuch?.id]"
       [attr.data-testid]="'step-nav-' + step.route"
     >
       <i class="material-symbols-rounded me-3">{{ step.iconSymbolName }}</i>

@@ -1,0 +1,381 @@
+<!-- loading -->
+<div
+  data-testid="form-einnahmen-kosten-loading"
+  *ngIf="viewSig().loading"
+  class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+>
+  <div class="dv-progress-bar-indeterminate">
+    <div></div>
+  </div>
+</div>
+<ng-container *ngIf="!viewSig().loading">
+  <ng-template #incomplete>
+    <div class="row">
+      <div class="col-12 col-xl-8 my-3">
+        <ngb-alert type="info" [dismissible]="false"
+          >{{ 'gesuch-app.form.einnahmenkosten.top.incomplete' | translate }}
+          <span
+            *ngFor="
+              let schritt of formStateSig().schritte;
+              trackBy: trackByIndex;
+              let last = last;
+              let first = first
+            "
+            >{{
+              (last && !first ? ' und ' : !first ? ', ' : '') +
+                '"' +
+                (schritt | translate)
+            }}"</span
+          >
+        </ngb-alert>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- form -->
+  <form
+    *ngIf="formStateSig().hasData; else incomplete"
+    [formGroup]="form"
+    novalidate
+    class="mt-4"
+    (ngSubmit)="handleSave()"
+  >
+    <h3 class="pt-5 mb-4">
+      {{ 'gesuch-app.form.einnahmenkosten.einnahmen.title' | translate }}
+    </h3>
+
+    <div class="row g-4">
+      <!-- NETTOERWERBSEINKOMMEN -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.nettoerwerbseinkommen.label'
+            | translate
+        }}</mat-label>
+        <input
+          data-testid="form-einnahmen-kosten-nettoerwerbseinkommen"
+          formControlName="nettoerwerbseinkommen"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.nettoerwerbseinkommen.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- ALIMENTE -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.controls.alimente.disabled"
+        class="col-12 col-md-9 col-xl-6"
+      >
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.alimente.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="alimente"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- ZULAGEN -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.controls.zulagen.disabled"
+        class="col-12 col-md-9 col-xl-6"
+      >
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.zulagen.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="zulagen"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- RENTEN -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.controls.renten.disabled"
+        class="col-12 col-md-9 col-xl-6"
+      >
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.renten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="renten"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.renten.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- EO_LEISTUNGEN -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.eoLeistungen.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="eoLeistungen"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.eoLeistungen.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- ERGAENZUNGSLEISTUNGEN -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.ergaenzungsleistungen.label'
+            | translate
+        }}</mat-label>
+        <input
+          formControlName="ergaenzungsleistungen"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- BEITRAEGE -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.beitraege.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="beitraege"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.beitraege.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <h3 class="pt-5 mb-4">
+      {{ 'gesuch-app.form.einnahmenkosten.kosten.title' | translate }}
+    </h3>
+
+    <div
+      class="row g-4"
+      *ngIf="
+        !form.controls.ausbildungskostenSekundarstufeZwei.disabled ||
+        !form.controls.ausbildungskostenTertiaerstufe.disabled
+      "
+    >
+      <!-- AUSBILDUNGSKOSTEN_SEKUNDARSTUFE_ZWEI -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.controls.ausbildungskostenSekundarstufeZwei.disabled"
+        class="col-12 col-md-9 col-xl-6"
+      >
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.label'
+            | translate
+        }}</mat-label>
+        <input
+          formControlName="ausbildungskostenSekundarstufeZwei"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- AUSBILDUNGSKOSTEN_TERTIARY -->
+      <mat-form-field
+        dvSharedUiFormField
+        *ngIf="!form.controls.ausbildungskostenTertiaerstufe.disabled"
+        class="col-12 col-md-9 col-xl-6"
+      >
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.ausbildungskostenTertiaerstufe.label'
+            | translate
+        }}</mat-label>
+        <input
+          formControlName="ausbildungskostenTertiaerstufe"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.ausbildungskostenTertiaerstufe.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- FAHRKOSTEN -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.fahrkosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="fahrkosten"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- WOHNKOSTEN -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.wohnkosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="wohnkosten"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- PERSONEN_IM_HAUSHALT -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.personenImHaushalt.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="personenImHaushalt"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-hint translate
+          >gesuch-app.form.einnahmenkosten.personenImHaushalt.info</mat-hint
+        >
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <h3 class="pt-5 mb-4">
+      {{ 'gesuch-app.form.einnahmenkosten.general.title' | translate }}
+    </h3>
+
+    <div class="row g-4">
+      <!-- VERDIENST_REALISIERT -->
+      <div
+        class="col-12 col-md-9 col-xl-6"
+        *ngIf="!form.controls.verdienstRealisiert.disabled"
+      >
+        <mat-radio-group
+          class="d-flex flex-column"
+          formControlName="verdienstRealisiert"
+          dvSharedUiFormField
+        >
+          <mat-label>{{
+            'gesuch-app.form.einnahmenkosten.verdienstRealisiert.label'
+              | translate
+          }}</mat-label>
+          <mat-radio-button [value]="true">
+            {{ 'shared.form.radio.yes' | translate }}</mat-radio-button
+          >
+          <mat-radio-button [value]="false">{{
+            'shared.form.radio.no' | translate
+          }}</mat-radio-button>
+
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="row g-4 mt-1">
+      <!-- WILL_DARLEHEN -->
+      <div
+        class="col-12 col-md-9 col-xl-6"
+        *ngIf="!form.controls.willDarlehen.disabled"
+      >
+        <mat-radio-group
+          class="d-flex flex-column"
+          formControlName="willDarlehen"
+          dvSharedUiFormField
+        >
+          <mat-label>{{
+            'gesuch-app.form.einnahmenkosten.willDarlehen.label' | translate
+          }}</mat-label>
+          <mat-radio-button [value]="true">
+            {{ 'shared.form.radio.yes' | translate }}</mat-radio-button
+          >
+          <mat-radio-button [value]="false">{{
+            'shared.form.radio.no' | translate
+          }}</mat-radio-button>
+
+          <mat-error *dvSharedUiFormMessageError="'required'">
+            {{ 'shared.form.error.required' | translate }}
+          </mat-error>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <dv-shared-ui-step-form-buttons>
+      <button type="submit" class="btn btn-primary">
+        {{ 'gesuch-app.form.save-and-continue' | translate }}
+      </button>
+    </dv-shared-ui-step-form-buttons>
+  </form>
+</ng-container>

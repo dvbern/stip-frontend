@@ -1,0 +1,55 @@
+<!-- LOADING -->
+<div
+  data-testid="form-person-loading"
+  *ngIf="view$().loading"
+  class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
+>
+  <div class="dv-progress-bar-indeterminate">
+    <div></div>
+  </div>
+</div>
+
+<!-- EDITOR -->
+<dv-shared-feature-gesuch-form-eltern-editor
+  *ngIf="editedElternteil"
+  [elternteil]="editedElternteil"
+  [laender]="laenderSig()"
+  (saveTriggered)="handleEditorSave($event)"
+  (closeTriggered)="handleEditorClose()"
+  (deleteTriggered)="handleDeleteElternteil($event)"
+/>
+
+<!-- OVERVIEW -->
+<ng-container *ngIf="!editedElternteil && !view$().loading">
+  <div class="row g-4 mt-4">
+    <dv-shared-feature-gesuch-form-eltern-card
+      *ngIf="view$().expectVater"
+      class="col-12 col-md-6 col-xl-4"
+      [elternteil]="view$().vater"
+      [elternTyp]="ElternTyp.VATER"
+      [translationkey]="'vater'"
+      (addTriggered)="handleAddElternteil($event)"
+      (editTriggered)="handleEdit($event)"
+    />
+
+    <dv-shared-feature-gesuch-form-eltern-card
+      *ngIf="view$().expectMutter"
+      class="col-12 col-md-6 col-xl-4"
+      [elternteil]="view$().mutter"
+      [elternTyp]="ElternTyp.MUTTER"
+      [translationkey]="'mutter'"
+      (addTriggered)="handleAddElternteil($event)"
+      (editTriggered)="handleEdit($event)"
+    />
+
+    <div *ngIf="!view$().expectVater && !view$().expectMutter">
+      {{ 'gesuch-app.form.eltern.none' | translate }}
+    </div>
+  </div>
+
+  <dv-shared-ui-step-form-buttons>
+    <button type="button" class="btn btn-primary" (click)="handleContinue()">
+      {{ 'gesuch-app.form.gonext' | translate }}
+    </button>
+  </dv-shared-ui-step-form-buttons>
+</ng-container>

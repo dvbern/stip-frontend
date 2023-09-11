@@ -1,0 +1,23 @@
+{
+  "app-name": "Stipendien Online",
+  "sachbearbeitung-app.header.antraege": "Anträge",
+  "sachbearbeitung-app.header.posteingang": "Posteingang",
+  "sachbearbeitung-app.header.administration": "Administration",
+  "sachbearbeitung-app.header.berechnung": "Berechnung",
+  "sachbearbeitung-app.cockpit.title": "Cockpit",
+  "sachbearbeitung-app.cockpit.gesuch": "Gesuch",
+  "sachbearbeitung-app.cockpit.gesuche": "Gesuche",
+  "sachbearbeitung-app.cockpit.table.description": "Übersicht aller Gesuche",
+  "sachbearbeitung-app.cockpit.table.fall": "Fall",
+  "sachbearbeitung-app.cockpit.table.sv-nummer": "SV-Nummer",
+  "sachbearbeitung-app.cockpit.table.vorname": "Vorname",
+  "sachbearbeitung-app.cockpit.table.nachname": "Name",
+  "sachbearbeitung-app.cockpit.table.geburtsdatum": "Geburtsdatum",
+  "sachbearbeitung-app.cockpit.table.ort": "Ort",
+  "sachbearbeitung-app.cockpit.table.status": "Status",
+  "sachbearbeitung-app.cockpit.table.bearbeiter": "Bearbeiter",
+  "sachbearbeitung-app.cockpit.table.letzteAktivitaet": "Letzte Aktivität",
+  "sachbearbeitung-app.cockpit.status.OFFEN": "Offen",
+  "sachbearbeitung-app.cockpit.status.IN_BEARBEITUNG": "in Bearbeitung",
+  "sachbearbeitung-app.gesuch-form.title": "Gesuch"
+}
