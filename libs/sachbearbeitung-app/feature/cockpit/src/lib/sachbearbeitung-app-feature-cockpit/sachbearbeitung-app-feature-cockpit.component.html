@@ -67,7 +67,12 @@
                     'sachbearbeitung-app.cockpit.table.sv-nummer' | translate
                   }}
                 </th>
-                <td mat-cell *matCellDef="let gesuch">TBD</td>
+                <td mat-cell *matCellDef="let gesuch">
+                  {{
+                    gesuch.gesuch_formular_to_work_with.personInAusbildung
+                      ?.sozialversicherungsnummer
+                  }}
+                </td>
               </ng-container>
 
               <ng-container matColumnDef="nachname">
