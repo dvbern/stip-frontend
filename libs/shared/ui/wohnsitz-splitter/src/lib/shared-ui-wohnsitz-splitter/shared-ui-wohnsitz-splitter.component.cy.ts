@@ -1,8 +1,8 @@
-import { SharedUiWohnsitzSplitterComponent } from './shared-ui-wohnsitz-splitter.component';
 import { FormBuilder } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
+import { SharedUiWohnsitzSplitterComponent } from './shared-ui-wohnsitz-splitter.component';
 import { addWohnsitzControls } from '../utils/form';
 
 const getInput = (type: 'a' | 'b') =>
