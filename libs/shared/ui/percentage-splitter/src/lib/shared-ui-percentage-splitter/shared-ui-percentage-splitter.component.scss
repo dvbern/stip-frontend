@@ -1,7 +1,9 @@
 :host {
   display: block;
-}
 
-.col-6 {
-  width: calc(50% - 1px);
+  // The right border gets cut off sometimes depending on the screen size
+  // This is a workaround to fix that
+  .col-6 {
+    width: calc(50% - 1px);
+  }
 }
