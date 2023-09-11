@@ -2,8 +2,9 @@
   display: block;
 
   header {
-    background-color: #fafbfd;
+    background-color: var(--dv-app-container-bg);
     position: fixed;
+    max-width: var(--content-max-width);
 
     // small screens: header not sticky
     @media screen and (max-width: 992px) {
