@@ -258,7 +258,7 @@ export const redirectToGesuchForm = createEffect(
     return actions$.pipe(
       ofType(SharedDataAccessGesuchEvents.gesuchCreatedSuccess),
       tap(({ id }) => {
-        router.navigate([GesuchFormSteps.PERSON.route, id]);
+        router.navigate(['gesuch', GesuchFormSteps.PERSON.route, id]);
       })
     );
   },
@@ -293,7 +293,7 @@ export const refreshGesuchFormStep = createEffect(
     return actions$.pipe(
       ofType(SharedDataAccessGesuchEvents.gesuchUpdatedSubformSuccess),
       tap(({ id, origin }) => {
-        router.navigate([origin.route, id]);
+        router.navigate(['gesuch', origin.route, id]);
       })
     );
   },
