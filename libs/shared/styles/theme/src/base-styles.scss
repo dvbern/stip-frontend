@@ -8,7 +8,7 @@
 }
 
 main.page-body {
-  margin-top: 120px;
+  margin-top: var(--header-size);
 
   // small screens: header not sticky
   // TODO import breakpoint instead of hardcoding it
@@ -16,7 +16,7 @@ main.page-body {
     margin-top: 0;
   }
 
-  flex: 1;
+  flex: 1 0 calc(100vh - var(--header-size));
 }
 
 // Typeahead popup (ng-bootstrap with custom popup class)

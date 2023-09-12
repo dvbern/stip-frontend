@@ -53,6 +53,9 @@
   }
 }
 
+.dropdown-menu {
+  --dv-dropdown-bg: var(--dv-app-container-bg);
+}
 // Dropdown: das seltsame Dreieck entfernen, stattdessen selber ein Icon einfuegen
 .dropdown-toggle::after {
   border: none;
