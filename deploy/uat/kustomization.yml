@@ -7,9 +7,9 @@ resources:
 
 images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: "3ed8da55"
+  newTag: v0.5.0
 - name: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
-  newTag: "ef6b0626"
+  newTag: ef6b0626
 
 # TODO: OpenShift
 # patches:
@@ -18,7 +18,7 @@ images:
 #    kind: Route
 
 patchesStrategicMerge:
-  - ingress.yml
+- ingress.yml
 
 replacements:
 - source:
