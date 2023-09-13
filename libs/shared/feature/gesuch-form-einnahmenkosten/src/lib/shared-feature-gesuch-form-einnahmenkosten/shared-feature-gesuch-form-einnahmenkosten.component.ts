@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { sharedUtilValidatorRange } from '@dv/shared/util/validator-range';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -84,6 +85,10 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     personenImHaushalt: [<string | null>null, [Validators.required]],
     verdienstRealisiert: [<boolean | null>null, [Validators.required]],
     willDarlehen: [<boolean | null>null, [Validators.required]],
+    auswaertigeMittagessenProWoche: [
+      <number | null>null,
+      [Validators.required, sharedUtilValidatorRange(0, 5)],
+    ],
   });
   viewSig = this.store.selectSignal(
     selectSharedFeatureGesuchFormEinnahmenkostenView
@@ -271,6 +276,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       'personenImHaushalt',
       'verdienstRealisiert',
       'willDarlehen',
+      'auswaertigeMittagessenProWoche',
     ]);
     return {
       gesuchId: gesuch?.id,

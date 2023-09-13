@@ -194,6 +194,7 @@
       </mat-form-field>
     </div>
 
+    <!-- KOSTEN -->
     <h3 class="pt-5 mb-4">
       {{ 'gesuch-app.form.einnahmenkosten.kosten.title' | translate }}
     </h3>
@@ -286,6 +287,26 @@
         />
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row g-4 mt-1" *ngIf="viewSig().wohnsitzNotEigenerHaushalt">
+      <!-- ANZAHL AUSWÄRTIGER MITTAGESSEN PRO WOCHE -->
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
+        <mat-label>{{
+          'gesuch-app.form.einnahmenkosten.auswaertigeMittagessenProWoche.label'
+            | translate
+        }}</mat-label>
+        <input
+          formControlName="auswaertigeMittagessenProWoche"
+          matInput
+          type="number"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+        <mat-error *dvSharedUiFormMessageError="'range'">
+          {{ 'shared.form.error.range' | translate : { min: 0, max: 5 } }}
         </mat-error>
       </mat-form-field>
     </div>

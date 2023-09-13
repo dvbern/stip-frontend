@@ -222,6 +222,7 @@
   "gesuch-app.form.einnahmenkosten.ausbildungskostenTertiaerstufe.info": "effektive Kosten, max. CHF 3000.-/Jahr",
   "gesuch-app.form.einnahmenkosten.fahrkosten.label": "Fahrkosten",
   "gesuch-app.form.einnahmenkosten.wohnkosten.label": "Wohnkosten",
+  "gesuch-app.form.einnahmenkosten.auswaertigeMittagessenProWoche.label": "Anzahl auswärtiger Mittagessen pro Woche",
   "gesuch-app.form.einnahmenkosten.personenImHaushalt.label": "Anzahl Personen im gleichen Haushalt",
   "gesuch-app.form.einnahmenkosten.personenImHaushalt.info": "Person in Ausbildung eingeschlossen",
   "gesuch-app.form.einnahmenkosten.general.title": "Allgemeine Informationen",
