@@ -19,7 +19,7 @@
   "sachbearbeitung-app.cockpit.table.status": "État",
   "sachbearbeitung-app.cockpit.table.bearbeiter": "Agent",
   "sachbearbeitung-app.cockpit.table.letzteAktivitaet": "Dernière activité",
-  "sachbearbeitung-app.cockpit.status.OFFEN": "Ouvert",
-  "sachbearbeitung-app.cockpit.status.IN_BEARBEITUNG": "en cours",
+  "sachbearbeitung-app.cockpit.status.IN_BEARBEITUNG": "En cours",
+  "sachbearbeitung-app.cockpit.status.EINGEREICHT": "Soumis à",
   "sachbearbeitung-app.gesuch-form.title": "Demande"
 }
