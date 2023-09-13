@@ -10,7 +10,7 @@ $dv-size-unit: 0.25rem;
     // expose DV sass variables to as css variables
     --#{$prefix}size-unit: #{$dv-size-unit}; // bad. this will be overridden from bootstrap
     --content-max-width: 1440px;
-    --header-size: 120px;
+    --header-size: 76px;
   }
   body {
     --dv-blue-bg-subtle: #d4e8fc;

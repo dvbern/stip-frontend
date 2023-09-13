@@ -1,3 +1,9 @@
+@include media-breakpoint-up(lg) {
+  :root {
+    --header-size: 120px;
+  }
+}
+
 body {
   background-color: var(--dv-overridden-body-bg);
 

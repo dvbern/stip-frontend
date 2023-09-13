@@ -5,11 +5,5 @@
     background-color: var(--dv-body-bg);
     position: fixed;
     max-width: var(--content-max-width);
-
-    // small screens: header not sticky
-    @media screen and (max-width: 992px) {
-      background-color: #fff;
-      position: relative;
-    }
   }
 }
