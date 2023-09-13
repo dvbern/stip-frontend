@@ -19,4 +19,4 @@
  *    which is shared by multiple lazy loaded features
  *    eg generic comments feature, document management feature, ...
  */
-export * from './gesuch-app-pattern-gesuch-step-nav/gesuch-app-pattern-gesuch-step-nav.component';
+export * from './shared-pattern-gesuch-step-nav/shared-pattern-gesuch-step-nav.component';

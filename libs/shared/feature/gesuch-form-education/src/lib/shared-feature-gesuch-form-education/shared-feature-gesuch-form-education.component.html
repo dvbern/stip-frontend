@@ -18,14 +18,14 @@
   (ngSubmit)="handleSave()"
 >
   <h3 class="mt-4">
-    {{ 'gesuch-app.form.education.place.title' | translate }}
+    {{ 'shared.form.education.place.title' | translate }}
   </h3>
 
   <!-- LAND -->
   <div class="row">
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
       <mat-label>
-        {{ 'gesuch-app.form.education.ausbildungsland.label' | translate }}
+        {{ 'shared.form.education.ausbildungsland.label' | translate }}
       </mat-label>
       <mat-select
         formControlName="ausbildungsland"
@@ -38,7 +38,7 @@
           [value]="l"
           *ngFor="let l of ausbildungslandValues; trackBy: trackByIndex"
         >
-          {{ 'gesuch-app.form.education.ausbildungsland.' + l | translate }}
+          {{ 'shared.form.education.ausbildungsland.' + l | translate }}
         </mat-option>
       </mat-select>
       <mat-error *dvSharedUiFormMessageError="'required'">
@@ -53,7 +53,7 @@
       class="col-12 col-md-6 col-xl-4 mt-3"
     >
       <mat-label>
-        {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
+        {{ 'shared.form.education.ausbildungsstaette.label' | translate }}
       </mat-label>
 
       <input
@@ -94,7 +94,7 @@
       class="col-12 col-md-6 col-xl-4 mt-3"
     >
       <mat-label>
-        {{ 'gesuch-app.form.education.ausbildungsstaette.label' | translate }}
+        {{ 'shared.form.education.ausbildungsstaette.label' | translate }}
       </mat-label>
 
       <input
@@ -113,7 +113,7 @@
       *ngIf="!form.value['ausbildungNichtGefunden']"
     >
       <mat-label>
-        {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
+        {{ 'shared.form.education.ausbildungsgang.label' | translate }}
       </mat-label>
 
       <!-- AUsbildungsgang Select -->
@@ -138,7 +138,7 @@
       *ngIf="form.value['ausbildungNichtGefunden']"
     >
       <mat-label>
-        {{ 'gesuch-app.form.education.ausbildungsgang.label' | translate }}
+        {{ 'shared.form.education.ausbildungsgang.label' | translate }}
       </mat-label>
 
       <!-- alternativer Ausbildungsgang -->
@@ -156,7 +156,7 @@
     <!-- FACHRICHTUNG -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
       <mat-label>
-        {{ 'gesuch-app.form.education.fachrichtung.label' | translate }}
+        {{ 'shared.form.education.fachrichtung.label' | translate }}
       </mat-label>
       <input type="text" matInput formControlName="fachrichtung" />
       <mat-error *dvSharedUiFormMessageError="'required'">
@@ -171,22 +171,20 @@
       <mat-checkbox
         formControlName="ausbildungNichtGefunden"
         (change)="handleManuellChangedByUser()"
-        >{{
-          'gesuch-app.form.education.manuell.label' | translate
-        }}</mat-checkbox
+        >{{ 'shared.form.education.manuell.label' | translate }}</mat-checkbox
       >
     </div>
   </div>
 
   <h3 class="mt-4">
-    {{ 'gesuch-app.form.education.duration.title' | translate }}
+    {{ 'shared.form.education.duration.title' | translate }}
   </h3>
 
   <div class="row">
     <!-- START -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
       <mat-label>{{
-        'gesuch-app.form.education.start.label' | translate
+        'shared.form.education.start.label' | translate
       }}</mat-label>
 
       <input
@@ -203,14 +201,10 @@
         {{ 'shared.form.error.dateFormat' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'minDate'">
-        {{
-          'gesuch-app.form.education.form.error.monthYearNotPast' | translate
-        }}
+        {{ 'shared.form.education.form.error.monthYearNotPast' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
-        {{
-          'gesuch-app.form.education.form.error.monthYearAfterStart' | translate
-        }}
+        {{ 'shared.form.education.form.error.monthYearAfterStart' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'maxDate'">
         {{ 'shared.form.error.maxDateFuture' | translate }}
@@ -220,7 +214,7 @@
     <!-- ENDE -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
       <mat-label>{{
-        'gesuch-app.form.education.ende.label' | translate
+        'shared.form.education.ende.label' | translate
       }}</mat-label>
 
       <input
@@ -237,9 +231,7 @@
         {{ 'shared.form.error.dateFormat' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
-        {{
-          'gesuch-app.form.education.form.error.monthYearAfterStart' | translate
-        }}
+        {{ 'shared.form.education.form.error.monthYearAfterStart' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'maxDate'">
         {{ 'shared.form.error.maxDateFuture' | translate }}
@@ -251,7 +243,7 @@
     <!-- PENSUM -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4 mt-3">
       <mat-label>
-        {{ 'gesuch-app.form.education.pensum.label' | translate }}
+        {{ 'shared.form.education.pensum.label' | translate }}
       </mat-label>
 
       <mat-select formControlName="pensum">
@@ -262,7 +254,7 @@
           [value]="l"
           *ngFor="let l of ausbildungspensumValues; trackBy: trackByIndex"
         >
-          {{ 'gesuch-app.form.education.pensum.' + l | translate }}
+          {{ 'shared.form.education.pensum.' + l | translate }}
         </mat-option>
       </mat-select>
 
@@ -275,7 +267,7 @@
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
     <button type="submit" class="btn btn-primary">
-      {{ 'gesuch-app.form.save-and-continue' | translate }}
+      {{ 'shared.form.save-and-continue' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 </form>

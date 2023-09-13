@@ -234,6 +234,8 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
               gesuchFormular?.familiensituation?.obhutVater
             ),
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }

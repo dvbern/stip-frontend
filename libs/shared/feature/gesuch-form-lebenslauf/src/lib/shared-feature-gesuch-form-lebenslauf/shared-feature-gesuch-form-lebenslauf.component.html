@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-12 col-xl-8 my-3">
           <ngb-alert type="info" [dismissible]="false">{{
-            'gesuch-app.form.lebenslauf.top.missing-dates' | translate
+            'shared.form.lebenslauf.top.missing-dates' | translate
           }}</ngb-alert>
         </div>
       </div>
@@ -37,7 +37,7 @@
       <div class="row">
         <div class="col-12 col-xl-8 my-3">
           <span>{{
-            'gesuch-app.form.lebenslauf.top.info'
+            'shared.form.lebenslauf.top.info'
               | translate
                 : {
                     von: minDate$() ? printDateAsMonthYear(minDate$()!) : '?',
@@ -59,7 +59,7 @@
                 data-testid="lebenslauf-add-ausbildung"
               >
                 <i class="material-symbols-rounded fs-1">school</i>
-                {{ 'gesuch-app.form.lebenslauf.add.ausbildung' | translate }}
+                {{ 'shared.form.lebenslauf.add.ausbildung' | translate }}
               </button>
             </div>
             <div class="col-6 my-3">
@@ -70,7 +70,7 @@
                 data-testid="lebenslauf-add-taetigkeit"
               >
                 <i class="material-symbols-rounded fs-1">work</i>
-                {{ 'gesuch-app.form.lebenslauf.add.taetigkeit' | translate }}
+                {{ 'shared.form.lebenslauf.add.taetigkeit' | translate }}
               </button>
             </div>
           </div>
@@ -103,7 +103,7 @@
           class="btn btn-primary"
           (click)="handleContinue()"
         >
-          {{ 'gesuch-app.form.gonext' | translate }}
+          {{ 'shared.form.gonext' | translate }}
         </button>
       </dv-shared-ui-step-form-buttons>
     </ng-container>

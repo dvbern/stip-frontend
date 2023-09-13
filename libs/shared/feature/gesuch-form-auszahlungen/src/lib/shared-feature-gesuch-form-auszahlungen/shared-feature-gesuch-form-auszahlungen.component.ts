@@ -113,6 +113,8 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
             ...initalValue,
             iban: initalValue?.iban?.substring(2), // Land-Prefix loeschen
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }
@@ -176,9 +178,13 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
   }
 
   private setValuesFrom(
-    personInAusbildung: PersonInAusbildungUpdate | ElternUpdate | undefined
+    valuesFrom: PersonInAusbildungUpdate | ElternUpdate | undefined
   ): void {
-    this.form.patchValue(personInAusbildung || {});
+    if (valuesFrom) {
+      this.form.patchValue(valuesFrom);
+    } else {
+      this.form.reset();
+    }
   }
 
   private disableNameAndAdresse(): void {

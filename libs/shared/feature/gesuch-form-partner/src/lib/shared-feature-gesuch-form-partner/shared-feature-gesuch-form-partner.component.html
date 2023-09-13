@@ -18,13 +18,13 @@
     (ngSubmit)="handleSaveAndContinue()"
   >
     <h3 class="pt-5">
-      {{ 'gesuch-app.form.shared.section.personal-details' | translate }}
+      {{ 'shared.form.shared.section.personal-details' | translate }}
     </h3>
     <!-- AHV -->
     <div class="row g-4 my-2">
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.social-insurance-number.label' | translate
+          'shared.form.shared.social-insurance-number.label' | translate
         }}</mat-label>
         <input
           matInput
@@ -34,9 +34,7 @@
           [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
         />
         <mat-error *dvSharedUiFormMessageInfo>
-          {{
-            'gesuch-app.form.shared.social-insurance-number.info' | translate
-          }}
+          {{ 'shared.form.shared.social-insurance-number.info' | translate }}
         </mat-error>
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -49,7 +47,7 @@
     <div class="row g-4 my-2">
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.lastname.label' | translate
+          'shared.form.shared.lastname.label' | translate
         }}</mat-label>
         <input formControlName="nachname" matInput type="text" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -58,7 +56,7 @@
       </mat-form-field>
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.firstname.label' | translate
+          'shared.form.shared.firstname.label' | translate
         }}</mat-label>
         <input formControlName="vorname" matInput type="text" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -70,7 +68,7 @@
       <!-- C/O-Adresse -->
       <mat-form-field class="col-12 col-md-6 col-xl-4" formGroupName="adresse">
         <mat-label
-          >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
+          >{{ 'shared.form.shared.address.co.label' | translate }} ({{
             'shared.form.optional.label' | translate
           }})
         </mat-label>
@@ -84,7 +82,7 @@
           <!-- Strasse -->
           <mat-form-field dvSharedUiFormField class="col-8 col-xl-9">
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
+              >{{ 'shared.form.shared.address.street.label' | translate }}
             </mat-label>
             <input matInput type="text" formControlName="strasse" />
             <mat-error *dvSharedUiFormMessageError="'required'">
@@ -95,7 +93,7 @@
           <!-- Nr -->
           <mat-form-field dvSharedUiFormField class="col-4 col-xl-3">
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
+              >{{ 'shared.form.shared.address.number.label' | translate }}
             </mat-label>
             <input matInput type="text" formControlName="hausnummer" />
             <mat-error *dvSharedUiFormMessageError="'required'">
@@ -110,7 +108,7 @@
           <!-- PLZ -->
           <mat-form-field dvSharedUiFormField class="col-5 col-md-4 col-xl-3">
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+              >{{ 'shared.form.shared.address.zipcode.label' | translate }}
             </mat-label>
             <input matInput type="text" formControlName="plz" />
             <mat-error *dvSharedUiFormMessageError="'required'">
@@ -121,7 +119,7 @@
           <!-- Ort -->
           <mat-form-field dvSharedUiFormField class="col-7 col-md-8 col-xl-9">
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+              >{{ 'shared.form.shared.address.city.label' | translate }}
             </mat-label>
             <input matInput type="text" formControlName="ort" />
             <mat-error *dvSharedUiFormMessageError="'required'">
@@ -136,7 +134,7 @@
       <!-- Land -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.address.country.label' | translate
+          'shared.form.shared.address.country.label' | translate
         }}</mat-label>
         <mat-select formControlName="land">
           <mat-option [value]="null" disabled selected>
@@ -159,7 +157,7 @@
       <!-- GEBURTSDATUM -->
       <mat-form-field dvSharedUiFormField class="col-12 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.birthday.label' | translate
+          'shared.form.shared.birthday.label' | translate
         }}</mat-label>
 
         <input
@@ -186,7 +184,7 @@
     <div class="row g-4 my-2">
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.partner.jahreseinkommen.label' | translate
+          'shared.form.partner.jahreseinkommen.label' | translate
         }}</mat-label>
         <input
           formControlName="jahreseinkommen"
@@ -203,7 +201,7 @@
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
-        {{ 'gesuch-app.form.save-and-continue' | translate }}
+        {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
   </form>

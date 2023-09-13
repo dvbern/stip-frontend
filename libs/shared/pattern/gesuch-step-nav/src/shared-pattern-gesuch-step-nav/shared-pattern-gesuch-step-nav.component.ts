@@ -11,10 +11,10 @@ import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { gesuchAppPatternGesuchStepNavView } from './gesuch-app-pattern-gesuch-step-nav.selectors';
+import { sharedPatternGesuchStepNavView } from './shared-pattern-gesuch-step-nav.selectors';
 
 @Component({
-  selector: 'dv-gesuch-app-pattern-gesuch-step-nav',
+  selector: 'dv-shared-pattern-gesuch-step-nav',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,18 +23,18 @@ import { gesuchAppPatternGesuchStepNavView } from './gesuch-app-pattern-gesuch-s
     SharedUiIconChipComponent,
     RouterLinkActive,
   ],
-  templateUrl: './gesuch-app-pattern-gesuch-step-nav.component.html',
-  styleUrls: ['./gesuch-app-pattern-gesuch-step-nav.component.scss'],
+  templateUrl: './shared-pattern-gesuch-step-nav.component.html',
+  styleUrls: ['./shared-pattern-gesuch-step-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppPatternGesuchStepNavComponent {
+export class SharedPatternGesuchStepNavComponent {
   private store = inject(Store);
 
   @Output() navClicked = new EventEmitter();
 
   route = inject(Router);
 
-  view$ = this.store.selectSignal(gesuchAppPatternGesuchStepNavView);
+  view$ = this.store.selectSignal(sharedPatternGesuchStepNavView);
 
   trackByIndex(index: number): number {
     return index;

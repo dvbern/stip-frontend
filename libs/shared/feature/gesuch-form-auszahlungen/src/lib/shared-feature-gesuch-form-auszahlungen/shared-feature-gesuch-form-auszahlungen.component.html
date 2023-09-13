@@ -13,7 +13,7 @@
   <div class="row" *ngIf="!view().loading && !view().hasNecessaryPreSteps">
     <div class="col-12 col-xl-8 my-3">
       <ngb-alert type="info" [dismissible]="false">{{
-        'gesuch-app.form.auszahlung.top.missing-eltern' | translate
+        'shared.form.auszahlung.top.missing-eltern' | translate
       }}</ngb-alert>
     </div>
   </div>
@@ -29,7 +29,7 @@
       <!-- kontoinhaber -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.auszahlung.kontoinhaber' | translate
+          'shared.form.auszahlung.kontoinhaber' | translate
         }}</mat-label>
         <mat-select
           [formControlName]="'kontoinhaber'"
@@ -45,7 +45,7 @@
             "
             [value]="each"
           >
-            {{ 'gesuch-app.form.auszahlung.kontoinhaber.' + each | translate }}
+            {{ 'shared.form.auszahlung.kontoinhaber.' + each | translate }}
           </mat-option>
         </mat-select>
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -58,7 +58,7 @@
       <!-- Nachname -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.lastname.label' | translate
+          'shared.form.shared.lastname.label' | translate
         }}</mat-label>
         <input
           data-test-id="form-person-name"
@@ -74,7 +74,7 @@
       <!-- Vorname -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.firstname.label' | translate
+          'shared.form.shared.firstname.label' | translate
         }}</mat-label>
         <input matInput type="text" [formControlName]="'vorname'" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -99,7 +99,7 @@
       <!-- IBAN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.auszahlung.iban.label' | translate
+          'shared.form.auszahlung.iban.label' | translate
         }}</mat-label>
         <span matTextPrefix>CH</span>
         <input
@@ -121,7 +121,7 @@
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
-        {{ 'gesuch-app.form.save-and-continue' | translate }}
+        {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
   </form>

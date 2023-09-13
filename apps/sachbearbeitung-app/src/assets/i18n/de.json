@@ -1,9 +1,11 @@
 {
   "app-name": "Stipendien Online",
   "sachbearbeitung-app.header.antraege": "Anträge",
+  "sachbearbeitung-app.header.antragDetail": "Antragsdetail",
   "sachbearbeitung-app.header.posteingang": "Posteingang",
   "sachbearbeitung-app.header.administration": "Administration",
   "sachbearbeitung-app.header.berechnung": "Berechnung",
+  "sachbearbeitung-app.header.back": "Zurück",
   "sachbearbeitung-app.cockpit.title": "Cockpit",
   "sachbearbeitung-app.cockpit.gesuch": "Gesuch",
   "sachbearbeitung-app.cockpit.gesuche": "Gesuche",

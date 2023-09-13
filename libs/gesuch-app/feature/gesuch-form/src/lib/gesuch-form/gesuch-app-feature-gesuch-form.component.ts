@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { GesuchAppPatternGesuchStepLayoutComponent } from '@dv/gesuch-app/pattern/gesuch-step-layout';
 import { SharedUiGesuchStepWrapperComponent } from '@dv/shared/ui/gesuch-step-wrapper';
-import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
+import { SharedModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form',
@@ -17,5 +17,5 @@ import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormComponent {
-  step?: GesuchAppModelGesuchFormStep;
+  step?: SharedModelGesuchFormStep;
 }

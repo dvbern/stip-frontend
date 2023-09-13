@@ -1,10 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 
 import { SharedPatternAppHeaderComponent } from '@dv/shared/pattern/app-header';
+import { SharedPatternGesuchStepNavComponent } from '@dv/shared/pattern/gesuch-step-nav';
 import { SharedUiSearchComponent } from '@dv/shared/ui/search';
+import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
+import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
+import { SharedModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
+import { SharedUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
 
 @Component({
   selector: 'dv-sachbearbeitung-app-pattern-gesuch-step-layout',
@@ -12,7 +23,10 @@ import { SharedUiSearchComponent } from '@dv/shared/ui/search';
   imports: [
     CommonModule,
     RouterLink,
+    SharedPatternGesuchStepNavComponent,
     SharedPatternAppHeaderComponent,
+    SharedUiIconChipComponent,
+    SharedUiProgressBarComponent,
     SharedUiSearchComponent,
     TranslateModule,
   ],
@@ -24,5 +38,9 @@ import { SharedUiSearchComponent } from '@dv/shared/ui/search';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SachbearbeitungAppPatternGesuchStepLayoutComponent {
-  @Input() closeMenu: { value?: unknown } | null = null;
+  @Input()
+  step?: SharedModelGesuchFormStep;
+  navClicked = new EventEmitter();
+
+  stepManager = inject(SharedUtilGesuchFormStepManagerService);
 }

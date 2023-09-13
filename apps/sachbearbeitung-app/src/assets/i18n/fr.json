@@ -1,9 +1,11 @@
 {
   "app-name": "Stipends Online",
   "sachbearbeitung-app.header.antraege": "Demandes",
+  "sachbearbeitung-app.header.antragDetail": "Détail de la demande",
   "sachbearbeitung-app.header.posteingang": "Nouvelles",
   "sachbearbeitung-app.header.administration": "Administration",
   "sachbearbeitung-app.header.berechnung": "Calcul",
+  "sachbearbeitung-app.header.back": "Retour",
   "sachbearbeitung-app.cockpit.title": "Cockpit",
   "sachbearbeitung-app.cockpit.gesuch": "Demande",
   "sachbearbeitung-app.cockpit.gesuche": "Demandes",

@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import {
-  GesuchAppModelGesuchFormStep,
+  SharedModelGesuchFormStep,
   GesuchFormSteps,
 } from '@dv/shared/model/gesuch-form';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GesuchAppUtilGesuchFormStepManagerService {
+export class SharedUtilGesuchFormStepManagerService {
   getTotalSteps(): number {
     return Object.entries(GesuchFormSteps).length;
   }
-  getNext(origin?: GesuchAppModelGesuchFormStep): GesuchAppModelGesuchFormStep {
+  getNext(origin?: SharedModelGesuchFormStep): SharedModelGesuchFormStep {
     switch (origin) {
       case GesuchFormSteps.PERSON:
         return GesuchFormSteps.AUSBILDUNG;
