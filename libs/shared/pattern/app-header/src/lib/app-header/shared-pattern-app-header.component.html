@@ -27,22 +27,22 @@
   </ng-template>
   <!-- Small screens Header -->
   <div class="container-md d-lg-none">
-    <div class=""></div>
     <div class="py-2 py-md-4 d-flex gap-2 justify-content-between">
       <ng-container *ngTemplateOutlet="logoOrBackLink"></ng-container>
-    </div>
-    <!-- search and burgermenu -->
-    <div class="d-flex gap-2 align-items-center">
-      <ng-content select=".header-mobile-addons"></ng-content>
 
-      <button
-        class="dv-button-icon"
-        type="button"
-        [attr.aria-label]="'shared.menu' | translate"
-        (click)="openMenu()"
-      >
-        <span class="material-symbols-rounded">menu</span>
-      </button>
+      <!-- search and burgermenu -->
+      <div class="d-flex gap-2 align-items-center">
+        <ng-content select=".header-mobile-addons"></ng-content>
+
+        <button
+          class="dv-button-icon"
+          type="button"
+          [attr.aria-label]="'shared.menu' | translate"
+          (click)="openMenu()"
+        >
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+      </div>
     </div>
   </div>
 
