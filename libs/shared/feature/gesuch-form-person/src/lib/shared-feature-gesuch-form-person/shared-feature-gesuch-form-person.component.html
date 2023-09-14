@@ -282,7 +282,10 @@
       <!-- Auslaenderausweis -->
       <div
         class="col-12 col-md-6 col-xl-4"
-        *ngIf="form.controls.nationalitaet.value !== nationalitaetCH"
+        *ngIf="
+          form.controls.nationalitaet.value &&
+          form.controls.nationalitaet.value !== nationalitaetCH
+        "
       >
         <div class="rounded-3 bg-white shadow p-4">
           <h4>
