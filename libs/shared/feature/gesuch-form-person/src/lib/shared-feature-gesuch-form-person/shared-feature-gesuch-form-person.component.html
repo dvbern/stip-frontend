@@ -280,13 +280,7 @@
       </mat-form-field>
 
       <!-- Auslaenderausweis -->
-      <div
-        class="col-12 col-md-6 col-xl-4"
-        *ngIf="
-          form.controls.nationalitaet.value &&
-          form.controls.nationalitaet.value !== nationalitaetCH
-        "
-      >
+      <div class="col-12 col-md-6 col-xl-4" *ngIf="showAuslaenderAusweisSig()">
         <div class="rounded-3 bg-white shadow p-4">
           <h4>
             {{ 'gesuch-app.form.person.auslaenderausweis' | translate }}
