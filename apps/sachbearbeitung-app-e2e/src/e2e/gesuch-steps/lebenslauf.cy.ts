@@ -9,7 +9,7 @@ import {
 
 import { CockpitPO } from '../../support/po/cockpit.po';
 
-describe('gesuch-app gesuch form', () => {
+describe('sachbearbeitung-app gesuch form', () => {
   beforeEach(() => {
     cy.login();
     cy.visit('/');

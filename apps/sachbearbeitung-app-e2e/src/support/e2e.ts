@@ -14,4 +14,4 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands';
+import '@dv/shared/util-fn/e2e-helpers';

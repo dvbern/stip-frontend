@@ -143,8 +143,8 @@ Preparation:
 You can run e2e tests in headless mode for all (`npm run e2e`) or for a specific app
 (`npm run e2e:<app-name>`, these have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
-Besides that it is also possible to serve desired app in the dev mode (eg `npm run serve:gesuch-app`)
-and then start e2e tests in GUI mode with `npm run e2e:gesuch-app:open` which will start Cypress GUI.
+Besides that it is also possible to serve desired app in the dev mode (eg `npm run serve:gs`)
+and then start e2e tests in GUI mode with `npm run e2e:gs:open` which will start Cypress GUI.
 (again, these scripts have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
 > When writing E2E tests, always make sure to use `data-testid="some-id"` attributes instead of

@@ -6,7 +6,7 @@ import {
 
 import { CockpitPO } from '../../support/po/cockpit.po';
 
-describe('gesuch-app einnahmen & kosten form', () => {
+describe('sachbearbeitung-app einnahmen & kosten form', () => {
   beforeEach(() => {
     cy.login();
     cy.visit('/');
