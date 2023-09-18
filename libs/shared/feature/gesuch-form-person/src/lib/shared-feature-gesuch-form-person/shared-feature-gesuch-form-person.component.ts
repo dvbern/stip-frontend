@@ -23,7 +23,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { filter, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { subYears } from 'date-fns';
 
@@ -212,6 +212,17 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
 
   showWohnsitzSplitterSig = computed(() => {
     return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
+  });
+
+  private nationalitaetChangedSig = toSignal(
+    this.form.controls.nationalitaet.valueChanges
+  );
+
+  showAuslaenderAusweisSig = computed(() => {
+    return (
+      this.nationalitaetChangedSig() &&
+      this.nationalitaetChangedSig() !== this.nationalitaetCH
+    );
   });
 
   constructor() {
