@@ -386,9 +386,6 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           )!,
           ...wohnsitzAnteileNumber(this.form.getRawValue()),
-
-          // TODO missing fields that exist on the Adresse:
-          quellenbesteuert: false,
         },
       },
     };
