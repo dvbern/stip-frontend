@@ -13,7 +13,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { switchMap } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -78,6 +79,7 @@ const MEDIUM_AGE_ADULT = 30;
     NgbInputDatepicker,
     SharedUiFormMessageErrorDirective,
     GesuchAppUiStepFormButtonsComponent,
+    MatCheckboxModule,
   ],
   templateUrl: './shared-feature-gesuch-form-partner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -128,28 +130,43 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         ),
       ],
     ],
-    jahreseinkommen: ['', [Validators.required]],
+    ausbildungMitEinkommenOderErwerbstaetig: [
+      <boolean | null>null,
+      [Validators.required],
+    ],
+    jahreseinkommen: [<string | undefined>undefined, [Validators.required]],
+    fahrkosten: [<string | undefined>undefined, [Validators.required]],
+    verpflegungskosten: [<string | undefined>undefined, [Validators.required]],
   });
 
+  ausbildungMitEinkommenOderErwerbstaetigSig = toSignal(
+    this.form.controls.ausbildungMitEinkommenOderErwerbstaetig.valueChanges
+  );
+
   constructor() {
-    effect(() => {
-      const { gesuchFormular } = this.view();
-      if (gesuchFormular?.partner) {
-        const partner = gesuchFormular.partner;
-        const partnerForForm = {
-          ...partner,
-          geburtsdatum: partner.geburtsdatum.toString(),
-        };
-        this.form.patchValue({
-          ...partnerForForm,
-          geburtsdatum: parseBackendLocalDateAndPrint(
-            partner.geburtsdatum,
-            this.languageSig()
-          ),
-          jahreseinkommen: partnerForForm.jahreseinkommen.toString(),
-        });
-      }
-    });
+    effect(
+      () => {
+        const { gesuchFormular } = this.view();
+        if (gesuchFormular?.partner) {
+          const partner = gesuchFormular.partner;
+          const partnerForForm = {
+            ...partner,
+            geburtsdatum: partner.geburtsdatum.toString(),
+          };
+          this.form.patchValue({
+            ...partnerForForm,
+            geburtsdatum: parseBackendLocalDateAndPrint(
+              partner.geburtsdatum,
+              this.languageSig()
+            ),
+            jahreseinkommen: partnerForForm.jahreseinkommen?.toString(),
+            fahrkosten: partnerForForm.fahrkosten?.toString(),
+            verpflegungskosten: partnerForForm.verpflegungskosten?.toString(),
+          });
+        }
+      },
+      { allowSignalWrites: true }
+    );
     effect(
       () => {
         const { gesuch, gesuchFormular } = this.view();
@@ -169,6 +186,28 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
+    effect(() => {
+      const noAusbildungMitEinkommenOderErwerbstaetigkeit =
+        !this.ausbildungMitEinkommenOderErwerbstaetigSig();
+      if (noAusbildungMitEinkommenOderErwerbstaetigkeit === null) {
+        return;
+      }
+      this.formUtils.setDisabledState(
+        this.form.controls.jahreseinkommen,
+        noAusbildungMitEinkommenOderErwerbstaetigkeit,
+        true
+      );
+      this.formUtils.setDisabledState(
+        this.form.controls.fahrkosten,
+        noAusbildungMitEinkommenOderErwerbstaetigkeit,
+        true
+      );
+      this.formUtils.setDisabledState(
+        this.form.controls.verpflegungskosten,
+        noAusbildungMitEinkommenOderErwerbstaetigkeit,
+        true
+      );
+    });
   }
 
   ngOnInit() {
@@ -233,7 +272,9 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         this.languageSig(),
         subYears(new Date(), MEDIUM_AGE_ADULT)
       )!,
-      jahreseinkommen: fromFormatedNumber(formValues.jahreseinkommen) ?? 0,
+      jahreseinkommen: fromFormatedNumber(formValues.jahreseinkommen),
+      fahrkosten: fromFormatedNumber(formValues.fahrkosten),
+      verpflegungskosten: fromFormatedNumber(formValues.verpflegungskosten),
     };
     return {
       gesuchId: gesuch?.id,

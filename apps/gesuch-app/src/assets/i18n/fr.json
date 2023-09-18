@@ -139,7 +139,10 @@
   "gesuch-app.cockpit.gesuch.semester.fruehling": "Printemps",
   "gesuch-app.cockpit.gesuch.img.alt": "Personne au bureau",
   "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
-  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen",
+  "gesuch-app.form.partner.jahreseinkommen.label": "Revenu annuel net",
+  "gesuch-app.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label": "Formation avec revenu ou activité professionnelle",
+  "gesuch-app.form.partner.verpflegungskosten.label": "Frais de repas",
+  "gesuch-app.form.partner.fahrkosten.label": "Frais de déplacement",
 
   "gesuch-app.einnahmenkosten.title": "Recettes & coûts",
   "gesuch-app.form.einnahmenkosten.top.incomplete": "Veuillez d'abord remplir les étapes suivantes:",

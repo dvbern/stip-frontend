@@ -183,13 +183,67 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row g-4 my-2">
+    <div class="row g-4">
+      <!-- AUSBILDUNG MIT EINKOMMEN ODER ERWERBSTÄTIG -->
+      <div class="col-12 col-xl-8">
+        <mat-checkbox
+          type="checkbox"
+          formControlName="ausbildungMitEinkommenOderErwerbstaetig"
+          >{{
+            'gesuch-app.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label'
+              | translate
+          }}</mat-checkbox
+        >
+      </div>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
           'gesuch-app.form.partner.jahreseinkommen.label' | translate
         }}</mat-label>
         <input
           formControlName="jahreseinkommen"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+        <mat-label>{{
+          'gesuch-app.form.partner.verpflegungskosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="verpflegungskosten"
+          matInput
+          type="text"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+        <mat-label>{{
+          'gesuch-app.form.partner.fahrkosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="fahrkosten"
           matInput
           type="text"
           [maskito]="maskitoNumber"

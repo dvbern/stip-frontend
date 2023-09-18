@@ -198,7 +198,10 @@
   "gesuch-app.cockpit.gesuch.semester.fruehling": "Frühjahr",
   "gesuch-app.cockpit.gesuch.img.alt": "Person am Schreibtisch",
   "gesuch-app.form.partner.title": "Ehe- / Konkubinatspartner",
-  "gesuch-app.form.partner.jahreseinkommen.label": "Jahreseinkommen",
+  "gesuch-app.form.partner.jahreseinkommen.label": "Nettojahreseinkommen",
+  "gesuch-app.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label": "Ausbildung mit Einkommen oder erwerbstätig",
+  "gesuch-app.form.partner.verpflegungskosten.label": "Verpflegungskosten",
+  "gesuch-app.form.partner.fahrkosten.label": "Fahrkosten",
 
   "gesuch-app.einnahmenkosten.title": "Einnahmen & Kosten",
   "gesuch-app.form.einnahmenkosten.top.incomplete": "Bitte füllen Sie zuerst folgende Schritte aus:",
