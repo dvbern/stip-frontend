@@ -297,6 +297,8 @@
           formControlName="auswaertigeMittagessenProWoche"
           matInput
           type="number"
+          min="0"
+          max="5"
         />
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
