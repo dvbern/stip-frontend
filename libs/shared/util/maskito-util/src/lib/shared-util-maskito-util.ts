@@ -25,6 +25,6 @@ export function fromFormatedNumber(
   formatedNumber: string | null | undefined
 ): number | null | undefined {
   return formatedNumber != null
-    ? +formatedNumber.replace(NUMBER_THOUSAND_SEPARATOR, '')
+    ? +formatedNumber.replaceAll(NUMBER_THOUSAND_SEPARATOR, '')
     : formatedNumber;
 }
