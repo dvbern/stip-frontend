@@ -252,6 +252,8 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
             ...personForForm,
             ...wohnsitzAnteileString(person),
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }

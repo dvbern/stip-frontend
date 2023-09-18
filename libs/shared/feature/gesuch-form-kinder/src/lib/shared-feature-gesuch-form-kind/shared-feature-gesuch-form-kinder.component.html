@@ -30,10 +30,10 @@
           <tr>
             <th scope="col"></th>
             <th scope="col">
-              {{ 'gesuch-app.form.geschwister.name' | translate }}
+              {{ 'shared.form.geschwister.name' | translate }}
             </th>
             <th scope="col">
-              {{ 'gesuch-app.form.geschwister.geburtsdatum.label' | translate }}
+              {{ 'shared.form.geschwister.geburtsdatum.label' | translate }}
             </th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -59,7 +59,7 @@
                   type="button"
                   class="btn btn-link p-0 lh-1"
                   (click)="handleEditKinder(kinder)"
-                  [title]="'gesuch-app.form.kinder.edit' | translate"
+                  [title]="'shared.form.kinder.edit' | translate"
                 >
                   <i class="material-symbols-rounded">edit</i>
                 </button>
@@ -69,7 +69,7 @@
                   type="button"
                   class="btn btn-link p-0 lh-1"
                   (click)="handleDeleteKinder(kinder)"
-                  [title]="'gesuch-app.form.kinder.delete' | translate"
+                  [title]="'shared.form.kinder.delete' | translate"
                 >
                   <i class="material-symbols-rounded">delete</i>
                 </button>
@@ -88,14 +88,14 @@
       class="btn btn-outline-primary"
       (click)="handleAddKinder()"
     >
-      {{ 'gesuch-app.form.kinder.add' | translate }}
+      {{ 'shared.form.kinder.add' | translate }}
     </button>
   </div>
 
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
     <button type="button" class="btn btn-primary" (click)="handleContinue()">
-      {{ 'gesuch-app.form.gonext' | translate }}
+      {{ 'shared.form.gonext' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 </ng-container>

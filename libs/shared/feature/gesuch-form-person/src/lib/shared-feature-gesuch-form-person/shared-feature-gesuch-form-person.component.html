@@ -22,7 +22,7 @@
       <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
         <mat-form-field dvSharedUiFormField class="flex-grow-1">
           <mat-label>{{
-            'gesuch-app.form.shared.social-insurance-number.label' | translate
+            'shared.form.shared.social-insurance-number.label' | translate
           }}</mat-label>
           <input
             type="text"
@@ -61,27 +61,24 @@
           <h1 class="title h5 mb-4 d-flex">
             <span class="text-info material-symbols-rounded me-2"> info </span>
             {{
-              'gesuch-app.form.shared.social-insurance-number.infoTitle'
-                | translate
+              'shared.form.shared.social-insurance-number.infoTitle' | translate
             }}
           </h1>
           <p class="content">
-            {{
-              'gesuch-app.form.shared.social-insurance-number.info' | translate
-            }}
+            {{ 'shared.form.shared.social-insurance-number.info' | translate }}
           </p>
         </dv-shared-ui-info-overlay>
       </div>
     </div>
     <h3 class="pt-5 mb-4">
-      {{ 'gesuch-app.form.shared.section.personal-details' | translate }}
+      {{ 'shared.form.shared.section.personal-details' | translate }}
     </h3>
 
     <div class="row g-4">
       <!-- Anrede -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.person.salutation.label' | translate
+          'shared.form.person.salutation.label' | translate
         }}</mat-label>
         <mat-select formControlName="anrede">
           <mat-option [value]="null" disabled selected>
@@ -104,7 +101,7 @@
       <!-- Name -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.lastname.label' | translate
+          'shared.form.shared.lastname.label' | translate
         }}</mat-label>
         <input
           data-testid="form-person-name"
@@ -119,7 +116,7 @@
       <!-- Vorname -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.firstname.label' | translate
+          'shared.form.shared.firstname.label' | translate
         }}</mat-label>
         <input type="text" matInput formControlName="vorname" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -142,7 +139,7 @@
       <!-- Wohnsitz -->
       <div class="col-12 col-md-6 col-xl-4">
         <mat-checkbox formControlName="identischerZivilrechtlicherWohnsitz">{{
-          'gesuch-app.form.shared.identical-civil-residence.label' | translate
+          'shared.form.shared.identical-civil-residence.label' | translate
         }}</mat-checkbox>
       </div>
     </div>
@@ -153,7 +150,7 @@
     >
       <div class="col-12 col-xl-8">
         <mat-label class="mb-2">{{
-          'gesuch-app.form.shared.alternative-civil-residence.title' | translate
+          'shared.form.shared.alternative-civil-residence.title' | translate
         }}</mat-label>
         <div class="row g-4 mt-1">
           <!-- PLZ -->
@@ -162,7 +159,7 @@
             class="col-5 col-md-4 col-xl-3 mt-3"
           >
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+              >{{ 'shared.form.shared.address.zipcode.label' | translate }}
             </mat-label>
             <input
               type="text"
@@ -180,7 +177,7 @@
             class="col-7 col-md-8 col-xl-9 mt-3"
           >
             <mat-label
-              >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+              >{{ 'shared.form.shared.address.city.label' | translate }}
             </mat-label>
             <input
               type="text"
@@ -197,14 +194,14 @@
 
     <!-- Weitere Angaben -->
     <h3 class="pt-5 mb-4">
-      {{ 'gesuch-app.form.person.section.additional-information' | translate }}
+      {{ 'shared.form.person.section.additional-information' | translate }}
     </h3>
 
     <div class="row g-4">
       <!-- E-MAIL -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.person.email.label' | translate
+          'shared.form.person.email.label' | translate
         }}</mat-label>
         <input matInput type="email" formControlName="email" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -218,7 +215,7 @@
       <!-- TEL -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.phone.label' | translate
+          'shared.form.shared.phone.label' | translate
         }}</mat-label>
         <input type="text" matInput formControlName="telefonnummer" />
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -234,7 +231,7 @@
       <!-- GEBURTSDATUM -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.birthday.label' | translate
+          'shared.form.shared.birthday.label' | translate
         }}</mat-label>
 
         <input
@@ -261,7 +258,7 @@
       <!-- NATIONALITAET -->
       <mat-form-field class="col-12 col-md-6 col-xl-4" dvSharedUiFormField>
         <mat-label>{{
-          'gesuch-app.form.person.nationality.label' | translate
+          'shared.form.person.nationality.label' | translate
         }}</mat-label>
         <mat-select formControlName="nationalitaet">
           <mat-option [value]="null" disabled selected>
@@ -283,7 +280,7 @@
       <div class="col-12 col-md-6 col-xl-4" *ngIf="showAuslaenderAusweisSig()">
         <div class="rounded-3 bg-white shadow p-4">
           <h4>
-            {{ 'gesuch-app.form.person.auslaenderausweis' | translate }}
+            {{ 'shared.form.person.auslaenderausweis' | translate }}
           </h4>
           <dv-shared-pattern-document-upload
             *ngIf="view().gesuch"
@@ -299,7 +296,7 @@
         <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
           <mat-form-field dvSharedUiFormField class="flex-grow-1">
             <mat-label>{{
-              'gesuch-app.form.person.niederlassungsstatus.label' | translate
+              'shared.form.person.niederlassungsstatus.label' | translate
             }}</mat-label>
 
             <mat-select formControlName="niederlassungsstatus">
@@ -313,9 +310,7 @@
                   trackBy: trackByIndex
                 "
               >
-                {{
-                  'gesuch-app.form.person.niederlassungsstatus.' + n | translate
-                }}
+                {{ 'shared.form.person.niederlassungsstatus.' + n | translate }}
               </mat-option>
             </mat-select>
 
@@ -342,7 +337,7 @@
       <ng-container *ngIf="form.controls.heimatort.enabled">
         <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
           <mat-label>{{
-            'gesuch-app.form.person.origin.label' | translate
+            'shared.form.person.origin.label' | translate
           }}</mat-label>
           <input type="text" matInput formControlName="heimatort" />
           <mat-error *dvSharedUiFormMessageError="'required'">
@@ -356,7 +351,7 @@
         *ngIf="form.controls.nationalitaet.value === nationalitaetCH"
       >
         <mat-checkbox formControlName="vormundschaft">{{
-          'gesuch-app.form.person.guardianship.label' | translate
+          'shared.form.person.guardianship.label' | translate
         }}</mat-checkbox>
       </div>
       <div class="d-none d-md-block col-12 col-md-6 col-xl-8">
@@ -367,14 +362,13 @@
           <h1 class="title h5 mb-4 d-flex">
             <span class="text-info material-symbols-rounded me-2"> info </span>
             {{
-              'gesuch-app.form.person.niederlassungsstatus.infoTitle'
-                | translate
+              'shared.form.person.niederlassungsstatus.infoTitle' | translate
             }}
           </h1>
           <p
             class="content"
             [innerHTML]="
-              'gesuch-app.form.person.niederlassungsstatus.info' | translate
+              'shared.form.person.niederlassungsstatus.info' | translate
             "
           ></p>
         </dv-shared-ui-info-overlay>
@@ -384,7 +378,7 @@
       <!-- ZIVILSTAND -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.person.marital-status.label' | translate
+          'shared.form.person.marital-status.label' | translate
         }}</mat-label>
         <mat-select formControlName="zivilstand">
           <mat-option [value]="null" disabled selected>
@@ -394,7 +388,7 @@
             [value]="z"
             *ngFor="let z of zivilstandValues; trackBy: trackByIndex"
           >
-            {{ 'gesuch-app.form.person.zivilstand.' + z | translate }}
+            {{ 'shared.form.person.zivilstand.' + z | translate }}
           </mat-option>
         </mat-select>
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -405,7 +399,7 @@
       <!-- Wohnsitz -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
-          'gesuch-app.form.shared.wohnsitz.label' | translate
+          'shared.form.shared.wohnsitz.label' | translate
         }}</mat-label>
         <mat-select formControlName="wohnsitz">
           <mat-option [value]="null" disabled selected>
@@ -415,7 +409,7 @@
             [value]="z"
             *ngFor="let z of wohnsitzValues; trackBy: trackByIndex"
           >
-            {{ 'gesuch-app.form.shared.wohnsitz.' + z | translate }}
+            {{ 'shared.form.shared.wohnsitz.' + z | translate }}
           </mat-option>
         </mat-select>
         <mat-error *dvSharedUiFormMessageError="'required'">
@@ -433,7 +427,7 @@
           <div class="d-flex gap-3">
             <span class="material-symbols-rounded text-info"> info </span>
             <span>{{
-              'gesuch-app.form.person.marital-status.ledig.info' | translate
+              'shared.form.person.marital-status.ledig.info' | translate
             }}</span>
           </div>
         </ngb-alert>
@@ -454,7 +448,7 @@
       <!-- Quellenbesteuerung -->
       <div class="col-12 col-md-6 col-xl-4">
         <label>{{
-          'gesuch-app.form.person.tax-at-source.label' | translate
+          'shared.form.person.tax-at-source.label' | translate
         }}</label>
         <mat-radio-group
           class="d-flex flex-column"
@@ -477,7 +471,7 @@
       <!-- Sozialhilfebeitraege -->
       <div class="col-12 col-md-6 col-xl-4">
         <label>{{
-          'gesuch-app.form.person.social-security.label' | translate
+          'shared.form.person.social-security.label' | translate
         }}</label>
         <mat-radio-group
           class="d-flex flex-column"
@@ -501,7 +495,7 @@
       <div class="col-12 col-md-6 col-xl-4">
         <!-- KorrespondenzSprache -->
         <label>{{
-          'gesuch-app.form.person.korrespondenzSprache.label' | translate
+          'shared.form.person.korrespondenzSprache.label' | translate
         }}</label>
         <mat-radio-group
           class="d-flex flex-column"
@@ -512,7 +506,7 @@
             *ngFor="let s of spracheValues; trackBy: trackByIndex"
             [value]="s"
             >{{
-              'gesuch-app.form.person.korrespondenzSprache.' + s | translate
+              'shared.form.person.korrespondenzSprache.' + s | translate
             }}</mat-radio-button
           >
           <div class="group-errors">
@@ -527,14 +521,14 @@
     <div class="row g-4 mt-1">
       <!-- digitale Kommunikation -->
       <mat-checkbox formControlName="digitaleKommunikation">{{
-        'gesuch-app.form.person.digital-communication.label' | translate
+        'shared.form.person.digital-communication.label' | translate
       }}</mat-checkbox>
     </div>
 
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
-        {{ 'gesuch-app.form.save-and-continue' | translate }}
+        {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
   </form>

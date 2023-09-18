@@ -19,7 +19,7 @@ import { SharedEventGesuchFormAuszahlung } from '@dv/shared/event/gesuch-form-au
 import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
 import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
 import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
-import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
+import { SharedUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
 import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
 import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
@@ -269,7 +269,7 @@ export const redirectToGesuchFormNextStep = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
-    stepManager = inject(GesuchAppUtilGesuchFormStepManagerService)
+    stepManager = inject(SharedUtilGesuchFormStepManagerService)
   ) => {
     return actions$.pipe(
       ofType(

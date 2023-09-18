@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GesuchAppUtilGesuchFormStepManagerService } from './shared-util-gesuch-form-step-manager.service';
+import { SharedUtilGesuchFormStepManagerService } from './shared-util-gesuch-form-step-manager.service';
 
-describe('GesuchAppUtilGesuchFormStepManagerService', () => {
-  let service: GesuchAppUtilGesuchFormStepManagerService;
+describe('SharedUtilGesuchFormStepManagerService', () => {
+  let service: SharedUtilGesuchFormStepManagerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GesuchAppUtilGesuchFormStepManagerService);
+    service = TestBed.inject(SharedUtilGesuchFormStepManagerService);
   });
 
   it('should be created', () => {

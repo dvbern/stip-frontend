@@ -36,7 +36,7 @@
           class="d-flex flex-column"
         >
           <label>{{
-            'gesuch-app.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
+            'shared.form.familiensituation.leibliche-eltern-verheiratet-konkubinat.label'
               | translate
           }}</label>
 
@@ -65,7 +65,7 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.gerichtliche-alimentenregelung.label'
+              'shared.form.familiensituation.gerichtliche-alimentenregelung.label'
                 | translate
             }}</label>
             <mat-radio-button [value]="true">{{
@@ -87,7 +87,7 @@
         >
           <mat-form-field dvSharedUiFormField>
             <mat-label>{{
-              'gesuch-app.form.familiensituation.wer-zahlt-alimente.label'
+              'shared.form.familiensituation.wer-zahlt-alimente.label'
                 | translate
             }}</mat-label>
             <mat-select formControlName="werZahltAlimente">
@@ -95,13 +95,13 @@
                 {{ 'shared.form.select.empty' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+                {{ 'shared.form.familiensituation.vater' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+                {{ 'shared.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                {{ 'shared.form.familiensituation.gemeinsam' | translate }}
               </mat-option>
             </mat-select>
 
@@ -139,7 +139,7 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.label'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.label'
                 | translate
             }}</label>
             <mat-radio-button [value]="true">{{
@@ -160,7 +160,7 @@
           class="row g-4 mt-3"
         >
           <span>{{
-            'gesuch-app.form.familiensituation.elternteil-verstorben.label'
+            'shared.form.familiensituation.elternteil-verstorben.label'
               | translate
           }}</span>
           <mat-radio-group
@@ -169,21 +169,21 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.mutter' | translate
+              'shared.form.familiensituation.mutter' | translate
             }}</label>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
                 | translate
             }}</mat-radio-button>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
                 | translate
             }}</mat-radio-button>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.keine'
                 | translate
             }}</mat-radio-button>
 
@@ -202,14 +202,14 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.mutter-unbekannt-reason.label'
+              'shared.form.familiensituation.mutter-unbekannt-reason.label'
                 | translate
             }}</label>
 
             <mat-radio-button
               [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
               >{{
-                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                'shared.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
                   | translate
               }}</mat-radio-button
             >
@@ -217,7 +217,7 @@
             <mat-radio-button
               [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
               >{{
-                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
+                'shared.form.familiensituation.elternteil-unbekannt-reason.fehlende-mutterschaftsanerkennung'
                   | translate
               }}</mat-radio-button
             >
@@ -244,21 +244,21 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.vater' | translate
+              'shared.form.familiensituation.vater' | translate
             }}</label>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.VERSTORBEN">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.verstorben'
                 | translate
             }}</mat-radio-button>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.UNBEKANNT">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.unbekannt'
                 | translate
             }}</mat-radio-button>
 
             <mat-radio-button [value]="ELTERN_ABWESENHEITS_GRUND.WEDER_NOCH">{{
-              'gesuch-app.form.familiensituation.elternteil-verstorben-unbekannt.keine'
+              'shared.form.familiensituation.elternteil-verstorben-unbekannt.keine'
                 | translate
             }}</mat-radio-button>
 
@@ -277,14 +277,14 @@
             class="d-flex flex-column"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.vater-unbekannt-reason.label'
+              'shared.form.familiensituation.vater-unbekannt-reason.label'
                 | translate
             }}</label>
 
             <mat-radio-button
               [value]="ELTERN_UNBEKANNTHEITS_GRUND.UNBEKANNTER_AUFENTHALTSORT"
               >{{
-                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
+                'shared.form.familiensituation.elternteil-unbekannt-reason.unbekannter-aufenthaltsort'
                   | translate
               }}</mat-radio-button
             >
@@ -292,7 +292,7 @@
             <mat-radio-button
               [value]="ELTERN_UNBEKANNTHEITS_GRUND.FEHLENDE_ANERKENNUNG"
               >{{
-                'gesuch-app.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'
+                'shared.form.familiensituation.elternteil-unbekannt-reason.fehlende-vaterschaftsanerkennung'
                   | translate
               }}</mat-radio-button
             >
@@ -327,20 +327,20 @@
         <div class="row g-4 mt-3 col-xl-8">
           <mat-form-field dvSharedUiFormField>
             <mat-label>{{
-              'gesuch-app.form.familiensituation.sorgerecht.label' | translate
+              'shared.form.familiensituation.sorgerecht.label' | translate
             }}</mat-label>
             <mat-select formControlName="sorgerecht">
               <mat-option [value]="null" disabled selected>
                 {{ 'shared.form.select.empty' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+                {{ 'shared.form.familiensituation.vater' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+                {{ 'shared.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                {{ 'shared.form.familiensituation.gemeinsam' | translate }}
               </mat-option>
             </mat-select>
 
@@ -353,20 +353,20 @@
         <div class="row g-4 mt-3 col-xl-8">
           <mat-form-field dvSharedUiFormField>
             <mat-label>{{
-              'gesuch-app.form.familiensituation.obhut.label' | translate
+              'shared.form.familiensituation.obhut.label' | translate
             }}</mat-label>
             <mat-select formControlName="obhut">
               <mat-option [value]="null" disabled selected>
                 {{ 'shared.form.select.empty' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.VATER">
-                {{ 'gesuch-app.form.familiensituation.vater' | translate }}
+                {{ 'shared.form.familiensituation.vater' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.MUTTER">
-                {{ 'gesuch-app.form.familiensituation.mutter' | translate }}
+                {{ 'shared.form.familiensituation.mutter' | translate }}
               </mat-option>
               <mat-option [value]="ELTERNSCHAFTSTEILUNG.GEMEINSAM">
-                {{ 'gesuch-app.form.familiensituation.gemeinsam' | translate }}
+                {{ 'shared.form.familiensituation.gemeinsam' | translate }}
               </mat-option>
             </mat-select>
 
@@ -384,16 +384,14 @@
             [controlB]="form.controls.obhutVater"
           >
             <label>{{
-              'gesuch-app.form.familiensituation.obhutsaufteilung.label'
-                | translate
+              'shared.form.familiensituation.obhutsaufteilung.label' | translate
             }}</label>
             <span class="label-a">{{
-              'gesuch-app.form.familiensituation.obhutsaufteilung.mutter'
+              'shared.form.familiensituation.obhutsaufteilung.mutter'
                 | translate
             }}</span>
             <span class="label-b">{{
-              'gesuch-app.form.familiensituation.obhutsaufteilung.vater'
-                | translate
+              'shared.form.familiensituation.obhutsaufteilung.vater' | translate
             }}</span>
           </dv-shared-ui-percentage-splitter>
         </div>
@@ -403,7 +401,7 @@
   <!-- buttons -->
   <dv-shared-ui-step-form-buttons [@hideDuringAnimation]="duringAnimation">
     <button type="submit" class="btn btn-primary">
-      {{ 'gesuch-app.form.save-and-continue' | translate }}
+      {{ 'shared.form.save-and-continue' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 
@@ -415,7 +413,7 @@
         class="d-flex flex-column"
       >
         <label>{{
-          'gesuch-app.form.familiensituation.mutter-wiederverheiratet.label'
+          'shared.form.familiensituation.mutter-wiederverheiratet.label'
             | translate
         }}</label>
 
@@ -442,7 +440,7 @@
         class="d-flex flex-column"
       >
         <label>{{
-          'gesuch-app.form.familiensituation.vater-wiederverheiratet.label'
+          'shared.form.familiensituation.vater-wiederverheiratet.label'
             | translate
         }}</label>
 

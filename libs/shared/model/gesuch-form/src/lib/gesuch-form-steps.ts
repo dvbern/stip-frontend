@@ -1,73 +1,73 @@
 import { SharedModelGesuchFormular, Zivilstand } from '@dv/shared/model/gesuch';
-import { GesuchAppModelGesuchFormStep } from './shared-model-gesuch-form';
+import { SharedModelGesuchFormStep } from './shared-model-gesuch-form';
 
 export const GesuchFormSteps = {
-  PERSON: <GesuchAppModelGesuchFormStep>{
+  PERSON: <SharedModelGesuchFormStep>{
     route: 'person',
-    translationKey: 'gesuch-app.form.person.title',
+    translationKey: 'shared.person.title',
     currentStepNumber: 1,
     iconSymbolName: 'person',
   },
 
-  AUSBILDUNG: <GesuchAppModelGesuchFormStep>{
+  AUSBILDUNG: <SharedModelGesuchFormStep>{
     route: 'education',
-    translationKey: 'gesuch-app.form.education.title',
+    translationKey: 'shared.education.title',
     currentStepNumber: 2,
     iconSymbolName: 'school',
   },
 
-  LEBENSLAUF: <GesuchAppModelGesuchFormStep>{
+  LEBENSLAUF: <SharedModelGesuchFormStep>{
     route: 'lebenslauf',
-    translationKey: 'gesuch-app.form.lebenslauf.title',
+    translationKey: 'shared.lebenslauf.title',
     currentStepNumber: 3,
     iconSymbolName: 'news',
   },
 
-  FAMILIENSITUATION: <GesuchAppModelGesuchFormStep>{
+  FAMILIENSITUATION: <SharedModelGesuchFormStep>{
     route: 'familiensituation',
-    translationKey: 'gesuch-app.familiensituation.title',
+    translationKey: 'shared.familiensituation.title',
     currentStepNumber: 4,
     iconSymbolName: 'family_restroom',
   },
 
-  ELTERN: <GesuchAppModelGesuchFormStep>{
+  ELTERN: <SharedModelGesuchFormStep>{
     route: 'eltern',
-    translationKey: 'gesuch-app.form.eltern.title',
+    translationKey: 'shared.eltern.title',
     currentStepNumber: 5,
     iconSymbolName: 'escalator_warning',
   },
 
-  GESCHWISTER: <GesuchAppModelGesuchFormStep>{
+  GESCHWISTER: <SharedModelGesuchFormStep>{
     route: 'geschwister',
-    translationKey: 'gesuch-app.form.geschwister.title',
+    translationKey: 'shared.geschwister.title',
     currentStepNumber: 6,
     iconSymbolName: 'group',
   },
 
-  PARTNER: <GesuchAppModelGesuchFormStep>{
+  PARTNER: <SharedModelGesuchFormStep>{
     route: 'partner',
-    translationKey: 'gesuch-app.form.partner.title',
+    translationKey: 'shared.partner.title',
     currentStepNumber: 7,
     iconSymbolName: 'favorite',
   },
 
-  KINDER: <GesuchAppModelGesuchFormStep>{
+  KINDER: <SharedModelGesuchFormStep>{
     route: 'kinder',
-    translationKey: 'gesuch-app.form.kinder.title',
+    translationKey: 'shared.kinder.title',
     currentStepNumber: 8,
     iconSymbolName: 'emoji_people',
   },
 
-  AUSZAHLUNGEN: <GesuchAppModelGesuchFormStep>{
+  AUSZAHLUNGEN: <SharedModelGesuchFormStep>{
     route: 'auszahlungen',
-    translationKey: 'gesuch-app.auszahlung.title',
+    translationKey: 'shared.auszahlung.title',
     currentStepNumber: 9,
     iconSymbolName: 'payments',
   },
 
-  EINNAHMEN_KOSTEN: <GesuchAppModelGesuchFormStep>{
+  EINNAHMEN_KOSTEN: <SharedModelGesuchFormStep>{
     route: 'einnahmenkosten',
-    translationKey: 'gesuch-app.einnahmenkosten.title',
+    translationKey: 'shared.einnahmenkosten.title',
     currentStepNumber: 10,
     iconSymbolName: 'call_missed_outgoing',
   },

@@ -148,6 +148,8 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
           ),
           jahreseinkommen: partnerForForm.jahreseinkommen.toString(),
         });
+      } else {
+        this.form.reset();
       }
     });
     effect(
