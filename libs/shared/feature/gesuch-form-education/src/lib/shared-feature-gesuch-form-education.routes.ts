@@ -22,7 +22,7 @@ export const gesuchAppFeatureGesuchFormEducationRoutes: Route[] = [
     children: [
       {
         path: ':id',
-        title: 'gesuch-app.form.education.title',
+        title: 'shared.education.title',
         component: SharedFeatureGesuchFormEducationComponent,
       },
       // add more routes here (siblings)

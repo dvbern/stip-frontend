@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SachbearbeitungAppPatternOverviewLayoutComponent } from '@dv/sachbearbeitung-app/pattern/overview-layout';
+import { countByStatus } from '@dv/sachbearbeitung-app/util-fn/gesuch-helper';
 import { Gesuchstatus } from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import {
@@ -73,27 +74,7 @@ export class SachbearbeitungAppFeatureCockpitComponent {
     selectSachbearbeitungAppFeatureCockpitView
   );
   public groupsSig: Signal<GesuchGroup[]> = computed(() => {
-    const gesucheByStatus = this.cockpitViewSig().gesuche.reduce<
-      Record<Gesuchstatus, number>
-    >(
-      (acc, g) => ({
-        ...acc,
-        [g.gesuchStatus]: (acc[g.gesuchStatus] ?? 0) + 1,
-      }),
-      {} as Record<Gesuchstatus, number>
-    );
-    return [
-      {
-        status: 'OFFEN' as const,
-        iconName: 'error',
-        count: gesucheByStatus['OFFEN'] ?? 0,
-      },
-      {
-        status: 'IN_BEARBEITUNG' as const,
-        iconName: 'check_box',
-        count: gesucheByStatus['IN_BEARBEITUNG'] ?? 0,
-      },
-    ];
+    return countByStatus(this.cockpitViewSig().gesuche);
   });
 
   ngOnInit() {

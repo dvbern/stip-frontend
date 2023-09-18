@@ -7,7 +7,7 @@
         <span class="fw-medium">Eva Mendes</span>
       </p>
 
-      <dv-gesuch-app-pattern-gesuch-step-nav class="sidenav p-4" />
+      <dv-shared-pattern-gesuch-step-nav class="sidenav p-4" />
     </div>
 
     <div class="container mb-5 pt-lg-4 px-lg-4" *ngIf="step">
@@ -27,7 +27,7 @@
             class="fst-italic mb-0"
             *ngIf="stepManager.getNext(step).translationKey"
           >
-            {{ 'gesuch-app.form.next' | translate }}:
+            {{ 'shared.form.next' | translate }}:
             {{ stepManager.getNext(step).translationKey | translate }}
           </p>
         </div>
@@ -63,9 +63,9 @@
   </div>
 
   <div class="mobile-nav-content">
-    <dv-gesuch-app-pattern-gesuch-step-nav
+    <dv-shared-pattern-gesuch-step-nav
       (navClicked)="navClicked.emit()"
-    ></dv-gesuch-app-pattern-gesuch-step-nav>
+    ></dv-shared-pattern-gesuch-step-nav>
   </div>
 
   <div class="header-desktop-left d-flex gap-3 align-items-center">

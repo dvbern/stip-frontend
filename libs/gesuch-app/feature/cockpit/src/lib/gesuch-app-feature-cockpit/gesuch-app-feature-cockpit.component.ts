@@ -17,7 +17,6 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { GesuchAppEventCockpit } from '@dv/gesuch-app/event/cockpit';
-import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
 import { SharedDataAccessLanguageEvents } from '@dv/shared/data-access/language';
 import { Fall, Gesuchsperiode } from '@dv/shared/model/gesuch';
@@ -46,7 +45,6 @@ import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
     NgFor,
     TranslateModule,
     GesuchAppPatternMainLayoutComponent,
-    GesuchAppPatternGesuchStepNavComponent,
     SharedUiLanguageSelectorComponent,
     NgbDropdown,
     NgbDropdownMenu,

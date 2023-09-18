@@ -13,7 +13,11 @@ describe('SachbearbeitungAppFeatureGesuchFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideMockStore()],
+      providers: [
+        provideMockStore({
+          initialState: { gesuchs: { gesuchFormular: {} } },
+        }),
+      ],
       imports: [
         SachbearbeitungAppFeatureGesuchFormComponent,
         KeycloakAngularModule,

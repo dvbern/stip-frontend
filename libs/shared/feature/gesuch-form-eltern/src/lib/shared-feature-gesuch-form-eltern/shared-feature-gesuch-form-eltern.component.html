@@ -43,13 +43,13 @@
     />
 
     <div *ngIf="!view$().expectVater && !view$().expectMutter">
-      {{ 'gesuch-app.form.eltern.none' | translate }}
+      {{ 'shared.form.eltern.none' | translate }}
     </div>
   </div>
 
   <dv-shared-ui-step-form-buttons>
     <button type="button" class="btn btn-primary" (click)="handleContinue()">
-      {{ 'gesuch-app.form.gonext' | translate }}
+      {{ 'shared.form.gonext' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 </ng-container>

@@ -21,7 +21,7 @@ export const gesuchAppFeatureGesuchFormEinnahmenkostenRoutes: Route[] = [
     children: [
       {
         path: ':id',
-        title: 'gesuch-app.form.education.title',
+        title: 'shared.education.title',
         component: SharedFeatureGesuchFormEinnahmenkostenComponent,
       },
       // add more routes here (siblings)

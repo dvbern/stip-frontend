@@ -29,6 +29,15 @@
           "libs/shared/ui/wohnsitz-splitter/**/*.html"
         ]
       }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs/shared/ui/wohnsitz-splitter/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "gesuch-app:build"
+      }
     }
   }
 }

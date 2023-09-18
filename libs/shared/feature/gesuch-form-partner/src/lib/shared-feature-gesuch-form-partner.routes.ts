@@ -12,7 +12,7 @@ export const gesuchAppFeatureGesuchFormPartnerRoutes: Route[] = [
     children: [
       {
         path: ':id',
-        title: 'gesuch-app.form.partner.title',
+        title: 'shared.partner.title',
         component: SharedFeatureGesuchFormPartnerComponent,
       },
       // add more routes here (siblings)

@@ -13,7 +13,7 @@
     <div class="row">
       <div class="col-12 col-xl-8 my-3">
         <ngb-alert type="info" [dismissible]="false"
-          >{{ 'gesuch-app.form.einnahmenkosten.top.incomplete' | translate }}
+          >{{ 'shared.form.einnahmenkosten.top.incomplete' | translate }}
           <span
             *ngFor="
               let schritt of formStateSig().schritte;
@@ -41,15 +41,14 @@
     (ngSubmit)="handleSave()"
   >
     <h3 class="pt-5 mb-4">
-      {{ 'gesuch-app.form.einnahmenkosten.einnahmen.title' | translate }}
+      {{ 'shared.form.einnahmenkosten.einnahmen.title' | translate }}
     </h3>
 
     <div class="row g-4">
       <!-- NETTOERWERBSEINKOMMEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.nettoerwerbseinkommen.label'
-            | translate
+          'shared.form.einnahmenkosten.nettoerwerbseinkommen.label' | translate
         }}</mat-label>
         <input
           data-testid="form-einnahmen-kosten-nettoerwerbseinkommen"
@@ -59,7 +58,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.nettoerwerbseinkommen.info</mat-hint
+          >shared.form.einnahmenkosten.nettoerwerbseinkommen.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -74,7 +73,7 @@
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.alimente.label' | translate
+          'shared.form.einnahmenkosten.alimente.label' | translate
         }}</mat-label>
         <input
           formControlName="alimente"
@@ -96,7 +95,7 @@
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.zulagen.label' | translate
+          'shared.form.einnahmenkosten.zulagen.label' | translate
         }}</mat-label>
         <input
           formControlName="zulagen"
@@ -117,7 +116,7 @@
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.renten.label' | translate
+          'shared.form.einnahmenkosten.renten.label' | translate
         }}</mat-label>
         <input
           formControlName="renten"
@@ -125,9 +124,7 @@
           type="text"
           [maskito]="maskitoNumber"
         />
-        <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.renten.info</mat-hint
-        >
+        <mat-hint translate>shared.form.einnahmenkosten.renten.info</mat-hint>
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </mat-error>
@@ -138,7 +135,7 @@
       <!-- EO_LEISTUNGEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.eoLeistungen.label' | translate
+          'shared.form.einnahmenkosten.eoLeistungen.label' | translate
         }}</mat-label>
         <input
           formControlName="eoLeistungen"
@@ -147,7 +144,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.eoLeistungen.info</mat-hint
+          >shared.form.einnahmenkosten.eoLeistungen.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -158,8 +155,7 @@
       <!-- ERGAENZUNGSLEISTUNGEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.ergaenzungsleistungen.label'
-            | translate
+          'shared.form.einnahmenkosten.ergaenzungsleistungen.label' | translate
         }}</mat-label>
         <input
           formControlName="ergaenzungsleistungen"
@@ -177,7 +173,7 @@
       <!-- BEITRAEGE -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.beitraege.label' | translate
+          'shared.form.einnahmenkosten.beitraege.label' | translate
         }}</mat-label>
         <input
           formControlName="beitraege"
@@ -186,7 +182,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.beitraege.info</mat-hint
+          >shared.form.einnahmenkosten.beitraege.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -195,7 +191,7 @@
     </div>
 
     <h3 class="pt-5 mb-4">
-      {{ 'gesuch-app.form.einnahmenkosten.kosten.title' | translate }}
+      {{ 'shared.form.einnahmenkosten.kosten.title' | translate }}
     </h3>
 
     <div
@@ -212,7 +208,7 @@
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.label'
+          'shared.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.label'
             | translate
         }}</mat-label>
         <input
@@ -222,7 +218,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.info</mat-hint
+          >shared.form.einnahmenkosten.ausbildungskostenSekundarstufeZwei.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -237,7 +233,7 @@
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.ausbildungskostenTertiaerstufe.label'
+          'shared.form.einnahmenkosten.ausbildungskostenTertiaerstufe.label'
             | translate
         }}</mat-label>
         <input
@@ -247,7 +243,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.ausbildungskostenTertiaerstufe.info</mat-hint
+          >shared.form.einnahmenkosten.ausbildungskostenTertiaerstufe.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -259,7 +255,7 @@
       <!-- FAHRKOSTEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.fahrkosten.label' | translate
+          'shared.form.einnahmenkosten.fahrkosten.label' | translate
         }}</mat-label>
         <input
           formControlName="fahrkosten"
@@ -276,7 +272,7 @@
       <!-- WOHNKOSTEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.wohnkosten.label' | translate
+          'shared.form.einnahmenkosten.wohnkosten.label' | translate
         }}</mat-label>
         <input
           formControlName="wohnkosten"
@@ -294,7 +290,7 @@
       <!-- PERSONEN_IM_HAUSHALT -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
-          'gesuch-app.form.einnahmenkosten.personenImHaushalt.label' | translate
+          'shared.form.einnahmenkosten.personenImHaushalt.label' | translate
         }}</mat-label>
         <input
           formControlName="personenImHaushalt"
@@ -303,7 +299,7 @@
           [maskito]="maskitoNumber"
         />
         <mat-hint translate
-          >gesuch-app.form.einnahmenkosten.personenImHaushalt.info</mat-hint
+          >shared.form.einnahmenkosten.personenImHaushalt.info</mat-hint
         >
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
@@ -312,7 +308,7 @@
     </div>
 
     <h3 class="pt-5 mb-4">
-      {{ 'gesuch-app.form.einnahmenkosten.general.title' | translate }}
+      {{ 'shared.form.einnahmenkosten.general.title' | translate }}
     </h3>
 
     <div class="row g-4">
@@ -327,8 +323,7 @@
           dvSharedUiFormField
         >
           <mat-label>{{
-            'gesuch-app.form.einnahmenkosten.verdienstRealisiert.label'
-              | translate
+            'shared.form.einnahmenkosten.verdienstRealisiert.label' | translate
           }}</mat-label>
           <mat-radio-button [value]="true">
             {{ 'shared.form.radio.yes' | translate }}</mat-radio-button
@@ -355,7 +350,7 @@
           dvSharedUiFormField
         >
           <mat-label>{{
-            'gesuch-app.form.einnahmenkosten.willDarlehen.label' | translate
+            'shared.form.einnahmenkosten.willDarlehen.label' | translate
           }}</mat-label>
           <mat-radio-button [value]="true">
             {{ 'shared.form.radio.yes' | translate }}</mat-radio-button
@@ -374,7 +369,7 @@
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
       <button type="submit" class="btn btn-primary">
-        {{ 'gesuch-app.form.save-and-continue' | translate }}
+        {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
   </form>
