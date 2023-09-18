@@ -10,10 +10,10 @@ and [max](https://angular.io/api/forms/Validators#max) with their respective err
 import { sharedUtilValidatorRange } from './shared-util-validator-range';
 
 const invalidMin = new FormControl(-1, sharedUtilValidatorRange(0, 5));
-console.log(invalidMin.errors); // {range: {min: {min: 3, actual: 2}}}
+console.log(invalidMin.errors); // {range: {min: {min: 0, actual: -1}}}
 
 const invalidMax = new FormControl(6, sharedUtilValidatorRange(0, 5));
-console.log(invalidMax.errors); // {range: {max: {max: 3, actual: 2}}}
+console.log(invalidMax.errors); // {range: {max: {max: 5, actual: 6}}}
 ```
 
 ## Running unit tests
