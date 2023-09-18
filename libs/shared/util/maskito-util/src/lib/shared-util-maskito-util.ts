@@ -24,6 +24,9 @@ export function fromFormatedNumber(
 export function fromFormatedNumber(
   formatedNumber: string | null | undefined
 ): number | null | undefined {
+  if (formatedNumber === '' || formatedNumber?.trim() === '') {
+    return null;
+  }
   return formatedNumber != null
     ? +formatedNumber.replaceAll(NUMBER_THOUSAND_SEPARATOR, '')
     : formatedNumber;

@@ -4,6 +4,9 @@ describe('shared-util-maskito-util', () => {
   it('should transform empty string to null', () => {
     expect(fromFormatedNumber('')).toBeNull();
   });
+  it('should transform string of whitespace only to null', () => {
+    expect(fromFormatedNumber('    ')).toBeNull();
+  });
 
   it('should transform null to null', () => {
     expect(fromFormatedNumber(null)).toBeNull();
