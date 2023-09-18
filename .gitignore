@@ -3,6 +3,7 @@
 # compiled output
 dist
 coverage
+.nyc_output
 junit.xml
 tmp
 /out-tsc

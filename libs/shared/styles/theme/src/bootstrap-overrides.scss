@@ -1,3 +1,11 @@
+body {
+  background-color: var(--dv-overridden-body-bg);
+
+  .app-container {
+    background-color: var(--dv-body-bg);
+  }
+}
+
 .btn {
   font-weight: 700;
   box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -53,9 +61,6 @@
   }
 }
 
-.dropdown-menu {
-  --dv-dropdown-bg: var(--dv-app-container-bg);
-}
 // Dropdown: das seltsame Dreieck entfernen, stattdessen selber ein Icon einfuegen
 .dropdown-toggle::after {
   border: none;

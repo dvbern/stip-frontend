@@ -233,6 +233,8 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
             wohnkosten: einnahmenKosten.wohnkosten.toString(),
             personenImHaushalt: einnahmenKosten.personenImHaushalt.toString(),
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }

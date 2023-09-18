@@ -1,10 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'gesuch-app-pattern-gesuch-step-nav',
+  displayName: 'shared-pattern-gesuch-step-nav',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory:
-    '../../../../coverage/libs/gesuch-app/pattern/gesuch-step-nav',
+  coverageDirectory: '../../../../coverage/libs/shared/pattern/gesuch-step-nav',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
