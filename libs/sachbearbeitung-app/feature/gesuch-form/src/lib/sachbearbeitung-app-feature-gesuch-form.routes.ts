@@ -37,7 +37,7 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
     resolve: {
       step: () => GesuchFormSteps.AUSZAHLUNGEN,
     },
-    title: 'gesuch-app.auszahlung.title',
+    title: 'shared.auszahlung.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-auszahlungen').then(
         (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
@@ -48,7 +48,7 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
     resolve: {
       step: () => GesuchFormSteps.FAMILIENSITUATION,
     },
-    title: 'gesuch-app.familiensituation.title',
+    title: 'shared.familiensituation.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-familiensituation').then(
         (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes

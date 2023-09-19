@@ -10,10 +10,10 @@ import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { GesuchAppPatternGesuchStepNavComponent } from '@dv/gesuch-app/pattern/gesuch-step-nav';
 import { GesuchAppPatternMainLayoutComponent } from '@dv/gesuch-app/pattern/main-layout';
-import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
-import { GesuchAppUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
+import { SharedModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
+import { SharedUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
+import { SharedPatternGesuchStepNavComponent } from '@dv/shared/pattern/gesuch-step-nav';
 import {
   selectLanguage,
   SharedDataAccessLanguageEvents,
@@ -28,7 +28,7 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
   standalone: true,
   imports: [
     CommonModule,
-    GesuchAppPatternGesuchStepNavComponent,
+    SharedPatternGesuchStepNavComponent,
     SharedUiProgressBarComponent,
     TranslateModule,
     SharedUiIconChipComponent,
@@ -42,13 +42,13 @@ import { SharedUiProgressBarComponent } from '@dv/shared/ui/progress-bar';
 })
 export class GesuchAppPatternGesuchStepLayoutComponent {
   @Input()
-  step?: GesuchAppModelGesuchFormStep;
+  step?: SharedModelGesuchFormStep;
 
   navClicked = new EventEmitter();
 
   private store = inject(Store);
 
-  stepManager = inject(GesuchAppUtilGesuchFormStepManagerService);
+  stepManager = inject(SharedUtilGesuchFormStepManagerService);
   languageSig = this.store.selectSignal(selectLanguage);
 
   handleLanguageChangeHeader(language: Language) {

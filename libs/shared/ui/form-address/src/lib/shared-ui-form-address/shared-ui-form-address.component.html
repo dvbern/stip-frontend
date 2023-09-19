@@ -4,7 +4,7 @@
   <!-- Strasse -->
   <mat-form-field dvSharedUiFormField class="col-8 col-lg-4 pe-0">
     <mat-label
-      >{{ 'gesuch-app.form.shared.address.street.label' | translate }}
+      >{{ 'shared.form.shared.address.street.label' | translate }}
     </mat-label>
     <input matInput type="text" formControlName="strasse" />
     <mat-error *dvSharedUiFormMessageError="'required'">
@@ -15,7 +15,7 @@
   <!-- Nr -->
   <mat-form-field dvSharedUiFormField class="col-4 col-lg-2 ps-2">
     <mat-label
-      >{{ 'gesuch-app.form.shared.address.number.label' | translate }}
+      >{{ 'shared.form.shared.address.number.label' | translate }}
     </mat-label>
     <input matInput type="text" formControlName="hausnummer" />
     <mat-error *dvSharedUiFormMessageError="'required'">
@@ -26,7 +26,7 @@
   <!-- PLZ -->
   <mat-form-field dvSharedUiFormField class="col-5 col-md-4 col-lg-2 pe-2">
     <mat-label
-      >{{ 'gesuch-app.form.shared.address.zipcode.label' | translate }}
+      >{{ 'shared.form.shared.address.zipcode.label' | translate }}
     </mat-label>
     <input matInput type="text" formControlName="plz" />
     <mat-error *dvSharedUiFormMessageError="'required'">
@@ -37,7 +37,7 @@
   <!-- Ort -->
   <mat-form-field dvSharedUiFormField class="col-7 col-md-8 col-lg-4 ps-0">
     <mat-label
-      >{{ 'gesuch-app.form.shared.address.city.label' | translate }}
+      >{{ 'shared.form.shared.address.city.label' | translate }}
     </mat-label>
     <input matInput type="text" formControlName="ort" />
     <mat-error *dvSharedUiFormMessageError="'required'">
@@ -48,7 +48,7 @@
   <!-- c/o -->
   <mat-form-field dvSharedUiFormField class="col-12 col-md-6">
     <mat-label
-      >{{ 'gesuch-app.form.shared.address.co.label' | translate }} ({{
+      >{{ 'shared.form.shared.address.co.label' | translate }} ({{
         'shared.form.optional.label' | translate
       }})
     </mat-label>
@@ -59,7 +59,7 @@
   <div class="col-12 col-md-6">
     <mat-form-field dvSharedUiFormField class="w-100">
       <mat-label>{{
-        'gesuch-app.form.shared.address.country.label' | translate
+        'shared.form.shared.address.country.label' | translate
       }}</mat-label>
       <mat-select formControlName="land">
         <mat-option [value]="null" disabled selected>

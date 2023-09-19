@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { GesuchAppModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
+import { SharedModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 import { GesuchCreate, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { SharedModelError } from '@dv/shared/model/error';
 
@@ -19,13 +19,13 @@ export const SharedDataAccessGesuchEvents = createActionGroup({
     gesuchCreatedFailure: props<{ error: SharedModelError }>(),
     gesuchUpdatedSuccess: props<{
       id: string;
-      origin: GesuchAppModelGesuchFormStep;
+      origin: SharedModelGesuchFormStep;
     }>(),
 
     gesuchUpdatedFailure: props<{ error: SharedModelError }>(),
     gesuchUpdatedSubformSuccess: props<{
       id: string;
-      origin: GesuchAppModelGesuchFormStep;
+      origin: SharedModelGesuchFormStep;
     }>(),
     gesuchUpdatedSubformFailure: props<{ error: SharedModelError }>(),
     gesuchRemovedSuccess: emptyProps(),

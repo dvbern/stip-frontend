@@ -68,7 +68,8 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "port": 4200
+        "port": 4200,
+        "proxyConfig": "proxy.conf.json"
       },
       "configurations": {
         "production": {

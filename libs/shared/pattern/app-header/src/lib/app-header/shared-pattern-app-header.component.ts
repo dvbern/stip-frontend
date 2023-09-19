@@ -59,6 +59,7 @@ import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedPatternAppHeaderComponent implements OnChanges {
+  @Input() backLink?: { path: string; text: string };
   @Input() closeMenu: { value?: unknown } | null = null;
   @Input() isScroll = false;
   @Input() breakpointCompactHeader = '(max-width: 992px)';

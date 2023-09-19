@@ -2,7 +2,7 @@
   <div class="row g-4 my-2">
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.shared.lastname.label' | translate
+        'shared.form.shared.lastname.label' | translate
       }}</mat-label>
       <input matInput formControlName="nachname" type="text" />
       <mat-error *dvSharedUiFormMessageError="'required'">
@@ -11,7 +11,7 @@
     </mat-form-field>
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.shared.firstname.label' | translate
+        'shared.form.shared.firstname.label' | translate
       }}</mat-label>
       <input matInput formControlName="vorname" type="text" />
       <mat-error *dvSharedUiFormMessageError="'required'">
@@ -24,7 +24,7 @@
     <!-- GEBURTSDATUM -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.shared.birthday.label' | translate
+        'shared.form.shared.birthday.label' | translate
       }}</mat-label>
 
       <input
@@ -51,7 +51,7 @@
     <!-- Wohnsitz -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.shared.wohnsitz.label' | translate
+        'shared.form.shared.wohnsitz.label' | translate
       }}</mat-label>
       <mat-select matInput formControlName="wohnsitz">
         <mat-option [value]="null" disabled selected>
@@ -61,7 +61,7 @@
           [value]="a"
           *ngFor="let a of wohnsitzValues; trackBy: trackByIndex"
         >
-          {{ 'gesuch-app.form.shared.wohnsitz.' + a | translate }}
+          {{ 'shared.form.shared.wohnsitz.' + a | translate }}
         </mat-option>
       </mat-select>
       <mat-error *dvSharedUiFormMessageError="'required'">
@@ -84,7 +84,7 @@
     <!-- Ausbildungssituation -->
     <div class="col-12 col-md-6 col-xl-4">
       <label>{{
-        'gesuch-app.form.geschwister.ausbildungssituation.label' | translate
+        'shared.form.geschwister.ausbildungssituation.label' | translate
       }}</label>
       <mat-radio-group
         class="d-flex flex-column"
@@ -95,7 +95,7 @@
           *ngFor="let a of ausbildungssituationValues; trackBy: trackByIndex"
           [value]="a"
           >{{
-            'gesuch-app.form.geschwister.ausbildungssituation.select.' + a
+            'shared.form.geschwister.ausbildungssituation.select.' + a
               | translate
           }}</mat-radio-button
         >
@@ -113,10 +113,10 @@
       class="btn btn-outline-primary"
       (click)="handleCancel()"
     >
-      {{ 'gesuch-app.form.back' | translate }}
+      {{ 'shared.form.back' | translate }}
     </button>
     <button type="submit" class="btn btn-primary">
-      {{ 'gesuch-app.form.save-and-back' | translate }}
+      {{ 'shared.form.save-and-back' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 </form>

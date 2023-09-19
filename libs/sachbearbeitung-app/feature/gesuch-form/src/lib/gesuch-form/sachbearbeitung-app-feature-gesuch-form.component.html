@@ -1,5 +1,5 @@
-<dv-sachbearbeitung-app-pattern-gesuch-step-layout>
+<dv-sachbearbeitung-app-pattern-gesuch-step-layout [step]="step">
   <dv-shared-ui-gesuch-step-wrapper
-    class="p-4"
+    (step)="step = $event"
   ></dv-shared-ui-gesuch-step-wrapper>
 </dv-sachbearbeitung-app-pattern-gesuch-step-layout>

@@ -23,7 +23,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { filter, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { subYears } from 'date-fns';
 
@@ -214,6 +214,17 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     return this.wohnsitzChangedSig() === Wohnsitz.MUTTER_VATER;
   });
 
+  private nationalitaetChangedSig = toSignal(
+    this.form.controls.nationalitaet.valueChanges
+  );
+
+  showAuslaenderAusweisSig = computed(() => {
+    return (
+      this.nationalitaetChangedSig() &&
+      this.nationalitaetChangedSig() !== this.nationalitaetCH
+    );
+  });
+
   constructor() {
     // patch form value
     effect(
@@ -241,6 +252,8 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
             ...personForForm,
             ...wohnsitzAnteileString(person),
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }
@@ -375,9 +388,6 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
             subYears(new Date(), MEDIUM_AGE_GESUCHSSTELLER)
           )!,
           ...wohnsitzAnteileNumber(this.form.getRawValue()),
-
-          // TODO missing fields that exist on the Adresse:
-          quellenbesteuert: false,
         },
       },
     };

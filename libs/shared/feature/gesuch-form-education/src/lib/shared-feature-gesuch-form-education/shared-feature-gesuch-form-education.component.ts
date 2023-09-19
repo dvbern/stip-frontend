@@ -260,6 +260,8 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
                   ausbildungsgang.id === ausbildung.ausbildungsgangId
               )?.id,
           });
+        } else {
+          this.form.reset();
         }
       },
       { allowSignalWrites: true }

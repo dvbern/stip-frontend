@@ -3,7 +3,7 @@
     <!-- subtype -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.lebenslauf.item.subtype.' +
+        'shared.form.lebenslauf.item.subtype.' +
           (item.type === 'AUSBILDUNG' ? 'bildungsart' : 'taetigkeitsart')
           | translate
       }}</mat-label>
@@ -19,8 +19,7 @@
           *ngFor="let b of bildungsartValues; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.bildungsart.' + b
-              | translate
+            'shared.form.lebenslauf.item.subtype.bildungsart.' + b | translate
           }}
         </mat-option>
       </mat-select>
@@ -36,7 +35,7 @@
           *ngFor="let t of taetigskeitsartValues; trackBy: trackByIndex"
         >
           {{
-            'gesuch-app.form.lebenslauf.item.subtype.taetigkeitsart.' + t
+            'shared.form.lebenslauf.item.subtype.taetigkeitsart.' + t
               | translate
           }}
         </mat-option>
@@ -46,7 +45,7 @@
     <!-- name -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.lebenslauf.item.name.' +
+        'shared.form.lebenslauf.item.name.' +
           (item.type === 'AUSBILDUNG' ? 'ausbildung' : 'taetigkeit') | translate
       }}</mat-label>
       <input matInput formControlName="beschreibung" type="text" />
@@ -60,7 +59,7 @@
     <!-- START -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.lebenslauf.item.start.' + item.type!.toLowerCase()
+        'shared.form.lebenslauf.item.start.' + item.type!.toLowerCase()
           | translate
       }}</mat-label>
 
@@ -79,7 +78,7 @@
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'minDate'">
         {{
-          'gesuch-app.form.lebenslauf.form.error.monthYearMin'
+          'shared.form.lebenslauf.form.error.monthYearMin'
             | translate
               : {
                   min: form.controls.von.errors?.['minDate']?.minDate
@@ -88,8 +87,7 @@
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
         {{
-          'gesuch-app.form.lebenslauf.form.error.monthYearAfterStart'
-            | translate
+          'shared.form.lebenslauf.form.error.monthYearAfterStart' | translate
         }}
       </mat-error>
     </mat-form-field>
@@ -97,7 +95,7 @@
     <!-- ENDE -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.lebenslauf.item.end.' + item.type!.toLowerCase()
+        'shared.form.lebenslauf.item.end.' + item.type!.toLowerCase()
           | translate
       }}</mat-label>
 
@@ -116,18 +114,17 @@
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
         {{
-          'gesuch-app.form.lebenslauf.form.error.monthYearAfterStart'
-            | translate
+          'shared.form.lebenslauf.form.error.monthYearAfterStart' | translate
         }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'maxDate'">
         {{
-          'gesuch-app.form.lebenslauf.form.error.monthYearMax'
+          'shared.form.lebenslauf.form.error.monthYearMax'
             | translate : { max: form.controls.bis.errors?.['maxDate']?.maxDate }
         }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'overlapsOthers'">
-        {{ 'gesuch-app.form.lebenslauf.form.error.overlapsOthers' | translate }}
+        {{ 'shared.form.lebenslauf.form.error.overlapsOthers' | translate }}
       </mat-error>
     </mat-form-field>
   </div>
@@ -136,7 +133,7 @@
     <!-- Wohnsitz -->
     <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
       <mat-label>{{
-        'gesuch-app.form.lebenslauf.item.wohnsitz' | translate
+        'shared.form.lebenslauf.item.wohnsitz' | translate
       }}</mat-label>
       <mat-select formControlName="wohnsitz">
         <mat-option [value]="null" disabled selected>
@@ -162,10 +159,10 @@
       type="button"
       class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
-      [title]="'gesuch-app.form.lebenslaufitem.delete' | translate"
+      [title]="'shared.form.lebenslaufitem.delete' | translate"
     >
       <i class="material-symbols-rounded me-2">delete</i>
-      {{ 'gesuch-app.form.delete' | translate }}
+      {{ 'shared.form.delete' | translate }}
     </button>
 
     <button
@@ -173,10 +170,10 @@
       class="btn btn-outline-primary"
       (click)="handleCancel()"
     >
-      {{ 'gesuch-app.form.back' | translate }}
+      {{ 'shared.form.back' | translate }}
     </button>
     <button type="submit" class="btn btn-primary">
-      {{ 'gesuch-app.form.save-and-back' | translate }}
+      {{ 'shared.form.save-and-back' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 </form>

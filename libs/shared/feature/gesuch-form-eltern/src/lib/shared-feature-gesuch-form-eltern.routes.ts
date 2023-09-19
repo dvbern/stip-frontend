@@ -14,7 +14,7 @@ export const gesuchAppFeatureGesuchFormElternRoutes: Route[] = [
     children: [
       {
         path: ':id',
-        title: 'gesuch-app.form.eltern.title',
+        title: 'shared.eltern.title',
         component: SharedFeatureGesuchFormElternComponent,
         data: {
           // reinitialize when navigated to the same route
