@@ -11,7 +11,10 @@ export class SharedUtilCountriesService {
   private translatedLaender$ = this.translate.onLangChange
     .pipe(
       startWith({
-        translations: this.translate.translations[this.translate.currentLang],
+        translations:
+          this.translate.translations[
+            this.translate.currentLang ?? this.translate.defaultLang
+          ],
       })
     )
     .pipe(shareReplay({ bufferSize: 1, refCount: true }));
@@ -19,6 +22,9 @@ export class SharedUtilCountriesService {
   public getCountryList(laender: Land[]) {
     return this.translatedLaender$.pipe(
       map(({ translations }) => {
+        if (!laender) {
+          return [];
+        }
         const translated = laender
           .filter((code) => translations[`shared.country.${code}`])
           .map((code) => ({
