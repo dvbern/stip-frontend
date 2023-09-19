@@ -283,8 +283,8 @@
             {{ 'shared.form.person.auslaenderausweis' | translate }}
           </h4>
           <dv-shared-pattern-document-upload
-            *ngIf="view().gesuch"
-            [options]="auslaenderausweisDocumentOptions()"
+            *ngIf="auslaenderausweisDocumentOptionsSig(); let options"
+            [options]="options"
           />
         </div>
       </div>

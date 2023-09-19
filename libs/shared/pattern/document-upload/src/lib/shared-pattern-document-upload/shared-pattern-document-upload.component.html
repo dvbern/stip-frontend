@@ -8,12 +8,55 @@
 
 <p *ngIf="view().error">{{ view().error?.message }}</p>
 
-<!-- todo add drop zone / file selector  -->
-<input type="file" (change)="handleDocumentAdded($any($event).target.value)" />
+<label class="upload">
+  <dv-shared-ui-drop-file (filesDropped)="handleMultipleDocumentsAdded($event)">
+  </dv-shared-ui-drop-file>
+  <small class="text-muted">{{ 'shared.file.upload' | translate }}</small>
+  <input
+    type="file"
+    class="mb-2 visually-hidden"
+    (change)="handleDocumentAdded($any($event).target.value)"
+  />
+</label>
 
-<div *ngFor="let document of view().documents; trackBy: trackByIndex">
-  {{ document.id }}
-  <button type="button" (click)="handleRemoveClicked(document.id)">
-    Remove
-  </button>
+<!-- todo add drop zone / file selector  -->
+
+<div
+  *ngFor="let document of view().documents; trackBy: trackByIndex"
+  class="d-flex flex-column my-2"
+>
+  <div class="d-flex flex-row justify-content-between">
+    <span class="text-truncate" [title]="document.filename">{{
+      document.filename
+    }}</span>
+    <button
+      *ngIf="document.progress !== undefined; else deleteFile"
+      type="button"
+      class="dv-button-icon file-icon ms-2"
+      [attr.aria-label]="'shared.form.clear' | translate"
+      (click)="handleCancelClicked(document.id)"
+    >
+      <span class="material-symbols-rounded align-middle">clear</span>
+    </button>
+    <ng-template #deleteFile>
+      <button
+        type="button"
+        class="dv-button-icon file-icon ms-2"
+        [attr.aria-label]="'shared.form.delete' | translate"
+        (click)="handleRemoveClicked(document.id)"
+      >
+        <span class="material-symbols-rounded align-middle">delete</span>
+      </button>
+    </ng-template>
+  </div>
+  <div class="progress" *ngIf="document.progress !== undefined">
+    <div
+      class="progress-bar"
+      role="progressbar"
+      [style.width]="document.progress + '%'"
+      [attr.aria-valuenow]="document.progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
 </div>

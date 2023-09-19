@@ -13,7 +13,7 @@
     "graph": "nx dep-graph --groupByFolder",
     "readme:toc": "markdown-toc -i README.md",
     "reset": "nx reset",
-    "start": "run-p serve:*",
+    "start": "nx run-many --target=serve",
     "start:gs": "run-p serve:gs",
     "start:sb": "run-p serve:sb",
     "serve:gs": "nx serve gesuch-app",

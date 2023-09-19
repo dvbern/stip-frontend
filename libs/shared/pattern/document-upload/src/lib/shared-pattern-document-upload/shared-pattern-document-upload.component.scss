@@ -1,3 +1,11 @@
 :host {
   display: block;
+
+  .upload {
+    cursor: pointer;
+  }
+  .delete-icon {
+    background-color: var(--dv-blue-bg-subtle);
+    --dv-size-unit: 0.15rem;
+  }
 }
