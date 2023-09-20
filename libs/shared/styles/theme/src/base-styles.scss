@@ -8,13 +8,6 @@
 
 main.page-body {
   margin-top: var(--header-size);
-
-  // small screens: header not sticky
-  // TODO import breakpoint instead of hardcoding it
-  @media screen and (max-width: 992px) {
-    margin-top: 0;
-  }
-
   flex: 1 0 calc(100vh - var(--header-size));
 }
 
