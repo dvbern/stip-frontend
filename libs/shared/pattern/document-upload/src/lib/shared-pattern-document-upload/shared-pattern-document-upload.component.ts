@@ -34,9 +34,6 @@ import { DocumentOptions } from './shared-pattern-document-upload.model';
 export class SharedPatternDocumentUploadComponent implements OnChanges {
   private store = inject(DocumentStore);
 
-  filesDropped = new EventEmitter<File[]>();
-  removeTrigger = new Subject<string>();
-
   @Input({ required: true }) options!: DocumentOptions;
 
   view = this.store.selectSignal((state) => state);

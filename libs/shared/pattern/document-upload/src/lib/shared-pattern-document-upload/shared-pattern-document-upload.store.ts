@@ -146,12 +146,12 @@ export class DocumentStore extends ComponentStore<DocumentState> {
           this.patchState({ loading: true });
         }),
         mergeMap(({ fileUpload, options: { dokumentTyp, gesuchId } }) => {
-          const dokumentId = createTempId(fileUpload);
+          const tempDokumentId = createTempId(fileUpload);
           const dokumentUpload$ = this.documentService
             .createDokument$({ dokumentTyp, gesuchId, fileUpload }, 'events')
             .pipe(shareReplay({ bufferSize: 1, refCount: true }));
           const cancellingThisDocument$ = this.cancelDocumentUpload$.pipe(
-            filter((d) => d.dokumentId === dokumentId),
+            filter((d) => d.dokumentId === tempDokumentId),
             shareReplay({ bufferSize: 1, refCount: true })
           );
           // Fake an upload status change, could be removed if this feature is being integrated in backend
@@ -197,7 +197,7 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                           filename: fileUpload.name,
                           filesize: fileUpload.size.toString(),
                           filepfad: '',
-                          id: dokumentId,
+                          id: tempDokumentId,
                           objectId: '',
                           progress: 0,
                         },
@@ -211,7 +211,7 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                       loading: true,
                       documents: updateProgressFor(
                         state.documents,
-                        dokumentId,
+                        tempDokumentId,
                         (event.loaded / fileUpload.size) * 100
                       ),
                     }))();
@@ -221,7 +221,7 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                     this.updater((state) => ({
                       ...state,
                       documents: state.documents.filter(
-                        (d) => d.id !== dokumentId
+                        (d) => d.id !== tempDokumentId
                       ),
                     }))();
                     this.effectGetDocuments({ dokumentTyp, gesuchId });
@@ -232,7 +232,7 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                       ...state,
                       documents: updateProgressFor(
                         state.documents,
-                        dokumentId,
+                        tempDokumentId,
                         100
                       ),
                     }))();
