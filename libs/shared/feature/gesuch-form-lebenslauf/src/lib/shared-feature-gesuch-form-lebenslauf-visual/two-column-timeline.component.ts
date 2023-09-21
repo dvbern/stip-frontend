@@ -10,7 +10,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
   Ausbildung,
@@ -47,6 +47,7 @@ import {
 })
 export class TwoColumnTimelineComponent implements OnChanges {
   cd = inject(ChangeDetectorRef);
+  translate = inject(TranslateService);
 
   @Output() addAusbildungTriggered = new EventEmitter<TimelineAddCommand>();
   @Output() addTaetigkeitTriggered = new EventEmitter<TimelineAddCommand>();
@@ -93,8 +94,11 @@ export class TwoColumnTimelineComponent implements OnChanges {
     );
 
     // planned ausbildung
-    const ausbildungsstaette = ausbildungsstaettes.find(
-      (each) => each.id === plannedAusbildung.ausbildungsstaetteId
+    const ausbildungsstaette = ausbildungsstaettes.find((staette) =>
+      staette.ausbildungsgaenge?.some(
+        (ausbildungsgang) =>
+          plannedAusbildung?.ausbildungsgangId === ausbildungsgang.id
+      )
     );
     const ausbildungsgang = ausbildungsstaette?.ausbildungsgaenge?.find(
       (each) => each.id === plannedAusbildung.ausbildungsgangId
@@ -106,7 +110,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
       von: dateFromMonthYearString(plannedAusbildung.ausbildungBegin),
       bis: dateFromMonthYearString(plannedAusbildung.ausbildungEnd),
       label:
-        ausbildungsstaette?.name +
+        this.getTranslatedAusbildungstaetteName(ausbildungsstaette) +
         ': ' +
         ausbildungsgang?.bezeichnungDe +
         ' (' +
@@ -148,6 +152,17 @@ export class TwoColumnTimelineComponent implements OnChanges {
     item: TimelineBusyBlock | TimelineBusyBlockChild
   ): void {
     this.editItemTriggered.emit(item.id);
+  }
+
+  private getTranslatedAusbildungstaetteName(
+    staette: Ausbildungsstaette | undefined
+  ): string | undefined {
+    if (staette === undefined) {
+      return undefined;
+    }
+    return this.translate.currentLang === 'fr'
+      ? staette.nameFr
+      : staette.nameDe;
   }
 
   protected readonly printDateAsMonthYear = printDateAsMonthYear;
