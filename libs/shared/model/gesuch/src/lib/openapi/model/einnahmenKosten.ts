@@ -43,5 +43,9 @@ export interface EinnahmenKosten {
      * Required nur wenn volljährig
      */
     willDarlehen?: boolean;
+    /**
+     * Required nur wenn die Person keinen eigenen Haushalt führt
+     */
+    auswaertigeMittagessenProWoche?: number;
 }
 
