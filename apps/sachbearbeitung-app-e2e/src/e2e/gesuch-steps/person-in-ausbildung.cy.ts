@@ -7,7 +7,7 @@ import {
 
 import { CockpitPO } from '../../support/po/cockpit.po';
 
-describe('gesuch-app gesuch form', () => {
+describe('sachbearbeitung-app gesuch form', () => {
   beforeEach(() => {
     cy.login();
     cy.visit('/');
@@ -33,9 +33,9 @@ describe('gesuch-app gesuch form', () => {
         getStepTitle().should('contain.text', 'Ausbildung');
 
         // zurueck zu Person in Ausbildung
-        getNavDashboard().click();
-        CockpitPO.getPeriodeTitle().should('exist');
-        CockpitPO.getGesuchEdit().first().click();
+        getNavDashboard().last().click();
+        CockpitPO.getTitle().should('exist');
+        CockpitPO.openGesuch();
         getStepPersonInAusbildung().click();
         getStepTitle().should('contain.text', 'Person in Ausbildung');
         SharedPersonInAusbildungPO.getFormPersonName()

@@ -1,7 +1,8 @@
-import { getStepTitle } from '../shared/gesuch-steps.nav.po';
-import { PersonInAusbildungPO } from './gesuch-steps/person-in-ausbildung.po';
+import {
+  getStepTitle,
+  SharedPersonInAusbildungPO,
+} from '@dv/shared/util-fn/e2e-helpers';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CockpitPO {
   export const getPeriodeTitle = () => cy.getBySel('cockpit-periode-title');
   export const getGesuchEdit = () => cy.getBySel('cockpit-gesuch-edit');
@@ -11,6 +12,6 @@ export namespace CockpitPO {
   export const openGesuch = () => {
     CockpitPO.getGesuchEdit().first().click();
     getStepTitle().should('contain.text', 'Person in Ausbildung');
-    PersonInAusbildungPO.getFormPersonName().should('exist');
+    SharedPersonInAusbildungPO.getFormPersonName().should('exist');
   };
 }

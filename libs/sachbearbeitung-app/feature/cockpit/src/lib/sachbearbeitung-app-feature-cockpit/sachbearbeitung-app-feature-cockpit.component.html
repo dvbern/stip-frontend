@@ -31,15 +31,16 @@
       <div class="col-12">
         <div class="container card py-4 shadow">
           <div class="row px-4">
-            <h4 class="col-12 p-0">
+            <h4 class="col-12 p-0" data-testid="cockpit-title">
               {{ 'sachbearbeitung-app.cockpit.gesuche' | translate }}
             </h4>
           </div>
           <div class="row overflow-auto">
             <table
               [dvSharedUiFocusableList]="items"
-              mat-table
               [dataSource]="cockpitViewSig().gesuche"
+              data-testid="cockpit-table"
+              mat-table
               matSort
               matSortActive="created"
               matSortDisableClear
@@ -67,7 +68,11 @@
                     'sachbearbeitung-app.cockpit.table.sv-nummer' | translate
                   }}
                 </th>
-                <td mat-cell *matCellDef="let gesuch">
+                <td
+                  mat-cell
+                  *matCellDef="let gesuch"
+                  data-testid="cockpit-row-sv"
+                >
                   {{
                     gesuch.gesuch_formular_to_work_with.personInAusbildung
                       ?.sozialversicherungsnummer
