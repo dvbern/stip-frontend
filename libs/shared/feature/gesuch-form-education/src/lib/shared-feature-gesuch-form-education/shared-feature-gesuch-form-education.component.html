@@ -52,15 +52,15 @@
       >
         <span class="material-symbols-rounded align-middle">clear</span>
       </button>
-      <mat-autocomplete #staetten>
+      <mat-autocomplete #staetten="matAutocomplete">
         <mat-option
           *ngFor="
             let staette of ausbildungsstaettOptionsSig();
             trackBy: trackByIndex
           "
-          [value]="getTranslatedAusbildungstaetteName(staette)"
+          [value]="staette.translatedName"
         >
-          {{ getTranslatedAusbildungstaetteName(staette) }}
+          {{ staette.translatedName }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -105,7 +105,7 @@
           [value]="l.id"
           *ngFor="let l of ausbildungsgangOptions$(); trackBy: trackByIndex"
         >
-          {{ l.bezeichnungDe }}
+          {{ l.translatedName }}
         </mat-option>
       </mat-select>
     </mat-form-field>

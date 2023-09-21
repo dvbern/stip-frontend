@@ -14,8 +14,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
   Ausbildung,
+  Ausbildungsgang,
   Ausbildungsstaette,
-  LebenslaufItem,
   LebenslaufItemUpdate,
 } from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
@@ -57,28 +57,30 @@ export class TwoColumnTimelineComponent implements OnChanges {
   @Input({ required: true }) startDate!: Date | null;
   @Input({ required: true }) lebenslaufItems!: LebenslaufItemUpdate[];
   @Input({ required: true }) ausbildung!: Ausbildung;
-  @Input({ required: true }) ausbildungsstaettes?: Ausbildungsstaette[] | null;
+  @Input({ required: true }) ausbildungsstaettes!: Ausbildungsstaette[];
+  @Input({ required: true }) language!: string;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (
-      changes['startDate'] &&
-      changes['lebenslaufItems'] &&
-      changes['ausbildung'] &&
-      changes['ausbildungsstaettes']
+      (changes['startDate'] &&
+        changes['lebenslaufItems'] &&
+        changes['ausbildung'] &&
+        changes['ausbildungsstaettes']) ||
+      changes['language']
     ) {
       this.setLebenslaufItems(
-        changes['startDate'].currentValue,
-        changes['lebenslaufItems'].currentValue,
-        changes['ausbildung'].currentValue,
-        changes['ausbildungsstaettes'].currentValue
+        this.startDate,
+        this.lebenslaufItems,
+        this.ausbildung,
+        this.ausbildungsstaettes
       );
     }
   }
 
   setLebenslaufItems(
     expectedSartDate: Date | null,
-    lebenslaufItems: LebenslaufItem[],
-    plannedAusbildung: Ausbildung,
+    lebenslaufItems: LebenslaufItemUpdate[],
+    plannedAusbildung: Ausbildung | undefined,
     ausbildungsstaettes: Ausbildungsstaette[]
   ) {
     const timelineRawItems = lebenslaufItems.map(
@@ -101,20 +103,20 @@ export class TwoColumnTimelineComponent implements OnChanges {
       )
     );
     const ausbildungsgang = ausbildungsstaette?.ausbildungsgaenge?.find(
-      (each) => each.id === plannedAusbildung.ausbildungsgangId
+      (each) => each.id === plannedAusbildung?.ausbildungsgangId
     );
 
     timelineRawItems.push({
       id: 'planned-ausbildung',
       col: 'LEFT',
-      von: dateFromMonthYearString(plannedAusbildung.ausbildungBegin),
-      bis: dateFromMonthYearString(plannedAusbildung.ausbildungEnd),
+      von: dateFromMonthYearString(plannedAusbildung?.ausbildungBegin),
+      bis: dateFromMonthYearString(plannedAusbildung?.ausbildungEnd),
       label:
         this.getTranslatedAusbildungstaetteName(ausbildungsstaette) +
         ': ' +
-        ausbildungsgang?.bezeichnungDe +
+        this.getTranslatedAusbildungsgangBezeichung(ausbildungsgang) +
         ' (' +
-        plannedAusbildung.fachrichtung +
+        plannedAusbildung?.fachrichtung +
         ')',
       editable: false,
     } as TimelineRawItem);
@@ -160,10 +162,19 @@ export class TwoColumnTimelineComponent implements OnChanges {
     if (staette === undefined) {
       return undefined;
     }
-    return this.translate.currentLang === 'fr'
-      ? staette.nameFr
-      : staette.nameDe;
+    return this.language === 'fr' ? staette.nameFr : staette.nameDe;
   }
 
   protected readonly printDateAsMonthYear = printDateAsMonthYear;
+
+  private getTranslatedAusbildungsgangBezeichung(
+    ausbildungsgang: Ausbildungsgang | undefined
+  ): string | undefined {
+    if (ausbildungsgang === undefined) {
+      return undefined;
+    }
+    return this.language === 'fr'
+      ? ausbildungsgang.bezeichnungFr
+      : ausbildungsgang.bezeichnungDe;
+  }
 }
