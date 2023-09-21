@@ -217,6 +217,7 @@
   "shared.form.lebenslauf.form.error.monthYearMax": "Das Jahr darf nicht nach {{max}} liegen",
   "shared.form.lebenslauf.form.error.monthYearAfterStart": "Das Ende muss nach dem Beginn sein",
   "shared.form.lebenslauf.form.error.overlapsOthers": "Der Zeitraum überschneidet andere angegebene Ausbildungen",
+  "shared.form.lebenslauf.missingEntries": "Fehlende Einträge",
 
   "shared.auszahlung.title": "Auszahlung",
   "shared.form.auszahlung.kontoinhaber": "Kontoinhaber:in",

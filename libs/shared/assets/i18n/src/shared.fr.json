@@ -217,6 +217,7 @@
   "shared.form.lebenslauf.form.error.monthYearMax": "L'année ne doit pas être postérieure à {{max}}.",
   "shared.form.lebenslauf.form.error.monthYearAfterStart": "La fin doit être postérieure au début",
   "shared.form.lebenslauf.form.error.overlapsOthers": "La période chevauche d'autres formations indiquées",
+  "shared.form.lebenslauf.missingEntries": "Entrées manquantes",
 
   "shared.auszahlung.title": "Paiement",
   "shared.form.auszahlung.kontoinhaber": "Titulaire du compte:en",
