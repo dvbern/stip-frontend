@@ -28,11 +28,7 @@ import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-edu
 import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
-import {
-  Ausbildungsland,
-  AusbildungsPensum,
-  Ausbildungsstaette,
-} from '@dv/shared/model/gesuch';
+import { AusbildungsPensum, Ausbildungsstaette } from '@dv/shared/model/gesuch';
 import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
@@ -52,7 +48,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap/typeahead/typeahead';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { addYears, subMonths } from 'date-fns';
 import {
   debounceTime,
@@ -96,16 +92,13 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
   private formUtils = inject(SharedUtilFormService);
+  private translate = inject(TranslateService);
 
-  readonly ausbildungslandValues = Object.values(Ausbildungsland);
   readonly ausbildungspensumValues = Object.values(AusbildungsPensum);
 
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    ausbildungsland: this.formBuilder.control<Ausbildungsland | null>(null, {
-      validators: Validators.required,
-    }),
     ausbildungsstaette: [<string | undefined>undefined, [Validators.required]],
     ausbildungsgang: [<string | undefined>undefined, [Validators.required]],
     fachrichtung: [<string | null>null, [Validators.required]],
@@ -148,25 +141,18 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   });
 
   view$ = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
-  land$ = toSignal(this.form.controls.ausbildungsland.valueChanges);
-  ausbildungsstaetteOptions$ = computed(() => {
-    const ausbildungsstaettes = this.view$().ausbildungsstaettes;
-    return ausbildungsstaettes.filter(
-      (item) => item.ausbildungsland === this.land$()
-    );
-  });
   ausbildungsstaett$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
   ausbildungsstaettOptionsSig = computed(() => {
     const currentAusbildungsstatte = this.ausbildungsstaett$();
     return currentAusbildungsstatte
-      ? this.ausbildungsstaetteOptions$().filter((item) =>
-          item.name
-            .toLowerCase()
-            .includes(currentAusbildungsstatte.toLowerCase())
-        )
-      : this.ausbildungsstaetteOptions$();
+      ? this.view$().ausbildungsstaettes.filter((ausbildungsstaette) => {
+          this.getTranslatedAusbildungstaetteName(ausbildungsstaette)
+            ?.toLowerCase()
+            .includes(currentAusbildungsstatte.toLowerCase());
+        })
+      : this.view$().ausbildungsstaettes;
   });
   ausbildungNichtGefundenChanged$ = toSignal(
     this.form.controls.ausbildungNichtGefunden.valueChanges
@@ -176,17 +162,20 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
 
   ausbildungsgangOptions$ = computed(() => {
     return (
-      this.ausbildungsstaetteOptions$().find(
-        (item) => item.name === this.ausbildungsstaett$()
+      this.view$().ausbildungsstaettes.find(
+        (ausbildungsstaette) =>
+          this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ===
+          this.ausbildungsstaett$()
       )?.ausbildungsgaenge ?? []
     );
   });
+
   // the typeahead function needs to be a computed because it needs to change when the available options$ change.
   ausbildungsstaetteTypeaheadFn$: Signal<
     OperatorFunction<string, readonly any[]>
   > = computed(() => {
     return this.createAusbildungsstaetteTypeaheadFn(
-      this.ausbildungsstaetteOptions$()
+      this.view$().ausbildungsstaettes
     );
   });
 
@@ -244,43 +233,26 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
         const { ausbildung } = this.view$();
         const { ausbildungsstaettes } = this.view$();
         if (ausbildung && ausbildungsstaettes) {
-          this.form.patchValue({
-            ...ausbildung,
-            ausbildungsstaette: ausbildungsstaettes?.find(
-              (ausbildungsstaette) =>
-                ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
-            )?.name,
-            ausbildungsgang: ausbildungsstaettes
-              ?.find(
-                (ausbildungsstaette) =>
-                  ausbildungsstaette.id === ausbildung.ausbildungsstaetteId
-              )
-              ?.ausbildungsgaenge?.find(
+          const ausbildungsstaette = ausbildungsstaettes.find(
+            (ausbildungsstaette) =>
+              ausbildungsstaette.ausbildungsgaenge?.find(
                 (ausbildungsgang) =>
                   ausbildungsgang.id === ausbildung.ausbildungsgangId
-              )?.id,
+              )
+          );
+          const ausbildungsgang = ausbildungsstaette?.ausbildungsgaenge?.find(
+            (ausbildungsgang) =>
+              ausbildungsgang.id === ausbildung?.ausbildungsgangId
+          );
+          this.form.patchValue({
+            ...ausbildung,
+            ausbildungsstaette:
+              this.getTranslatedAusbildungstaetteName(ausbildungsstaette),
+            ausbildungsgang: ausbildungsgang?.id,
           });
         } else {
           this.form.reset();
         }
-      },
-      { allowSignalWrites: true }
-    );
-
-    const land$ = toSignal(
-      this.form.controls.ausbildungsland.valueChanges.pipe(
-        startWith(this.form.value.ausbildungsland)
-      )
-    );
-    // When Land  null, disable staette
-    effect(
-      () => {
-        // do not enable/disable fields  on signal default value
-        this.formUtils.setDisabledState(
-          this.form.controls.ausbildungsstaette,
-          !land$(),
-          true
-        );
       },
       { allowSignalWrites: true }
     );
@@ -369,27 +341,14 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
     const { ausbildungsgang, ausbildungsstaette, ...formValue } =
-      convertTempFormToRealValues(this.form, [
-        'ausbildungsland',
-        'fachrichtung',
-        'pensum',
-      ]);
+      convertTempFormToRealValues(this.form, ['fachrichtung', 'pensum']);
     const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
         ...gesuchFormular,
         ausbildung: {
           ...formValue,
-          ausbildungsstaetteId:
-            this.ausbildungsstaetteOptions$()
-              .filter(
-                (ausbildungsstaette) =>
-                  ausbildungsstaette.name ===
-                  this.form.controls.ausbildungsstaette.value
-              )
-              .pop()?.id ?? undefined,
-          ausbildungsgangId:
-            this.form.controls.ausbildungsgang.value ?? undefined,
+          ausbildungsgangId: ausbildungsgang ?? undefined,
         },
       },
     };
@@ -423,14 +382,28 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
             term === ''
               ? list
               : list.filter(
-                  (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
+                  (v) =>
+                    this.getTranslatedAusbildungstaetteName(v)
+                      ?.toLowerCase()
+                      .indexOf(term.toLowerCase()) || 0 > -1
                 )
           )
-            .map((staette) => staette.name)
+            .map((staette) => this.getTranslatedAusbildungstaetteName(staette))
             .slice(0, 10);
         })
       );
     };
+  }
+
+  getTranslatedAusbildungstaetteName(
+    staette: Ausbildungsstaette | undefined
+  ): string | undefined {
+    if (staette === undefined) {
+      return undefined;
+    }
+    return this.translate.currentLang === 'fr'
+      ? staette.nameFr
+      : staette.nameDe;
   }
 
   onDateBlur(ctrl: FormControl) {
