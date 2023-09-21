@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedUiDropFileComponent } from './shared-ui-drop-file.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SharedUiDropFileComponent', () => {
   let component: SharedUiDropFileComponent;
@@ -7,7 +8,7 @@ describe('SharedUiDropFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUiDropFileComponent],
+      imports: [SharedUiDropFileComponent, TranslateModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedUiDropFileComponent);

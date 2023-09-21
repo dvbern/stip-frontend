@@ -2,10 +2,25 @@
   display: block;
 
   .upload {
+    transition: opacity 100ms ease;
     cursor: pointer;
+    &.disabled {
+      cursor: no-drop;
+      opacity: 0.5;
+    }
   }
-  .delete-icon {
-    background-color: var(--dv-blue-bg-subtle);
+  .upload-icon,
+  .delete-icon,
+  .cancel-icon {
+    font-size: 1rem;
     --dv-size-unit: 0.15rem;
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+  .upload-icon,
+  .cancel-icon {
+    background-color: var(--dv-blue-bg-subtle);
   }
 }

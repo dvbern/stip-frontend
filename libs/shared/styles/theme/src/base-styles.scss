@@ -51,6 +51,12 @@ main.page-body {
   }
 }
 
+@include media-breakpoint-up(xl) {
+  .dv-position-absolute-xl {
+    position: absolute;
+  }
+}
+
 @include media-breakpoint-down(md) {
   .cdk-overlay-pane.full-height {
     height: 100%;

@@ -3,8 +3,8 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostBinding,
   HostListener,
+  Input,
   Output,
   Renderer2,
   inject,
@@ -21,17 +21,18 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiDropFileComponent {
+  @Input() disabled = false;
   @Output() filesDropped = new EventEmitter<File[]>();
 
   private elementRef: ElementRef<HTMLElement> = inject(ElementRef);
   private renderer = inject(Renderer2);
 
-  @HostBinding('class') classes = 'p-5 border border-2 rounded';
-
   @HostListener('dragover', ['$event']) public onDragOver(evt: DragEvent) {
     evt.preventDefault();
     evt.stopPropagation();
-    this.renderer.addClass(this.elementRef.nativeElement, 'dragging');
+    if (!this.disabled) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'dragging');
+    }
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(evt: DragEvent) {
@@ -44,7 +45,7 @@ export class SharedUiDropFileComponent {
     evt.preventDefault();
     evt.stopPropagation();
     this.renderer.removeClass(this.elementRef.nativeElement, 'dragging');
-    if (!evt.dataTransfer) {
+    if (!evt.dataTransfer || this.disabled) {
       return;
     }
 

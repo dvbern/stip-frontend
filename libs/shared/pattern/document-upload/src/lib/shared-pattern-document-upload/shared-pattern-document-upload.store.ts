@@ -1,11 +1,7 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import {
-  HttpEventType,
-  HttpProgressEvent,
-  HttpUserEvent,
-} from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { combineLatest, interval, merge, Observable, Subject } from 'rxjs';
+import { combineLatest, interval, merge, Observable, of, Subject } from 'rxjs';
 import {
   concatMap,
   mergeMap,
@@ -28,19 +24,41 @@ import {
   DocumentUpload,
 } from './shared-pattern-document-upload.model';
 
+const PROGRESS_ANIMATION_TIME = 600;
+const FORMAT_ERROR = 'shared.file.invalidFormat';
+const GENERIC_ERROR = 'shared.genericError';
+
 @Injectable()
 export class DocumentStore extends ComponentStore<DocumentState> {
   private documentService = inject(GesuchService);
 
   constructor() {
-    super({ loading: false, documents: [], error: undefined });
+    super({
+      loading: false,
+      documents: [],
+      errors: undefined,
+      // Currently hardcoded, will be given by Backend later on
+      allowedFormats: 'image/tiff,image/jpeg,image/png,application/pdf',
+    });
+  }
+
+  private cancelDocumentUpload$ = new Subject<{
+    dokumentId: string;
+    options: DocumentOptions;
+  }>();
+
+  cancelDocumentUpload(action: {
+    dokumentId: string;
+    options: DocumentOptions;
+  }) {
+    this.cancelDocumentUpload$.next(action);
   }
 
   readonly effectGetDocuments = this.effect(
     (options$: Observable<DocumentOptions>) =>
       options$.pipe(
         tap(() => {
-          this.patchState({ loading: true, error: undefined });
+          this.patchState({ loading: true });
         }),
         switchMap(({ gesuchId, dokumentTyp }) =>
           this.documentService
@@ -60,9 +78,9 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                     loading: false,
                   }));
                 },
-                (error) => {
+                () => {
                   this.patchState({
-                    error: sharedUtilFnErrorTransformer(error),
+                    errors: [{ translationKey: GENERIC_ERROR }],
                     loading: false,
                   });
                 }
@@ -72,17 +90,13 @@ export class DocumentStore extends ComponentStore<DocumentState> {
       )
   );
 
-  private cancelDocument$ = new Subject<{
-    dokumentId: string;
-    options: DocumentOptions;
-  }>();
-
-  effectCancelDocument(action: {
-    dokumentId: string;
-    options: DocumentOptions;
-  }) {
-    this.cancelDocument$.next(action);
-  }
+  readonly effectClearErrors = this.effect((options$: Observable<void>) =>
+    options$.pipe(
+      tap(() => {
+        return this.patchState({ errors: undefined });
+      })
+    )
+  );
 
   readonly effectRemoveDocument = this.effect(
     (
@@ -93,7 +107,7 @@ export class DocumentStore extends ComponentStore<DocumentState> {
     ) => {
       return documentIdWithOptions$.pipe(
         tap(() => {
-          this.patchState({ loading: true, error: undefined });
+          this.patchState({ loading: true });
         }),
         concatMap(({ dokumentId, options: { dokumentTyp, gesuchId } }) =>
           this.documentService
@@ -108,9 +122,9 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                     ),
                     loading: false,
                   }))(),
-                (error) =>
+                () =>
                   this.patchState({
-                    error: sharedUtilFnErrorTransformer(error),
+                    errors: [{ translationKey: GENERIC_ERROR }],
                     loading: false,
                   })
               )
@@ -129,28 +143,31 @@ export class DocumentStore extends ComponentStore<DocumentState> {
     ) => {
       return documentIdWithOptions$.pipe(
         tap(() => {
-          this.patchState({ loading: true, error: undefined });
+          this.patchState({ loading: true });
         }),
         mergeMap(({ fileUpload, options: { dokumentTyp, gesuchId } }) => {
           const dokumentId = createTempId(fileUpload);
           const dokumentUpload$ = this.documentService
             .createDokument$({ dokumentTyp, gesuchId, fileUpload }, 'events')
             .pipe(shareReplay({ bufferSize: 1, refCount: true }));
-          const cancellingThisDocument$ = this.cancelDocument$.pipe(
+          const cancellingThisDocument$ = this.cancelDocumentUpload$.pipe(
             filter((d) => d.dokumentId === dokumentId),
             shareReplay({ bufferSize: 1, refCount: true })
           );
+          // Fake an upload status change, could be removed if this feature is being integrated in backend
           const uploading$ = merge(
             dokumentUpload$,
-            combineLatest([dokumentUpload$, interval(500)]).pipe(
+            combineLatest([
+              dokumentUpload$,
+              interval(PROGRESS_ANIMATION_TIME),
+            ]).pipe(
               takeWhile(([event]) => event.type !== HttpEventType.Response),
-              map(
-                ([, i]) =>
-                  ({
-                    loaded: fileUpload.size - fileUpload.size / (i + 1),
-                    type: HttpEventType.UploadProgress,
-                    total: fileUpload.size,
-                  } as HttpProgressEvent)
+              map(([, i]) =>
+                createHttpEvent({
+                  type: HttpEventType.UploadProgress,
+                  loaded: fileUpload.size - fileUpload.size / (i + 1),
+                  total: fileUpload.size,
+                })
               )
             )
           ).pipe(
@@ -160,9 +177,11 @@ export class DocumentStore extends ComponentStore<DocumentState> {
           return merge(
             uploading$,
             cancellingThisDocument$.pipe(
-              map<unknown, HttpUserEvent<unknown>>(() => ({
-                type: HttpEventType.User,
-              }))
+              map(() =>
+                createHttpEvent({
+                  type: HttpEventType.User,
+                })
+              )
             )
           ).pipe(
             tapResponse(
@@ -223,12 +242,30 @@ export class DocumentStore extends ComponentStore<DocumentState> {
                 }
               },
               (error) => {
+                const parsedError = sharedUtilFnErrorTransformer(error);
+                const status = parsedError.status;
                 this.patchState((state) => ({
                   loading: areFilesUploading(state),
                   documents: state.documents.filter(
                     (d) => d.id !== createTempId(fileUpload)
                   ),
-                  error: sharedUtilFnErrorTransformer(error),
+                  errors: [
+                    ...(state.errors ?? []),
+                    ...(status === 400
+                      ? [
+                          {
+                            translationKey: FORMAT_ERROR,
+                            values: {
+                              file: fileUpload.name,
+                              formats: state.allowedFormats
+                                .split(',')
+                                .map((f) => '.' + f.split('/')[1])
+                                .join(', '),
+                            },
+                          },
+                        ]
+                      : [{ translationKey: GENERIC_ERROR }]),
+                  ],
                 }));
               }
             )
@@ -245,6 +282,10 @@ function areFilesUploading(state: DocumentState) {
 
 function createTempId(document: File) {
   return `uploading-${document.name}${document.size}${document.type}`;
+}
+
+function createHttpEvent(event: HttpEvent<unknown>) {
+  return event;
 }
 
 function updateProgressFor(

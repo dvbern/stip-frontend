@@ -1,4 +1,3 @@
-import { SharedModelError } from '@dv/shared/model/error';
 import { Dokument, DokumentTyp } from '@dv/shared/model/gesuch';
 
 export interface DocumentOptions {
@@ -13,5 +12,6 @@ export interface DocumentUpload extends Dokument {
 export interface DocumentState {
   documents: DocumentUpload[];
   loading: boolean;
-  error: SharedModelError | undefined;
+  errors?: { translationKey: string; values?: unknown }[];
+  allowedFormats: string;
 }

@@ -277,13 +277,11 @@
       </mat-form-field>
 
       <!-- Auslaenderausweis -->
-      <div class="col-12 col-md-6 col-xl-4" *ngIf="showAuslaenderAusweisSig()">
-        <div class="rounded-3 bg-white shadow p-4">
-          <h4>
-            {{ 'shared.form.person.auslaenderausweis' | translate }}
-          </h4>
+      <div *ngIf="showAuslaenderAusweisSig()" class="col-12 col-md-6 col-xl-4">
+        <div class="position-relative">
           <dv-shared-pattern-document-upload
             *ngIf="auslaenderausweisDocumentOptionsSig(); let options"
+            class="upload d-block dv-position-absolute-xl start-0 end-0"
             [options]="options"
           />
         </div>

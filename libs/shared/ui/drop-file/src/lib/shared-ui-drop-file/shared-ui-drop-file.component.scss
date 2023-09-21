@@ -3,11 +3,14 @@
   transition-property: border, background-color;
   transition-duration: 300ms;
   transition-timing-function: ease;
-  border-style: dotted !important;
+  border-style: dashed !important;
   border-color: var(--dv-border-color) !important;
 
   &.dragging {
     background-color: var(--dv-blue-bg-subtle);
     --dv-border-color: var(--dv-blue-bg);
+  }
+  &.disabled {
+    cursor: block;
   }
 }
