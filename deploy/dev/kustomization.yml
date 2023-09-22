@@ -9,7 +9,7 @@ images:
 - name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
   newTag: 917219eb
 - name: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
-  newTag: 917219eb
+  newTag: 44666a77
 
 # TODO: OpenShift
 # patches:
