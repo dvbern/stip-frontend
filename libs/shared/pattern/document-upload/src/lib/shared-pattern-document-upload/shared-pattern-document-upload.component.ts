@@ -56,6 +56,7 @@ export class SharedPatternDocumentUploadComponent implements OnChanges {
   handleFilInputEvent(target: EventTarget | null) {
     if (target && isHTMLInputElement(target) && target.files) {
       this.handleMultipleDocumentsAdded(Array.from(target.files));
+      target.value = '';
     }
   }
 
