@@ -278,13 +278,10 @@
 
       <!-- Auslaenderausweis -->
       <div *ngIf="showAuslaenderAusweisSig()" class="col-12 col-md-6 col-xl-4">
-        <div class="position-relative">
-          <dv-shared-pattern-document-upload
-            *ngIf="auslaenderausweisDocumentOptionsSig(); let options"
-            class="upload d-block dv-position-absolute-xl start-0 end-0"
-            [options]="options"
-          />
-        </div>
+        <dv-shared-pattern-document-upload
+          *ngIf="auslaenderausweisDocumentOptionsSig(); let options"
+          [options]="options"
+        />
       </div>
     </div>
 
