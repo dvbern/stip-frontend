@@ -1,7 +1,12 @@
-import { SharedModelGesuchFormular, Zivilstand } from '@dv/shared/model/gesuch';
-import { isStepDisabled } from './gesuch-form-steps';
+import {
+  Elternschaftsteilung,
+  SharedModelGesuchFormular,
+  Zivilstand,
+} from '@dv/shared/model/gesuch';
+import { GesuchFormSteps, isStepDisabled } from './gesuch-form-steps';
 
-const partnerCases = (): ['enable' | 'disable', Zivilstand, boolean][] => {
+type GesuchFormStepState = 'enable' | 'disable';
+const partnerCases = (): [GesuchFormStepState, Zivilstand, boolean][] => {
   return [
     ['disable', 'LEDIG', true],
     ['disable', 'VERWITWET', true],
@@ -13,6 +18,16 @@ const partnerCases = (): ['enable' | 'disable', Zivilstand, boolean][] => {
   ];
 };
 
+const alimentAufteilungCases = (): [
+  GesuchFormStepState,
+  Elternschaftsteilung,
+  boolean
+][] => [
+  ['enable', Elternschaftsteilung.MUTTER, false],
+  ['enable', Elternschaftsteilung.VATER, false],
+  ['disable', Elternschaftsteilung.GEMEINSAM, true],
+];
+
 describe('GesuchFormSteps', () => {
   it.each(partnerCases())(
     'should %s Partner Step if GS is %s',
@@ -21,6 +36,19 @@ describe('GesuchFormSteps', () => {
         isStepDisabled('PARTNER', {
           personInAusbildung: {
             zivilstand,
+          },
+        } as Partial<SharedModelGesuchFormular>)
+      ).toBe(state);
+    }
+  );
+
+  it.each(alimentAufteilungCases())(
+    'should %s Eltern Step if GS is %s',
+    (_, werZahltAlimente, state) => {
+      expect(
+        isStepDisabled('ELTERN', {
+          familiensituation: {
+            werZahltAlimente,
           },
         } as Partial<SharedModelGesuchFormular>)
       ).toBe(state);
