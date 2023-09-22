@@ -4,13 +4,7 @@
   [class.rounded-bottom-3]="!hasEntriesSig()"
   (filesDropped)="handleMultipleDocumentsAdded($event)"
 >
-  <h4 class="d-flex align-content-center align-self-start">
-    <span
-      class="p-1 me-2 text-info upload-icon material-symbols-rounded rounded-circle align-self-start"
-      >upload</span
-    >
-    {{ 'shared.form.person.auslaenderausweis' | translate }}
-  </h4>
+  <ng-content select=".title"></ng-content>
   <label class="position-relative upload" [class.disabled]="view().loading">
     <div
       class="pe-none position-absolute w-100 h-100 d-flex justify-content-center align-items-center"
@@ -38,8 +32,9 @@
     </button>
     <input
       #fileInput
-      type="file"
       class="mb-2 cdk-visually-hidden"
+      type="file"
+      tabindex="-1"
       accept="image/tiff,image/jpeg,image/png,application/pdf"
       multiple
       [disabled]="view().loading"
