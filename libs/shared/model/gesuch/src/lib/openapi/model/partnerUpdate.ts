@@ -18,11 +18,20 @@ export interface PartnerUpdate {
     /**
      * 
      */
-    jahreseinkommen: number;
-    /**
-     * 
-     */
     sozialversicherungsnummer: string;
     nachname: string;
+    ausbildungMitEinkommenOderErwaerbstaetig?: boolean;
+    /**
+     * Required falls ausbildungMitEinkommenOderErwaerbstaetig true ist
+     */
+    jahreseinkommen?: number;
+    /**
+     * Required falls ausbildungMitEinkommenOderErwaerbstaetig true ist
+     */
+    fahrkosten?: number;
+    /**
+     * Required falls ausbildungMitEinkommenOderErwaerbstaetig true ist
+     */
+    verpflegungskosten?: number;
 }
 

@@ -260,6 +260,9 @@
   "shared.form.einnahmenkosten.general.title": "Allgemeine Informationen",
   "shared.form.einnahmenkosten.verdienstRealisiert.label": "Haben Sie im Vorjahr einen Verdienst realisiert?",
   "shared.form.einnahmenkosten.willDarlehen.label": "Wünschen Sie ein Darlehen?",
+  "shared.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label": "Ausbildung mit Einkommen oder erwerbstätig",
+  "shared.form.partner.verpflegungskosten.label": "Verpflegungskosten",
+  "shared.form.partner.fahrkosten.label": "Fahrkosten",
 
   "shared.kanton.AG": "Aargau",
   "shared.kanton.AI": "Appenzell Ausserrhoden",

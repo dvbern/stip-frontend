@@ -260,6 +260,9 @@
   "shared.form.einnahmenkosten.general.title": "Informations générales",
   "shared.form.einnahmenkosten.verdienstRealisiert.label": "Avez-vous réalisé un gain l'année précédente?",
   "shared.form.einnahmenkosten.willDarlehen.label": "Souhaitez-vous un prêt?",
+  "shared.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label": "Formation avec revenu ou activité professionnelle",
+  "shared.form.partner.verpflegungskosten.label": "Frais de repas",
+  "shared.form.partner.fahrkosten.label": "Frais de déplacement",
 
   "shared.kanton.AG": "Argovie",
   "shared.kanton.AI": "Appenzell Rh.-Ext.",
