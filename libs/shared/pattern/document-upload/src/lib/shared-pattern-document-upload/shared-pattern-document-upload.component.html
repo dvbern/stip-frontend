@@ -1,19 +1,114 @@
-<div
-  class="spinner-border text-secondary my-4"
-  role="status"
-  *ngIf="view().loading"
+<dv-shared-ui-drop-file
+  class="p-3 bg-white d-flex align-items-center flex-column rounded-top-3 shadow border border-2"
+  [disabled]="view().loading"
+  [class.rounded-bottom-3]="!hasEntriesSig()"
+  (filesDropped)="handleMultipleDocumentsAdded($event)"
 >
-  <span class="visually-hidden">Loading documents...</span>
-</div>
-
-<p *ngIf="view().error">{{ view().error?.message }}</p>
+  <h4 class="d-flex align-content-center align-self-start">
+    <span
+      class="p-1 me-2 text-info upload-icon material-symbols-rounded rounded-circle align-self-start"
+      >upload</span
+    >
+    {{ 'shared.form.person.auslaenderausweis' | translate }}
+  </h4>
+  <label class="position-relative upload" [class.disabled]="view().loading">
+    <div
+      class="pe-none position-absolute w-100 h-100 d-flex justify-content-center align-items-center"
+    >
+      <div
+        class="spinner-border text-secondary my-4"
+        role="status"
+        *ngIf="view().loading"
+      >
+        <span class="visually-hidden">{{
+          'shared.file.downloading' | translate
+        }}</span>
+      </div>
+    </div>
+    <div
+      class="text-center text-muted text-italic my-4 d-md-block d-none"
+      [innerHTML]="'shared.file.dropZone' | translate"
+    ></div>
+    <button
+      (click)="fileInput.click()"
+      type="button"
+      class="btn btn-outline-primary"
+    >
+      {{ 'shared.file.upload' | translate }}
+    </button>
+    <input
+      #fileInput
+      type="file"
+      class="mb-2 cdk-visually-hidden"
+      accept="image/tiff,image/jpeg,image/png,application/pdf"
+      multiple
+      [disabled]="view().loading"
+      (change)="handleFilInputEvent($event.target)"
+    />
+  </label>
+</dv-shared-ui-drop-file>
 
 <!-- todo add drop zone / file selector  -->
-<input type="file" (change)="handleDocumentAdded($any($event).target.value)" />
 
-<div *ngFor="let document of view().documents; trackBy: trackByIndex">
-  {{ document.id }}
-  <button type="button" (click)="handleRemoveClicked(document.id)">
-    Remove
-  </button>
+<div
+  class="border border-2 bg-white border-top-0 pt-1 rounded-bottom-3 shadow"
+  *ngIf="hasEntriesSig()"
+>
+  <ul class="d-flex flex-column mb-2 list-unstyled">
+    <li
+      *ngFor="
+        let document of view().documents;
+        trackBy: trackByIndex;
+        let first = first
+      "
+      class="px-3 py-2"
+      [class.border-top]="!first"
+    >
+      <div class="d-flex flex-row justify-content-between">
+        <span class="text-truncate" [title]="document.filename">{{
+          document.filename
+        }}</span>
+        <button
+          type="button"
+          class="dv-button-icon flex-shrink-0 cancel-icon ms-2"
+          *ngIf="document.progress !== undefined; else deleteFile"
+          [attr.aria-label]="'shared.cancel' | translate"
+          (click)="handleCancelClicked(document.id)"
+        >
+          <span class="material-symbols-rounded align-middle">clear</span>
+        </button>
+        <ng-template #deleteFile>
+          <button
+            type="button"
+            class="dv-button-icon flex-shrink-0 delete-icon ms-2"
+            [attr.aria-label]="'shared.form.delete' | translate"
+            [disabled]="view().loading"
+            (click)="handleRemoveClicked(document.id)"
+          >
+            <span class="material-symbols-rounded align-middle text-muted"
+              >delete</span
+            >
+          </button>
+        </ng-template>
+      </div>
+      <div class="progress mt-1" *ngIf="document.progress !== undefined">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width]="document.progress + '%'"
+          [attr.aria-valuenow]="document.progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </li>
+    <li
+      *ngFor="let error of view().errors; trackBy: trackByIndex"
+      class="px-3 py-2"
+    >
+      <mat-error
+        [innerHTML]="error.translationKey | translate : error.values"
+      ></mat-error>
+    </li>
+  </ul>
 </div>

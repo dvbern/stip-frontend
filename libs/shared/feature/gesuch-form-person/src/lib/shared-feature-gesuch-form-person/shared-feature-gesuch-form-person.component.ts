@@ -7,6 +7,7 @@ import {
   ElementRef,
   inject,
   OnInit,
+  Signal,
 } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -134,13 +135,16 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   isSozialversicherungsnummerInfoShown = false;
   isNiederlassungsstatusInfoShown = false;
   nationalitaetCH = 'CH';
-  auslaenderausweisDocumentOptions = computed(() => {
-    return {
-      resource: 'gesuch',
-      resourceId: this.view().gesuch?.id,
-      type: 'person',
-    } as DocumentOptions;
-  });
+  auslaenderausweisDocumentOptionsSig: Signal<DocumentOptions | null> =
+    computed(() => {
+      const gesuch = this.view().gesuch;
+      return gesuch
+        ? {
+            gesuchId: gesuch.id,
+            dokumentTyp: 'PERSON_IN_AUSBILDUNG_DOK',
+          }
+        : null;
+    });
 
   form = this.formBuilder.group({
     sozialversicherungsnummer: [
