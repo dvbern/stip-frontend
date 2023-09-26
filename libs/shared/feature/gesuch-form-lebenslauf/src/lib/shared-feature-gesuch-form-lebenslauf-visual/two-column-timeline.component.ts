@@ -112,9 +112,11 @@ export class TwoColumnTimelineComponent implements OnChanges {
       von: dateFromMonthYearString(plannedAusbildung?.ausbildungBegin),
       bis: dateFromMonthYearString(plannedAusbildung?.ausbildungEnd),
       label:
-        this.getTranslatedAusbildungstaetteName(ausbildungsstaette) +
+        (this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ??
+          plannedAusbildung?.alternativeAusbildungsstaette) +
         ': ' +
-        this.getTranslatedAusbildungsgangBezeichung(ausbildungsgang) +
+        (this.getTranslatedAusbildungsgangBezeichung(ausbildungsgang) ??
+          plannedAusbildung?.alternativeAusbildungsgang) +
         ' (' +
         plannedAusbildung?.fachrichtung +
         ')',

@@ -165,6 +165,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
           willTertiaerstufe,
           istErwachsen,
         } = this.formStateSig();
+        const { wohnsitzNotEigenerHaushalt } = this.viewSig();
 
         if (!hasData) {
           return;
@@ -203,6 +204,12 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         this.formService.setDisabledState(
           this.form.controls.willDarlehen,
           !istErwachsen,
+          true
+        );
+
+        this.formService.setDisabledState(
+          this.form.controls.auswaertigeMittagessenProWoche,
+          !wohnsitzNotEigenerHaushalt,
           true
         );
       },

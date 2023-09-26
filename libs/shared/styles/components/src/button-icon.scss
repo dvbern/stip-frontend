@@ -22,7 +22,7 @@
   }
 
   &:focus {
-    outline: var(--dv-size-unit) solid var(--dv-light);
+    outline: var(--dv-size-unit) solid var(--dv-border-color);
   }
 
   &.#{t.$prefix}button-icon-sm {
