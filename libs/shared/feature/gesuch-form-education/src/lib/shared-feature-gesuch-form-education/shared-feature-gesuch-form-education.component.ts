@@ -132,18 +132,18 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   });
 
   view$ = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
-  ausbildungsstaett$ = toSignal(
+  ausbildungsstaette$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
   ausbildungsstaettOptionsSig: Signal<
     (Ausbildungsstaette & { translatedName?: string })[]
   > = computed(() => {
-    const currentAusbildungsstatte = this.ausbildungsstaett$();
-    const toReturn = currentAusbildungsstatte
+    const currentAusbildungsstaette = this.ausbildungsstaette$();
+    const toReturn = currentAusbildungsstaette
       ? this.view$().ausbildungsstaettes.filter((ausbildungsstaette) => {
           return this.getTranslatedAusbildungstaetteName(ausbildungsstaette)
             ?.toLowerCase()
-            .includes(currentAusbildungsstatte.toLowerCase());
+            .includes(currentAusbildungsstaette.toLowerCase());
         })
       : this.view$().ausbildungsstaettes;
     return toReturn.map((ausbildungsstaette) => {
@@ -164,17 +164,20 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     (Ausbildungsgang & { translatedName?: string })[]
   > = computed(() => {
     return (
-      this.view$().ausbildungsstaettes.find(
-        (ausbildungsstaette) =>
-          this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ===
-          this.ausbildungsstaett$()
-      )?.ausbildungsgaenge ?? []
-    ).map((ausbildungsgang) => {
-      return {
-        ...ausbildungsgang,
-        translatedName: this.getTranslatedAusbildungsgangName(ausbildungsgang),
-      };
-    });
+      this.view$()
+        .ausbildungsstaettes.find(
+          (ausbildungsstaette) =>
+            this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ===
+            this.ausbildungsstaette$()
+        )
+        ?.ausbildungsgaenge?.map((ausbildungsgang) => {
+          return {
+            ...ausbildungsgang,
+            translatedName:
+              this.getTranslatedAusbildungsgangName(ausbildungsgang),
+          };
+        }) ?? []
+    );
   });
 
   constructor() {
@@ -316,8 +319,10 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
     const { gesuch, gesuchFormular } = this.view$();
-    const { ausbildungsgang, ausbildungsstaette, ...formValue } =
-      convertTempFormToRealValues(this.form, ['fachrichtung', 'pensum']);
+    const { ausbildungsgang, ...formValue } = convertTempFormToRealValues(
+      this.form,
+      ['fachrichtung', 'pensum']
+    );
     const ret = {
       gesuchId: gesuch?.id,
       gesuchFormular: {
@@ -325,6 +330,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
         ausbildung: {
           ...formValue,
           ausbildungsgangId: ausbildungsgang ?? undefined,
+          ausbildungsstaette: undefined,
         },
       },
     };
