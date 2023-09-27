@@ -130,10 +130,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         ),
       ],
     ],
-    ausbildungMitEinkommenOderErwerbstaetig: [
-      <boolean | null>null,
-      [Validators.required],
-    ],
+    ausbildungMitEinkommenOderErwerbstaetig: [false, [Validators.required]],
     jahreseinkommen: [<string | undefined>undefined, [Validators.required]],
     fahrkosten: [<string | undefined>undefined, [Validators.required]],
     verpflegungskosten: [<string | undefined>undefined, [Validators.required]],
@@ -189,9 +186,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     effect(() => {
       const noAusbildungMitEinkommenOderErwerbstaetigkeit =
         !this.ausbildungMitEinkommenOderErwerbstaetigSig();
-      if (noAusbildungMitEinkommenOderErwerbstaetigkeit === null) {
-        return;
-      }
+
       this.formUtils.setDisabledState(
         this.form.controls.jahreseinkommen,
         noAusbildungMitEinkommenOderErwerbstaetigkeit,
