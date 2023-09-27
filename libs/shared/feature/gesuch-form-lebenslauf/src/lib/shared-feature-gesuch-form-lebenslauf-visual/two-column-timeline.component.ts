@@ -10,7 +10,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
   Ausbildung,
@@ -47,6 +47,7 @@ import {
 })
 export class TwoColumnTimelineComponent implements OnChanges {
   cd = inject(ChangeDetectorRef);
+  translate = inject(TranslateService);
 
   @Output() addAusbildungTriggered = new EventEmitter<TimelineAddCommand>();
   @Output() addTaetigkeitTriggered = new EventEmitter<TimelineAddCommand>();
@@ -87,7 +88,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
           von: dateFromMonthYearString(lebenslaufItem.von),
           bis: dateFromMonthYearString(lebenslaufItem.bis),
           id: lebenslaufItem.id,
-          label: lebenslaufItem.beschreibung,
+          label: this.getLebenslaufItemLabel(lebenslaufItem),
           editable: true,
         } as TimelineRawItem)
     );
@@ -117,6 +118,33 @@ export class TwoColumnTimelineComponent implements OnChanges {
 
     this.timeline.fillWith(expectedSartDate, timelineRawItems);
     this.cd.markForCheck();
+  }
+
+  private getLebenslaufItemLabel(lebenslaufItem: LebenslaufItem): string {
+    if (
+      lebenslaufItem.taetigskeitsart !== undefined &&
+      lebenslaufItem.taetigskeitsart !== null
+    ) {
+      return lebenslaufItem.taetigkeitsBeschreibung || '';
+    }
+    if (
+      lebenslaufItem.bildungsart === 'EIDGENOESSISCHES_BERUFSATTEST' ||
+      lebenslaufItem.bildungsart === 'EIDGENOESSISCHES_FAEHIGKEITSZEUGNIS'
+    ) {
+      return lebenslaufItem.berufsbezeichnung || '';
+    }
+    if (
+      lebenslaufItem.bildungsart === 'BACHELOR_HOCHSCHULE_UNI' ||
+      lebenslaufItem.bildungsart === 'BACHELOR_FACHHOCHSCHULE' ||
+      lebenslaufItem.bildungsart === 'MASTER'
+    ) {
+      return lebenslaufItem.fachrichtung || '';
+    }
+    return lebenslaufItem.bildungsart === 'ANDERER_BILDUNGSABSCHLUSS'
+      ? lebenslaufItem.titelDesAbschlusses || ''
+      : this.translate.instant(
+          `shared.form.lebenslauf.item.subtype.bildungsart.${lebenslaufItem.bildungsart}`
+        );
   }
 
   timeline = new TwoColumnTimeline();

@@ -44,10 +44,10 @@
                 class="w-100 d-block"
                 (click)="handleEditItem(child)"
               >
-                {{ child.label }}
+                {{ child.label | translate }}
               </a>
               <ng-container *ngIf="!child.editable">
-                {{ child.label }}
+                {{ child.label | translate }}
               </ng-container>
             </h5>
             <small>{{
