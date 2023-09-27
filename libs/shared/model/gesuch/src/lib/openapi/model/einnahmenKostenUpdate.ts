@@ -17,7 +17,7 @@ export interface EinnahmenKostenUpdate {
      */
     alimente?: number;
     /**
-     * Required nur wenn die Person Kinder hat
+     * Required nur wenn mind. ein Kind gibt
      */
     zulagen?: number;
     /**
