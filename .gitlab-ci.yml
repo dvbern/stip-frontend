@@ -25,6 +25,9 @@ include:
 
   - component: 'gitlab.dvbern.ch/components/buildah@v0.2.0'
     inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       name: package:sachbearbeitung-app
       image-name: sachbearbeitung-app
       version: "$VERSION"
@@ -33,6 +36,9 @@ include:
 
   - component: 'gitlab.dvbern.ch/components/buildah@v0.2.0'
     inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       name: package:gesuch-app
       image-name: gesuch-app
       version: "$VERSION"
@@ -41,6 +47,9 @@ include:
 
   - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
     inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: dev
       image-names: "sachbearbeitung-app,gesuch-app"
       version: "latest"
@@ -50,6 +59,9 @@ include:
 
   - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
     inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: uat
       image-names: "sachbearbeitung-app,gesuch-app"
       version: "$VERSION"
@@ -58,6 +70,9 @@ include:
 
   - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
     inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: prod
       image-names: "sachbearbeitung-app,gesuch-app"
       version: "$VERSION"
