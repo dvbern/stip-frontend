@@ -1,6 +1,6 @@
 :80 {
         try_files {path} /
-        root * /srv/app/{$APP_NAME}
+        root * /srv/app
         file_server
 
         log {
