@@ -29,6 +29,15 @@
           "libs/shared/feature/gesuch-form-lebenslauf/**/*.html"
         ]
       }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs/shared/feature/gesuch-form-lebenslauf/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "gesuch-app:build"
+      }
     }
   }
 }
