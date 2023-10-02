@@ -117,11 +117,6 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       [
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
-        minDateValidatorForLocale(
-          this.languageSig(),
-          subMonths(new Date(), 1),
-          'monthYear'
-        ),
         maxDateValidatorForLocale(
           this.languageSig(),
           addYears(new Date(), 100),
