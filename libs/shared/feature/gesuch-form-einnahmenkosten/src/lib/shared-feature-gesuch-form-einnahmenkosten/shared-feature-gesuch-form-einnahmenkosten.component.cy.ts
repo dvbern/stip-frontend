@@ -9,6 +9,7 @@ import {
 } from '@dv/shared/model/gesuch';
 import { SharedEinnahmenKostenInAusbildungPO } from '@dv/shared/util-fn/e2e-helpers';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { provideMaterialDefaultOptions } from '@dv/shared/pattern/angular-material-config';
 import { SharedFeatureGesuchFormEinnahmenkostenComponent } from './shared-feature-gesuch-form-einnahmenkosten.component';
 
 describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
@@ -61,7 +62,6 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       );
     });
   });
-
   describe('visibility rules for field "personenImHaushalt"', () => {
     it('should display personenImHaushalt if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
@@ -81,6 +81,41 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'not.exist'
+      );
+    });
+  });
+  describe('form validation', () => {
+    it('should be invalid if personenImHaushalt is 0', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(0);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'have.value',
+        1
+      );
+    });
+    it('should be invalid if personenImHaushalt is negative', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(-2);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'have.value',
+        2
+      );
+    });
+    it('should be invalid if personenImHaushalt is positive', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(1);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'have.value',
+        1
       );
     });
   });
@@ -150,6 +185,7 @@ function mountWithInitialGesuchsformular(gesuchFormular: GesuchFormularUpdate) {
           },
         },
       }),
+      provideMaterialDefaultOptions(),
     ],
   });
 }

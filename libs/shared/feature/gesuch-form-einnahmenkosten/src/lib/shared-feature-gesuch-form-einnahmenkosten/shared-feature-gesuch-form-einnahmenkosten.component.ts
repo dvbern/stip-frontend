@@ -30,6 +30,7 @@ import {
 import {
   fromFormatedNumber,
   maskitoNumber,
+  maskitoPositiveNumber,
 } from '@dv/shared/util/maskito-util';
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
@@ -94,6 +95,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     selectSharedFeatureGesuchFormEinnahmenkostenView
   );
   maskitoNumber = maskitoNumber;
+  maskitoPositiveNumber = maskitoPositiveNumber;
   formStateSig = computed(() => {
     const { gesuchFormular, ausbildungsstaettes } = this.viewSig();
 
