@@ -173,21 +173,50 @@ You then have to make the following adaptions to enable code coverage:
 import '@cypress/code-coverage/support';
 ```
 
+In the same directory as the _cypress.config.ts_ file, create the following file, named _coverage.webpack.ts_:
+
 ```typescript
-// cypress.config.ts
-// replace
-import task from '@cypress/code-coverage/task';
+export const setupCoverageWebpack = (paths: string[]) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(js|ts)$/,
+        loader: '@jsdevtools/coverage-istanbul-loader',
+        options: { esModules: true },
+        enforce: 'post',
+        include: paths,
+        exclude: [/\.(cy|spec)\.ts$/, /node_modules/],
+      },
+    ],
+  },
+});
+```
+
+Then, replace the content in _cypress.config.ts_ with:
+
+```typescript
 import { nxComponentTestingPreset } from '@nx/angular/plugins/component-testing';
+import task from '@cypress/code-coverage/task';
 import { defineConfig } from 'cypress';
+import * as path from 'path';
+
+import { setupCoverageWebpack } from './coverage.webpack';
+
+const nxPreset = nxComponentTestingPreset(__filename);
 
 export default defineConfig({
   component: {
-    ...nxComponentTestingPreset(__filename),
+    ...nxPreset,
+    devServer: {
+      ...nxPreset.devServer,
+      webpackConfig: setupCoverageWebpack([path.join(__dirname, 'src')]),
+    },
     setupNodeEvents(on, config) {
       task(on, config);
       return config;
     },
   },
+  scrollBehavior: 'nearest',
 });
 ```
 
