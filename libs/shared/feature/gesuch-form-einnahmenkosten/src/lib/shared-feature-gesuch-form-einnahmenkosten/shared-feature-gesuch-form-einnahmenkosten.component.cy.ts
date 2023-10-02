@@ -20,50 +20,69 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
   });
 
   describe('visibility rules for field "auswaertigeMittagessenProWoche"', () => {
-    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
+    it('should not display auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
       SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
         'not.exist'
       );
     });
 
-    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Familie"', () => {
+    it('should not display auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Familie"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
       SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
         'exist'
       );
     });
 
-    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Mutter Vater"', () => {
+    it('should not display auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Mutter Vater"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
       SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
         'exist'
       );
     });
   });
+  describe('visibility rules for field "wohnkosten"', () => {
+    it('should display wohnkosten if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should('exist');
+    });
 
-  it('should display fields wohnkosten and personenImHaushalt if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
-    mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
-    SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should('exist');
-    SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
-      'exist'
-    );
+    it('should not display wohnkosten if personInAusbildung has wohnsitz "Familie"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
+      SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should(
+        'not.exist'
+      );
+    });
+
+    it('should not display wohnkosten if personInAusbildung has wohnsitz "Mutter Vater"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
+      SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should(
+        'not.exist'
+      );
+    });
   });
 
-  it('should not display fields wohnkosten and personenImHaushalt if personInAusbildung has wohnsitz "Familie"', () => {
-    mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
-    SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should('not.exist');
-    SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
-      'not.exist'
-    );
-  });
+  describe('visibility rules for field "wohnkosten"', () => {
+    it('should display wohnkosten if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'exist'
+      );
+    });
 
-  it('should not display fields wohnkosten and personenImHaushalt if personInAusbildung has wohnsitz "Mutter Vater"', () => {
-    mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
-    SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should('not.exist');
-    SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
-      'not.exist'
-    );
+    it('should not display wohnkosten if personInAusbildung has wohnsitz "Familie"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'not.exist'
+      );
+    });
+
+    it('should not display wohnkosten if personInAusbildung has wohnsitz "Mutter Vater"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
+        'not.exist'
+      );
+    });
   });
 });
 
