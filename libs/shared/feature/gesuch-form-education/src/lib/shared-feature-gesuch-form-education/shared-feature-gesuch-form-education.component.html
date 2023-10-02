@@ -12,6 +12,7 @@
 <!-- form -->
 <form
   [formGroup]="form"
+  data-testid="form-education-form"
   novalidate
   class="mt-4"
   *ngIf="!view$().loading"
@@ -189,6 +190,7 @@
 
       <input
         matInput
+        data-testid="form-education-beginn-der-ausbildung"
         formControlName="ausbildungBegin"
         placeholder="MM.YYYY"
         (blur)="onDateBlur(form.controls.ausbildungBegin)"
@@ -219,6 +221,7 @@
 
       <input
         matInput
+        data-testid="form-education-ende-der-ausbildung"
         formControlName="ausbildungEnd"
         placeholder="MM.YYYY"
         (blur)="onDateBlur(form.controls.ausbildungEnd)"
