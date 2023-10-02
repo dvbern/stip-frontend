@@ -19,6 +19,29 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
     },
   });
 
+  describe('visibility rules for field "auswaertigeMittagessenProWoche"', () => {
+    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
+      SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
+        'not.exist'
+      );
+    });
+
+    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Familie"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
+      SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
+        'exist'
+      );
+    });
+
+    it('should disply auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "Mutter Vater"', () => {
+      mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
+      SharedEinnahmenKostenInAusbildungPO.getFormAuswaertigeMittagessenProWoche().should(
+        'exist'
+      );
+    });
+  });
+
   it('should display fields wohnkosten and personenImHaushalt if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
     mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
     SharedEinnahmenKostenInAusbildungPO.getFormWohnkosten().should('exist');
