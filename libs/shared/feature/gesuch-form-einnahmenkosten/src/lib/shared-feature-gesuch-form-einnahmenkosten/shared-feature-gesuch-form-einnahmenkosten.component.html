@@ -12,7 +12,10 @@
   <ng-template #incomplete>
     <div class="row">
       <div class="col-12 col-xl-8 my-3">
-        <ngb-alert type="info" [dismissible]="false"
+        <ngb-alert
+          type="info"
+          [dismissible]="false"
+          data-testid="gesuch-form-einnahmenkosten-data-incomplete-warning"
           >{{ 'shared.form.einnahmenkosten.top.incomplete' | translate }}
           <span
             *ngFor="
@@ -77,6 +80,7 @@
         }}</mat-label>
         <input
           formControlName="alimente"
+          data-testid="form-einnahmen-kosten-alimente"
           matInput
           type="text"
           [maskito]="maskitoNumber"
