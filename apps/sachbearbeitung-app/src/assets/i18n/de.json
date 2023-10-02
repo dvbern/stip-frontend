@@ -26,5 +26,7 @@
   "sachbearbeitung-app.cockpit.status.NICHT_KOMPLETT_EINGEREICHT": "Nicht komplett eingereicht",
   "sachbearbeitung-app.cockpit.status.NICHT_KOMPLETT_EINGEREICHT_NACHFRIST": "Nachbefristet",
 
+  "sachbearbeitung-app.cockpit.status.BESCHREIBUNG_PAGINATOR_GESUCHE": "Wählen sie die Anzahl Gesuche",
+
   "sachbearbeitung-app.gesuch-form.title": "Gesuch"
 }

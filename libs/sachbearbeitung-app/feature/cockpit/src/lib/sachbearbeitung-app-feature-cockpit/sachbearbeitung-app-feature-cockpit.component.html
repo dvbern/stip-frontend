@@ -38,7 +38,7 @@
           <div class="row overflow-auto">
             <table
               [dvSharedUiFocusableList]="items"
-              [dataSource]="cockpitViewSig().gesuche"
+              [dataSource]="gesucheDataSourceSig()"
               data-testid="cockpit-table"
               mat-table
               matSort
@@ -181,6 +181,14 @@
                 class="highlightable"
               ></tr>
             </table>
+
+            <mat-paginator
+              #gesuchePaginator
+              [pageSizeOptions]="[10, 20, 50]"
+              showFirstLastButtons
+              aria-label="'sachbearbeitung-app.cockpit.status.BESCHREIBUNG_PAGINATOR_GESUCHE' | translate">
+            </mat-paginator>
+
           </div>
         </div>
       </div>
