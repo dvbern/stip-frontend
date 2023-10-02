@@ -212,6 +212,18 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
           !wohnsitzNotEigenerHaushalt,
           true
         );
+
+        this.formService.setDisabledState(
+          this.form.controls.wohnkosten,
+          wohnsitzNotEigenerHaushalt,
+          true
+        );
+
+        this.formService.setDisabledState(
+          this.form.controls.personenImHaushalt,
+          wohnsitzNotEigenerHaushalt,
+          true
+        );
       },
       { allowSignalWrites: true }
     );
