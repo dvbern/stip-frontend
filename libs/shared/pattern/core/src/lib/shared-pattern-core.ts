@@ -9,7 +9,7 @@ import {
   provideRouter,
   Route,
   withComponentInputBinding,
-  withEnabledBlockingInitialNavigation,
+  withDisabledInitialNavigation,
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
@@ -102,7 +102,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         onSameUrlNavigation: 'reload',
       }),
       withComponentInputBinding(),
-      withEnabledBlockingInitialNavigation(),
+      withDisabledInitialNavigation(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
