@@ -62,22 +62,22 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
     });
   });
 
-  describe('visibility rules for field "wohnkosten"', () => {
-    it('should display wohnkosten if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
+  describe('visibility rules for field "personenImHaushalt"', () => {
+    it('should display personenImHaushalt if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'exist'
       );
     });
 
-    it('should not display wohnkosten if personInAusbildung has wohnsitz "Familie"', () => {
+    it('should not display personenImHaushalt if personInAusbildung has wohnsitz "Familie"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.FAMILIE);
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'not.exist'
       );
     });
 
-    it('should not display wohnkosten if personInAusbildung has wohnsitz "Mutter Vater"', () => {
+    it('should not display personenImHaushalt if personInAusbildung has wohnsitz "Mutter Vater"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.MUTTER_VATER);
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'not.exist'
