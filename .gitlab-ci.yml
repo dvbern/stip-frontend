@@ -1,101 +1,83 @@
-include:
-  - local: '.gitlab/common.gitlab-ci.yml'
+stages: [ build, validate, test, analyze, package, deploy, mirror ]
 
-stages:
-  - validate
-  - test
-  - analyze
-  - build
-  - deploy
-  - mirror
-
-install:
-  stage: .pre
-  extends: .base
-  before_script:
-    - echo "//gitlab.dvbern.ch/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-  script:
-    - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
-      echo "Skipping npm ci because a cached version is available"'
-
-lint:
-  stage: validate
-  extends: .base
-  script:
-    - NX_REJECT_UNKNOWN_LOCAL_CACHE=0 npm run lint
-
-format-check:
-  stage: validate
-  extends: .base
-  script:
-    - npm run validate
-
-test:
-  extends: .base
-  stage: test
-  script:
-    - npm run test:ci
-  allow_failure: true
-  artifacts:
-    when: always
-    paths:
-      - coverage
-    reports:
-      junit:
-        - junit.xml
-    expire_in: 1 day
-
-sonarqube-check:
-  image:
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: ['']
-  stage: analyze
-  tags: ['os:linux', 'type:docker', 'zone:tz']
-  variables:
-    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
-    GIT_DEPTH: '0'
-  cache:
-    key: '${CI_JOB_NAME}'
-    paths:
-      - .sonar/cache
-  script:
-    - sonar-scanner
-  allow_failure: true
+workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_MERGE_REQUEST_ID || '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        VERSION: $CI_COMMIT_REF_SLUG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_COMMIT_BRANCH
-  needs:
-    - job: test
-      artifacts: true
-
-build:pipeline:
-  stage: build
-  extends: .base
-  variables:
-    FORCE: 'false'
-  script:
-    - node ./tools/pipeline/generate.js "$(npx nx show projects -p 'apps/*' --exclude '*-e2e')"
-    - cat affected-apps.gitlab-ci.yml
-  rules:
-    - if: $CI_COMMIT_BRANCH || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      variables:
+        VERSION: $CI_COMMIT_SHA
     - if: $CI_COMMIT_TAG
       variables:
-        FORCE: 'true'
-  artifacts:
-    expire_in: 30 days
-    paths:
-      - affected-apps.gitlab-ci.yml
+        VERSION: $CI_COMMIT_TAG
 
-trigger:affected-apps:
-  stage: build
-  trigger:
-    strategy: depend
-    include:
-      - artifact: affected-apps.gitlab-ci.yml
-        job: build:pipeline
-  needs:
-    - job: 'build:pipeline'
+include:
+  - component: "gitlab.dvbern.ch/components/nx@v0.0.1"
+    inputs:
+      app-name: "*-app"
+      test-app-name: "*-app-e2e"
+
+  - component: 'gitlab.dvbern.ch/components/sonarqube@v0.1.0'
+    inputs:
+      sonar-scanner: cli
+      sonar-project-key: kibon_stip-frontend_AYkrwt88SZqri_oH9Xlq
+
+  - component: 'gitlab.dvbern.ch/components/buildah@v0.2.0'
+    inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
+      name: package:sachbearbeitung-app
+      image-name: "stip/sachbearbeitung-app"
+      version: "$VERSION"
+      build-args: |
+        APP=sachbearbeitung-app
+
+  - component: 'gitlab.dvbern.ch/components/buildah@v0.2.0'
+    inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
+      name: package:gesuch-app
+      image-name: "stip/gesuch-app"
+      version: "$VERSION"
+      build-args: |
+        APP=gesuch-app
+
+  - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
+    inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
+      environment: dev
+      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
+      version: "latest"
+      review-apps-enabled: "false"
+    rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_MERGE_REQUEST_ID
+
+  - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
+    inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
+      environment: uat
+      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
+      version: "$VERSION"
+    rules:
+      - if: $CI_COMMIT_TAG
+
+  - component: 'gitlab.dvbern.ch/components/flux@v0.2.0'
+    inputs:
+      registry: $DVB_PUBLIC_DOCKER_REGISTRY
+      registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
+      registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
+      environment: prod
+      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
+      version: "$VERSION"
+    rules:
+      - if: $CI_COMMIT_TAG
 
 mirror:
   stage: mirror
