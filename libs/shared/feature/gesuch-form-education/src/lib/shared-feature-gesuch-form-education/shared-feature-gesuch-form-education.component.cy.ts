@@ -7,7 +7,7 @@ import { SharedFeatureGesuchFormEducationComponent } from './shared-feature-gesu
 
 describe(SharedFeatureGesuchFormEducationComponent.name, () => {
   describe('form validity', () => {
-    it('should be invalid if beginn is not a date', () => {
+    it('should be invalid if begin is not a date', () => {
       mountWithGesuch();
       SharedEducationPO.getFormBeginnDerAusbildung().type('gugus').blur();
       SharedEducationPO.getFormBeginnDerAusbildung().should(
@@ -23,7 +23,7 @@ describe(SharedFeatureGesuchFormEducationComponent.name, () => {
         'ng-invalid'
       );
     });
-    it('should be valid if a past date is provided for beginn', () => {
+    it('should be valid if a past date is provided for begin', () => {
       mountWithGesuch();
       SharedEducationPO.getFormBeginnDerAusbildung().type('01.2020').blur();
       SharedEducationPO.getFormBeginnDerAusbildung().should(
@@ -31,7 +31,7 @@ describe(SharedFeatureGesuchFormEducationComponent.name, () => {
         'ng-invalid'
       );
     });
-    it('should be valid if the end date is before the begin date', () => {
+    it('should be valid if the begin date is before the end date', () => {
       mountWithGesuch();
       SharedEducationPO.getFormBeginnDerAusbildung().type('01.2019').blur();
       SharedEducationPO.getFormEndeDerAusbildung().type('01.2020').blur();
@@ -44,7 +44,7 @@ describe(SharedFeatureGesuchFormEducationComponent.name, () => {
         'ng-invalid'
       );
     });
-    it('should be invalid if the end date is after the begin date', () => {
+    it('should be invalid if the begin date is after the end date', () => {
       mountWithGesuch();
       SharedEducationPO.getFormBeginnDerAusbildung().type('01.2020').blur();
       SharedEducationPO.getFormEndeDerAusbildung().type('01.2019').blur();
