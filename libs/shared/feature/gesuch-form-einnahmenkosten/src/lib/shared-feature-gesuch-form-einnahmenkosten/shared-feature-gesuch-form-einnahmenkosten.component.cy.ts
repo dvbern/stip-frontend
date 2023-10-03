@@ -12,7 +12,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { provideMaterialDefaultOptions } from '@dv/shared/pattern/angular-material-config';
 import { SharedFeatureGesuchFormEinnahmenkostenComponent } from './shared-feature-gesuch-form-einnahmenkosten.component';
 
-describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
+describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
   TestBed.overrideComponent(SharedFeatureGesuchFormEinnahmenkostenComponent, {
     add: {
       imports: [],
@@ -90,7 +90,7 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'exist'
       );
-      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(0);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type('0');
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'have.value',
         1
@@ -101,7 +101,9 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'exist'
       );
-      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(-2);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(
+        '-2'
+      );
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'have.value',
         2
@@ -112,7 +114,7 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'exist'
       );
-      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type(1);
+      SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().type('1');
       SharedEinnahmenKostenInAusbildungPO.getFormPersonenImHaushalt().should(
         'have.value',
         1
@@ -122,14 +124,11 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
 });
 
 function mountWithPreparedGesuchWithWohnsitz(wohnsitz: Wohnsitz): void {
-  const gesuchFormular: GesuchFormularUpdate = {
+  const gesuchFormular = {
     familiensituation: { elternVerheiratetZusammen: true },
     personInAusbildung: createEmptyPersonInAusbildung(),
     ausbildung: createEmptyAusbildung(),
   };
-  if (gesuchFormular.personInAusbildung === undefined) {
-    throw new Error('wrong Testsetup');
-  }
   gesuchFormular.personInAusbildung.wohnsitz = wohnsitz;
   mountWithInitialGesuchsformular(gesuchFormular);
 }
