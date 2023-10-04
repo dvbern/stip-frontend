@@ -15,14 +15,9 @@ import Chainable = Cypress.Chainable;
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
-    getBySel(selector: string): Chainable;
     matSelect(matSelect: Chainable, value: string): Chainable;
   }
 }
-
-Cypress.Commands.add('getBySel', (selector, ...args): Chainable => {
-  return cy.get(`[data-testid=${selector}]`, ...args);
-});
 
 Cypress.Commands.add(
   'matSelect',

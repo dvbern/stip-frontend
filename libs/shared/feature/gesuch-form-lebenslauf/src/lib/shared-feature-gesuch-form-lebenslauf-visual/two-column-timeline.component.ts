@@ -127,7 +127,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
     this.cd.markForCheck();
   }
 
-  private getLebenslaufItemLabel(lebenslaufItem: LebenslaufItem): string {
+  private getLebenslaufItemLabel(lebenslaufItem: LebenslaufItemUpdate): string {
     if (
       lebenslaufItem.taetigskeitsart !== undefined &&
       lebenslaufItem.taetigskeitsart !== null
