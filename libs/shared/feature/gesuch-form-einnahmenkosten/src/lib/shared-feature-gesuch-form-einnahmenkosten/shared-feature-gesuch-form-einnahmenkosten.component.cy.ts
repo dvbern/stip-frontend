@@ -50,7 +50,9 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, async () => {
       );
     });
   });
+});
 
+describe('should display alimente field correctly based on current state', () => {
   it('should not display alimente field if gerichtlicheAlimentenregelung is undefined', () => {
     mountWithInitialGesuchsformular({
       personInAusbildung: createEmptyPersonInAusbildung(),
