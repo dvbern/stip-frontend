@@ -1,13 +1,13 @@
 import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import { capitalized } from '@dv/shared/util-fn/string-helper';
-
-import { CockpitPO } from '../../support/po/cockpit.po';
-import { LebenslaufPO } from '../../support/po/gesuch-steps/lebenslauf.po';
 import {
+  getSubmitButton,
   getStepLebenslauf,
   getStepTitle,
-} from '../../support/shared/gesuch-steps.nav.po';
-import { getSubmitButton } from '../../support/shared/form.po';
+  SharedLebenslaufPO,
+} from '@dv/shared/util-fn/e2e-helpers';
+
+import { CockpitPO } from '../../support/po/cockpit.po';
 
 describe('gesuch-app gesuch form', () => {
   beforeEach(() => {
@@ -24,13 +24,13 @@ describe('gesuch-app gesuch form', () => {
       CockpitPO.openGesuch();
       getStepLebenslauf().click();
       getStepTitle().should('contain.text', 'Lebenslauf');
-      LebenslaufPO.getFormLebenslaufLoading().should('not.exist');
+      SharedLebenslaufPO.getFormLebenslaufLoading().should('not.exist');
 
       // Name auslesen
-      LebenslaufPO.getFirstTimelineGapBlock().should('exist');
-      LebenslaufPO.getAddButton(type).click();
+      SharedLebenslaufPO.getFirstTimelineGapBlock().should('exist');
+      SharedLebenslaufPO.getAddButton(type).click();
       getSubmitButton().click();
-      LebenslaufPO.getArtInput(type).should('have.class', 'ng-invalid');
+      SharedLebenslaufPO.getArtInput(type).should('have.class', 'ng-invalid');
     })
   );
 });

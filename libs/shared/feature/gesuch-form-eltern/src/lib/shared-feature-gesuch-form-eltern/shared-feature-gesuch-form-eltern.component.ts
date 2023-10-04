@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
-  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
@@ -16,7 +16,7 @@ import {
   GesuchFormularUpdate,
 } from '@dv/shared/model/gesuch';
 import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { GesuchFormSteps, isStepDisabled } from '@dv/shared/model/gesuch-form';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { capitalized } from '@dv/shared/util-fn/string-helper';
@@ -38,7 +38,7 @@ import { SharedFeatureGesuchFormElternEditorComponent } from '../shared-feature-
   templateUrl: './shared-feature-gesuch-form-eltern.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedFeatureGesuchFormElternComponent implements OnInit {
+export class SharedFeatureGesuchFormElternComponent {
   private store = inject(Store);
 
   laenderSig = computed(() => {
@@ -51,9 +51,28 @@ export class SharedFeatureGesuchFormElternComponent implements OnInit {
   editedElternteil?: Omit<Partial<ElternUpdate>, 'elternTyp'> &
     Required<Pick<ElternUpdate, 'elternTyp'>>;
 
-  ngOnInit(): void {
+  constructor() {
     this.store.dispatch(SharedEventGesuchFormEltern.init());
     this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
+    effect(
+      () => {
+        const { loading, gesuch, gesuchFormular } = this.view$();
+        if (
+          !loading &&
+          gesuch &&
+          gesuchFormular &&
+          isStepDisabled('ELTERN', gesuchFormular)
+        ) {
+          this.store.dispatch(
+            SharedEventGesuchFormEltern.nextTriggered({
+              id: gesuch?.id,
+              origin: GesuchFormSteps.ELTERN,
+            })
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   trackByIndex(index: number) {

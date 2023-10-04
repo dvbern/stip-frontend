@@ -1,8 +1,7 @@
 import { SharedModelLebenslauf } from '@dv/shared/model/lebenslauf';
 import { lowercased } from '@dv/shared/util-fn/string-helper';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace LebenslaufPO {
+export namespace SharedLebenslaufPO {
   export const getFormLebenslaufLoading = () =>
     cy.getBySel('form-lebenslauf-loading');
   export const getFirstTimelineGapBlock = () =>

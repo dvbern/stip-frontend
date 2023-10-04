@@ -9,13 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Ausbildungsort } from './ausbildungsort';
 import { Bildungsart } from './bildungsart';
 
 export interface Ausbildungsgang { 
     id: string;
-    bezeichnungDe: string;
+    /**
+     * 
+     */
+    bezeichnungDe?: string;
+    /**
+     * 
+     */
     bezeichnungFr?: string;
     ausbildungsrichtung: Bildungsart;
+    ausbildungsort: Ausbildungsort;
+    ausbildungsstaetteId?: string;
 }
 
 

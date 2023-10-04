@@ -1,9 +1,10 @@
-import { CockpitPO } from '../../support/po/cockpit.po';
-import { EinnahmenKostenInAusbildungPO } from '../../support/po/gesuch-steps/einnahmen-kosten.po';
 import {
   getStepEinnahmenKostenAusbildung,
   getStepTitle,
-} from '../../support/shared/gesuch-steps.nav.po';
+  SharedEinnahmenKostenInAusbildungPO,
+} from '@dv/shared/util-fn/e2e-helpers';
+
+import { CockpitPO } from '../../support/po/cockpit.po';
 
 describe('gesuch-app einnahmen & kosten form', () => {
   beforeEach(() => {
@@ -15,23 +16,23 @@ describe('gesuch-app einnahmen & kosten form', () => {
     CockpitPO.openGesuch();
     getStepEinnahmenKostenAusbildung().click();
     getStepTitle().should('contain.text', 'Einnahmen & Kosten');
-    EinnahmenKostenInAusbildungPO.getFormLoading().should('exist');
-    EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().should(
+    SharedEinnahmenKostenInAusbildungPO.getFormLoading().should('exist');
+    SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().should(
       'exist'
     );
-    EinnahmenKostenInAusbildungPO.getFormLoading().should('not.exist');
+    SharedEinnahmenKostenInAusbildungPO.getFormLoading().should('not.exist');
 
     // Name auslesen
-    EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen()
+    SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen()
       .invoke('val')
       .then(() => {
         // Name updaten
-        EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().focus();
-        EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().clear();
-        EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().type(
+        SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().focus();
+        SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().clear();
+        SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().type(
           '10000'
         );
-        EinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().should(
+        SharedEinnahmenKostenInAusbildungPO.getFormNettoerwerbseinkommen().should(
           'have.value',
           "10'000"
         );

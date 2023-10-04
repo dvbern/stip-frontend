@@ -14,6 +14,7 @@
     [formGroup]="form"
     novalidate
     class="mt-4"
+    data-testid="form-partner-form"
     *ngIf="!view().loading"
     (ngSubmit)="handleSaveAndContinue()"
   >
@@ -30,6 +31,7 @@
           matInput
           type="text"
           formControlName="sozialversicherungsnummer"
+          data-testid="form-partner-sozialversicherungsnummer"
           placeholder="756.xxxx.xxxx.xx"
           [maskito]="MASK_SOZIALVERSICHERUNGSNUMMER"
         />
@@ -49,7 +51,12 @@
         <mat-label>{{
           'shared.form.shared.lastname.label' | translate
         }}</mat-label>
-        <input formControlName="nachname" matInput type="text" />
+        <input
+          formControlName="nachname"
+          data-testid="form-partner-nachname"
+          matInput
+          type="text"
+        />
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </mat-error>
@@ -58,7 +65,12 @@
         <mat-label>{{
           'shared.form.shared.firstname.label' | translate
         }}</mat-label>
-        <input formControlName="vorname" matInput type="text" />
+        <input
+          formControlName="vorname"
+          data-testid="form-partner-vorname"
+          matInput
+          type="text"
+        />
         <mat-error *dvSharedUiFormMessageError="'required'">
           {{ 'shared.form.error.required' | translate }}
         </mat-error>
@@ -72,7 +84,12 @@
             'shared.form.optional.label' | translate
           }})
         </mat-label>
-        <input matInput type="text" formControlName="coAdresse" />
+        <input
+          matInput
+          type="text"
+          formControlName="coAdresse"
+          data-testid="form-partner-coAdresse"
+        />
       </mat-form-field>
     </div>
 
@@ -84,7 +101,12 @@
             <mat-label
               >{{ 'shared.form.shared.address.street.label' | translate }}
             </mat-label>
-            <input matInput type="text" formControlName="strasse" />
+            <input
+              matInput
+              type="text"
+              formControlName="strasse"
+              data-testid="form-partner-strasse"
+            />
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
             </mat-error>
@@ -95,7 +117,12 @@
             <mat-label
               >{{ 'shared.form.shared.address.number.label' | translate }}
             </mat-label>
-            <input matInput type="text" formControlName="hausnummer" />
+            <input
+              matInput
+              type="text"
+              formControlName="hausnummer"
+              data-testid="form-partner-hausnummer"
+            />
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
             </mat-error>
@@ -110,7 +137,12 @@
             <mat-label
               >{{ 'shared.form.shared.address.zipcode.label' | translate }}
             </mat-label>
-            <input matInput type="text" formControlName="plz" />
+            <input
+              matInput
+              type="text"
+              formControlName="plz"
+              data-testid="form-partner-plz"
+            />
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.requiredShort' | translate }}
             </mat-error>
@@ -121,7 +153,12 @@
             <mat-label
               >{{ 'shared.form.shared.address.city.label' | translate }}
             </mat-label>
-            <input matInput type="text" formControlName="ort" />
+            <input
+              matInput
+              type="text"
+              formControlName="ort"
+              data-testid="form-partner-ort"
+            />
             <mat-error *dvSharedUiFormMessageError="'required'">
               {{ 'shared.form.error.required' | translate }}
             </mat-error>
@@ -136,7 +173,7 @@
         <mat-label>{{
           'shared.form.shared.address.country.label' | translate
         }}</mat-label>
-        <mat-select formControlName="land">
+        <mat-select formControlName="land" data-testid="form-partner-land">
           <mat-option [value]="null" disabled selected>
             {{ 'shared.form.select.empty' | translate }}
           </mat-option>
@@ -164,6 +201,7 @@
           matInput
           placeholder="dd.mm.yyyy"
           formControlName="geburtsdatum"
+          data-testid="form-partner-geburtsdatum"
           (blur)="onGeburtsdatumBlur($event)"
         />
 
@@ -181,7 +219,24 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row g-4 my-2">
+    <div class="row g-4">
+      <!-- AUSBILDUNG MIT EINKOMMEN ODER ERWERBSTÄTIG -->
+      <div class="col-12 col-xl-8">
+        <mat-checkbox
+          type="checkbox"
+          formControlName="ausbildungMitEinkommenOderErwerbstaetig"
+          data-testid="form-partner-ausbildungMitEinkommenOderErwerbstaetig"
+          >{{
+            'shared.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label'
+              | translate
+          }}</mat-checkbox
+        >
+      </div>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
       <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
         <mat-label>{{
           'shared.form.partner.jahreseinkommen.label' | translate
@@ -190,6 +245,47 @@
           formControlName="jahreseinkommen"
           matInput
           type="text"
+          data-testid="form-partner-jahreseinkommen"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+        <mat-label>{{
+          'shared.form.partner.verpflegungskosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="verpflegungskosten"
+          matInput
+          type="text"
+          data-testid="form-partner-verpflegungskosten"
+          [maskito]="maskitoNumber"
+        />
+        <mat-error *dvSharedUiFormMessageError="'required'">
+          {{ 'shared.form.error.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div
+      class="row g-4 my-2"
+      *ngIf="ausbildungMitEinkommenOderErwerbstaetigSig()"
+    >
+      <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+        <mat-label>{{
+          'shared.form.partner.fahrkosten.label' | translate
+        }}</mat-label>
+        <input
+          formControlName="fahrkosten"
+          matInput
+          type="text"
+          data-testid="form-partner-fahrkosten"
           [maskito]="maskitoNumber"
         />
         <mat-error *dvSharedUiFormMessageError="'required'">

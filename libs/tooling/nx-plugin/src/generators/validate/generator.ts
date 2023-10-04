@@ -158,8 +158,14 @@ async function validateProjectTagsMatchProjectLocation(
     }
   }
   if (appsOrLibs === 'libs') {
-    expectedTags.push(`scope:${scopeOrName}`);
-    expectedTags.push(`type:${type}`);
+    if (!projectPath.includes('e2e')) {
+      expectedTags.push(`scope:${scopeOrName}`);
+      expectedTags.push(`type:${type}`);
+    } else {
+      expectedTags.push(`scope:${scopeOrName.replace('-e2e', '')}`);
+      expectedTags.push(`type:${type}`);
+      expectedTags.push(`type:e2e`);
+    }
   }
   const tagsDiff = diff(tags, expectedTags);
 

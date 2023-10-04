@@ -1,10 +1,11 @@
-import { CockpitPO } from '../../support/po/cockpit.po';
-import { PersonInAusbildungPO } from '../../support/po/gesuch-steps/person-in-ausbildung.po';
 import {
   getNavDashboard,
   getStepPersonInAusbildung,
   getStepTitle,
-} from '../../support/shared/gesuch-steps.nav.po';
+  SharedPersonInAusbildungPO,
+} from '@dv/shared/util-fn/e2e-helpers';
+
+import { CockpitPO } from '../../support/po/cockpit.po';
 
 describe('gesuch-app gesuch form', () => {
   beforeEach(() => {
@@ -16,16 +17,16 @@ describe('gesuch-app gesuch form', () => {
     CockpitPO.openGesuch();
     getStepPersonInAusbildung().click();
     getStepTitle().should('contain.text', 'Person in Ausbildung');
-    PersonInAusbildungPO.getFormPersonLoading().should('not.exist');
+    SharedPersonInAusbildungPO.getFormPersonLoading().should('not.exist');
 
     // Name auslesen
-    PersonInAusbildungPO.getFormPersonName()
+    SharedPersonInAusbildungPO.getFormPersonName()
       .invoke('val')
       .then((prevName) => {
         // Name updaten
-        PersonInAusbildungPO.getFormPersonName().focus();
-        PersonInAusbildungPO.getFormPersonName().clear();
-        PersonInAusbildungPO.getFormPersonName().type('Updated name');
+        SharedPersonInAusbildungPO.getFormPersonName().focus();
+        SharedPersonInAusbildungPO.getFormPersonName().clear();
+        SharedPersonInAusbildungPO.getFormPersonName().type('Updated name');
 
         // speichern und weiter
         cy.get('form').submit();
@@ -37,16 +38,16 @@ describe('gesuch-app gesuch form', () => {
         CockpitPO.getGesuchEdit().first().click();
         getStepPersonInAusbildung().click();
         getStepTitle().should('contain.text', 'Person in Ausbildung');
-        PersonInAusbildungPO.getFormPersonName()
+        SharedPersonInAusbildungPO.getFormPersonName()
           .invoke('val')
           .then((updatedName) => {
             // CHECK: Name muss geaendert worden sein
             expect(updatedName === 'Updated name');
 
             // RESET: Name zuruecksetzen
-            PersonInAusbildungPO.getFormPersonName().focus();
-            PersonInAusbildungPO.getFormPersonName().clear();
-            PersonInAusbildungPO.getFormPersonName().type(prevName);
+            SharedPersonInAusbildungPO.getFormPersonName().focus();
+            SharedPersonInAusbildungPO.getFormPersonName().clear();
+            SharedPersonInAusbildungPO.getFormPersonName().type(prevName);
             cy.get('form').submit();
           });
       });

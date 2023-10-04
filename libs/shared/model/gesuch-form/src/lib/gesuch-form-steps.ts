@@ -90,6 +90,10 @@ export const isStepDisabled = (
         ].includes(zivilstand)
       );
     }
+    case 'ELTERN': {
+      const werZahltAlimente = formular?.familiensituation?.werZahltAlimente;
+      return werZahltAlimente === 'GEMEINSAM';
+    }
     default:
       return false;
   }

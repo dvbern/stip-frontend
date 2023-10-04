@@ -143,8 +143,8 @@ Preparation:
 You can run e2e tests in headless mode for all (`npm run e2e`) or for a specific app
 (`npm run e2e:<app-name>`, these have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
-Besides that it is also possible to serve desired app in the dev mode (eg `npm run serve:gesuch-app`)
-and then start e2e tests in GUI mode with `npm run e2e:gesuch-app:open` which will start Cypress GUI.
+Besides that it is also possible to serve desired app in the dev mode (eg `npm run serve:gs`)
+and then start e2e tests in GUI mode with `npm run e2e:gs:open` which will start Cypress GUI.
 (again, these scripts have to be added to the `package.json` file `scripts` when new app is added to the workspace).
 
 > When writing E2E tests, always make sure to use `data-testid="some-id"` attributes instead of
@@ -173,21 +173,50 @@ You then have to make the following adaptions to enable code coverage:
 import '@cypress/code-coverage/support';
 ```
 
+In the same directory as the _cypress.config.ts_ file, create the following file, named _coverage.webpack.ts_:
+
 ```typescript
-// cypress.config.ts
-// replace
-import task from '@cypress/code-coverage/task';
+export const setupCoverageWebpack = (paths: string[]) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(js|ts)$/,
+        loader: '@jsdevtools/coverage-istanbul-loader',
+        options: { esModules: true },
+        enforce: 'post',
+        include: paths,
+        exclude: [/\.(cy|spec)\.ts$/, /node_modules/],
+      },
+    ],
+  },
+});
+```
+
+Then, replace the content in _cypress.config.ts_ with:
+
+```typescript
 import { nxComponentTestingPreset } from '@nx/angular/plugins/component-testing';
+import task from '@cypress/code-coverage/task';
 import { defineConfig } from 'cypress';
+import * as path from 'path';
+
+import { setupCoverageWebpack } from './coverage.webpack';
+
+const nxPreset = nxComponentTestingPreset(__filename);
 
 export default defineConfig({
   component: {
-    ...nxComponentTestingPreset(__filename),
+    ...nxPreset,
+    devServer: {
+      ...nxPreset.devServer,
+      webpackConfig: setupCoverageWebpack([path.join(__dirname, 'src')]),
+    },
     setupNodeEvents(on, config) {
       task(on, config);
       return config;
     },
   },
+  scrollBehavior: 'nearest',
 });
 ```
 

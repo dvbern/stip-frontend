@@ -4,6 +4,7 @@
   "shared.close": "Schliesen",
   "shared.cancel": "Abrechen",
   "shared.accept": "Übernehmen",
+  "shared.genericError": "Es ist ein Fehler aufgetreten.",
   "shared.datepicker.month.1": "Jan",
   "shared.datepicker.month.2": "Feb",
   "shared.datepicker.month.3": "Mär",
@@ -23,6 +24,10 @@
   "shared.datepicker.weekday.5": "Fr",
   "shared.datepicker.weekday.6": "Sa",
   "shared.datepicker.weekday.7": "So",
+  "shared.file.upload": "Dateien Durchsuchen",
+  "shared.file.downloading": "Dateien werden geladen...",
+  "shared.file.dropZone": "Datei(en) hineinziehen<br>oder",
+  "shared.file.invalidFormat": "<b>{{file}}</b>: Ungültiges Dateiformat, nur \"{{formats}}\" sind gültig.",
   "shared.datepicker.week": "Woche",
   "shared.language-selector.aria-label": "Sprachauswahl",
   "shared.form.optional.label": "Optional",
@@ -112,7 +117,6 @@
 
   "shared.education.title": "Ausbildung",
   "shared.form.education.place.title": "Ausbildungsangaben",
-  "shared.form.education.ausbildungsland.label": "Ausbildungsland",
   "shared.form.education.ausbildungsstaette.label": "Ausbildungsstätte",
   "shared.form.education.ausbildungsgang.label": "Ausbildungsgang",
   "shared.form.education.fachrichtung.label": "Fachrichtung",
@@ -123,8 +127,6 @@
   "shared.form.education.pensum.label": "Pensum",
   "shared.form.education.pensum.VOLLZEIT": "Vollzeit",
   "shared.form.education.pensum.TEILZEIT": "Teilzeit",
-  "shared.form.education.ausbildungsland.SCHWEIZ": "Schweiz",
-  "shared.form.education.ausbildungsland.AUSLAND": "Ausland",
   "shared.form.education.form.error.monthYearNotPast": "Das Datum darf nicht in der Vergangenheit liegen",
   "shared.form.education.form.error.monthYearAfterStart": "Das Enddatum muss nach dem Startdatum sein",
 
@@ -234,6 +236,7 @@
   "shared.form.lebenslauf.form.error.monthYearMax": "Das Jahr darf nicht nach {{max}} liegen",
   "shared.form.lebenslauf.form.error.monthYearAfterStart": "Das Ende muss nach dem Beginn sein",
   "shared.form.lebenslauf.form.error.overlapsOthers": "Der Zeitraum überschneidet andere angegebene Ausbildungen",
+  "shared.form.lebenslauf.missingEntries": "Fehlende Einträge",
 
   "shared.auszahlung.title": "Auszahlung",
   "shared.form.auszahlung.kontoinhaber": "Kontoinhaber:in",
@@ -277,6 +280,9 @@
   "shared.form.einnahmenkosten.general.title": "Allgemeine Informationen",
   "shared.form.einnahmenkosten.verdienstRealisiert.label": "Haben Sie im Vorjahr einen Verdienst realisiert?",
   "shared.form.einnahmenkosten.willDarlehen.label": "Wünschen Sie ein Darlehen?",
+  "shared.form.partner.ausbildung-mit-einkommen-oder-erwerbstaetig.label": "Ausbildung mit Einkommen oder erwerbstätig",
+  "shared.form.partner.verpflegungskosten.label": "Verpflegungskosten",
+  "shared.form.partner.fahrkosten.label": "Fahrkosten",
 
   "shared.kanton.AG": "Aargau",
   "shared.kanton.AI": "Appenzell Ausserrhoden",

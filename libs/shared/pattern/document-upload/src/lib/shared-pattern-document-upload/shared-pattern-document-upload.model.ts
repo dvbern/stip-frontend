@@ -1,17 +1,17 @@
-import { SharedModelError } from '@dv/shared/model/error';
+import { Dokument, DokumentTyp } from '@dv/shared/model/gesuch';
 
 export interface DocumentOptions {
-  resource: string;
-  resourceId: string;
-  type?: string;
+  gesuchId: string;
+  dokumentTyp: DokumentTyp;
 }
 
-export interface Document {
-  id: string;
+export interface DocumentUpload extends Dokument {
+  progress?: number;
 }
 
 export interface DocumentState {
-  documents: Document[];
+  documents: DocumentUpload[];
   loading: boolean;
-  error: SharedModelError | undefined;
+  errors?: { translationKey: string; values?: unknown }[];
+  allowedFormats: string;
 }
