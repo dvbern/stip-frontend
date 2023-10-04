@@ -29,7 +29,7 @@ import { switchMap } from 'rxjs/operators';
 import { subYears } from 'date-fns';
 
 import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { PERSON } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
@@ -353,7 +353,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
         SharedEventGesuchFormPerson.saveTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.PERSON,
+          origin: PERSON,
         })
       );
     }
@@ -396,6 +396,4 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
       },
     };
   }
-
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

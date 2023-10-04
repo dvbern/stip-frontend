@@ -20,7 +20,7 @@ import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-edu
 import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
 import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
 import { SharedUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { PERSON } from '@dv/shared/model/gesuch-form';
 import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
@@ -258,7 +258,7 @@ export const redirectToGesuchForm = createEffect(
     return actions$.pipe(
       ofType(SharedDataAccessGesuchEvents.gesuchCreatedSuccess),
       tap(({ id }) => {
-        router.navigate(['gesuch', GesuchFormSteps.PERSON.route, id]);
+        router.navigate(['gesuch', PERSON.route, id]);
       })
     );
   },

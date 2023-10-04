@@ -16,7 +16,7 @@ import {
   GesuchFormularUpdate,
 } from '@dv/shared/model/gesuch';
 import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
-import { GesuchFormSteps, isStepDisabled } from '@dv/shared/model/gesuch-form';
+import { ELTERN, isStepDisabled } from '@dv/shared/model/gesuch-form';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
 import { capitalized } from '@dv/shared/util-fn/string-helper';
@@ -61,12 +61,12 @@ export class SharedFeatureGesuchFormElternComponent {
           !loading &&
           gesuch &&
           gesuchFormular &&
-          isStepDisabled('ELTERN', gesuchFormular)
+          isStepDisabled(ELTERN, gesuchFormular)
         ) {
           this.store.dispatch(
             SharedEventGesuchFormEltern.nextTriggered({
               id: gesuch?.id,
-              origin: GesuchFormSteps.ELTERN,
+              origin: ELTERN,
             })
           );
         }
@@ -96,7 +96,7 @@ export class SharedFeatureGesuchFormElternComponent {
         SharedEventGesuchFormEltern.saveSubformTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.ELTERN,
+          origin: ELTERN,
         })
       );
       this.editedElternteil = undefined;
@@ -111,7 +111,7 @@ export class SharedFeatureGesuchFormElternComponent {
         SharedEventGesuchFormEltern.saveSubformTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.ELTERN,
+          origin: ELTERN,
         })
       );
       this.editedElternteil = undefined;
@@ -124,7 +124,7 @@ export class SharedFeatureGesuchFormElternComponent {
       this.store.dispatch(
         SharedEventGesuchFormEltern.nextTriggered({
           id: gesuch.id,
-          origin: GesuchFormSteps.ELTERN,
+          origin: ELTERN,
         })
       );
     }
@@ -179,7 +179,6 @@ export class SharedFeatureGesuchFormElternComponent {
     };
   }
 
-  protected readonly GesuchFormSteps = GesuchFormSteps;
   protected readonly ElternTyp = ElternTyp;
 }
 

@@ -33,7 +33,6 @@ export class SharedPatternGesuchStepNavComponent {
   private store = inject(Store);
 
   @Input() steps!: (SharedModelGesuchFormStep & {
-    name: string;
     disabled: boolean;
   })[];
   @Output() navClicked = new EventEmitter();

@@ -26,7 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { subYears } from 'date-fns';
 
 import { SharedEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
-import { GesuchFormSteps, isStepDisabled } from '@dv/shared/model/gesuch-form';
+import { isStepDisabled, PARTNER } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -170,13 +170,13 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         if (
           gesuch &&
           gesuchFormular &&
-          isStepDisabled('PARTNER', gesuchFormular)
+          isStepDisabled(PARTNER, gesuchFormular)
         ) {
           this.store.dispatch(
             SharedEventGesuchFormPartner.nextStepTriggered({
               gesuchId: gesuch?.id,
               gesuchFormular,
-              origin: GesuchFormSteps.PARTNER,
+              origin: PARTNER,
             })
           );
         }
@@ -217,7 +217,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
         SharedEventGesuchFormPartner.nextStepTriggered({
-          origin: GesuchFormSteps.PARTNER,
+          origin: PARTNER,
           gesuchId,
           gesuchFormular,
         })
@@ -234,7 +234,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         SharedEventGesuchFormPartner.prevStepTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.PARTNER,
+          origin: PARTNER,
         })
       );
     }
@@ -279,6 +279,4 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
       },
     };
   }
-
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

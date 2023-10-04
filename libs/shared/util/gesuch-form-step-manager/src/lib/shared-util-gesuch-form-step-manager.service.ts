@@ -3,8 +3,17 @@ import { GesuchFormularUpdate } from '@dv/shared/model/gesuch';
 
 import {
   SharedModelGesuchFormStep,
-  GesuchFormSteps,
   isStepDisabled,
+  FAMILIENSITUATION,
+  PERSON,
+  AUSBILDUNG,
+  LEBENSLAUF,
+  ELTERN,
+  GESCHWISTER,
+  PARTNER,
+  KINDER,
+  AUSZAHLUNGEN,
+  EINNAHMEN_KOSTEN,
 } from '@dv/shared/model/gesuch-form';
 
 @Injectable({
@@ -12,15 +21,21 @@ import {
 })
 export class SharedUtilGesuchFormStepManagerService {
   getAllSteps(gesuchFormular: GesuchFormularUpdate | null) {
-    return (
-      Object.entries(GesuchFormSteps) as [
-        keyof GesuchFormSteps,
-        GesuchFormSteps[keyof GesuchFormSteps]
-      ][]
-    ).map(([name, step]) => ({
-      name,
+    return [
+      PERSON,
+      AUSBILDUNG,
+      LEBENSLAUF,
+      FAMILIENSITUATION,
+      FAMILIENSITUATION,
+      ELTERN,
+      GESCHWISTER,
+      PARTNER,
+      KINDER,
+      AUSZAHLUNGEN,
+      EINNAHMEN_KOSTEN,
+    ].map((step) => ({
       ...step,
-      disabled: isStepDisabled(name, gesuchFormular),
+      disabled: isStepDisabled(step, gesuchFormular),
     }));
   }
   getTotalSteps(gesuchFormular: GesuchFormularUpdate | null): number {
@@ -28,25 +43,25 @@ export class SharedUtilGesuchFormStepManagerService {
   }
   getNext(origin?: SharedModelGesuchFormStep): SharedModelGesuchFormStep {
     switch (origin) {
-      case GesuchFormSteps.PERSON:
-        return GesuchFormSteps.AUSBILDUNG;
-      case GesuchFormSteps.AUSBILDUNG:
-        return GesuchFormSteps.LEBENSLAUF;
-      case GesuchFormSteps.LEBENSLAUF:
-        return GesuchFormSteps.FAMILIENSITUATION;
-      case GesuchFormSteps.FAMILIENSITUATION:
-        return GesuchFormSteps.ELTERN;
-      case GesuchFormSteps.ELTERN:
-        return GesuchFormSteps.GESCHWISTER;
-      case GesuchFormSteps.GESCHWISTER:
-        return GesuchFormSteps.PARTNER;
-      case GesuchFormSteps.PARTNER:
-        return GesuchFormSteps.KINDER;
-      case GesuchFormSteps.KINDER:
-        return GesuchFormSteps.AUSZAHLUNGEN;
-      case GesuchFormSteps.AUSZAHLUNGEN:
-        return GesuchFormSteps.EINNAHMEN_KOSTEN;
-      case GesuchFormSteps.EINNAHMEN_KOSTEN:
+      case PERSON:
+        return AUSBILDUNG;
+      case AUSBILDUNG:
+        return LEBENSLAUF;
+      case LEBENSLAUF:
+        return FAMILIENSITUATION;
+      case FAMILIENSITUATION:
+        return ELTERN;
+      case ELTERN:
+        return GESCHWISTER;
+      case GESCHWISTER:
+        return PARTNER;
+      case PARTNER:
+        return KINDER;
+      case KINDER:
+        return AUSZAHLUNGEN;
+      case AUSZAHLUNGEN:
+        return EINNAHMEN_KOSTEN;
+      case EINNAHMEN_KOSTEN:
         return {
           route: '/',
           translationKey: '',

@@ -3,7 +3,12 @@ import {
   SharedModelGesuchFormular,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
-import { GesuchFormSteps, isStepDisabled } from './gesuch-form-steps';
+import {
+  ELTERN,
+  GesuchFormSteps,
+  isStepDisabled,
+  PARTNER,
+} from './gesuch-form-steps';
 
 type GesuchFormStepState = 'enable' | 'disable';
 const partnerCases = (): [GesuchFormStepState, Zivilstand, boolean][] => {
@@ -33,7 +38,7 @@ describe('GesuchFormSteps', () => {
     'should %s Partner Step if GS is %s',
     (_, zivilstand, state) => {
       expect(
-        isStepDisabled('PARTNER', {
+        isStepDisabled(PARTNER, {
           personInAusbildung: {
             zivilstand,
           },
@@ -46,7 +51,7 @@ describe('GesuchFormSteps', () => {
     'should %s Eltern Step if GS is %s',
     (_, werZahltAlimente, state) => {
       expect(
-        isStepDisabled('ELTERN', {
+        isStepDisabled(ELTERN, {
           familiensituation: {
             werZahltAlimente,
           },

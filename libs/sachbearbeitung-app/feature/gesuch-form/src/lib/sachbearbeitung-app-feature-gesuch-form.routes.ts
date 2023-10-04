@@ -1,11 +1,22 @@
 import { Route } from '@angular/router';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import {
+  AUSBILDUNG,
+  AUSZAHLUNGEN,
+  EINNAHMEN_KOSTEN,
+  ELTERN,
+  FAMILIENSITUATION,
+  GESCHWISTER,
+  KINDER,
+  LEBENSLAUF,
+  PARTNER,
+  PERSON,
+} from '@dv/shared/model/gesuch-form';
 
 export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
   {
-    path: GesuchFormSteps.KINDER.route,
+    path: KINDER.route,
     resolve: {
-      step: () => GesuchFormSteps.KINDER,
+      step: () => KINDER,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-kinder').then(
@@ -13,9 +24,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.LEBENSLAUF.route,
+    path: LEBENSLAUF.route,
     resolve: {
-      step: () => GesuchFormSteps.LEBENSLAUF,
+      step: () => LEBENSLAUF,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-lebenslauf').then(
@@ -23,9 +34,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.GESCHWISTER.route,
+    path: GESCHWISTER.route,
     resolve: {
-      step: () => GesuchFormSteps.GESCHWISTER,
+      step: () => GESCHWISTER,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-geschwister').then(
@@ -33,9 +44,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.AUSZAHLUNGEN.route,
+    path: AUSZAHLUNGEN.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSZAHLUNGEN,
+      step: () => AUSZAHLUNGEN,
     },
     title: 'shared.auszahlung.title',
     loadChildren: () =>
@@ -44,9 +55,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.FAMILIENSITUATION.route,
+    path: FAMILIENSITUATION.route,
     resolve: {
-      step: () => GesuchFormSteps.FAMILIENSITUATION,
+      step: () => FAMILIENSITUATION,
     },
     title: 'shared.familiensituation.title',
     loadChildren: () =>
@@ -55,9 +66,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.PARTNER.route,
+    path: PARTNER.route,
     resolve: {
-      step: () => GesuchFormSteps.PARTNER,
+      step: () => PARTNER,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-partner').then(
@@ -65,9 +76,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.ELTERN.route,
+    path: ELTERN.route,
     resolve: {
-      step: () => GesuchFormSteps.ELTERN,
+      step: () => ELTERN,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-eltern').then(
@@ -75,9 +86,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.PERSON.route,
+    path: PERSON.route,
     resolve: {
-      step: () => GesuchFormSteps.PERSON,
+      step: () => PERSON,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-person').then(
@@ -85,9 +96,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.AUSBILDUNG.route,
+    path: AUSBILDUNG.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSBILDUNG,
+      step: () => AUSBILDUNG,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-education').then(
@@ -95,9 +106,9 @@ export const sachbearbeitungAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    path: EINNAHMEN_KOSTEN.route,
     resolve: {
-      step: () => GesuchFormSteps.EINNAHMEN_KOSTEN,
+      step: () => EINNAHMEN_KOSTEN,
     },
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-einnahmenkosten').then(
