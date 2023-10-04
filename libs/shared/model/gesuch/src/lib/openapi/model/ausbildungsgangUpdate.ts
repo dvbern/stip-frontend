@@ -11,20 +11,23 @@
  */
 import { Ausbildungsort } from './ausbildungsort';
 import { Bildungsart } from './bildungsart';
+import { AusbildungsstaetteUpdate } from './ausbildungsstaetteUpdate';
 
-export interface Ausbildungsgang { 
-    id: string;
+/**
+ * 
+ */
+export interface AusbildungsgangUpdate { 
     /**
      * 
      */
-    bezeichnungDe?: string;
+    bezeichnungDe: string;
     /**
      * 
      */
-    bezeichnungFr?: string;
+    bezeichnungFr: string;
     ausbildungsrichtung: Bildungsart;
+    ausbildungsstaette: AusbildungsstaetteUpdate;
     ausbildungsort: Ausbildungsort;
-    ausbildungsstaetteId?: string;
 }
 
 

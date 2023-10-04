@@ -10,11 +10,9 @@
  * Do not edit the class manually.
  */
 import { AusbildungsPensum } from './ausbildungsPensum';
-import { Ausbildungsland } from './ausbildungsland';
 
 export interface Ausbildung { 
     ausbildungsgangId?: string;
-    ausbildungsland: Ausbildungsland;
     /**
      * Required wenn andere ausbildungNichtGefunden = true 
      */
@@ -30,7 +28,6 @@ export interface Ausbildung {
      */
     ausbildungEnd: string;
     pensum: AusbildungsPensum;
-    ausbildungsstaetteId?: string;
     /**
      * Required wenn andere ausbildungNichtGefunden = true
      */
