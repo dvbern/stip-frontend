@@ -65,6 +65,12 @@ export const EINNAHMEN_KOSTEN = {
   currentStepNumber: 10,
   iconSymbolName: 'call_missed_outgoing',
 };
+export const ABSCHLUSS = {
+  route: 'abschluss',
+  translationKey: 'shared.abschluss.title',
+  currentStepNumber: 11,
+  iconSymbolName: 'call_missed_outgoing',
+};
 export const isStepDisabled = (
   step: SharedModelGesuchFormStep,
   formular: SharedModelGesuchFormular | null

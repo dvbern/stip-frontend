@@ -6,9 +6,11 @@ export interface SharedModelDeploymentConfig {
 
 export class SharedModelCompiletimeConfig {
   readonly authClientId: `stip-${'gesuch' | 'sachbearbeitung'}-app`;
+  readonly isSachbearbeitung: boolean;
 
-  constructor(config: Pick<SharedModelCompiletimeConfig, 'authClientId'>) {
+  constructor(config: SharedModelCompiletimeConfig) {
     this.authClientId = config.authClientId;
+    this.isSachbearbeitung = config.isSachbearbeitung;
   }
 }
 

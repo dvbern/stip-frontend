@@ -13,7 +13,10 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideSharedPatternCore(routes, { authClientId: 'stip-gesuch-app' }),
+    provideSharedPatternCore(routes, {
+      authClientId: 'stip-gesuch-app',
+      isSachbearbeitung: false,
+    }),
     provideState(sharedDataAccessGesuchsFeature),
     provideEffects(sharedDataAccessGesuchEffects),
     provideAnimations(),

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
 import { GesuchFormularUpdate } from '@dv/shared/model/gesuch';
 
 import {
@@ -14,26 +15,44 @@ import {
   KINDER,
   AUSZAHLUNGEN,
   EINNAHMEN_KOSTEN,
+  ABSCHLUSS,
 } from '@dv/shared/model/gesuch-form';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedUtilGesuchFormStepManagerService {
+  private compiletimeConfig = inject(SharedModelCompiletimeConfig);
   getAllSteps(gesuchFormular: GesuchFormularUpdate | null) {
-    return [
-      PERSON,
-      AUSBILDUNG,
-      LEBENSLAUF,
-      FAMILIENSITUATION,
-      FAMILIENSITUATION,
-      ELTERN,
-      GESCHWISTER,
-      PARTNER,
-      KINDER,
-      AUSZAHLUNGEN,
-      EINNAHMEN_KOSTEN,
-    ].map((step) => ({
+    const steps = this.compiletimeConfig.isSachbearbeitung
+      ? [
+          PERSON,
+          AUSBILDUNG,
+          LEBENSLAUF,
+          FAMILIENSITUATION,
+          FAMILIENSITUATION,
+          ELTERN,
+          GESCHWISTER,
+          PARTNER,
+          KINDER,
+          AUSZAHLUNGEN,
+          EINNAHMEN_KOSTEN,
+        ]
+      : [
+          PERSON,
+          AUSBILDUNG,
+          LEBENSLAUF,
+          FAMILIENSITUATION,
+          FAMILIENSITUATION,
+          ELTERN,
+          GESCHWISTER,
+          PARTNER,
+          KINDER,
+          AUSZAHLUNGEN,
+          EINNAHMEN_KOSTEN,
+          ABSCHLUSS,
+        ];
+    return steps.map((step) => ({
       ...step,
       disabled: isStepDisabled(step, gesuchFormular),
     }));
