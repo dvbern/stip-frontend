@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   EventEmitter,
   inject,
   Input,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -50,6 +52,10 @@ export class GesuchAppPatternGesuchStepLayoutComponent {
 
   stepManager = inject(SharedUtilGesuchFormStepManagerService);
   languageSig = this.store.selectSignal(selectLanguage);
+  viewSig = this.store.selectSignal(selectSharedDataAccessGesuchsView);
+  stepsSig = computed(() =>
+    this.stepManager.getAllSteps(this.viewSig().gesuchFormular)
+  );
 
   handleLanguageChangeHeader(language: Language) {
     this.store.dispatch(

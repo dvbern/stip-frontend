@@ -1,16 +1,30 @@
 import { Injectable } from '@angular/core';
+import { GesuchFormularUpdate } from '@dv/shared/model/gesuch';
 
 import {
   SharedModelGesuchFormStep,
   GesuchFormSteps,
+  isStepDisabled,
 } from '@dv/shared/model/gesuch-form';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedUtilGesuchFormStepManagerService {
-  getTotalSteps(): number {
-    return Object.entries(GesuchFormSteps).length;
+  getAllSteps(gesuchFormular: GesuchFormularUpdate | null) {
+    return (
+      Object.entries(GesuchFormSteps) as [
+        keyof GesuchFormSteps,
+        GesuchFormSteps[keyof GesuchFormSteps]
+      ][]
+    ).map(([name, step]) => ({
+      name,
+      ...step,
+      disabled: isStepDisabled(name, gesuchFormular),
+    }));
+  }
+  getTotalSteps(gesuchFormular: GesuchFormularUpdate | null): number {
+    return this.getAllSteps(gesuchFormular).length;
   }
   getNext(origin?: SharedModelGesuchFormStep): SharedModelGesuchFormStep {
     switch (origin) {
