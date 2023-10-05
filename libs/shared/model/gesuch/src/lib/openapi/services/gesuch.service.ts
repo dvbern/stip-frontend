@@ -53,7 +53,7 @@ export interface GesuchServiceGesuchEinreichenRequestParams {
     gesuchId: string;
 }
 
-export interface GesuchServiceGesuchNachfristRequestParams {
+export interface GesuchServiceGesuchNachfristBeantragenRequestParams {
     gesuchId: string;
 }
 
@@ -577,13 +577,13 @@ export class GesuchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-     public gesuchNachfrist$(requestParameters: GesuchServiceGesuchNachfristRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any>;
-     public gesuchNachfrist$(requestParameters: GesuchServiceGesuchNachfristRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<any>>;
-     public gesuchNachfrist$(requestParameters: GesuchServiceGesuchNachfristRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<any>>;
-     public gesuchNachfrist$(requestParameters: GesuchServiceGesuchNachfristRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
+     public gesuchNachfristBeantragen$(requestParameters: GesuchServiceGesuchNachfristBeantragenRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any>;
+     public gesuchNachfristBeantragen$(requestParameters: GesuchServiceGesuchNachfristBeantragenRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpResponse<any>>;
+     public gesuchNachfristBeantragen$(requestParameters: GesuchServiceGesuchNachfristBeantragenRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<HttpEvent<any>>;
+     public gesuchNachfristBeantragen$(requestParameters: GesuchServiceGesuchNachfristBeantragenRequestParams, observe: 'body' | 'response' | 'events' = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json' | 'text/plain', context?: HttpContext}): Observable<any> {
         const gesuchId = requestParameters.gesuchId;
         if (gesuchId === null || gesuchId === undefined) {
-            throw new Error('Required parameter gesuchId was null or undefined when calling gesuchNachfrist$.');
+            throw new Error('Required parameter gesuchId was null or undefined when calling gesuchNachfristBeantragen$.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -631,7 +631,7 @@ export class GesuchService {
             }
         }
 
-        const localVarPath = `/gesuch/${this.configuration.encodeParam({name: "gesuchId", value: gesuchId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/nachfrist/`;
+        const localVarPath = `/gesuch/${this.configuration.encodeParam({name: "gesuchId", value: gesuchId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/nachfrist`;
         return this.httpClient.request<any>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

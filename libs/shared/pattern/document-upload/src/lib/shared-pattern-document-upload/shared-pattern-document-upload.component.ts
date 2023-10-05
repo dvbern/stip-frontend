@@ -39,7 +39,7 @@ export class SharedPatternDocumentUploadComponent implements OnChanges {
   view = this.store.selectSignal((state) => state);
   hasEntriesSig = computed(() => {
     const view = this.view();
-    return view.documents.length > 0 || (view.errors?.length ?? 0 > 0);
+    return view.documents.length > 0 || (view.errors?.length ?? 0) > 0;
   });
 
   ngOnChanges() {

@@ -1,4 +1,5 @@
 import {
+  ApplicationConfig,
   ENVIRONMENT_INITIALIZER,
   importProvidersFrom,
   inject,
@@ -9,7 +10,7 @@ import {
   provideRouter,
   Route,
   withComponentInputBinding,
-  withEnabledBlockingInitialNavigation,
+  withDisabledInitialNavigation,
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
@@ -60,6 +61,7 @@ import {
   sharedDataAccessBenutzerEffects,
   sharedDataAccessBenutzersFeature,
 } from '@dv/shared/data-access/benutzer';
+import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -84,7 +86,10 @@ export function debugReducers(
 
 export const metaReducers: MetaReducer<any>[] = [debugReducers];
 
-export function provideSharedPatternCore(appRoutes: Route[]) {
+export function provideSharedPatternCore(
+  appRoutes: Route[],
+  compileTimeConfig: SharedModelCompiletimeConfig
+): ApplicationConfig['providers'] {
   return [
     // providers
     provideSharedPatternAppInitialization(),
@@ -102,7 +107,7 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         onSameUrlNavigation: 'reload',
       }),
       withComponentInputBinding(),
-      withEnabledBlockingInitialNavigation(),
+      withDisabledInitialNavigation(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
@@ -161,6 +166,10 @@ export function provideSharedPatternCore(appRoutes: Route[]) {
         },
       }),
     ]),
+    {
+      provide: SharedModelCompiletimeConfig,
+      useFactory: () => new SharedModelCompiletimeConfig(compileTimeConfig),
+    },
 
     // init (has to be last, order matters)
     {

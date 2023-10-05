@@ -10,14 +10,22 @@
  * Do not edit the class manually.
  */
 import { Ausbildungsgang } from './ausbildungsgang';
-import { Ausbildungsland } from './ausbildungsland';
+import { AusbildungsstaetteAnyOf } from './ausbildungsstaetteAnyOf';
+import { AusbildungsstaetteUpdate } from './ausbildungsstaetteUpdate';
 
 export interface Ausbildungsstaette { 
-    id: string;
+    /**
+     * 
+     */
     ausbildungsgaenge?: Array<Ausbildungsgang>;
-    ausbildungsland: Ausbildungsland;
-    name: string;
+    /**
+     * 
+     */
+    nameDe: string;
+    /**
+     * 
+     */
+    nameFr: string;
+    id?: string;
 }
-
-
 

@@ -117,7 +117,6 @@
 
   "shared.education.title": "Formation",
   "shared.form.education.place.title": "Informations sur la formation",
-  "shared.form.education.ausbildungsland.label": "Pays de la formation",
   "shared.form.education.ausbildungsstaette.label": "Centre de formation",
   "shared.form.education.ausbildungsgang.label": "Formation",
   "shared.form.education.fachrichtung.label": "Spécialisation",
@@ -128,8 +127,6 @@
   "shared.form.education.pensum.label": "Charge",
   "shared.form.education.pensum.VOLLZEIT": "à temps plein",
   "shared.form.education.pensum.TEILZEIT": "à temps partiel",
-  "shared.form.education.ausbildungsland.SCHWEIZ": "Suisse",
-  "shared.form.education.ausbildungsland.AUSLAND": "À l'étranger",
   "shared.form.education.form.error.monthYearNotPast": "La date ne doit pas être dans le passé",
   "shared.form.education.form.error.monthYearAfterStart": "La date de fin doit être postérieure à la date de début",
 
@@ -222,6 +219,7 @@
   "shared.form.lebenslauf.form.error.monthYearMax": "L'année ne doit pas être postérieure à {{max}}.",
   "shared.form.lebenslauf.form.error.monthYearAfterStart": "La fin doit être postérieure au début",
   "shared.form.lebenslauf.form.error.overlapsOthers": "La période chevauche d'autres formations indiquées",
+  "shared.form.lebenslauf.missingEntries": "Entrées manquantes",
 
   "shared.auszahlung.title": "Paiement",
   "shared.form.auszahlung.kontoinhaber": "Titulaire du compte:en",
