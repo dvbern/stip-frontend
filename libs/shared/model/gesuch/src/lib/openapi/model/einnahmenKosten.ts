@@ -17,7 +17,7 @@ export interface EinnahmenKosten {
      */
     alimente?: number;
     /**
-     * Required nur wenn die Person Kinder hat
+     * Required nur wenn mind. ein Kind gibt
      */
     zulagen?: number;
     /**
@@ -43,5 +43,9 @@ export interface EinnahmenKosten {
      * Required nur wenn volljährig
      */
     willDarlehen?: boolean;
+    /**
+     * Required nur wenn die Person keinen eigenen Haushalt führt
+     */
+    auswaertigeMittagessenProWoche?: number;
 }
 

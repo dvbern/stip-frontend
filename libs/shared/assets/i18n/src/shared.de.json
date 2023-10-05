@@ -117,7 +117,6 @@
 
   "shared.education.title": "Ausbildung",
   "shared.form.education.place.title": "Ausbildungsangaben",
-  "shared.form.education.ausbildungsland.label": "Ausbildungsland",
   "shared.form.education.ausbildungsstaette.label": "Ausbildungsstätte",
   "shared.form.education.ausbildungsgang.label": "Ausbildungsgang",
   "shared.form.education.fachrichtung.label": "Fachrichtung",
@@ -128,8 +127,6 @@
   "shared.form.education.pensum.label": "Pensum",
   "shared.form.education.pensum.VOLLZEIT": "Vollzeit",
   "shared.form.education.pensum.TEILZEIT": "Teilzeit",
-  "shared.form.education.ausbildungsland.SCHWEIZ": "Schweiz",
-  "shared.form.education.ausbildungsland.AUSLAND": "Ausland",
   "shared.form.education.form.error.monthYearNotPast": "Das Datum darf nicht in der Vergangenheit liegen",
   "shared.form.education.form.error.monthYearAfterStart": "Das Enddatum muss nach dem Startdatum sein",
 
@@ -222,6 +219,7 @@
   "shared.form.lebenslauf.form.error.monthYearMax": "Das Jahr darf nicht nach {{max}} liegen",
   "shared.form.lebenslauf.form.error.monthYearAfterStart": "Das Ende muss nach dem Beginn sein",
   "shared.form.lebenslauf.form.error.overlapsOthers": "Der Zeitraum überschneidet andere angegebene Ausbildungen",
+  "shared.form.lebenslauf.missingEntries": "Fehlende Einträge",
 
   "shared.auszahlung.title": "Auszahlung",
   "shared.form.auszahlung.kontoinhaber": "Kontoinhaber:in",

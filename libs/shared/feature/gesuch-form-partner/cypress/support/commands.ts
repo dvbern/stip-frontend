@@ -14,12 +14,10 @@
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
-    login(email: string, password: string): void;
-
     getByTestId(testid: string): Chainable;
   }
 }
 
 Cypress.Commands.add('getByTestId', (testId: string) => {
-  return cy.get(`[data-testid="form-partner-${testId}"]`);
+  return cy.getBySel(`form-partner-${testId}`);
 });
