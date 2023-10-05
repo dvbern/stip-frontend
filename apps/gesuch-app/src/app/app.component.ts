@@ -1,5 +1,5 @@
 import { Component, HostBinding, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { SharedDataAccessBenutzerApiEvents } from '@dv/shared/data-access/benutzer';
@@ -16,6 +16,8 @@ export class AppComponent {
 
   constructor() {
     const store = inject(Store);
+    const router = inject(Router);
     store.dispatch(SharedDataAccessBenutzerApiEvents.loadCurrentBenutzer());
+    router.initialNavigation();
   }
 }

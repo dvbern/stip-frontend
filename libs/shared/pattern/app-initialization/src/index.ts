@@ -25,10 +25,13 @@ import { APP_INITIALIZER, NgZone, importProvidersFrom } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { switchMap } from 'rxjs/operators';
 
+import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
+
 function initializeKeycloak(
   ngZone: NgZone,
   keycloak: KeycloakService,
-  http: HttpClient
+  http: HttpClient,
+  compileTimeConfig: SharedModelCompiletimeConfig
 ) {
   return () =>
     http
@@ -48,11 +51,12 @@ function initializeKeycloak(
                   config: {
                     url: clientAuth.authServerUrl,
                     realm: clientAuth.realm,
-                    clientId: 'stip-gesuch-app',
+                    clientId: compileTimeConfig.authClientId,
                   },
                   initOptions: {
                     onLoad: 'login-required',
-                    checkLoginIframe: false,
+                    checkLoginIframe: true,
+                    checkLoginIframeInterval: 30,
                   },
                   // TODO: Add silent check sso
                   shouldAddToken: (request) => {
@@ -81,7 +85,7 @@ export const provideSharedPatternAppInitialization = () => {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [NgZone, KeycloakService, HttpClient],
+      deps: [NgZone, KeycloakService, HttpClient, SharedModelCompiletimeConfig],
     },
   ];
 };
