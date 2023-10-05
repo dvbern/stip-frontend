@@ -93,8 +93,8 @@ component-test:
   artifacts:
     when: always
     paths:
-      - '$[[ inputs.context-dir ]]/coverage'
-      - '$[[ inputs.context-dir ]]/libs/**/coverage'
+      - './coverage'
+      - './libs/**/coverage'
     expire_in: 1 day
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_MERGE_REQUEST_ID
