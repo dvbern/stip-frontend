@@ -20,6 +20,39 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
     },
   });
 
+  describe('should display warning if not all of personInAusbildung, familiensituation, ausbildung are defined', () => {
+    it('should display warning if personInAusbildung is undefined', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: undefined,
+        ausbildung: createEmptyAusbildung(),
+        familiensituation: { elternVerheiratetZusammen: true },
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'exist'
+      );
+    });
+    it('should display warning if ausbildung is undefined', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: createEmptyPersonInAusbildung(),
+        ausbildung: undefined,
+        familiensituation: { elternVerheiratetZusammen: true },
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'exist'
+      );
+    });
+    it('should display warning if familiensituation is undefined', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: createEmptyPersonInAusbildung(),
+        ausbildung: createEmptyAusbildung(),
+        familiensituation: undefined,
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'exist'
+      );
+    });
+  });
+
   describe('visibility rules for field "auswaertigeMittagessenProWoche"', () => {
     it('should not display auswaertigeMittagessenProWoche if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
@@ -42,6 +75,7 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
       );
     });
   });
+
   describe('visibility rules for field "wohnkosten"', () => {
     it('should display wohnkosten if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
@@ -62,6 +96,7 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
       );
     });
   });
+
   describe('visibility rules for field "personenImHaushalt"', () => {
     it('should display personenImHaushalt if personInAusbildung has wohnsitz "eigener Haushalt"', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
@@ -84,6 +119,7 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
       );
     });
   });
+
   describe('form validation', () => {
     it('should be invalid if personenImHaushalt is 0', () => {
       mountWithPreparedGesuchWithWohnsitz(Wohnsitz.EIGENER_HAUSHALT);
@@ -121,6 +157,50 @@ describe(SharedFeatureGesuchFormEinnahmenkostenComponent.name, () => {
       );
     });
   });
+
+  describe('should display alimente field correctly based on current state', () => {
+    it('should not display alimente field if gerichtlicheAlimentenregelung is undefined', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: createEmptyPersonInAusbildung(),
+        ausbildung: createEmptyAusbildung(),
+        familiensituation: { elternVerheiratetZusammen: true },
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'not.exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormAlimente().should('not.exist');
+    });
+
+    it('should not display alimente field if gerichtlicheAlimentenregelung is false', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: createEmptyPersonInAusbildung(),
+        ausbildung: createEmptyAusbildung(),
+        familiensituation: {
+          elternVerheiratetZusammen: false,
+          gerichtlicheAlimentenregelung: false,
+        },
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'not.exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormAlimente().should('not.exist');
+    });
+
+    it('should display alimente field if gerichtlicheAlimentenregelung is true', () => {
+      mountWithInitialGesuchsformular({
+        personInAusbildung: createEmptyPersonInAusbildung(),
+        ausbildung: createEmptyAusbildung(),
+        familiensituation: {
+          elternVerheiratetZusammen: false,
+          gerichtlicheAlimentenregelung: true,
+        },
+      });
+      SharedEinnahmenKostenInAusbildungPO.getFormDataIncompleteWarning().should(
+        'not.exist'
+      );
+      SharedEinnahmenKostenInAusbildungPO.getFormAlimente().should('exist');
+    });
+  });
 });
 
 function mountWithPreparedGesuchWithWohnsitz(wohnsitz: Wohnsitz): void {
@@ -135,7 +215,6 @@ function mountWithPreparedGesuchWithWohnsitz(wohnsitz: Wohnsitz): void {
 
 function createEmptyAusbildung(): Ausbildung {
   return {
-    ausbildungsland: 'SCHWEIZ',
     fachrichtung: '',
     ausbildungBegin: '',
     ausbildungEnd: '',
