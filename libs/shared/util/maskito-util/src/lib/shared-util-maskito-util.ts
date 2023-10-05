@@ -14,6 +14,11 @@ export const maskitoNumber = maskitoNumberOptionsGenerator({
   thousandSeparator: NUMBER_THOUSAND_SEPARATOR,
 });
 
+export const maskitoPositiveNumber = maskitoNumberOptionsGenerator({
+  min: 1,
+  thousandSeparator: NUMBER_THOUSAND_SEPARATOR,
+});
+
 export function fromFormatedNumber(formatedNumber: string): number;
 export function fromFormatedNumber(
   formatedNumber: string | null
