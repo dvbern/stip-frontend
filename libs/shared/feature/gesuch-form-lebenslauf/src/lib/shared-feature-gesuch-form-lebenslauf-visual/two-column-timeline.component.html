@@ -1,6 +1,7 @@
 <div
   class="wrapper"
   *ngIf="timeline.items"
+  data-testid="two-columns-timeline-wrapper"
   [style]="
     'grid-template-rows: repeat(' +
     ((timeline.rows || 1) - 1) +
@@ -38,16 +39,16 @@
           *ngIf="busyItem.children as children"
         >
           <div *ngFor="let child of children; trackBy: trackByIndex">
-            <h5>
+            <h5 data-testid="two-column-timeline-label">
               <a
                 *ngIf="child.editable"
                 class="w-100 d-block"
                 (click)="handleEditItem(child)"
               >
-                {{ child.label }}
+                {{ child.label | translate }}
               </a>
               <ng-container *ngIf="!child.editable">
-                {{ child.label }}
+                {{ child.label | translate }}
               </ng-container>
             </h5>
             <small>{{

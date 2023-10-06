@@ -1,11 +1,13 @@
 <form [formGroup]="form" novalidate class="mt-4" (ngSubmit)="handleSave()">
-  <div class="row g-4 my-2">
-    <!-- subtype -->
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+  <div class="row g-4 my-2" *ngIf="item.type === 'AUSBILDUNG'">
+    <!-- Ausbildungsart -->
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-ausbildungsart"
+    >
       <mat-label>{{
-        'shared.form.lebenslauf.item.subtype.' +
-          (item.type === 'AUSBILDUNG' ? 'bildungsart' : 'taetigkeitsart')
-          | translate
+        'shared.form.lebenslauf.item.subtype.bildungsart' | translate
       }}</mat-label>
       <mat-select
         *ngIf="item.type === 'AUSBILDUNG'"
@@ -23,6 +25,62 @@
           }}
         </mat-option>
       </mat-select>
+    </mat-form-field>
+
+    <!-- Nährere Bezeichnung (falls nötig) -->
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-berufsbezeichnung"
+      *ngIf="showBerufsbezeichnungSig()"
+    >
+      <mat-label>{{
+        'shared.form.lebenslauf.item.name.berufsbezeichnung' | translate
+      }}</mat-label>
+      <input matInput formControlName="berufsbezeichnung" type="text" />
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-fachrichtung"
+      *ngIf="showFachrichtungSig()"
+    >
+      <mat-label>{{
+        'shared.form.lebenslauf.item.name.fachrichtung' | translate
+      }}</mat-label>
+      <input matInput formControlName="fachrichtung" type="text" />
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-titel-des-abschlusses"
+      *ngIf="showTitelDesAbschlussesSig()"
+    >
+      <mat-label>{{
+        'shared.form.lebenslauf.item.name.titelDesAbschlusses' | translate
+      }}</mat-label>
+      <input matInput formControlName="titelDesAbschlusses" type="text" />
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.required' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row g-4 my-2" *ngIf="item.type === 'TAETIGKEIT'">
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-taetigkeitsart"
+    >
+      <mat-label>{{
+        'shared.form.lebenslauf.item.subtype.taetigkeitsart' | translate
+      }}</mat-label>
       <mat-select
         *ngIf="item.type === 'TAETIGKEIT'"
         formControlName="taetigskeitsart"
@@ -42,13 +100,16 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- name -->
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+    <!-- Tätigkeits Beschreibung -->
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-taetigkeits-beschreibung"
+    >
       <mat-label>{{
-        'shared.form.lebenslauf.item.name.' +
-          (item.type === 'AUSBILDUNG' ? 'ausbildung' : 'taetigkeit') | translate
+        'shared.form.lebenslauf.item.name.taetigkeit' | translate
       }}</mat-label>
-      <input matInput formControlName="beschreibung" type="text" />
+      <input matInput formControlName="taetigkeitsBeschreibung" type="text" />
       <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
       </mat-error>
@@ -57,7 +118,11 @@
 
   <div class="row g-4 my-2">
     <!-- START -->
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-beginn"
+    >
       <mat-label>{{
         'shared.form.lebenslauf.item.start.' + item.type!.toLowerCase()
           | translate
@@ -93,7 +158,11 @@
     </mat-form-field>
 
     <!-- ENDE -->
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-ende"
+    >
       <mat-label>{{
         'shared.form.lebenslauf.item.end.' + item.type!.toLowerCase()
           | translate
@@ -131,7 +200,11 @@
 
   <div class="row g-4 my-2">
     <!-- Wohnsitz -->
-    <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
+    <mat-form-field
+      dvSharedUiFormField
+      class="col-12 col-md-6 col-xl-4"
+      data-testid="lebenslauf-editor-wohnsitz"
+    >
       <mat-label>{{
         'shared.form.lebenslauf.item.wohnsitz' | translate
       }}</mat-label>
@@ -150,6 +223,16 @@
         {{ 'shared.form.error.required' | translate }}
       </mat-error>
     </mat-form-field>
+    <!-- Ausbildung abgeschlossen -->
+    <div
+      class="col-12 col-md-6"
+      *ngIf="item.type === 'AUSBILDUNG'"
+      data-testid="lebenslauf-editor-ausbildung-abgeschlossen"
+    >
+      <mat-checkbox formControlName="ausbildungAbgeschlossen">{{
+        'shared.form.lebenslauf.item.ausbildungAbgeschlossen' | translate
+      }}</mat-checkbox>
+    </div>
   </div>
 
   <!-- buttons -->
