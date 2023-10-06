@@ -50,6 +50,12 @@
   "shared.form.error.email": "L'adresse e-mail est invalide",
   "shared.form.error.telefonnummer": "Le numéro de téléphone est invalide",
   "shared.weiterangaben": "Plus de détails",
+  "shared.table.paginator.itemsPerPage": "Nombre d'éléments par page",
+  "shared.table.paginator.nextPage": "Page suivante",
+  "shared.table.paginator.lastPage": "Dernière page",
+  "shared.table.paginator.previousPage": "Page précédente",
+  "shared.table.paginator.firstPage": "Première page",
+  "shared.table.paginator.range": "Page {{page}} de {{pages}}",
 
   "shared.form.next": "Prochain",
   "shared.form.previous": "Précédent",

@@ -64,6 +64,9 @@ $gesuch-app-theme: mat.define-light-theme(
     padding: 0;
   }
 }
+.mat-mdc-paginator-page-size-label {
+  align-self: center;
+}
 .mdc-radio .mdc-label {
   width: 100%;
 }
