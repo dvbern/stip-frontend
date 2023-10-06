@@ -50,6 +50,12 @@
   "shared.form.error.email": "Die eingegebene E-Mail ist ungültig",
   "shared.form.error.telefonnummer": "Die Telefonnummer ist ungültig",
   "shared.weiterangaben": "Weitere Angaben",
+  "shared.table.paginator.itemsPerPage": "Anzahl Elemente pro Seite",
+  "shared.table.paginator.nextPage": "Nächste Seite",
+  "shared.table.paginator.lastPage": "Letzte Seite",
+  "shared.table.paginator.previousPage": "Vorherige Seite",
+  "shared.table.paginator.firstPage": "Erste Seite",
+  "shared.table.paginator.range": "Seite {{page}} von {{pages}}",
 
   "shared.form.next": "Nächstes",
   "shared.form.previous": "Vorheriges",
