@@ -35,6 +35,7 @@ import {
 import {
   fromFormatedNumber,
   maskitoNumber,
+  maskitoPositiveNumber,
 } from '@dv/shared/util/maskito-util';
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
@@ -99,6 +100,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     selectSharedFeatureGesuchFormEinnahmenkostenView
   );
   maskitoNumber = maskitoNumber;
+  maskitoPositiveNumber = maskitoPositiveNumber;
   formStateSig = computed(() => {
     const { gesuchFormular, ausbildungsstaettes } = this.viewSig();
 
@@ -168,7 +170,10 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
           willTertiaerstufe,
           istErwachsen,
         } = this.formStateSig();
-        const { wohnsitzNotEigenerHaushalt } = this.viewSig();
+        const {
+          wohnsitzNotEigenerHaushalt,
+          existiertGerichtlicheAlimentenregelung,
+        } = this.viewSig();
 
         if (!hasData) {
           return;
@@ -213,6 +218,24 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         this.formService.setDisabledState(
           this.form.controls.auswaertigeMittagessenProWoche,
           !wohnsitzNotEigenerHaushalt,
+          true
+        );
+
+        this.formService.setDisabledState(
+          this.form.controls.wohnkosten,
+          wohnsitzNotEigenerHaushalt,
+          true
+        );
+
+        this.formService.setDisabledState(
+          this.form.controls.personenImHaushalt,
+          wohnsitzNotEigenerHaushalt,
+          true
+        );
+
+        this.formService.setDisabledState(
+          this.form.controls.alimente,
+          !existiertGerichtlicheAlimentenregelung,
           true
         );
       },

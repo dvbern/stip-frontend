@@ -1,4 +1,4 @@
-stages: [ build, validate, test, analyze, package, deploy, mirror ]
+stages: [build, validate, test, analyze, package, deploy, mirror]
 
 workflow:
   rules:
@@ -13,10 +13,10 @@ workflow:
         VERSION: $CI_COMMIT_TAG
 
 include:
-  - component: 'gitlab.dvbern.ch/kasi/nx@v0.0.2'
+  - component: 'gitlab.dvbern.ch/kasi/nx@v0.0.4'
     inputs:
-      app-name: "*-app"
-      test-app-name: "*-app-e2e"
+      app-name: '*-app'
+      test-app-name: '*-app'
 
   - component: 'gitlab.dvbern.ch/components/sonarqube@v0.1.0'
     inputs:
@@ -29,8 +29,8 @@ include:
       registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
       registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       name: package:sachbearbeitung-app
-      image-name: "stip/sachbearbeitung-app"
-      version: "$VERSION"
+      image-name: 'stip/sachbearbeitung-app'
+      version: '$VERSION'
       build-args: |
         APP=sachbearbeitung-app
 
@@ -40,8 +40,8 @@ include:
       registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
       registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       name: package:gesuch-app
-      image-name: "stip/gesuch-app"
-      version: "$VERSION"
+      image-name: 'stip/gesuch-app'
+      version: '$VERSION'
       build-args: |
         APP=gesuch-app
 
@@ -51,9 +51,9 @@ include:
       registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
       registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: dev
-      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
-      version: "latest"
-      review-apps-enabled: "false"
+      image-names: 'stip/sachbearbeitung-app,stip/gesuch-app'
+      version: 'latest'
+      review-apps-enabled: 'false'
     rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_MERGE_REQUEST_ID
 
@@ -63,8 +63,8 @@ include:
       registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
       registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: uat
-      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
-      version: "$VERSION"
+      image-names: 'stip/sachbearbeitung-app,stip/gesuch-app'
+      version: '$VERSION'
     rules:
       - if: $CI_COMMIT_TAG
 
@@ -74,10 +74,31 @@ include:
       registry-user: $DVB_PUBLIC_DOCKER_REGISTRY_USER
       registry-token: $DVB_PUBLIC_DOCKER_REGISTRY_TOKEN
       environment: prod
-      image-names: "stip/sachbearbeitung-app,stip/gesuch-app"
-      version: "$VERSION"
+      image-names: 'stip/sachbearbeitung-app,stip/gesuch-app'
+      version: '$VERSION'
     rules:
       - if: $CI_COMMIT_TAG
+
+component-test:
+  stage: test
+  image: cypress/browsers:node-18.16.1-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
+  script:
+    - cd $CI_PROJECT_DIR/
+    - echo "//gitlab.dvbern.ch/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+    - '[ ! -d node_modules ] && npm ci --legacy-peer-deps --cache=".npm" --ignore-scripts ||
+      echo "Skipping npm ci because a cached version is available"'
+    - npm install -g cypress@12.16.0
+    - npx nx run-many -t component-test --parallel=1
+  allow_failure: true
+  tags: ['os:linux', 'zone:tz', 'type:docker']
+  artifacts:
+    when: always
+    paths:
+      - './coverage'
+      - './libs/**/coverage'
+    expire_in: 1 day
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_MERGE_REQUEST_ID
 
 mirror:
   stage: mirror

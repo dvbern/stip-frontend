@@ -12,7 +12,10 @@
   <ng-template #incomplete>
     <div class="row">
       <div class="col-12 col-xl-8 my-3">
-        <ngb-alert type="info" [dismissible]="false"
+        <ngb-alert
+          type="info"
+          [dismissible]="false"
+          data-testid="gesuch-form-einnahmenkosten-data-incomplete-warning"
           >{{ 'shared.form.einnahmenkosten.top.incomplete' | translate }}
           <span
             *ngFor="
@@ -77,6 +80,7 @@
         }}</mat-label>
         <input
           formControlName="alimente"
+          data-testid="form-einnahmen-kosten-alimente"
           matInput
           type="text"
           [maskito]="maskitoNumber"
@@ -269,7 +273,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row g-4 mt-1">
+    <div class="row g-4 mt-1" *ngIf="form.controls.wohnkosten.enabled">
       <!-- WOHNKOSTEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
@@ -277,6 +281,7 @@
         }}</mat-label>
         <input
           formControlName="wohnkosten"
+          data-testid="form-einnahmen-kosten-wohnkosten"
           matInput
           type="text"
           [maskito]="maskitoNumber"
@@ -286,7 +291,10 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row g-4 mt-1" *ngIf="viewSig().wohnsitzNotEigenerHaushalt">
+    <div
+      class="row g-4 mt-1"
+      *ngIf="form.controls.auswaertigeMittagessenProWoche.enabled"
+    >
       <!-- ANZAHL AUSWÄRTIGER MITTAGESSEN PRO WOCHE -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
@@ -295,6 +303,7 @@
         }}</mat-label>
         <input
           formControlName="auswaertigeMittagessenProWoche"
+          data-testid="form-einnahmen-kosten-auswaertigeMittagessenProWoche"
           matInput
           type="number"
           min="0"
@@ -309,7 +318,7 @@
       </mat-form-field>
     </div>
 
-    <div class="row g-4 mt-1">
+    <div class="row g-4 mt-1" *ngIf="form.controls.personenImHaushalt.enabled">
       <!-- PERSONEN_IM_HAUSHALT -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
@@ -317,9 +326,10 @@
         }}</mat-label>
         <input
           formControlName="personenImHaushalt"
+          data-testid="form-einnahmen-kosten-personenImHaushalt"
           matInput
           type="text"
-          [maskito]="maskitoNumber"
+          [maskito]="maskitoPositiveNumber"
         />
         <mat-hint translate
           >shared.form.einnahmenkosten.personenImHaushalt.info</mat-hint
