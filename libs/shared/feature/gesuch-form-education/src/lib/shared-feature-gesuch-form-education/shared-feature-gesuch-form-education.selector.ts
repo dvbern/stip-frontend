@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { selectSharedDataAccessAusbildungsstaettesView } from '@dv/shared/data-access/ausbildungsstaette';
 
-import { format } from 'date-fns';
+import { format, subMonths } from 'date-fns';
 
 export const selectSharedFeatureGesuchFormEducationView = createSelector(
   selectSharedDataAccessGesuchsView,
@@ -17,7 +17,9 @@ export const selectSharedFeatureGesuchFormEducationView = createSelector(
       gesuchFormular: gesuchsView.gesuchFormular,
       ausbildung: gesuchsView.gesuchFormular?.ausbildung,
       ausbildungsstaettes: ausbildungsstaettesView.ausbildungsstaettes,
-      gesuchsPeriodenStart,
+      gesuchsPeriodenStart: gesuchsPeriodenStart
+        ? subMonths(gesuchsPeriodenStart, 1)
+        : null,
       gesuchsPeriodenStartFormatted: gesuchsPeriodenStart
         ? format(gesuchsPeriodenStart, 'MM.yyyy')
         : null,
