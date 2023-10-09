@@ -10,7 +10,7 @@ describe('TwoColumnTimeline', () => {
     EFZ: {
       id: '11',
       col: 'LEFT',
-      label: 'Informatiker EFZ',
+      label: { title: 'Informatiker EFZ' },
       von: new Date(2016, 7),
       bis: new Date(2017, 11),
       editable: true,
@@ -18,7 +18,7 @@ describe('TwoColumnTimeline', () => {
     JobA: {
       id: '12',
       col: 'RIGHT',
-      label: 'Job A',
+      label: { title: 'Job A' },
       von: new Date(2016, 7),
       bis: new Date(2016, 9),
       editable: true,
@@ -26,7 +26,7 @@ describe('TwoColumnTimeline', () => {
     JobB: {
       id: '13',
       col: 'RIGHT',
-      label: 'Job B',
+      label: { title: 'Job B' },
       von: new Date(2017, 7),
       bis: new Date(2017, 10),
       editable: true,
@@ -34,7 +34,7 @@ describe('TwoColumnTimeline', () => {
     JobC: {
       id: '14',
       col: 'RIGHT',
-      label: 'Job C',
+      label: { title: 'Job C' },
       von: new Date(2017, 8),
       bis: new Date(2017, 8),
       editable: true,
@@ -42,7 +42,7 @@ describe('TwoColumnTimeline', () => {
     JobD: {
       id: '15',
       col: 'RIGHT',
-      label: 'Job D',
+      label: { title: 'Job D' },
       von: new Date(2017, 10),
       bis: new Date(2017, 11),
       editable: true,
@@ -100,7 +100,7 @@ describe('TwoColumnTimeline', () => {
       // job
       {
         col: 'RIGHT',
-        label: 'Job A',
+        label: { title: 'Job A' },
         von: testItems.JobA.von,
         bis: testItems.JobA.bis,
         editable: true,
@@ -118,7 +118,7 @@ describe('TwoColumnTimeline', () => {
       // ausbildung
       {
         col: 'LEFT',
-        label: 'Informatiker EFZ',
+        label: { title: 'Informatiker EFZ' },
         von: testItems.EFZ.von,
         bis: testItems.EFZ.bis,
         editable: true,
@@ -136,7 +136,7 @@ describe('TwoColumnTimeline', () => {
       // job
       {
         col: 'RIGHT',
-        label: 'Job B',
+        label: { title: 'Job B' },
         von: testItems.JobB.von,
         bis: testItems.JobB.bis,
         editable: true,
@@ -154,7 +154,7 @@ describe('TwoColumnTimeline', () => {
       // job
       {
         col: 'RIGHT',
-        label: 'Job D',
+        label: { title: 'Job D' },
         von: testItems.JobD.von,
         bis: testItems.JobD.bis,
         editable: true,

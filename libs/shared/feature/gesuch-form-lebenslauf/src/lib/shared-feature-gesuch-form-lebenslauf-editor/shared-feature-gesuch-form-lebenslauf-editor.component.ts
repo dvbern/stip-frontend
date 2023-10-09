@@ -98,7 +98,10 @@ export class SharedFeatureGesuchFormLebenslaufEditorComponent
   languageSig = this.store.selectSignal(selectLanguage);
 
   form = this.formBuilder.group({
-    taetigkeitsBeschreibung: ['', [Validators.required]],
+    taetigkeitsBeschreibung: [
+      <string | undefined>undefined,
+      [Validators.required],
+    ],
     bildungsart: [
       <LebenslaufAusbildungsArt | undefined>undefined,
       [Validators.required],

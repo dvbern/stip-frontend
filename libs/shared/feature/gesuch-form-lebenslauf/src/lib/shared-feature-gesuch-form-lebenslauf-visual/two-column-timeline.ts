@@ -2,10 +2,15 @@ import { isDevMode } from '@angular/core';
 import { printDateAsMonthYear } from '@dv/shared/util/validator-date';
 import { addMonths, isAfter, isBefore, isEqual, subMonths } from 'date-fns';
 
+type TimelineLabel = {
+  title: string;
+  subTitle?: { key: string; value?: string };
+};
+
 export interface TimelineRawItem {
   id: string;
   col: 'LEFT' | 'RIGHT';
-  label: string;
+  label: TimelineLabel;
   von: Date;
   bis: Date;
   editable: boolean;
@@ -32,7 +37,7 @@ export class TimelineBlock {
 export class TimelineBusyBlock extends TimelineBlock {
   id!: string;
   override col!: 'LEFT' | 'RIGHT';
-  label!: string;
+  label!: TimelineLabel;
   editable!: boolean;
 
   children?: TimelineBusyBlockChild[];
@@ -40,7 +45,7 @@ export class TimelineBusyBlock extends TimelineBlock {
 
 export class TimelineBusyBlockChild {
   id!: string;
-  label!: string;
+  label!: TimelineLabel;
   von!: Date;
   bis!: Date;
   editable!: boolean;
