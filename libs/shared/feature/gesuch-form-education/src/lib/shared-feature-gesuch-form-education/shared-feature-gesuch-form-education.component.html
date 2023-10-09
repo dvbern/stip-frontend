@@ -179,7 +179,10 @@
         {{ 'shared.form.error.dateFormat' | translate }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'minDate'">
-        {{ 'shared.form.education.form.error.monthYearNotPast' | translate }}
+        {{
+          'shared.form.education.form.error.monthYearAfter'
+            | translate : { date: view$().gesuchsPeriodenStartFormatted }
+        }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
         {{ 'shared.form.education.form.error.monthYearAfterStart' | translate }}
