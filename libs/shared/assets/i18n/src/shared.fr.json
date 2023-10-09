@@ -134,7 +134,7 @@
   "shared.form.education.pensum.VOLLZEIT": "à temps plein",
   "shared.form.education.pensum.TEILZEIT": "à temps partiel",
   "shared.form.education.form.error.monthYearNotPast": "La date ne doit pas être dans le passé",
-  "shared.form.education.form.error.monthYearAfter": "La date de début doit être à partir de {{ date }}.",
+  "shared.form.education.form.error.monthYearAfter": "La date de début doit être postérieure à {{ date }}.",
   "shared.form.education.form.error.monthYearAfterStart": "La date de fin doit être postérieure à la date de début",
 
   "shared.familiensituation.title": "Situation familiale",

@@ -134,7 +134,7 @@
   "shared.form.education.pensum.VOLLZEIT": "Vollzeit",
   "shared.form.education.pensum.TEILZEIT": "Teilzeit",
   "shared.form.education.form.error.monthYearNotPast": "Das Datum darf nicht in der Vergangenheit liegen",
-  "shared.form.education.form.error.monthYearAfter": "Das Startdatum muss ab {{ date }} sein",
+  "shared.form.education.form.error.monthYearAfter": "Das Startdatum muss nach dem {{ date }} sein",
   "shared.form.education.form.error.monthYearAfterStart": "Das Enddatum muss nach dem Startdatum sein",
 
   "shared.familiensituation.title": "Familiensituation",
