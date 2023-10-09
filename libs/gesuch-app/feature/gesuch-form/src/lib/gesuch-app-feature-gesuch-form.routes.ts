@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import {
+  ABSCHLUSS,
   AUSBILDUNG,
   AUSZAHLUNGEN,
   EINNAHMEN_KOSTEN,
@@ -111,6 +112,16 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-einnahmenkosten').then(
         (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
+  {
+    path: ABSCHLUSS.route,
+    resolve: {
+      step: () => ABSCHLUSS,
+    },
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-abschluss').then(
+        (m) => m.gesuchAppFeatureGesuchFormAbschlussRoutes
       ),
   },
 ];

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
+import { AppType, SharedModelCompiletimeConfig } from '@dv/shared/model/config';
 import { GesuchFormularUpdate } from '@dv/shared/model/gesuch';
 
 import {
@@ -17,6 +17,32 @@ import {
   EINNAHMEN_KOSTEN,
   ABSCHLUSS,
 } from '@dv/shared/model/gesuch-form';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
+
+const RETURN_TO_COCKPIT: SharedModelGesuchFormStep = {
+  route: '/',
+  translationKey: '',
+  currentStepNumber: Number.MAX_SAFE_INTEGER,
+  iconSymbolName: '',
+};
+
+const BaseSteps = [
+  PERSON,
+  AUSBILDUNG,
+  LEBENSLAUF,
+  FAMILIENSITUATION,
+  ELTERN,
+  GESCHWISTER,
+  PARTNER,
+  KINDER,
+  AUSZAHLUNGEN,
+  EINNAHMEN_KOSTEN,
+];
+
+const StepFlow: Record<AppType, SharedModelGesuchFormStep[]> = {
+  'gesuch-app': [...BaseSteps, ABSCHLUSS, RETURN_TO_COCKPIT],
+  'sachbearbeitung-app': [...BaseSteps, RETURN_TO_COCKPIT],
+};
 
 @Injectable({
   providedIn: 'root',
@@ -24,35 +50,11 @@ import {
 export class SharedUtilGesuchFormStepManagerService {
   private compiletimeConfig = inject(SharedModelCompiletimeConfig);
   getAllSteps(gesuchFormular: GesuchFormularUpdate | null) {
-    const steps = this.compiletimeConfig.isSachbearbeitung
-      ? [
-          PERSON,
-          AUSBILDUNG,
-          LEBENSLAUF,
-          FAMILIENSITUATION,
-          FAMILIENSITUATION,
-          ELTERN,
-          GESCHWISTER,
-          PARTNER,
-          KINDER,
-          AUSZAHLUNGEN,
-          EINNAHMEN_KOSTEN,
-        ]
-      : [
-          PERSON,
-          AUSBILDUNG,
-          LEBENSLAUF,
-          FAMILIENSITUATION,
-          FAMILIENSITUATION,
-          ELTERN,
-          GESCHWISTER,
-          PARTNER,
-          KINDER,
-          AUSZAHLUNGEN,
-          EINNAHMEN_KOSTEN,
-          ABSCHLUSS,
-        ];
-    return steps.map((step) => ({
+    const steps: Record<AppType, SharedModelGesuchFormStep[]> = {
+      'sachbearbeitung-app': BaseSteps,
+      'gesuch-app': [...BaseSteps, ABSCHLUSS],
+    };
+    return steps[this.compiletimeConfig.appType].map((step) => ({
       ...step,
       disabled: isStepDisabled(step, gesuchFormular),
     }));
@@ -61,34 +63,18 @@ export class SharedUtilGesuchFormStepManagerService {
     return this.getAllSteps(gesuchFormular).length;
   }
   getNext(origin?: SharedModelGesuchFormStep): SharedModelGesuchFormStep {
-    switch (origin) {
-      case PERSON:
-        return AUSBILDUNG;
-      case AUSBILDUNG:
-        return LEBENSLAUF;
-      case LEBENSLAUF:
-        return FAMILIENSITUATION;
-      case FAMILIENSITUATION:
-        return ELTERN;
-      case ELTERN:
-        return GESCHWISTER;
-      case GESCHWISTER:
-        return PARTNER;
-      case PARTNER:
-        return KINDER;
-      case KINDER:
-        return AUSZAHLUNGEN;
-      case AUSZAHLUNGEN:
-        return EINNAHMEN_KOSTEN;
-      case EINNAHMEN_KOSTEN:
-        return {
-          route: '/',
-          translationKey: '',
-          currentStepNumber: -1,
-          iconSymbolName: '',
-        };
-      default:
-        throw new Error('Step not defined');
+    const steps = [...StepFlow[this.compiletimeConfig.appType]].sort(
+      (s1, s2) => s1.currentStepNumber - s2.currentStepNumber
+    );
+    const currentIndex = steps.findIndex(
+      (step) => step.currentStepNumber === origin?.currentStepNumber
+    );
+    if (
+      currentIndex === -1 ||
+      !sharedUtilFnTypeGuardsIsDefined(steps[currentIndex + 1])
+    ) {
+      throw new Error('Step not defined');
     }
+    return steps[currentIndex + 1];
   }
 }

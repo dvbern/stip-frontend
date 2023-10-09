@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
-import { SharedFeatureGesuchFormAuszahlungenComponent } from './shared-feature-gesuch-form-auszahlungen/shared-feature-gesuch-form-auszahlungen.component';
+import { GesuchAppFeatureGesuchFormAbschlussComponent } from './gesuch-app-feature-gesuch-form-abschluss/gesuch-app-feature-gesuch-form-abschluss.component';
 
-export const gesuchAppFeatureGesuchFormAuszahlungenRoutes: Route[] = [
+export const gesuchAppFeatureGesuchFormAbschlussRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'prefix',
@@ -12,8 +12,8 @@ export const gesuchAppFeatureGesuchFormAuszahlungenRoutes: Route[] = [
     children: [
       {
         path: ':id',
-        title: 'shared.auszahlung.title',
-        component: SharedFeatureGesuchFormAuszahlungenComponent,
+        title: 'shared.abschluss.title',
+        component: GesuchAppFeatureGesuchFormAbschlussComponent,
       },
       // add more routes here (siblings)
       // it is also possible to add nested routes as children

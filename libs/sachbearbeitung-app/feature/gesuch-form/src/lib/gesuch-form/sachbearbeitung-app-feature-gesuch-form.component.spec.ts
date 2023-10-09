@@ -1,11 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
-import { KeycloakAngularModule } from 'keycloak-angular';
+
+import { provideSharedPatternJestTestSetup } from '@dv/shared/pattern/jest-test-setup';
 
 import { SachbearbeitungAppFeatureGesuchFormComponent } from './sachbearbeitung-app-feature-gesuch-form.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('SachbearbeitungAppFeatureGesuchFormComponent', () => {
   let component: SachbearbeitungAppFeatureGesuchFormComponent;
@@ -17,14 +15,9 @@ describe('SachbearbeitungAppFeatureGesuchFormComponent', () => {
         provideMockStore({
           initialState: { gesuchs: { gesuchFormular: {} } },
         }),
+        provideSharedPatternJestTestSetup(),
       ],
-      imports: [
-        SachbearbeitungAppFeatureGesuchFormComponent,
-        KeycloakAngularModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        NoopAnimationsModule,
-      ],
+      imports: [SachbearbeitungAppFeatureGesuchFormComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(

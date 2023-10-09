@@ -3,12 +3,7 @@ import {
   SharedModelGesuchFormular,
   Zivilstand,
 } from '@dv/shared/model/gesuch';
-import {
-  ELTERN,
-  GesuchFormSteps,
-  isStepDisabled,
-  PARTNER,
-} from './gesuch-form-steps';
+import { ELTERN, isStepDisabled, PARTNER } from './gesuch-form-steps';
 
 type GesuchFormStepState = 'enable' | 'disable';
 const partnerCases = (): [GesuchFormStepState, Zivilstand, boolean][] => {

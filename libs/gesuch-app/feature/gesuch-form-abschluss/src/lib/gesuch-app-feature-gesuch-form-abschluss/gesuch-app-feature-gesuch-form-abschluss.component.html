@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="state">
+  <p
+    *ngSwitchCase="NOT_READY"
+    [innerHTML]="'shared.form.abschluss.notReady' | translate"
+  ></p>
+  <p
+    *ngSwitchCase="READY_TO_SEND"
+    [innerHTML]="'shared.form.abschluss.readyToSend' | translate"
+  ></p>
+  <p
+    *ngSwitchCase="SUBMITTED"
+    [innerHTML]="'shared.form.abschluss.submitted' | translate"
+  ></p>
+</ng-container>

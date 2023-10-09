@@ -25,6 +25,7 @@ import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { SharedEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
+import { SharedEventGesuchFormAbschluss } from '@dv/shared/event/gesuch-form-abschluss';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
 import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
@@ -104,7 +105,8 @@ export const loadGesuch = createEffect(
         SharedEventGesuchFormGeschwister.init,
         SharedEventGesuchFormKinder.init,
         SharedEventGesuchFormLebenslauf.init,
-        SharedEventGesuchFormEinnahmenkosten.init
+        SharedEventGesuchFormEinnahmenkosten.init,
+        SharedEventGesuchFormAbschluss.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {

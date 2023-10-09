@@ -267,6 +267,11 @@
   "shared.form.partner.verpflegungskosten.label": "Frais de repas",
   "shared.form.partner.fahrkosten.label": "Frais de déplacement",
 
+  "shared.abschluss.title": "Validation",
+  "shared.form.abschluss.notReady": "Vous ne pouvez valider la demande que lorsque vous avez rempli tous les champs obligatoires.",
+  "shared.form.abschluss.readyToSend": "Voulez-vous vraiment valider la demande ? <br><q>Il n'est plus possible de la modifier ultérieurement.</q>",
+  "shared.form.abschluss.submitted": "Merci de nous avoir transmis votre demande<br><br>Si vous n'avez pas encore téléchargé tous les documents nécessaires, veuillez le faire dans les 30 prochains jours<br><br>Imprimez la feuille de signatures et envoyez-la signée au BKD",
+
   "shared.kanton.AG": "Argovie",
   "shared.kanton.AI": "Appenzell Rh.-Ext.",
   "shared.kanton.AR": "Appenzell Rh.-Int.",

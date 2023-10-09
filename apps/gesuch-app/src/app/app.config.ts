@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideSharedPatternCore(routes, {
       authClientId: 'stip-gesuch-app',
-      isSachbearbeitung: false,
+      appType: 'gesuch-app',
     }),
     provideState(sharedDataAccessGesuchsFeature),
     provideEffects(sharedDataAccessGesuchEffects),

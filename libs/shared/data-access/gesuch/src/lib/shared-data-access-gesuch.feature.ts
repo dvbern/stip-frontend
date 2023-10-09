@@ -15,6 +15,7 @@ import {
 import { SharedEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
 
 import { SharedDataAccessGesuchEvents } from './shared-data-access-gesuch.events';
+import { SharedEventGesuchFormAbschluss } from '@dv/shared/event/gesuch-form-abschluss';
 
 export interface State {
   gesuch: SharedModelGesuch | null;
@@ -55,6 +56,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
       SharedEventGesuchFormKinder.init,
       SharedEventGesuchFormLebenslauf.init,
       SharedEventGesuchFormEinnahmenkosten.init,
+      SharedEventGesuchFormAbschluss.init,
       (state): State => ({
         ...state,
         gesuch: null,
@@ -76,6 +78,7 @@ export const sharedDataAccessGesuchsFeature = createFeature({
       SharedEventGesuchFormLebenslauf.saveTriggered,
       SharedEventGesuchFormLebenslauf.saveSubformTriggered,
       SharedEventGesuchFormEinnahmenkosten.saveTriggered,
+      SharedEventGesuchFormAbschluss.saveTriggered,
       (state): State => ({
         ...state,
         loading: true,

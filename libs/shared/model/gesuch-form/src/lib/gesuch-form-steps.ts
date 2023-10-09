@@ -7,12 +7,14 @@ export const PERSON: SharedModelGesuchFormStep = {
   currentStepNumber: 1,
   iconSymbolName: 'person',
 };
+
 export const AUSBILDUNG = {
   route: 'education',
   translationKey: 'shared.education.title',
   currentStepNumber: 2,
   iconSymbolName: 'school',
 };
+
 export const LEBENSLAUF = {
   route: 'lebenslauf',
   translationKey: 'shared.lebenslauf.title',
@@ -47,30 +49,35 @@ export const PARTNER = {
   currentStepNumber: 7,
   iconSymbolName: 'favorite',
 };
+
 export const KINDER = {
   route: 'kinder',
   translationKey: 'shared.kinder.title',
   currentStepNumber: 8,
   iconSymbolName: 'emoji_people',
 };
+
 export const AUSZAHLUNGEN = {
   route: 'auszahlungen',
   translationKey: 'shared.auszahlung.title',
   currentStepNumber: 9,
   iconSymbolName: 'payments',
 };
+
 export const EINNAHMEN_KOSTEN = {
   route: 'einnahmenkosten',
   translationKey: 'shared.einnahmenkosten.title',
   currentStepNumber: 10,
   iconSymbolName: 'call_missed_outgoing',
 };
+
 export const ABSCHLUSS = {
   route: 'abschluss',
   translationKey: 'shared.abschluss.title',
   currentStepNumber: 11,
-  iconSymbolName: 'call_missed_outgoing',
+  iconSymbolName: 'check_circle',
 };
+
 export const isStepDisabled = (
   step: SharedModelGesuchFormStep,
   formular: SharedModelGesuchFormular | null
