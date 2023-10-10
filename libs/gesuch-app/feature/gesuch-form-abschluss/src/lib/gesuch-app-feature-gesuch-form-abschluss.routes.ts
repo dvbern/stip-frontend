@@ -1,4 +1,12 @@
 import { Route } from '@angular/router';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+
+import {
+  gesuchAppDataAccessAbschlussEffects,
+  gesuchAppDataAccessAbschlussFeature,
+} from '@dv/gesuch-app/data-access/abschluss';
+
 import { GesuchAppFeatureGesuchFormAbschlussComponent } from './gesuch-app-feature-gesuch-form-abschluss/gesuch-app-feature-gesuch-form-abschluss.component';
 
 export const gesuchAppFeatureGesuchFormAbschlussRoutes: Route[] = [
@@ -8,6 +16,8 @@ export const gesuchAppFeatureGesuchFormAbschlussRoutes: Route[] = [
     providers: [
       // feature specific services and other providers
       // always remove { providedIn: 'root' } from the feature specific services
+      provideState(gesuchAppDataAccessAbschlussFeature),
+      provideEffects(gesuchAppDataAccessAbschlussEffects),
     ],
     children: [
       {

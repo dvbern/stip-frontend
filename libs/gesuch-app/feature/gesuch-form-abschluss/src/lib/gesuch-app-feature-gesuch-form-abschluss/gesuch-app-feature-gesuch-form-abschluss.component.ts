@@ -5,6 +5,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedEventGesuchFormAbschluss } from '@dv/shared/event/gesuch-form-abschluss';
 import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stammdaten';
+import {
+  GesuchAppDataAccessAbschlussApiEvents,
+  selectGesuchAppDataAccessAbschlusssView,
+} from '@dv/gesuch-app/data-access/abschluss';
 
 @Component({
   selector: 'dv-gesuch-app-feature-gesuch-form-abschluss',
@@ -15,14 +19,18 @@ import { SharedDataAccessStammdatenApiEvents } from '@dv/shared/data-access/stam
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GesuchAppFeatureGesuchFormAbschlussComponent {
-  state: 'NOT_READY' | 'READY_TO_SEND' | 'SUBMITTED' = 'NOT_READY';
-  public NOT_READY = 'NOT_READY';
-  public READY_TO_SEND = 'READY_TO_SEND';
-  public SUBMITTED = 'SUBMITTED';
   private store = inject(Store);
+
+  viewSig = this.store.selectSignal(selectGesuchAppDataAccessAbschlusssView);
 
   ngOnInit(): void {
     this.store.dispatch(SharedEventGesuchFormAbschluss.init());
     this.store.dispatch(SharedDataAccessStammdatenApiEvents.init());
+  }
+
+  abschliessen(gesuchId: string) {
+    this.store.dispatch(
+      GesuchAppDataAccessAbschlussApiEvents.gesuchAbschliessen({ gesuchId })
+    );
   }
 }
