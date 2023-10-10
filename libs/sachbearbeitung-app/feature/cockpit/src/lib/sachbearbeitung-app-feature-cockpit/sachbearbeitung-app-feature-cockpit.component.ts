@@ -6,11 +6,17 @@ import {
   ViewChildren,
   computed,
   inject,
+  ViewChild,
+  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { A11yModule } from '@angular/cdk/a11y';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -18,8 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { SachbearbeitungAppPatternOverviewLayoutComponent } from '@dv/sachbearbeitung-app/pattern/overview-layout';
 import { countByStatus } from '@dv/sachbearbeitung-app/util-fn/gesuch-helper';
-import { Gesuchstatus } from '@dv/shared/model/gesuch';
+import { Gesuchstatus, SharedModelGesuch } from '@dv/shared/model/gesuch';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
+import { SharedUtilPaginatorTranslation } from '@dv/shared/util/paginator-translation';
 import {
   SharedUiFocusableListItemDirective,
   SharedUiFocusableListDirective,
@@ -53,8 +60,11 @@ type GesuchGroup = {
   templateUrl: './sachbearbeitung-app-feature-cockpit.component.html',
   styleUrls: ['./sachbearbeitung-app-feature-cockpit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: MatPaginatorIntl, useClass: SharedUtilPaginatorTranslation },
+  ],
 })
-export class SachbearbeitungAppFeatureCockpitComponent {
+export class SachbearbeitungAppFeatureCockpitComponent implements OnInit {
   private store = inject(Store);
 
   @ViewChildren(SharedUiFocusableListItemDirective)
@@ -70,9 +80,26 @@ export class SachbearbeitungAppFeatureCockpitComponent {
     'bearbeiter',
     'letzteAktivitaet',
   ];
-  public cockpitViewSig = this.store.selectSignal(
-    selectSachbearbeitungAppFeatureCockpitView
-  );
+
+  dataSoruce = new MatTableDataSource<SharedModelGesuch>([]);
+
+  @ViewChild('gesuchePaginator', { static: true }) paginator!: MatPaginator;
+
+  cockpitViewSig = computed(() => {
+    const view = this.store.selectSignal(
+      selectSachbearbeitungAppFeatureCockpitView
+    )();
+    return view;
+  });
+
+  gesucheDataSourceSig = computed(() => {
+    const gesuche = this.cockpitViewSig().gesuche;
+
+    const dataSource = new MatTableDataSource<SharedModelGesuch>(gesuche);
+    dataSource.paginator = this.paginator;
+    return dataSource;
+  });
+
   public groupsSig: Signal<GesuchGroup[]> = computed(() => {
     return countByStatus(this.cockpitViewSig().gesuche);
   });

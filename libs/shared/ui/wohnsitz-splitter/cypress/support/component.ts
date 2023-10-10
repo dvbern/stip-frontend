@@ -1,3 +1,4 @@
+import '@cypress/code-coverage/support';
 import { mount } from 'cypress/angular';
 // ***********************************************************
 // This example support/component.ts is processed and
@@ -15,8 +16,8 @@ import { mount } from 'cypress/angular';
 // ***********************************************************
 
 // Import commands.ts using ES2015 syntax:
+import '@dv/shared/util-fn/e2e-commands';
 import './commands';
-import '@cypress/code-coverage/support';
 
 // add component testing only related command here, such as mount
 declare global {

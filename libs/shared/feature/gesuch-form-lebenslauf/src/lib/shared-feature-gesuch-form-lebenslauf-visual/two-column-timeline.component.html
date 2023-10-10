@@ -1,6 +1,7 @@
 <div
   class="wrapper"
   *ngIf="timeline.items"
+  data-testid="two-columns-timeline-wrapper"
   [style]="
     'grid-template-rows: repeat(' +
     ((timeline.rows || 1) - 1) +
@@ -38,23 +39,34 @@
           *ngIf="busyItem.children as children"
         >
           <div *ngFor="let child of children; trackBy: trackByIndex">
-            <h5>
-              <a
-                *ngIf="child.editable"
-                class="w-100 d-block"
-                (click)="handleEditItem(child)"
-              >
-                {{ child.label }}
-              </a>
-              <ng-container *ngIf="!child.editable">
-                {{ child.label }}
-              </ng-container>
-            </h5>
-            <small>{{
-              printDateAsMonthYear(child.von) +
-                ' - ' +
-                printDateAsMonthYear(child.bis)
-            }}</small>
+            <ng-template #content>
+              <h5 data-testid="two-column-timeline-label">
+                {{ child.label.title | translate }}
+              </h5>
+              <div *ngIf="child.label.subTitle; let subTitle">
+                <small
+                  class="d-inline-block"
+                  data-testid="two-column-timeline-sub-label"
+                >
+                  {{ subTitle.key | translate }}: {{ subTitle.value }}
+                </small>
+              </div>
+              <small class="d-inline-block">{{
+                printDateAsMonthYear(child.von) +
+                  ' - ' +
+                  printDateAsMonthYear(child.bis)
+              }}</small>
+            </ng-template>
+            <a
+              *ngIf="child.editable"
+              class="w-100 d-block"
+              (click)="handleEditItem(child)"
+            >
+              <ng-container *ngTemplateOutlet="content"></ng-container>
+            </a>
+            <ng-container *ngIf="!child.editable">
+              <ng-container *ngTemplateOutlet="content"></ng-container>
+            </ng-container>
           </div>
         </div>
       </ng-container>

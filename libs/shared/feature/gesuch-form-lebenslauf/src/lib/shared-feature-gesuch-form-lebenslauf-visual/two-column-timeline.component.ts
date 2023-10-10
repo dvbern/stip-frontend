@@ -90,7 +90,7 @@ export class TwoColumnTimelineComponent implements OnChanges {
           von: dateFromMonthYearString(lebenslaufItem.von),
           bis: dateFromMonthYearString(lebenslaufItem.bis),
           id: lebenslaufItem.id,
-          label: lebenslaufItem.beschreibung,
+          label: this.getLebenslaufItemLabel(lebenslaufItem),
           editable: true,
         } as TimelineRawItem)
     );
@@ -111,20 +111,65 @@ export class TwoColumnTimelineComponent implements OnChanges {
       col: 'LEFT',
       von: dateFromMonthYearString(plannedAusbildung?.ausbildungBegin),
       bis: dateFromMonthYearString(plannedAusbildung?.ausbildungEnd),
-      label:
-        (this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ??
-          plannedAusbildung?.alternativeAusbildungsstaette) +
-        ': ' +
-        (this.getTranslatedAusbildungsgangBezeichung(ausbildungsgang) ??
-          plannedAusbildung?.alternativeAusbildungsgang) +
-        ' (' +
-        plannedAusbildung?.fachrichtung +
-        ')',
+      label: {
+        title:
+          (this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ??
+            plannedAusbildung?.alternativeAusbildungsstaette) +
+          ': ' +
+          (this.getTranslatedAusbildungsgangBezeichung(ausbildungsgang) ??
+            plannedAusbildung?.alternativeAusbildungsgang),
+        subTitle: {
+          key: 'shared.form.lebenslauf.item.name.fachrichtung',
+          value: plannedAusbildung?.fachrichtung,
+        },
+      },
       editable: false,
     } as TimelineRawItem);
 
     this.timeline.fillWith(expectedSartDate, timelineRawItems);
     this.cd.markForCheck();
+  }
+
+  private getLebenslaufItemLabel(
+    lebenslaufItem: LebenslaufItemUpdate
+  ): TimelineRawItem['label'] {
+    if (
+      lebenslaufItem.taetigskeitsart !== undefined &&
+      lebenslaufItem.taetigskeitsart !== null
+    ) {
+      return { title: lebenslaufItem.taetigkeitsBeschreibung || '' };
+    }
+    if (
+      lebenslaufItem.bildungsart === 'EIDGENOESSISCHES_BERUFSATTEST' ||
+      lebenslaufItem.bildungsart === 'EIDGENOESSISCHES_FAEHIGKEITSZEUGNIS'
+    ) {
+      return {
+        title: `shared.form.lebenslauf.item.subtype.bildungsart.${lebenslaufItem.bildungsart}`,
+        subTitle: {
+          key: 'shared.form.lebenslauf.item.name.berufsbezeichnung',
+          value: lebenslaufItem.berufsbezeichnung,
+        },
+      };
+    }
+    if (
+      lebenslaufItem.bildungsart === 'BACHELOR_HOCHSCHULE_UNI' ||
+      lebenslaufItem.bildungsart === 'BACHELOR_FACHHOCHSCHULE' ||
+      lebenslaufItem.bildungsart === 'MASTER'
+    ) {
+      return {
+        title: `shared.form.lebenslauf.item.subtype.bildungsart.${lebenslaufItem.bildungsart}`,
+        subTitle: {
+          key: 'shared.form.lebenslauf.item.name.fachrichtung',
+          value: lebenslaufItem.fachrichtung,
+        },
+      };
+    }
+    return {
+      title:
+        lebenslaufItem.bildungsart === 'ANDERER_BILDUNGSABSCHLUSS'
+          ? lebenslaufItem.titelDesAbschlusses || ''
+          : `shared.form.lebenslauf.item.subtype.bildungsart.${lebenslaufItem.bildungsart}`,
+    };
   }
 
   timeline = new TwoColumnTimeline();

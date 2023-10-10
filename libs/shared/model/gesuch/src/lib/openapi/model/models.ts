@@ -45,6 +45,7 @@ export * from './kind';
 export * from './kindUpdate';
 export * from './kontoinhaber';
 export * from './land';
+export * from './lebenslaufAusbildungsArt';
 export * from './lebenslaufItem';
 export * from './lebenslaufItemUpdate';
 export * from './niederlassungsstatus';

@@ -16,6 +16,7 @@ import { mount } from 'cypress/angular';
 // ***********************************************************
 
 // Import commands.ts using ES2015 syntax:
+import '@dv/shared/util-fn/e2e-commands';
 import './commands';
 
 // add component testing only related command here, such as mount

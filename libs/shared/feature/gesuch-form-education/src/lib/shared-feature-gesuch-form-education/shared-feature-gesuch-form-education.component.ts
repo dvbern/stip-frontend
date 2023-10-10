@@ -14,6 +14,7 @@ import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,7 +52,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { addYears, subMonths } from 'date-fns';
+import { addYears } from 'date-fns';
 import { startWith } from 'rxjs';
 
 import { selectSharedFeatureGesuchFormEducationView } from './shared-feature-gesuch-form-education.selector';
@@ -96,18 +97,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     ausbildungNichtGefunden: [false, []],
     alternativeAusbildungsgang: [<string | undefined>undefined],
     alternativeAusbildungsstaette: [<string | undefined>undefined],
-    ausbildungBegin: [
-      '',
-      [
-        Validators.required,
-        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
-        maxDateValidatorForLocale(
-          this.languageSig(),
-          addYears(new Date(), 100),
-          'monthYear'
-        ),
-      ],
-    ],
+    ausbildungBegin: ['', []],
     ausbildungEnd: [
       '',
       [
@@ -205,6 +195,30 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
+    effect(() => {
+      const { gesuchsPeriodenStart } = this.view$();
+      const validators: ValidatorFn[] = [
+        Validators.required,
+        parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
+        maxDateValidatorForLocale(
+          this.languageSig(),
+          addYears(new Date(), 100),
+          'monthYear'
+        ),
+      ];
+
+      if (gesuchsPeriodenStart) {
+        validators.push(
+          minDateValidatorForLocale(
+            this.languageSig(),
+            gesuchsPeriodenStart,
+            'monthYear'
+          )
+        );
+      }
+      this.form.controls.ausbildungBegin.clearValidators();
+      this.form.controls.ausbildungBegin.addValidators(validators);
+    });
     effect(
       () => {
         this.startChanged$();
