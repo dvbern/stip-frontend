@@ -39,7 +39,7 @@ describe(TwoColumnTimelineComponent.name, () => {
     ];
     mountWith(items);
     LebenslaufPo.getWrapper()
-      .find('[data-testid="two-column-timeline-label"]')
+      .find('[data-testid="two-column-timeline-sub-label"]')
       .contains(berufsbezeichnung)
       .should('exist');
   });
@@ -73,7 +73,7 @@ describe(TwoColumnTimelineComponent.name, () => {
     ];
     mountWith(items);
     LebenslaufPo.getWrapper()
-      .find('[data-testid="two-column-timeline-label"]')
+      .find('[data-testid="two-column-timeline-sub-label"]')
       .contains(fachrichtung)
       .should('exist');
   });

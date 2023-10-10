@@ -35,7 +35,7 @@
     "lint": "nx run-many --target=lint",
     "test": "nx run-many --target=test",
     "unit-test": "nx run-many --target=test",
-    "component-test": "nx run-many --target=component-test",
+    "component-test": "nx run-many --target=component-test --parallel=1",
     "test:ci": "nx run-many --target=test --coverage --ci --reporters=jest-junit",
     "e2e": "nx run-many --target=e2e",
     "build": "nx run-many --target=build",

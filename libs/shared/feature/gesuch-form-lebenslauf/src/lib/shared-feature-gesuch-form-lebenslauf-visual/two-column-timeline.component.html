@@ -44,7 +44,10 @@
                 {{ child.label.title | translate }}
               </h5>
               <div *ngIf="child.label.subTitle; let subTitle">
-                <small class="d-inline-block">
+                <small
+                  class="d-inline-block"
+                  data-testid="two-column-timeline-sub-label"
+                >
                   {{ subTitle.key | translate }}: {{ subTitle.value }}
                 </small>
               </div>
