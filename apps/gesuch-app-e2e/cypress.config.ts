@@ -3,8 +3,6 @@ import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 import { defineConfig } from 'cypress';
 import * as dotenv from 'dotenv';
 
-import '@dv/shared/util-fn/e2e-commands';
-
 dotenv.config({ path: '../../.env' });
 
 export default defineConfig({

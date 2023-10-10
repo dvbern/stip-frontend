@@ -14,5 +14,6 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import '@dv/shared/util-fn/e2e-helpers';
 import '@cypress/code-coverage/support';
+import '@dv/shared/util-fn/e2e-commands';
+import '@dv/shared/util-fn/e2e-helpers';
