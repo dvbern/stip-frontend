@@ -166,7 +166,8 @@
   "shared.form.eltern.mutter.title": "mère",
   "shared.form.eltern.vater.title": "père",
   "shared.form.eltern.none": "Aucune information requise",
-  "shared.form.eltern.ausweisbFluechtling.label": "Hat Ihr Vater einen Ausweis B oder ist Er Flüchtling?",
+  "shared.form.eltern.ausweisbFluechtling.mutter.label": "Votre mère a-t-elle un permis B ou est-il un réfugié?",
+  "shared.form.eltern.ausweisbFluechtling.vater.label": "Votre père a-t-il un permis B ou est-il réfugié?",
   "shared.form.eltern.ergaenzungsleistungAusbezahlt.label": "Werden Ergänzungsleistungen ausbezahlt?",
   "shared.form.eltern.sozialhilfebeitraegeAusbezahlt.label": "Werden Sozialhilfebeiträge ausbezahlt?",
 

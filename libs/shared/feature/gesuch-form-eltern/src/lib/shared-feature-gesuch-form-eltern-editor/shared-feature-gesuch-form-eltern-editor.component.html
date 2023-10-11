@@ -160,7 +160,9 @@
       class="col-12 d-flex flex-column"
     >
       <label>{{
-        'shared.form.eltern.ausweisbFluechtling.label' | translate
+        'shared.form.eltern.ausweisbFluechtling.' +
+          (elternteil.elternTyp === ElternTyp.MUTTER ? 'mutter' : 'vater') +
+          '.label' | translate
       }}</label>
       <mat-radio-button [value]="true">{{
         'shared.form.radio.yes' | translate
