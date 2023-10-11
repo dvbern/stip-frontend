@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,7 +23,7 @@ import {
   styleUrls: ['./gesuch-app-feature-gesuch-form-abschluss.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GesuchAppFeatureGesuchFormAbschlussComponent {
+export class GesuchAppFeatureGesuchFormAbschlussComponent implements OnInit {
   private store = inject(Store);
 
   viewSig = this.store.selectSignal(selectGesuchAppDataAccessAbschlusssView);
