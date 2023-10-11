@@ -1,3 +1,4 @@
+import { Gesuchstatus } from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 import { getRouterSelectors } from '@ngrx/router-store';
 
@@ -24,6 +25,8 @@ export const selectSharedDataAccessGesuchsView = createSelector(
         ...step,
         disabled: isStepDisabled(name, state.gesuchFormular),
       })),
+      readonly:
+        state.gesuch?.gesuchStatus === Gesuchstatus.NICHT_KOMPLETT_EINGEREICHT,
     };
   }
 );

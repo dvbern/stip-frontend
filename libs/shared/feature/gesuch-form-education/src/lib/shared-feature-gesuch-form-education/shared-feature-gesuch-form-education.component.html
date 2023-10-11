@@ -49,6 +49,7 @@
         mat-icon-button
         aria-label="Clear"
         (click)="form.controls.ausbildungsstaette.reset()"
+        disabled="disabled"
       >
         <span class="material-symbols-rounded align-middle">clear</span>
       </button>
@@ -78,6 +79,7 @@
         matInput
         type="text"
         formControlName="alternativeAusbildungsstaette"
+        [readonly]="view$().readonly"
       />
     </mat-form-field>
   </div>
@@ -124,6 +126,7 @@
         type="text"
         matInput
         formControlName="alternativeAusbildungsgang"
+        [readonly]="view$().readonly"
       />
       <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
@@ -248,7 +251,7 @@
 
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
       {{ 'shared.form.save-and-continue' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>

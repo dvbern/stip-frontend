@@ -23,6 +23,7 @@ export const selectSharedFeatureGesuchFormEducationView = createSelector(
       gesuchsPeriodenStartFormatted: gesuchsPeriodenStart
         ? format(gesuchsPeriodenStart, 'MM.yyyy')
         : null,
+      readonly: gesuchsView.readonly,
     };
   }
 );

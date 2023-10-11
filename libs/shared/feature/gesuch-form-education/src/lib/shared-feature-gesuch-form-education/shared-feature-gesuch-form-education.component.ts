@@ -274,9 +274,21 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungsgang,
-          !staette$(),
+          !staette$ && (!staette$ || this.view$().readonly),
           true
         );
+      },
+      { allowSignalWrites: true }
+    );
+
+    effect(
+      () => {
+        const { readonly } = this.view$();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
       },
       { allowSignalWrites: true }
     );
