@@ -43,7 +43,11 @@ import {
   convertTempFormToRealValues,
   SharedUtilFormService,
 } from '@dv/shared/util/form';
-import { getDateDifference } from '@dv/shared/util/validator-date';
+import { selectLanguage } from '@dv/shared/data-access/language';
+import {
+  getDateDifference,
+  parseBackendLocalDateAndPrint,
+} from '@dv/shared/util/validator-date';
 import { selectSharedFeatureGesuchFormEinnahmenkostenView } from './shared-feature-gesuch-form-einnahmenkosten.selector';
 
 @Component({
@@ -99,6 +103,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   viewSig = this.store.selectSignal(
     selectSharedFeatureGesuchFormEinnahmenkostenView
   );
+  languageSig = this.store.selectSignal(selectLanguage);
   maskitoNumber = maskitoNumber;
   maskitoPositiveNumber = maskitoPositiveNumber;
   formStateSig = computed(() => {
@@ -131,9 +136,13 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       familiensituation.vaterUnbekanntVerstorben === 'VERSTORBEN' ||
       familiensituation.mutterUnbekanntVerstorben === 'VERSTORBEN';
     const hatKinder = kinds ? kinds.length > 0 : false;
-    const istErwachsen =
-      (getDateDifference(personInAusbildung.geburtsdatum, new Date())?.years ??
-        0) > 18;
+    const geburtsdatum = parseBackendLocalDateAndPrint(
+      personInAusbildung.geburtsdatum,
+      this.languageSig()
+    );
+    const istErwachsen = !geburtsdatum
+      ? false
+      : (getDateDifference(geburtsdatum, new Date())?.years ?? 0) > 18;
     // TODO: Use stammdaten info once available
     const ausbildungsgang = ausbildungsstaettes
       .find((a) =>
