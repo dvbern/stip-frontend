@@ -72,7 +72,7 @@
       <!-- ALIMENTE -->
       <mat-form-field
         dvSharedUiFormField
-        *ngIf="!form.controls.alimente.disabled"
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.alimente)"
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
@@ -95,7 +95,7 @@
       <!-- ZULAGEN -->
       <mat-form-field
         dvSharedUiFormField
-        *ngIf="!form.controls.zulagen.disabled"
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.zulagen)"
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
@@ -116,7 +116,7 @@
       <!-- RENTEN -->
       <mat-form-field
         dvSharedUiFormField
-        *ngIf="!form.controls.renten.disabled"
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.renten)"
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
@@ -202,8 +202,10 @@
     <div
       class="row g-4"
       *ngIf="
-        !form.controls.ausbildungskostenSekundarstufeZwei.disabled ||
-        !form.controls.ausbildungskostenTertiaerstufe.disabled
+        !hiddenFieldsSetSig()?.has(
+          form.controls.ausbildungskostenSekundarstufeZwei
+        ) ||
+        !hiddenFieldsSetSig()?.has(form.controls.ausbildungskostenTertiaerstufe)
       "
     >
       <!-- AUSBILDUNGSKOSTEN_SEKUNDARSTUFE_ZWEI -->
@@ -234,7 +236,11 @@
       <!-- AUSBILDUNGSKOSTEN_TERTIARY -->
       <mat-form-field
         dvSharedUiFormField
-        *ngIf="!form.controls.ausbildungskostenTertiaerstufe.disabled"
+        *ngIf="
+          !hiddenFieldsSetSig()?.has(
+            form.controls.ausbildungskostenTertiaerstufe
+          )
+        "
         class="col-12 col-md-9 col-xl-6"
       >
         <mat-label>{{
@@ -273,7 +279,10 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row g-4 mt-1" *ngIf="form.controls.wohnkosten.enabled">
+    <div
+      class="row g-4 mt-1"
+      *ngIf="!hiddenFieldsSetSig()?.has(form.controls.wohnkosten)"
+    >
       <!-- WOHNKOSTEN -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
@@ -293,7 +302,9 @@
     </div>
     <div
       class="row g-4 mt-1"
-      *ngIf="form.controls.auswaertigeMittagessenProWoche.enabled"
+      *ngIf="
+        !hiddenFieldsSetSig()?.has(form.controls.auswaertigeMittagessenProWoche)
+      "
     >
       <!-- ANZAHL AUSWÄRTIGER MITTAGESSEN PRO WOCHE -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
@@ -318,7 +329,10 @@
       </mat-form-field>
     </div>
 
-    <div class="row g-4 mt-1" *ngIf="form.controls.personenImHaushalt.enabled">
+    <div
+      class="row g-4 mt-1"
+      *ngIf="!hiddenFieldsSetSig()?.has(form.controls.personenImHaushalt)"
+    >
       <!-- PERSONEN_IM_HAUSHALT -->
       <mat-form-field dvSharedUiFormField class="col-12 col-md-9 col-xl-6">
         <mat-label>{{
@@ -348,7 +362,7 @@
       <!-- VERDIENST_REALISIERT -->
       <div
         class="col-12 col-md-9 col-xl-6"
-        *ngIf="!form.controls.verdienstRealisiert.disabled"
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.verdienstRealisiert)"
       >
         <mat-radio-group
           class="d-flex flex-column"
@@ -375,7 +389,7 @@
       <!-- WILL_DARLEHEN -->
       <div
         class="col-12 col-md-9 col-xl-6"
-        *ngIf="!form.controls.willDarlehen.disabled"
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.willDarlehen)"
       >
         <mat-radio-group
           class="d-flex flex-column"
@@ -401,7 +415,7 @@
 
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
         {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
