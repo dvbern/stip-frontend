@@ -131,7 +131,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     if (!personInAusbildung || !familiensituation || !ausbildung) {
       return { hasData: false, schritte } as const;
     }
-    const hatAlimente = familiensituation.werZahltAlimente !== 'GEMEINSAM';
     const hatElternteilVerloren =
       familiensituation.vaterUnbekanntVerstorben === 'VERSTORBEN' ||
       familiensituation.mutterUnbekanntVerstorben === 'VERSTORBEN';
@@ -150,7 +149,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
 
     return {
       hasData: true,
-      hatAlimente,
       hatElternteilVerloren,
       hatKinder,
       willSekundarstufeZwei,
@@ -168,7 +166,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       () => {
         const {
           hasData,
-          hatAlimente,
           hatElternteilVerloren,
           hatKinder,
           willSekundarstufeZwei,
@@ -184,15 +181,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
           return;
         }
         const setToUpdate = this.hiddenFieldsSet.value;
-
-        this.formService.setDisabledState(
-          this.form.controls.alimente,
-          !hatAlimente,
-          true
-        );
-        if (!hatAlimente) {
-          setToUpdate.add(this.form.controls.alimente);
-        }
 
         this.formService.setDisabledState(
           this.form.controls.renten,
