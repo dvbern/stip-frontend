@@ -19,6 +19,9 @@
       <mat-error *dvSharedUiFormMessageError="'minlength'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>
+      <mat-error *dvSharedUiFormMessageError="'required'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
     </mat-form-field>
 
     <!-- RIGHT -->
@@ -32,6 +35,9 @@
         [maskito]="maskitoOptionsPercent"
       />
       <mat-error *dvSharedUiFormMessageError="'minlength'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
+      <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>
     </mat-form-field>

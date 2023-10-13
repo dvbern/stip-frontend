@@ -66,6 +66,7 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
           const anteilA = percentStringToNumber(controlAChangedSig());
           if (anteilA !== undefined && anteilA !== null) {
             this.controlB.setValue((100 - anteilA)?.toString());
+            this.controlB.setErrors(null);
           }
         },
         { allowSignalWrites: true }
@@ -76,6 +77,7 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
           const anteilB = percentStringToNumber(controlBChangedSig());
           if (anteilB !== undefined && anteilB !== null) {
             this.controlA.setValue((100 - anteilB)?.toString());
+            this.controlA.setErrors(null);
           }
         },
         { allowSignalWrites: true }
