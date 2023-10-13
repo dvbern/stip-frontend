@@ -229,13 +229,15 @@
         </div>
         <ng-container
           *ngIf="
-            form.controls.mutterWiederverheiratet.enabled &&
+            !hiddenFieldsSetSig()?.has(form.controls.mutterWiederverheiratet) &&
             form.value.elternteilUnbekanntVerstorben
           "
           [ngTemplateOutlet]="mutterWiederverheiratet"
         ></ng-container>
         <div
-          *ngIf="form.controls.vaterUnbekanntVerstorben.enabled"
+          *ngIf="
+            !hiddenFieldsSetSig()?.has(form.controls.vaterUnbekanntVerstorben)
+          "
           class="row g-4 mt-3"
         >
           <mat-radio-group
@@ -268,7 +270,9 @@
           </mat-radio-group>
         </div>
         <div
-          *ngIf="form.controls.vaterUnbekanntGrund.enabled"
+          *ngIf="
+            !hiddenFieldsSetSig()?.has(this.form.controls.vaterUnbekanntGrund)
+          "
           class="row g-4 mt-3"
         >
           <mat-radio-group
@@ -304,8 +308,9 @@
         </div>
         <ng-container
           *ngIf="
-            form.controls.vaterWiederverheiratet.enabled &&
-            form.value.elternteilUnbekanntVerstorben
+            !hiddenFieldsSetSig()?.has(
+              this.form.controls.vaterWiederverheiratet
+            ) && form.value.elternteilUnbekanntVerstorben
           "
           [ngTemplateOutlet]="vaterWiederverheiratet"
         ></ng-container>
@@ -317,11 +322,15 @@
         [@inOutPaneAnimation]="stateSig()['ZWEI_FAMILIENBUDGET'] ?? 'hidden'"
       >
         <ng-container
-          *ngIf="form.controls.mutterWiederverheiratet.enabled"
+          *ngIf="
+            !hiddenFieldsSetSig()?.has(form.controls.mutterWiederverheiratet)
+          "
           [ngTemplateOutlet]="mutterWiederverheiratet"
         ></ng-container>
         <ng-container
-          *ngIf="form.controls.vaterWiederverheiratet.enabled"
+          *ngIf="
+            !hiddenFieldsSetSig()?.has(form.controls.vaterWiederverheiratet)
+          "
           [ngTemplateOutlet]="vaterWiederverheiratet"
         ></ng-container>
         <div class="row g-4 mt-3 col-xl-8">
@@ -379,6 +388,7 @@
         <div class="row g-4 mt-3 col-xl-8">
           <!-- OBHUT AUFTEILUNG -->
           <dv-shared-ui-percentage-splitter
+            *ngIf="!hiddenFieldsSetSig()?.has(form.controls.obhutMutter)"
             [updateValidity]="updateValidity$ | async"
             [controlA]="form.controls.obhutMutter"
             [controlB]="form.controls.obhutVater"
@@ -399,7 +409,10 @@
     </div>
   </div>
   <!-- buttons -->
-  <dv-shared-ui-step-form-buttons [@hideDuringAnimation]="duringAnimation">
+  <dv-shared-ui-step-form-buttons
+    [@hideDuringAnimation]="duringAnimation"
+    *ngIf="!view().readonly"
+  >
     <button type="submit" class="btn btn-primary">
       {{ 'shared.form.save-and-continue' | translate }}
     </button>

@@ -49,8 +49,6 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
 
   private injector = inject(Injector);
 
-  spliterEnabled = signal(false);
-
   public ngOnInit(): void {
     runInInjectionContext(this.injector, () => {
       const controlAChangedSig = toSignal(this.controlA.valueChanges, {
@@ -58,12 +56,6 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
       });
       const controlBChangedSig = toSignal(this.controlB.valueChanges, {
         initialValue: undefined,
-      });
-      const statusAChangedSig = toSignal(this.controlA.statusChanges, {
-        initialValue: this.controlA.status,
-      });
-      const statusBChangedSig = toSignal(this.controlB.statusChanges, {
-        initialValue: this.controlB.status,
       });
 
       effect(
@@ -82,16 +74,6 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
           if (anteilB !== undefined && anteilB !== null) {
             this.controlA.setValue((100 - anteilB)?.toString());
           }
-        },
-        { allowSignalWrites: true }
-      );
-
-      effect(
-        () => {
-          this.spliterEnabled.set(
-            statusAChangedSig() !== 'DISABLED' &&
-              statusBChangedSig() !== 'DISABLED'
-          );
         },
         { allowSignalWrites: true }
       );
