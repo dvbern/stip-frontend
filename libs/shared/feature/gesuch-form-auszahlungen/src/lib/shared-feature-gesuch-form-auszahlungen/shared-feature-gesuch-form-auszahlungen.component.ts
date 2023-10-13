@@ -151,6 +151,18 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
+
+    effect(
+      () => {
+        const { readonly } = this.view();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit(): void {

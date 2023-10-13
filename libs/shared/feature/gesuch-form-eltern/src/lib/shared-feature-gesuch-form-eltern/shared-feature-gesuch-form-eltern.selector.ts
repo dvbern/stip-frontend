@@ -22,6 +22,7 @@ export const selectSharedFeatureGesuchFormElternView = createSelector(
       vater: elternSituation.vater,
       mutter: elternSituation.mutter,
       laender: stammdatenView.laender,
+      readonly: gesuchView.readonly,
     };
   }
 );

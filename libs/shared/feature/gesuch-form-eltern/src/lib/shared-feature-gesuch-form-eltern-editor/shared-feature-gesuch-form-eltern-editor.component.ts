@@ -52,6 +52,7 @@ import {
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { selectSharedFeatureGesuchFormElternView } from '../shared-feature-gesuch-form-eltern/shared-feature-gesuch-form-eltern.selector';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -94,6 +95,8 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
   @Input({ required: true }) laender!: Land[];
+
+  view$ = this.store.selectSignal(selectSharedFeatureGesuchFormElternView);
 
   readonly MASK_SOZIALVERSICHERUNGSNUMMER = MASK_SOZIALVERSICHERUNGSNUMMER;
 
@@ -173,6 +176,17 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
         );
         this.form.controls.identischerZivilrechtlicherWohnsitzPLZ.updateValueAndValidity();
         this.form.controls.identischerZivilrechtlicherWohnsitzOrt.updateValueAndValidity();
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        const { readonly } = this.view$();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
       },
       { allowSignalWrites: true }
     );

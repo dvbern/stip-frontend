@@ -120,7 +120,7 @@
 
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" *ngIf="!view().readonly">
         {{ 'shared.form.save-and-continue' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
