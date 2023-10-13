@@ -11,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaskitoModule } from '@maskito/angular';
@@ -57,6 +57,9 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
       const controlBChangedSig = toSignal(this.controlB.valueChanges, {
         initialValue: undefined,
       });
+
+      this.controlA.addValidators(Validators.minLength(2));
+      this.controlB.addValidators(Validators.minLength(2));
 
       effect(
         () => {

@@ -16,7 +16,7 @@
         [formControl]="controlA"
         [maskito]="maskitoOptionsPercent"
       />
-      <mat-error *dvSharedUiFormMessageError="'required'">
+      <mat-error *dvSharedUiFormMessageError="'minlength'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>
     </mat-form-field>
@@ -31,7 +31,7 @@
         [formControl]="controlB"
         [maskito]="maskitoOptionsPercent"
       />
-      <mat-error *dvSharedUiFormMessageError="'required'">
+      <mat-error *dvSharedUiFormMessageError="'minlength'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>
     </mat-form-field>
