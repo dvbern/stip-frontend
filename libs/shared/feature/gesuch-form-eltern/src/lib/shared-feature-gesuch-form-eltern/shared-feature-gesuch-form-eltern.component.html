@@ -13,6 +13,7 @@
 <dv-shared-feature-gesuch-form-eltern-editor
   *ngIf="editedElternteil"
   [elternteil]="editedElternteil"
+  [gesuchFormular]="view$()"
   [laender]="laenderSig()"
   (saveTriggered)="handleEditorSave($event)"
   (closeTriggered)="handleEditorClose()"

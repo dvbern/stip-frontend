@@ -1,6 +1,12 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { SharedModelGesuchFormular } from '@dv/shared/model/gesuch';
+import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 
 const START_DIGITS = '756';
+type FieldsWithSV = Extract<
+  keyof SharedModelGesuchFormular,
+  'personInAusbildung' | 'elterns' | 'partner'
+>;
 
 // https://www.sozialversicherungsnummer.ch/aufbau-neu.htm
 export function sharedUtilIsValidAhv(ahv: string) {
@@ -29,12 +35,47 @@ export function sharedUtilIsValidAhv(ahv: string) {
   return checkDigit === calculatedCheckDigit && startDigits === START_DIGITS;
 }
 
+export function sharedUtilIsUniqueAhv(
+  ahv: string,
+  type: FieldsWithSV,
+  gesuchFormular: SharedModelGesuchFormular
+) {
+  const svNummers: Record<FieldsWithSV, (string | undefined)[]> = {
+    personInAusbildung: [
+      gesuchFormular.personInAusbildung?.sozialversicherungsnummer,
+    ],
+    partner: [gesuchFormular.partner?.sozialversicherungsnummer],
+    elterns: (gesuchFormular.elterns ?? []).map(
+      (e) => e.sozialversicherungsnummer
+    ),
+  };
+  delete svNummers[type];
+
+  const list = Object.values(svNummers)
+    .flatMap((x) => x)
+    .filter(sharedUtilFnTypeGuardsIsDefined);
+  list.push(ahv);
+  return new Set(list).size === list.length;
+}
+
 export function sharedUtilValidatorAhv(
-  control: FormControl
-): ValidationErrors | null {
-  if (!control?.value) {
-    return null;
-  } else {
-    return sharedUtilIsValidAhv(control.value) ? null : { ahv: true };
-  }
+  type: FieldsWithSV,
+  gesuchFormular: SharedModelGesuchFormular
+): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control?.value) {
+      return null;
+    } else {
+      const uniqueCheck = sharedUtilIsUniqueAhv(
+        control.value,
+        type,
+        gesuchFormular
+      )
+        ? null
+        : { notUniqueAhv: true };
+      return sharedUtilIsValidAhv(control.value)
+        ? uniqueCheck
+        : { ahv: true, ...(uniqueCheck ?? {}) };
+    }
+  };
 }
