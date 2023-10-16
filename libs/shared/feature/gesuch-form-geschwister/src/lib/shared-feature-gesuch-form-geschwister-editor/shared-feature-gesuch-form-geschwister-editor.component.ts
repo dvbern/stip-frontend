@@ -21,6 +21,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -96,6 +97,7 @@ export class SharedFeatureGesuchFormGeschwisterEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+  view = this.store.selectSignal(selectSharedDataAccessGesuchsView);
   updateValidity$ = new Subject<unknown>();
 
   form = this.formBuilder.group({
@@ -144,17 +146,29 @@ export class SharedFeatureGesuchFormGeschwisterEditorComponent
     effect(
       () => {
         const wohnsitzChanged = this.wohnsitzChangedSig();
-
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilMutter,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
-        this.formUtils.setDisabledState(
-          this.form.controls.wohnsitzAnteilVater,
-          wohnsitzChanged !== Wohnsitz.MUTTER_VATER,
-          true
-        );
+        if (wohnsitzChanged !== Wohnsitz.MUTTER_VATER) {
+          this.formUtils.setDisabledState(
+            this.form.controls.wohnsitzAnteilMutter,
+            true,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.wohnsitzAnteilVater,
+            true,
+            true
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        const { readonly } = this.view();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
       },
       { allowSignalWrites: true }
     );
