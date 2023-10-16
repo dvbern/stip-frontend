@@ -295,7 +295,9 @@
 
     <div class="row g-4 mt-1">
       <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
-      <ng-container *ngIf="form.controls.niederlassungsstatus.enabled">
+      <ng-container
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.niederlassungsstatus)"
+      >
         <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
           <mat-form-field dvSharedUiFormField class="flex-grow-1">
             <mat-label>{{
@@ -337,7 +339,7 @@
           </button>
         </div>
       </ng-container>
-      <ng-container *ngIf="form.controls.heimatort.enabled">
+      <ng-container *ngIf="!hiddenFieldsSetSig()?.has(form.controls.heimatort)">
         <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
           <mat-label>{{
             'shared.form.person.origin.label' | translate
