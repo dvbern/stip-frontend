@@ -54,6 +54,7 @@ import {
   onMonthYearInputBlur,
   parseableDateValidatorForLocale,
 } from '@dv/shared/util/validator-date';
+import { selectSharedFeatureGesuchFormLebenslaufVew } from '../shared-feature-gesuch-form-lebenslauf/shared-feature-gesuch-form-lebenslauf.selector';
 
 @Component({
   selector: 'dv-shared-feature-gesuch-form-lebenslauf-editor',
@@ -96,6 +97,8 @@ export class SharedFeatureGesuchFormLebenslaufEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+
+  view$ = this.store.selectSignal(selectSharedFeatureGesuchFormLebenslaufVew);
 
   form = this.formBuilder.group({
     taetigkeitsBeschreibung: [
@@ -183,6 +186,17 @@ export class SharedFeatureGesuchFormLebenslaufEditorComponent
           !this.showTitelDesAbschlussesSig(),
           true
         );
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        const { readonly } = this.view$();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
       },
       { allowSignalWrites: true }
     );
