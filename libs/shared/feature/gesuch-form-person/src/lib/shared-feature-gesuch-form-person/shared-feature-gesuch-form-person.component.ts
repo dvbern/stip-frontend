@@ -234,12 +234,15 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   constructor() {
     // patch form value
     effect(
-      () =>
-        updateWohnsitzControlsState(
-          this.formUtils,
-          this.form.controls,
-          !this.showWohnsitzSplitterSig()
-        ),
+      () => {
+        if (!this.view().readonly) {
+          updateWohnsitzControlsState(
+            this.formUtils,
+            this.form.controls,
+            !this.showWohnsitzSplitterSig()
+          );
+        }
+      },
       { allowSignalWrites: true }
     );
     effect(
