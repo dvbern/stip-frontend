@@ -182,6 +182,7 @@
   "shared.form.geschwister.ausbildungssituation.select.SCHULPFLICHTIG": "Scolarité obligatoire",
   "shared.form.geschwister.add": "Ajouter un autre frère ou une autre sœur",
   "shared.form.geschwister.edit": "Modifier les frères et sœurs",
+  "shared.form.geschwister.view": "Afficher les frères et soeurs",
   "shared.form.geschwister.delete": "Supprimer les frères et sœurs",
 
   "shared.kinder.title": "Enfants",

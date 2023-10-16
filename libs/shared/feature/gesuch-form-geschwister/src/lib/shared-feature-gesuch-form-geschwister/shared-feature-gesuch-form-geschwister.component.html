@@ -73,12 +73,22 @@
               </td>
               <td>
                 <button
+                  *ngIf="!view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
                   (click)="handleEditGeschwister(geschwister)"
                   [title]="'shared.form.geschwister.edit' | translate"
                 >
                   <i class="material-symbols-rounded">edit</i>
+                </button>
+                <button
+                  *ngIf="view$().readonly"
+                  type="button"
+                  class="btn btn-link p-0 lh-1"
+                  (click)="handleEditGeschwister(geschwister)"
+                  [title]="'shared.form.geschwister.view' | translate"
+                >
+                  <i class="material-symbols-rounded">visibility</i>
                 </button>
               </td>
               <td>
@@ -87,6 +97,7 @@
                   class="btn btn-link p-0 lh-1"
                   (click)="handleDeleteGeschwister(geschwister)"
                   [title]="'shared.form.geschwister.delete' | translate"
+                  *ngIf="!view$().readonly"
                 >
                   <i class="material-symbols-rounded">delete</i>
                 </button>
@@ -101,6 +112,7 @@
   <!-- ADD -->
   <div class="d-flex flex-column flex-md-row">
     <button
+      *ngIf="!view$().readonly"
       type="button"
       class="btn btn-outline-primary"
       (click)="handleAddGeschwister()"
