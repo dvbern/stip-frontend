@@ -19,6 +19,7 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import {
   addWohnsitzControls,
   wohnsitzAnteileNumber,
@@ -91,6 +92,7 @@ export class SharedFeatureGesuchFormKinderEditorComponent implements OnChanges {
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
+  view$ = this.store.selectSignal(selectSharedDataAccessGesuchsView);
   updateValidity$ = new Subject();
 
   form = this.formBuilder.group({
@@ -130,12 +132,26 @@ export class SharedFeatureGesuchFormKinderEditorComponent implements OnChanges {
 
   constructor() {
     effect(
-      () =>
-        updateWohnsitzControlsState(
-          this.formUtils,
-          this.form.controls,
-          !this.showWohnsitzSplitterSig()
-        ),
+      () => {
+        if (!this.view$().readonly) {
+          updateWohnsitzControlsState(
+            this.formUtils,
+            this.form.controls,
+            !this.showWohnsitzSplitterSig()
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        const { readonly } = this.view$();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
+      },
       { allowSignalWrites: true }
     );
   }

@@ -81,15 +81,6 @@
                 >
                   <i class="material-symbols-rounded">edit</i>
                 </button>
-                <button
-                  *ngIf="view$().readonly"
-                  type="button"
-                  class="btn btn-link p-0 lh-1"
-                  (click)="handleEditGeschwister(geschwister)"
-                  [title]="'shared.form.geschwister.view' | translate"
-                >
-                  <i class="material-symbols-rounded">visibility</i>
-                </button>
               </td>
               <td>
                 <button
@@ -100,6 +91,15 @@
                   *ngIf="!view$().readonly"
                 >
                   <i class="material-symbols-rounded">delete</i>
+                </button>
+                <button
+                  *ngIf="view$().readonly"
+                  type="button"
+                  class="btn btn-link p-0 lh-1"
+                  (click)="handleEditGeschwister(geschwister)"
+                  [title]="'shared.form.geschwister.view' | translate"
+                >
+                  <i class="material-symbols-rounded">visibility</i>
                 </button>
               </td>
             </ng-container>
