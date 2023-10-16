@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { delay, map } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'dv-shared-ui-gesuch-step-wrapper',
@@ -22,7 +22,6 @@ export class SharedUiGesuchStepWrapperComponent {
   public outlet!: RouterOutlet;
   public activated$ = new EventEmitter();
   @Output() public step = this.activated$.pipe(
-    map(() => this.outlet.activatedRoute.snapshot.data['step']),
-    delay(0)
+    map(() => this.outlet.activatedRoute.snapshot.data['step'])
   );
 }
