@@ -15,11 +15,11 @@ export const gesuchEinreichen = createEffect(
       switchMap(({ gesuchId }) =>
         gesuchService.gesuchEinreichen$({ gesuchId }).pipe(
           switchMap(() => [
-            GesuchAppDataAccessAbschlussApiEvents.abschlussLoadedSuccess(),
+            GesuchAppDataAccessAbschlussApiEvents.abschlussSuccess(),
             SharedEventGesuchFormAbschluss.init(),
           ]),
           catchError((error) => [
-            GesuchAppDataAccessAbschlussApiEvents.abschlussLoadedFailure({
+            GesuchAppDataAccessAbschlussApiEvents.abschlussFailure({
               error: sharedUtilFnErrorTransformer(error),
             }),
           ])
