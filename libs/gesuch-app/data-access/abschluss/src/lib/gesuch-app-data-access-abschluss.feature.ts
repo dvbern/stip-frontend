@@ -1,6 +1,8 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
+import { SharedEventGesuchFormAbschluss } from '@dv/shared/event/gesuch-form-abschluss';
 import { SharedModelError } from '@dv/shared/model/error';
+
 import { GesuchAppDataAccessAbschlussApiEvents } from './gesuch-app-data-access-abschluss.events';
 
 export interface State {
@@ -21,11 +23,12 @@ export const gesuchAppDataAccessAbschlussFeature = createFeature({
       GesuchAppDataAccessAbschlussApiEvents.gesuchAbschliessen,
       (state): State => ({
         ...state,
-        loading: false,
+        loading: true,
         error: undefined,
       })
     ),
     on(
+      SharedEventGesuchFormAbschluss.init,
       GesuchAppDataAccessAbschlussApiEvents.abschlussSuccess,
       (state): State => ({
         ...state,
