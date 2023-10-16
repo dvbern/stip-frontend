@@ -337,6 +337,18 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view$();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormEinnahmenkosten.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
+        })
+      );
+    }
+  }
+
   private buildUpdatedGesuchFromForm() {
     const { gesuch, gesuchFormular } = this.viewSig();
     const formValues = convertTempFormToRealValues(this.form, [

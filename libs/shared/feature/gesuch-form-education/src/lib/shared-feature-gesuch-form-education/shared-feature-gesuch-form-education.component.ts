@@ -334,6 +334,18 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view$();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormEducation.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.AUSBILDUNG,
+        })
+      );
+    }
+  }
+
   // TODO we should clean up this logic once we have final data structure
   // eg extract to util service (for every form step)
   private buildUpdatedGesuchFromForm() {

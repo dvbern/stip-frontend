@@ -185,6 +185,18 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormAuszahlung.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.AUSZAHLUNGEN,
+        })
+      );
+    }
+  }
+
   trackByIndex(index: number) {
     return index;
   }

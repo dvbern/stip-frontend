@@ -409,12 +409,17 @@
     </div>
   </div>
   <!-- buttons -->
-  <dv-shared-ui-step-form-buttons
-    [@hideDuringAnimation]="duringAnimation"
-    *ngIf="!view().readonly"
-  >
-    <button type="submit" class="btn btn-primary">
+  <dv-shared-ui-step-form-buttons [@hideDuringAnimation]="duringAnimation">
+    <button *ngIf="!view().readonly" type="submit" class="btn btn-primary">
       {{ 'shared.form.save-and-continue' | translate }}
+    </button>
+    <button
+      *ngIf="view().readonly"
+      type="button"
+      class="btn btn-primary"
+      (click)="handleContinue()"
+    >
+      {{ 'shared.form.gonext' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
 

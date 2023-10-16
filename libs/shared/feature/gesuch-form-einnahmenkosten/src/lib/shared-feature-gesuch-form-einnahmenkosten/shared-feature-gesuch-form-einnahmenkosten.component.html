@@ -418,6 +418,14 @@
       <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
         {{ 'shared.form.save-and-continue' | translate }}
       </button>
+      <button
+        *ngIf="view$().readonly"
+        type="button"
+        class="btn btn-primary"
+        (click)="handleContinue()"
+      >
+        {{ 'shared.form.gonext' | translate }}
+      </button>
     </dv-shared-ui-step-form-buttons>
   </form>
 </ng-container>

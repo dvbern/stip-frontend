@@ -358,6 +358,18 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormPerson.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.PERSON,
+        })
+      );
+    }
+  }
+
   trackByIndex(index: number) {
     return index;
   }

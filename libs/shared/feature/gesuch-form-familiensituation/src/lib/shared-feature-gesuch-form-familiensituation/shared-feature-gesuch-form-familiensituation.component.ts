@@ -466,6 +466,18 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormFamiliensituation.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.FAMILIENSITUATION,
+        })
+      );
+    }
+  }
+
   private buildSharedModelAdresseFromForm(): GesuchFormularUpdate {
     const { gesuchFormular } = this.view();
     return {

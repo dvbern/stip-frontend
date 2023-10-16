@@ -237,6 +237,18 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormPartner.nextTriggered({
+          id: gesuch.id,
+          origin: GesuchFormSteps.PARTNER,
+        })
+      );
+    }
+  }
+
   handleSaveAndBack() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
