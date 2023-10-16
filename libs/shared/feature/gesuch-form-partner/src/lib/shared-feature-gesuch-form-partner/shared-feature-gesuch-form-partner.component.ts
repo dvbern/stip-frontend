@@ -186,23 +186,35 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     effect(() => {
       const noAusbildungMitEinkommenOderErwerbstaetigkeit =
         !this.ausbildungMitEinkommenOderErwerbstaetigSig();
-
-      this.formUtils.setDisabledState(
-        this.form.controls.jahreseinkommen,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
-      this.formUtils.setDisabledState(
-        this.form.controls.fahrkosten,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
-      this.formUtils.setDisabledState(
-        this.form.controls.verpflegungskosten,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
+      if (!this.view().readonly) {
+        this.formUtils.setDisabledState(
+          this.form.controls.jahreseinkommen,
+          noAusbildungMitEinkommenOderErwerbstaetigkeit,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.fahrkosten,
+          noAusbildungMitEinkommenOderErwerbstaetigkeit,
+          true
+        );
+        this.formUtils.setDisabledState(
+          this.form.controls.verpflegungskosten,
+          noAusbildungMitEinkommenOderErwerbstaetigkeit,
+          true
+        );
+      }
     });
+    effect(
+      () => {
+        const { readonly } = this.view();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
