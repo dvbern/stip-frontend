@@ -92,7 +92,9 @@ export const isStepDisabled = (
     }
     case 'ELTERN': {
       const werZahltAlimente = formular?.familiensituation?.werZahltAlimente;
-      return werZahltAlimente === 'GEMEINSAM';
+      const mutterUnbekanntVerstorben = formular?.familiensituation?.mutterUnbekanntVerstorben;
+      const vaterUnbekanntVerstorben = formular?.familiensituation?.vaterUnbekanntVerstorben;
+      return werZahltAlimente === 'GEMEINSAM' || (mutterUnbekanntVerstorben === 'VERSTORBEN' || mutterUnbekanntVerstorben === 'UNBEKANNT' && vaterUnbekanntVerstorben === 'VERSTORBEN' || vaterUnbekanntVerstorben === 'UNBEKANNT');
     }
     default:
       return false;
