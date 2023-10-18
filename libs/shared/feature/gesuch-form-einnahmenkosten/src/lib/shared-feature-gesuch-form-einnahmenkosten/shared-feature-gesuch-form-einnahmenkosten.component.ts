@@ -6,9 +6,9 @@ import {
   computed,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -66,7 +66,7 @@ import { selectSharedFeatureGesuchFormEinnahmenkostenView } from './shared-featu
 export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
-  private formService = inject(SharedUtilFormService);
+  private formUtils = inject(SharedUtilFormService);
   private elementRef = inject(ElementRef);
   form = this.formBuilder.group({
     nettoerwerbseinkommen: [<string | null>null, [Validators.required]],
@@ -100,9 +100,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   maskitoNumber = maskitoNumber;
   maskitoPositiveNumber = maskitoPositiveNumber;
 
-  hiddenFieldsSet = new BehaviorSubject<Set<FormControl>>(new Set());
-
-  hiddenFieldsSetSig = toSignal(this.hiddenFieldsSet);
+  hiddenFieldsSetSig = signal(new Set());
 
   formStateSig = computed(() => {
     const { gesuchFormular, ausbildungsstaettes } = this.viewSig();
@@ -180,92 +178,40 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         if (!hasData) {
           return;
         }
-        const setToUpdate = this.hiddenFieldsSet.value;
 
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.renten,
-          !hatElternteilVerloren,
-          true
+          !hatElternteilVerloren
         );
-        if (!hatElternteilVerloren) {
-          setToUpdate.add(this.form.controls.renten);
-        }
-
-        this.formService.setDisabledState(
-          this.form.controls.zulagen,
-          !hatKinder,
-          true
-        );
-        if (!hatKinder) {
-          setToUpdate.add(this.form.controls.zulagen);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(this.form.controls.zulagen, !hatKinder);
+        this.setDisabledStateAndHide(
           this.form.controls.ausbildungskostenSekundarstufeZwei,
-          !willSekundarstufeZwei,
-          true
+          !willSekundarstufeZwei
         );
-        if (!willSekundarstufeZwei) {
-          setToUpdate.add(
-            this.form.controls.ausbildungskostenSekundarstufeZwei
-          );
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.ausbildungskostenTertiaerstufe,
-          !willTertiaerstufe,
-          true
+          !willTertiaerstufe
         );
-        if (!willTertiaerstufe) {
-          setToUpdate.add(this.form.controls.ausbildungskostenTertiaerstufe);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.willDarlehen,
-          !istErwachsen,
-          true
+          !istErwachsen
         );
-        if (!istErwachsen) {
-          setToUpdate.add(this.form.controls.willDarlehen);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.auswaertigeMittagessenProWoche,
-          !wohnsitzNotEigenerHaushalt,
-          true
+          !wohnsitzNotEigenerHaushalt
         );
-        if (!wohnsitzNotEigenerHaushalt) {
-          setToUpdate.add(this.form.controls.auswaertigeMittagessenProWoche);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.wohnkosten,
-          wohnsitzNotEigenerHaushalt,
-          true
+          wohnsitzNotEigenerHaushalt
         );
-        if (wohnsitzNotEigenerHaushalt) {
-          setToUpdate.add(this.form.controls.wohnkosten);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.personenImHaushalt,
-          wohnsitzNotEigenerHaushalt,
-          true
+          wohnsitzNotEigenerHaushalt
         );
-        if (wohnsitzNotEigenerHaushalt) {
-          setToUpdate.add(this.form.controls.personenImHaushalt);
-        }
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.alimente,
-          !existiertGerichtlicheAlimentenregelung,
-          true
+          !existiertGerichtlicheAlimentenregelung
         );
-        if (!existiertGerichtlicheAlimentenregelung) {
-          setToUpdate.add(this.form.controls.alimente);
-        }
-
-        this.hiddenFieldsSet.next(setToUpdate);
       },
       { allowSignalWrites: true }
     );
@@ -324,7 +270,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
 
   handleSave(): void {
     this.form.markAllAsTouched();
-    this.formService.focusFirstInvalid(this.elementRef);
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
@@ -394,6 +340,21 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         },
       },
     };
+  }
+  private setDisabledStateAndHide(
+    formControl: FormControl,
+    disabled: boolean
+  ): void {
+    this.formUtils.setDisabledState(formControl, disabled, true);
+
+    this.hiddenFieldsSetSig.update((setToUpdate) => {
+      if (disabled) {
+        setToUpdate.add(formControl);
+      } else {
+        setToUpdate.delete(formControl);
+      }
+      return setToUpdate;
+    });
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
