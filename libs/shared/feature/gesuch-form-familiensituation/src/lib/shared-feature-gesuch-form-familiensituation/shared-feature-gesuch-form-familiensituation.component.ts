@@ -123,8 +123,7 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
   readonly ELTERN_ABWESENHEITS_GRUND = ElternAbwesenheitsGrund;
   readonly ELTERN_UNBEKANNTHEITS_GRUND = ElternUnbekanntheitsGrund;
 
-  hiddenFieldsSet = new BehaviorSubject<Set<FormControl>>(new Set());
-  hiddenFieldsSetSig = toSignal(this.hiddenFieldsSet);
+  hiddenFieldsSetSig = signal(new Set());
 
   form = this.formBuilder.group({
     elternVerheiratetZusammen: [<boolean | null>null, [Validators.required]],
@@ -533,13 +532,14 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
     disabled: boolean
   ): void {
     this.formUtils.setDisabledState(formControl, disabled, true);
-    const setToUpdate = this.hiddenFieldsSet.value;
-    if (disabled) {
-      setToUpdate.add(formControl);
-    } else {
-      setToUpdate.delete(formControl);
-    }
-    this.hiddenFieldsSet.next(setToUpdate);
+    this.hiddenFieldsSetSig.update((setToUpdate) => {
+      if (disabled) {
+        setToUpdate.add(formControl);
+      } else {
+        setToUpdate.delete(formControl);
+      }
+      return setToUpdate;
+    });
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
