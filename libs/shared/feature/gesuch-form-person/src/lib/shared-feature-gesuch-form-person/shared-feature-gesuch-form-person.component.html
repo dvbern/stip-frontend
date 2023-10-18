@@ -2,7 +2,7 @@
   <!-- loading -->
   <div
     data-testid="form-person-loading"
-    *ngIf="view().loading"
+    *ngIf="viewSig().loading"
     class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
   >
     <div class="dv-progress-bar-indeterminate">
@@ -14,7 +14,7 @@
     [formGroup]="form"
     novalidate
     class="mt-4"
-    *ngIf="!view().loading"
+    *ngIf="!viewSig().loading"
     (ngSubmit)="handleSave()"
   >
     <!-- AHV -->
@@ -532,11 +532,11 @@
 
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
-      <button *ngIf="!view().readonly" type="submit" class="btn btn-primary">
+      <button *ngIf="!viewSig().readonly" type="submit" class="btn btn-primary">
         {{ 'shared.form.save-and-continue' | translate }}
       </button>
       <button
-        *ngIf="view().readonly"
+        *ngIf="viewSig().readonly"
         type="button"
         class="btn btn-primary"
         (click)="handleContinue()"

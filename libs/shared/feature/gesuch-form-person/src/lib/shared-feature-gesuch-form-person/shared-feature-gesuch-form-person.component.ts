@@ -7,6 +7,7 @@ import {
   ElementRef,
   inject,
   OnInit,
+  signal,
   Signal,
 } from '@angular/core';
 import {
@@ -25,7 +26,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, filter, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { subYears } from 'date-fns';
 
@@ -126,20 +127,19 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   readonly wohnsitzValues = Object.values(Wohnsitz);
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
   languageSig = this.store.selectSignal(selectLanguage);
-  view = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
+  viewSig = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
   updateValidity$ = new Subject<unknown>();
-  laenderSig = computed(() => this.view().laender);
+  laenderSig = computed(() => this.viewSig().laender);
   translatedLaender$ = toObservable(this.laenderSig).pipe(
     switchMap((laender) => this.countriesService.getCountryList(laender))
   );
-  hiddenFieldsSet = new BehaviorSubject<Set<FormControl>>(new Set());
-  hiddenFieldsSetSig = toSignal(this.hiddenFieldsSet);
+  hiddenFieldsSetSig = signal(new Set());
   isSozialversicherungsnummerInfoShown = false;
   isNiederlassungsstatusInfoShown = false;
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptionsSig: Signal<DocumentOptions | null> =
     computed(() => {
-      const gesuch = this.view().gesuch;
+      const gesuch = this.viewSig().gesuch;
       return gesuch
         ? {
             gesuchId: gesuch.id,
@@ -232,22 +232,20 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   });
 
   constructor() {
-    // patch form value
     effect(
       () => {
-        if (!this.view().readonly) {
-          updateWohnsitzControlsState(
-            this.formUtils,
-            this.form.controls,
-            !this.showWohnsitzSplitterSig()
-          );
-        }
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig() || this.viewSig().readonly
+        );
       },
       { allowSignalWrites: true }
     );
+    // patch form value
     effect(
       () => {
-        const { gesuchFormular } = this.view();
+        const { gesuchFormular } = this.viewSig();
         if (gesuchFormular?.personInAusbildung) {
           const person = gesuchFormular.personInAusbildung;
           const personForForm = {
@@ -298,6 +296,8 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
         if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
           this.form.controls.heimatort.enable();
           this.form.controls.vormundschaft.enable();
+          this.setDisabledStateAndHide(this.form.controls.heimatort, false);
+          this.setDisabledStateAndHide(this.form.controls.vormundschaft, false);
           this.setDisabledStateAndHide(
             this.form.controls.niederlassungsstatus,
             true
@@ -314,9 +314,10 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
         }
         // Any other nationality was selected
         else {
-          const setToUpdate = this.hiddenFieldsSet.value;
-          setToUpdate.delete(this.form.controls.niederlassungsstatus);
-          this.hiddenFieldsSet.next(setToUpdate);
+          this.hiddenFieldsSetSig.update((setToUpdate) => {
+            setToUpdate.delete(this.form.controls.niederlassungsstatus);
+            return setToUpdate;
+          });
           this.setDisabledStateAndHide(this.form.controls.heimatort, true);
           this.setDisabledStateAndHide(this.form.controls.vormundschaft, true);
         }
@@ -326,7 +327,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
 
     effect(
       () => {
-        const { readonly } = this.view();
+        const { readonly } = this.viewSig();
         if (readonly) {
           Object.values(this.form.controls).forEach((control) =>
             control.disable()
@@ -359,7 +360,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   handleContinue() {
-    const { gesuch } = this.view();
+    const { gesuch } = this.viewSig();
     if (gesuch?.id) {
       this.store.dispatch(
         SharedEventGesuchFormPerson.nextTriggered({
@@ -383,7 +384,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const { gesuch, gesuchFormular } = this.view();
+    const { gesuch, gesuchFormular } = this.viewSig();
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
@@ -413,13 +414,14 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     disabled: boolean
   ): void {
     this.formUtils.setDisabledState(formControl, disabled, true);
-    const setToUpdate = this.hiddenFieldsSet.value;
-    if (disabled) {
-      setToUpdate.add(formControl);
-    } else {
-      setToUpdate.delete(formControl);
-    }
-    this.hiddenFieldsSet.next(setToUpdate);
+    this.hiddenFieldsSetSig.update((setToUpdate) => {
+      if (disabled) {
+        setToUpdate.add(formControl);
+      } else {
+        setToUpdate.delete(formControl);
+      }
+      return setToUpdate;
+    });
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;
