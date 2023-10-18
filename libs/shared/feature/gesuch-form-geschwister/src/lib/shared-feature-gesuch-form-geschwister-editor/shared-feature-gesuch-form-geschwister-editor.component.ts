@@ -97,7 +97,7 @@ export class SharedFeatureGesuchFormGeschwisterEditorComponent
 
   private store = inject(Store);
   languageSig = this.store.selectSignal(selectLanguage);
-  view = this.store.selectSignal(selectSharedDataAccessGesuchsView);
+  viewSig = this.store.selectSignal(selectSharedDataAccessGesuchsView);
   updateValidity$ = new Subject<unknown>();
 
   form = this.formBuilder.group({
@@ -136,13 +136,11 @@ export class SharedFeatureGesuchFormGeschwisterEditorComponent
   constructor() {
     effect(
       () => {
-        if (!this.view().readonly) {
-          updateWohnsitzControlsState(
-            this.formUtils,
-            this.form.controls,
-            !this.showWohnsitzSplitterSig()
-          );
-        }
+        updateWohnsitzControlsState(
+          this.formUtils,
+          this.form.controls,
+          !this.showWohnsitzSplitterSig() || this.viewSig().readonly
+        );
       },
       { allowSignalWrites: true }
     );
@@ -166,7 +164,7 @@ export class SharedFeatureGesuchFormGeschwisterEditorComponent
     );
     effect(
       () => {
-        const { readonly } = this.view();
+        const { readonly } = this.viewSig();
         if (readonly) {
           Object.values(this.form.controls).forEach((control) =>
             control.disable()
