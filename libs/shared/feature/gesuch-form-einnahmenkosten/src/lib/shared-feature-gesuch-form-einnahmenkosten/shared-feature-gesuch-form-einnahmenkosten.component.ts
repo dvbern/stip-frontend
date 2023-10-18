@@ -291,8 +291,8 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
             ausbildungskostenTertiaerstufe:
               einnahmenKosten.ausbildungskostenTertiaerstufe?.toString(),
             fahrkosten: einnahmenKosten.fahrkosten.toString(),
-            wohnkosten: einnahmenKosten.wohnkosten.toString(),
-            personenImHaushalt: einnahmenKosten.personenImHaushalt.toString(),
+            wohnkosten: einnahmenKosten.wohnkosten?.toString(),
+            personenImHaushalt: einnahmenKosten.personenImHaushalt?.toString(),
           });
         } else {
           this.form.reset();
