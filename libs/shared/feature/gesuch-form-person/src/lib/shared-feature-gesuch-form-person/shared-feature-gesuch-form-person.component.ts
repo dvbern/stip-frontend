@@ -265,13 +265,13 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-    const zivilrechtlichChanged$ = this.formUtils.signalFromChanges(
+    const zivilrechtlichChangedSig = this.formUtils.signalFromChanges(
       this.form.controls.identischerZivilrechtlicherWohnsitz,
       { useDefault: true }
     );
     effect(
       () => {
-        const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
+        const zivilrechtlichIdentisch = zivilrechtlichChangedSig() === true;
         this.setDisabledStateAndHide(
           this.form.controls.identischerZivilrechtlicherWohnsitzPLZ,
           zivilrechtlichIdentisch
@@ -286,12 +286,12 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
       { allowSignalWrites: true }
     );
 
-    const nationalitaetChanged$ = toSignal(
+    const nationalitaetChangedSig = toSignal(
       this.form.controls.nationalitaet.valueChanges
     );
     effect(
       () => {
-        const nationalitaetChanged = nationalitaetChanged$();
+        const nationalitaetChanged = nationalitaetChangedSig();
         // If nationality is Switzerland
         if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
           this.form.controls.heimatort.enable();
