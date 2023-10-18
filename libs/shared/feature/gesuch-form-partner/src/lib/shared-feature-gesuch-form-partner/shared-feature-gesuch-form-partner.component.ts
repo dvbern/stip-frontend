@@ -183,33 +183,29 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-    effect(() => {
-      const noAusbildungMitEinkommenOderErwerbstaetigkeit =
-        !this.ausbildungMitEinkommenOderErwerbstaetigSig();
-      if (!this.view().readonly) {
-        this.formUtils.setDisabledState(
-          this.form.controls.jahreseinkommen,
-          noAusbildungMitEinkommenOderErwerbstaetigkeit,
-          true
-        );
-        this.formUtils.setDisabledState(
-          this.form.controls.fahrkosten,
-          noAusbildungMitEinkommenOderErwerbstaetigkeit,
-          true
-        );
-        this.formUtils.setDisabledState(
-          this.form.controls.verpflegungskosten,
-          noAusbildungMitEinkommenOderErwerbstaetigkeit,
-          true
-        );
-      }
-    });
     effect(
       () => {
-        const { readonly } = this.view();
-        if (readonly) {
+        const noAusbildungMitEinkommenOderErwerbstaetigkeit =
+          !this.ausbildungMitEinkommenOderErwerbstaetigSig();
+        if (this.view().readonly) {
           Object.values(this.form.controls).forEach((control) =>
             control.disable()
+          );
+        } else {
+          this.formUtils.setDisabledState(
+            this.form.controls.jahreseinkommen,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.fahrkosten,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.verpflegungskosten,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
           );
         }
       },
