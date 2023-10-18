@@ -274,8 +274,8 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungsgang,
-          !staette$ && (!staette$ || this.view$().readonly),
-          true
+          !staette$() || this.view$().readonly,
+          !this.view$().readonly
         );
       },
       { allowSignalWrites: true }
