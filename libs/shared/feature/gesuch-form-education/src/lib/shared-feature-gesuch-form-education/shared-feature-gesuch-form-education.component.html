@@ -1,7 +1,7 @@
 <!-- loading -->
 <div
   data-testid="form-ausbildung-loading"
-  *ngIf="view$().loading"
+  *ngIf="viewSig().loading"
   class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
 >
   <div class="dv-progress-bar-indeterminate">
@@ -15,7 +15,7 @@
   data-testid="form-education-form"
   novalidate
   class="mt-4"
-  *ngIf="!view$().loading"
+  *ngIf="!viewSig().loading"
   (ngSubmit)="handleSave()"
 >
   <h3 class="mt-4">
@@ -49,7 +49,7 @@
         mat-icon-button
         aria-label="Clear"
         (click)="form.controls.ausbildungsstaette.reset()"
-        [disabled]="view$().readonly"
+        [disabled]="viewSig().readonly"
       >
         <span class="material-symbols-rounded align-middle">clear</span>
       </button>
@@ -79,7 +79,7 @@
         matInput
         type="text"
         formControlName="alternativeAusbildungsstaette"
-        [readonly]="view$().readonly"
+        [readonly]="viewSig().readonly"
       />
     </mat-form-field>
   </div>
@@ -126,7 +126,7 @@
         type="text"
         matInput
         formControlName="alternativeAusbildungsgang"
-        [readonly]="view$().readonly"
+        [readonly]="viewSig().readonly"
       />
       <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.required' | translate }}
@@ -184,7 +184,7 @@
       <mat-error *dvSharedUiFormMessageError="'minDate'">
         {{
           'shared.form.education.form.error.monthYearAfter'
-            | translate : { date: view$().gesuchsPeriodenStartFormatted }
+            | translate : { date: viewSig().gesuchsPeriodenStartFormatted }
         }}
       </mat-error>
       <mat-error *dvSharedUiFormMessageError="'endDateAfterStart'">
@@ -251,11 +251,11 @@
 
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
-    <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
+    <button type="submit" class="btn btn-primary" *ngIf="!viewSig().readonly">
       {{ 'shared.form.save-and-continue' | translate }}
     </button>
     <button
-      *ngIf="view$().readonly"
+      *ngIf="viewSig().readonly"
       type="button"
       class="btn btn-primary"
       (click)="handleContinue()"

@@ -116,7 +116,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     }),
   });
 
-  view$ = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
+  viewSig = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
   ausbildungsstaette$ = toSignal(
     this.form.controls.ausbildungsstaette.valueChanges
   );
@@ -125,12 +125,12 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   > = computed(() => {
     const currentAusbildungsstaette = this.ausbildungsstaette$();
     const toReturn = currentAusbildungsstaette
-      ? this.view$().ausbildungsstaettes.filter((ausbildungsstaette) => {
+      ? this.viewSig().ausbildungsstaettes.filter((ausbildungsstaette) => {
           return this.getTranslatedAusbildungstaetteName(ausbildungsstaette)
             ?.toLowerCase()
             .includes(currentAusbildungsstaette.toLowerCase());
         })
-      : this.view$().ausbildungsstaettes;
+      : this.viewSig().ausbildungsstaettes;
     return toReturn.map((ausbildungsstaette) => {
       return {
         ...ausbildungsstaette,
@@ -149,7 +149,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     (Ausbildungsgang & { translatedName?: string })[]
   > = computed(() => {
     return (
-      this.view$()
+      this.viewSig()
         .ausbildungsstaettes.find(
           (ausbildungsstaette) =>
             this.getTranslatedAusbildungstaetteName(ausbildungsstaette) ===
@@ -196,7 +196,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       { allowSignalWrites: true }
     );
     effect(() => {
-      const { gesuchsPeriodenStart } = this.view$();
+      const { gesuchsPeriodenStart } = this.viewSig();
       const validators: ValidatorFn[] = [
         Validators.required,
         parseableDateValidatorForLocale(this.languageSig(), 'monthYear'),
@@ -237,8 +237,8 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     // fill form
     effect(
       () => {
-        const { ausbildung } = this.view$();
-        const { ausbildungsstaettes } = this.view$();
+        const { ausbildung } = this.viewSig();
+        const { ausbildungsstaettes } = this.viewSig();
         if (ausbildung && ausbildungsstaettes) {
           const ausbildungsstaette = ausbildungsstaettes.find(
             (ausbildungsstaette) =>
@@ -265,7 +265,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     );
 
     // When Staette null, disable gang
-    const staette$ = toSignal(
+    const staetteSig = toSignal(
       this.form.controls.ausbildungsstaette.valueChanges.pipe(
         startWith(this.form.value.ausbildungsstaette)
       )
@@ -274,8 +274,8 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       () => {
         this.formUtils.setDisabledState(
           this.form.controls.ausbildungsgang,
-          !staette$() || this.view$().readonly,
-          !this.view$().readonly
+          !staetteSig() || this.viewSig().readonly,
+          !this.viewSig().readonly
         );
       },
       { allowSignalWrites: true }
@@ -283,7 +283,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
 
     effect(
       () => {
-        const { readonly } = this.view$();
+        const { readonly } = this.viewSig();
         if (readonly) {
           Object.values(this.form.controls).forEach((control) =>
             control.disable()
@@ -335,7 +335,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   }
 
   handleContinue() {
-    const { gesuch } = this.view$();
+    const { gesuch } = this.viewSig();
     if (gesuch?.id) {
       this.store.dispatch(
         SharedEventGesuchFormEducation.nextTriggered({
@@ -351,7 +351,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   private buildUpdatedGesuchFromForm() {
     this.onDateBlur(this.form.controls.ausbildungBegin);
     this.onDateBlur(this.form.controls.ausbildungEnd);
-    const { gesuch, gesuchFormular } = this.view$();
+    const { gesuch, gesuchFormular } = this.viewSig();
     const { ausbildungsgang, ...formValue } = convertTempFormToRealValues(
       this.form,
       ['fachrichtung', 'pensum']
