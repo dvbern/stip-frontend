@@ -49,7 +49,7 @@
         mat-icon-button
         aria-label="Clear"
         (click)="form.controls.ausbildungsstaette.reset()"
-        disabled="disabled"
+        [disabled]="view$().readonly"
       >
         <span class="material-symbols-rounded align-middle">clear</span>
       </button>
