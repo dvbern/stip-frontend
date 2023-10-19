@@ -59,7 +59,7 @@
                   *ngIf="!view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
-                  (click)="handleEditKinder(kinder)"
+                  (click)="handleSelectKinder(kinder)"
                   [title]="'shared.form.kinder.edit' | translate"
                 >
                   <i class="material-symbols-rounded">edit</i>
@@ -79,7 +79,7 @@
                   *ngIf="view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
-                  (click)="handleEditKinder(kinder)"
+                  (click)="handleSelectKinder(kinder)"
                   [title]="'shared.form.kinder.view' | translate"
                 >
                   <i class="material-symbols-rounded">visibility</i>
