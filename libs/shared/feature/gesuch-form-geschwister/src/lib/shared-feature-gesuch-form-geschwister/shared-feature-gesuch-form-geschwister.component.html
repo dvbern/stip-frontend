@@ -76,7 +76,7 @@
                   *ngIf="!view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
-                  (click)="handleEditGeschwister(geschwister)"
+                  (click)="handleSelectGeschwister(geschwister)"
                   [title]="'shared.form.geschwister.edit' | translate"
                 >
                   <i class="material-symbols-rounded">edit</i>
@@ -96,7 +96,7 @@
                   *ngIf="view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
-                  (click)="handleEditGeschwister(geschwister)"
+                  (click)="handleSelectGeschwister(geschwister)"
                   [title]="'shared.form.geschwister.view' | translate"
                 >
                   <i class="material-symbols-rounded">visibility</i>
