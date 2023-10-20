@@ -9,6 +9,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -123,16 +124,7 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
     ],
-    sozialversicherungsnummer: [
-      '',
-      [
-        Validators.required,
-        sharedUtilValidatorAhv(
-          `eltern${capitalized(this.elternteil.elternTyp)}`,
-          this.gesuchFormular
-        ),
-      ],
-    ],
+    sozialversicherungsnummer: ['', []],
     geburtsdatum: [
       '',
       [
@@ -187,14 +179,26 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
     );
   }
 
-  ngOnChanges() {
-    this.form.patchValue({
-      ...this.elternteil,
-      geburtsdatum: parseBackendLocalDateAndPrint(
-        this.elternteil.geburtsdatum,
-        this.languageSig()
-      ),
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['elternteil'].currentValue) {
+      this.form.patchValue({
+        ...this.elternteil,
+        geburtsdatum: parseBackendLocalDateAndPrint(
+          this.elternteil.geburtsdatum,
+          this.languageSig()
+        ),
+      });
+
+      const validators = [Validators.required];
+      validators.push(
+        sharedUtilValidatorAhv(
+          `eltern${capitalized(this.elternteil.elternTyp)}`,
+          this.gesuchFormular
+        )
+      );
+      this.form.controls.sozialversicherungsnummer.clearValidators();
+      this.form.controls.sozialversicherungsnummer.addValidators(validators);
+    }
   }
 
   handleSave() {
