@@ -53,6 +53,7 @@ import {
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { capitalized } from '@dv/shared/util-fn/string-helper';
 
 const MAX_AGE_ADULT = 130;
 const MIN_AGE_ADULT = 10;
@@ -126,7 +127,10 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
       '',
       [
         Validators.required,
-        sharedUtilValidatorAhv('elterns', this.gesuchFormular),
+        sharedUtilValidatorAhv(
+          `eltern${capitalized(this.elternteil.elternTyp)}`,
+          this.gesuchFormular
+        ),
       ],
     ],
     geburtsdatum: [

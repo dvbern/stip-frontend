@@ -3,10 +3,10 @@ import { SharedModelGesuchFormular } from '@dv/shared/model/gesuch';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 
 const START_DIGITS = '756';
-type FieldsWithSV = Extract<
-  keyof SharedModelGesuchFormular,
-  'personInAusbildung' | 'elterns' | 'partner'
->;
+type FieldsWithSV =
+  | Extract<keyof SharedModelGesuchFormular, 'personInAusbildung' | 'partner'>
+  | 'elternMutter'
+  | 'elternVater';
 
 // https://www.sozialversicherungsnummer.ch/aufbau-neu.htm
 export function sharedUtilIsValidAhv(ahv: string) {
@@ -40,20 +40,19 @@ export function sharedUtilIsUniqueAhv(
   type: FieldsWithSV,
   gesuchFormular: SharedModelGesuchFormular
 ) {
-  const svNummers: Record<FieldsWithSV, (string | undefined)[]> = {
-    personInAusbildung: [
+  const elterns = gesuchFormular.elterns ?? [];
+  const svNummers: Record<FieldsWithSV, string | undefined> = {
+    personInAusbildung:
       gesuchFormular.personInAusbildung?.sozialversicherungsnummer,
-    ],
-    partner: [gesuchFormular.partner?.sozialversicherungsnummer],
-    elterns: (gesuchFormular.elterns ?? []).map(
-      (e) => e.sozialversicherungsnummer
-    ),
+    partner: gesuchFormular.partner?.sozialversicherungsnummer,
+    elternVater: elterns.find((e) => e.elternTyp === 'VATER')
+      ?.sozialversicherungsnummer,
+    elternMutter: elterns.find((e) => e.elternTyp === 'MUTTER')
+      ?.sozialversicherungsnummer,
   };
   delete svNummers[type];
 
-  const list = Object.values(svNummers)
-    .flatMap((x) => x)
-    .filter(sharedUtilFnTypeGuardsIsDefined);
+  const list = Object.values(svNummers).filter(sharedUtilFnTypeGuardsIsDefined);
   list.push(ahv);
   return new Set(list).size === list.length;
 }

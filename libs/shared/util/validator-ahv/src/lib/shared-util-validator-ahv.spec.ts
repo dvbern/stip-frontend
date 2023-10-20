@@ -4,6 +4,7 @@ import {
   sharedUtilValidatorAhv,
   sharedUtilIsValidAhv,
 } from './shared-util-validator-ahv';
+import { ElternTyp } from '@dv/shared/model/gesuch';
 
 describe('sharedUtilIsValidAhv', () => {
   it('valid ahv', () => {
@@ -19,18 +20,18 @@ describe('sharedUtilIsValidAhv', () => {
 
 describe('sharedUtilAhvValidator', () => {
   it('valid ahv', () => {
-    const mock = new FormControl('756.9217.0769.85');
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
     expect(sharedUtilValidatorAhv('personInAusbildung', {})(mock)).toBe(null);
   });
   it('invalid ahv', () => {
-    const mock = new FormControl('756.9217.0769.40');
+    const mock = new FormControl('756.9217.0769.40', { nonNullable: true });
     expect(sharedUtilValidatorAhv('personInAusbildung', {})(mock)).toEqual({
       ahv: true,
     });
   });
 
   it('unique ahv', () => {
-    const mock = new FormControl('756.9217.0769.85');
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
     expect(
       sharedUtilValidatorAhv('partner', {
         personInAusbildung: {
@@ -40,8 +41,8 @@ describe('sharedUtilAhvValidator', () => {
     ).toBe(null);
   });
 
-  it('unique ahv with same field', () => {
-    const mock = new FormControl('756.9217.0769.85');
+  it('unique ahv if editing same field - parter', () => {
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
     expect(
       sharedUtilValidatorAhv('partner', {
         partner: {
@@ -51,8 +52,8 @@ describe('sharedUtilAhvValidator', () => {
     ).toBe(null);
   });
 
-  it('not unique ahv', () => {
-    const mock = new FormControl('756.9217.0769.85');
+  it('not unique ahv - partner / person', () => {
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
     expect(
       sharedUtilValidatorAhv('partner', {
         personInAusbildung: { sozialversicherungsnummer: mock.value } as any,
@@ -60,5 +61,47 @@ describe('sharedUtilAhvValidator', () => {
     ).toEqual({
       notUniqueAhv: true,
     });
+  });
+
+  it('not unique ahv - vater / mutter', () => {
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
+    expect(
+      sharedUtilValidatorAhv('elternMutter', {
+        elterns: [
+          { elternTyp: ElternTyp.VATER, sozialversicherungsnummer: mock.value },
+        ] as any,
+      })(mock)
+    ).toEqual({
+      notUniqueAhv: true,
+    });
+  });
+
+  it('unique ahv - mutter / mutter', () => {
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
+    expect(
+      sharedUtilValidatorAhv('elternMutter', {
+        elterns: [
+          {
+            elternTyp: ElternTyp.VATER,
+            sozialversicherungsnummer: '756.1111.1111.13',
+          },
+        ] as any,
+      })(mock)
+    ).toEqual(null);
+  });
+
+  it('unique ahv if editing same field - vater', () => {
+    const mock = new FormControl('756.9217.0769.85', { nonNullable: true });
+    expect(
+      sharedUtilValidatorAhv('elternVater', {
+        elterns: [
+          {
+            elternTyp: ElternTyp.MUTTER,
+            sozialversicherungsnummer: '756.1111.1111.13',
+          },
+          { elternTyp: ElternTyp.VATER, sozialversicherungsnummer: mock.value },
+        ] as any,
+      })(mock)
+    ).toEqual(null);
   });
 });
