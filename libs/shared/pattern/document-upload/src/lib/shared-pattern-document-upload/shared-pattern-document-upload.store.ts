@@ -26,7 +26,7 @@ import {
 
 const PROGRESS_ANIMATION_TIME = 600;
 const FORMAT_ERROR = 'shared.file.invalidFormat';
-const GENERIC_ERROR = 'shared.genericError';
+const GENERIC_ERROR = 'shared.genericError.general';
 
 @Injectable()
 export class DocumentStore extends ComponentStore<DocumentState> {

@@ -1,10 +1,10 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-util-fn-error-transformer',
+  displayName: 'shared-data-access-global-notification',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory:
-    '../../../../coverage/libs/shared/util-fn/error-transformer',
+    '../../../../coverage/libs/shared/data-access/global-notification',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

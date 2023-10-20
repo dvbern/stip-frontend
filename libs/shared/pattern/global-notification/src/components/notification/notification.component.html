@@ -1,0 +1,80 @@
+<ng-container *ngIf="severity(); let errorSeverity">
+  <ng-container *ngIf="!isToast">
+    <div
+      class="alert alert-dismissible fade show"
+      [class.severe]="errorSeverity && ['SEVERE'].includes(errorSeverity)"
+      [class.alert-danger]="
+        errorSeverity && ['SEVERE', 'ERROR'].includes(errorSeverity)
+      "
+      role="alert"
+    >
+      <ng-container *ngTemplateOutlet="errorBody"></ng-container>
+
+      <button
+        type="button"
+        class="btn-close"
+        data-dismiss="alert"
+        aria-label="Close"
+        (click)="closeTriggered.emit()"
+      ></button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isToast">
+    <div
+      class="toast alert align-items-start show mt-3 p-2"
+      [class.severe]="errorSeverity && ['SEVERE'].includes(errorSeverity)"
+      [class.alert-danger]="
+        errorSeverity && ['SEVERE', 'ERROR'].includes(errorSeverity)
+      "
+      [class.alert-warning]="
+        errorSeverity && ['WARNING'].includes(errorSeverity)
+      "
+      [class.alert-info]="!errorSeverity || ['INFO'].includes(errorSeverity)"
+      [class.alert-success]="
+        !errorSeverity || ['SUCCESS'].includes(errorSeverity)
+      "
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex align-items-stretch justify-content-between">
+        <div class="toast-body">
+          <ng-container *ngTemplateOutlet="errorBody"></ng-container>
+        </div>
+
+        <button
+          *ngIf="!notification.autohide"
+          type="button"
+          class="btn-close me-0 mt-0 p-3"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+          (click)="closeTriggered.emit()"
+        ></button>
+      </div>
+    </div>
+    <!-- TIMESTAMP -->
+    <div
+      *ngIf="showTimestamp()"
+      class="small text-end opacity-50 timestamp"
+      style="margin-top: -1rem"
+    >
+      {{ dateNow | date : 'yyyy-MM-dd HH:mm:ss' }}
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #errorBody>
+  <div class="d-flex justify-content-start">
+    <div *ngIf="notification.messageKey || notification.message">
+      <b
+        *ngIf="notification.messageKey; let messageKey"
+        [innerHTML]="messageKey | translate"
+      ></b>
+      <div
+        *ngIf="notification.message; let message"
+        [innerHTML]="message"
+      ></div>
+    </div>
+  </div>
+</ng-template>

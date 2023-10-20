@@ -18,6 +18,7 @@ import {
   HttpBackend,
   provideHttpClient,
   withInterceptors,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
@@ -30,10 +31,11 @@ import {
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import {
   MissingTranslationHandler,
   MissingTranslationHandlerParams,
+  TranslateLoader,
+  TranslateModule,
 } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
@@ -48,6 +50,7 @@ import {
   sharedDataAccessLanguageEffects,
   sharedDataAccessLanguageFeature,
 } from '@dv/shared/data-access/language';
+import { sharedDataAccessGlobalNotificationsFeature } from '@dv/shared/data-access/global-notification';
 import { provideMaterialDefaultOptions } from '@dv/shared/pattern/angular-material-config';
 import { provideSharedPatternI18nTitleStrategy } from '@dv/shared/pattern/i18n-title-strategy';
 import { provideSharedPatternNgbDatepickerAdapter } from '@dv/shared/pattern/ngb-datepicker-adapter';
@@ -62,6 +65,7 @@ import {
   sharedDataAccessBenutzersFeature,
 } from '@dv/shared/data-access/benutzer';
 import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
+import { withDvGlobalHttpErrorInterceptorFn } from '@dv/shared/pattern/http-error-interceptor';
 
 export class ExplicitMissingTranslationHandler
   implements MissingTranslationHandler
@@ -98,6 +102,7 @@ export function provideSharedPatternCore(
     provideHttpClient(
       withInterceptors([
         SharedPatternInterceptorDeploymentConfig,
+        ...withDvGlobalHttpErrorInterceptorFn({ type: 'globalAndLocal' }),
         // STUB add global interceptors for auth, error handling, ...
       ])
     ),
@@ -135,6 +140,7 @@ export function provideSharedPatternCore(
         },
       }
     ),
+    provideState(sharedDataAccessGlobalNotificationsFeature),
     provideState(sharedDataAccessBenutzersFeature),
     provideState(sharedDataAccessConfigsFeature),
     provideState(sharedDataAccessLanguageFeature),

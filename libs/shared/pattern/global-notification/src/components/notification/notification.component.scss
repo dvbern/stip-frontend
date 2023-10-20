@@ -1,0 +1,32 @@
+:host {
+  display: block;
+
+  .alert-danger {
+    border: none;
+    background-color: var(--dv-alert-bg);
+    color: var(--dv-alert-color);
+
+    &.severe {
+      //border-width: 3px;
+      background-color: var(--dv-danger);
+      border: none;
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  .alert-warning {
+    border: var(--dv-waning-border);
+    background-color: var(--dv-warning-bg-subtle);
+  }
+
+  .alert-info {
+    border: none;
+    background-color: var(--dv-info-bg-subtle);
+  }
+
+  .alert-success {
+    border: none;
+    background-color: var(--dv-success-bg-subtle);
+  }
+}

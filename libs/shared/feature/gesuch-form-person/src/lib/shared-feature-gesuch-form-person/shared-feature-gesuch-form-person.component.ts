@@ -147,10 +147,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     });
 
   form = this.formBuilder.group({
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     anrede: this.formBuilder.control<Anrede>('' as Anrede, {
       validators: Validators.required,
     }),
