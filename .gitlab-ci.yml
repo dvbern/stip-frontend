@@ -83,7 +83,6 @@ component-test:
   artifacts:
     when: always
     paths:
-      - './coverage'
       - './libs/**/coverage'
     expire_in: 1 day
   rules:
