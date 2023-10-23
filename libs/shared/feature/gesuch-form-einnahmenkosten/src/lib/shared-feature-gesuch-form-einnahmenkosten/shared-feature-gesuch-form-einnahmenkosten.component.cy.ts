@@ -235,7 +235,7 @@ function createEmptyPersonInAusbildung(): PersonInAusbildung {
     vorname: '',
     nachname: '',
     identischerZivilrechtlicherWohnsitz: true,
-    geburtsdatum: '',
+    geburtsdatum: '1990-01-01',
     email: '',
     telefonnummer: '',
     wohnsitz: 'FAMILIE',
@@ -261,6 +261,7 @@ function mountWithInitialGesuchsformular(gesuchFormular: GesuchFormularUpdate) {
           gesuchs: {
             gesuchFormular: gesuchFormular,
           },
+          language: { language: 'de' },
         },
       }),
       provideMaterialDefaultOptions(),
