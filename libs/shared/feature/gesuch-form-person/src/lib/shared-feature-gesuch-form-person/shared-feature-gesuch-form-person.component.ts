@@ -240,6 +240,18 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.view();
+
+        const svValidators = [Validators.required];
+        if (gesuchFormular) {
+          svValidators.push(
+            sharedUtilValidatorAhv('personInAusbildung', gesuchFormular)
+          );
+        }
+        this.form.controls.sozialversicherungsnummer.clearValidators();
+        this.form.controls.sozialversicherungsnummer.addValidators(
+          svValidators
+        );
+
         if (gesuchFormular?.personInAusbildung) {
           const person = gesuchFormular.personInAusbildung;
           const personForForm = {

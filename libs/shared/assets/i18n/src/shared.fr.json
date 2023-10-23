@@ -44,6 +44,7 @@
   "shared.form.error.requiredShort": "Obligatoire",
   "shared.form.error.invalidIBAN": "L'IBAN saisi n'est pas valide",
   "shared.form.error.ahv": "Veuillez fournir un numéro de sécurité sociale valide",
+  "shared.form.error.notUniqueAhv": "Le numéro AVS indiqué a déjà été utilisé dans cette demande",
   "shared.form.error.range": "Veuillez saisir une valeur comprise entre {{min}} et {{max}}.",
   "shared.form.error.dateFormat": "Veuillez saisir une date valide",
   "shared.form.error.minDatePast": "La date est trop éloignée dans le passé",

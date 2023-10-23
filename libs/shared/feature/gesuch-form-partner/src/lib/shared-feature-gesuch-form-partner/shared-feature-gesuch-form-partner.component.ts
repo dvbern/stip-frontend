@@ -104,10 +104,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
   );
 
   form = this.formBuilder.group({
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
@@ -144,6 +141,15 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.view();
+        const svValidators = [Validators.required];
+        if (gesuchFormular) {
+          svValidators.push(sharedUtilValidatorAhv('partner', gesuchFormular));
+        }
+        this.form.controls.sozialversicherungsnummer.clearValidators();
+        this.form.controls.sozialversicherungsnummer.addValidators(
+          svValidators
+        );
+
         if (gesuchFormular?.partner) {
           const partner = gesuchFormular.partner;
           const partnerForForm = {

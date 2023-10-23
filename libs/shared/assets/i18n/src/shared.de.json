@@ -44,6 +44,7 @@
   "shared.form.error.requiredShort": "Erforderlich",
   "shared.form.error.invalidIBAN": "Die eingebene IBAN ist ungültig",
   "shared.form.error.ahv": "Bitte geben Sie eine gültige AHV-Nummer ein",
+  "shared.form.error.notUniqueAhv": "Die angegebene AHV-Nummer wurde bereits in diesem Gesuch verwendet",
   "shared.form.error.range": "Bitte geben Sie einen Wert zwischen {{min}} und {{max}} ein",
   "shared.form.error.dateFormat": "Bitte geben Sie ein gültiges Datum ein",
   "shared.form.error.minDatePast": "Das Datum liegt zu weit in der Vergangenheit",
