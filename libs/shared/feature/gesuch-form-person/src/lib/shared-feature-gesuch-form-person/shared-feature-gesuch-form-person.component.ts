@@ -238,7 +238,17 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
         updateWohnsitzControlsState(
           this.formUtils,
           this.form.controls,
-          !this.showWohnsitzSplitterSig() || this.viewSig().readonly
+          this.viewSig().readonly
+        );
+        this.updateVisbility(
+          this.form.controls.wohnsitzAnteilMutter,
+          this.showWohnsitzSplitterSig(),
+          { resetOnInvisible: true }
+        );
+        this.updateVisbility(
+          this.form.controls.wohnsitzAnteilVater,
+          this.showWohnsitzSplitterSig(),
+          { resetOnInvisible: true }
         );
       },
       { allowSignalWrites: true }
