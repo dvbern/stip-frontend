@@ -150,10 +150,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     });
 
   form = this.formBuilder.group({
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     anrede: this.formBuilder.control<Anrede>('' as Anrede, {
       validators: Validators.required,
     }),
@@ -257,6 +254,17 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.viewSig();
+
+        const svValidators = [Validators.required];
+        if (gesuchFormular) {
+          svValidators.push(
+            sharedUtilValidatorAhv('personInAusbildung', gesuchFormular)
+          );
+        }
+        this.form.controls.sozialversicherungsnummer.clearValidators();
+        this.form.controls.sozialversicherungsnummer.addValidators(
+          svValidators
+        );
         if (gesuchFormular?.personInAusbildung) {
           const person = gesuchFormular.personInAusbildung;
           const personForForm = {

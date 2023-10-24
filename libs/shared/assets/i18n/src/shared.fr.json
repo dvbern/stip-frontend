@@ -42,6 +42,7 @@
   "shared.form.error.requiredShort": "Obligatoire",
   "shared.form.error.invalidIBAN": "L'IBAN saisi n'est pas valide",
   "shared.form.error.ahv": "Veuillez fournir un numéro de sécurité sociale valide",
+  "shared.form.error.notUniqueAhv": "Le numéro AVS indiqué a déjà été utilisé dans cette demande",
   "shared.form.error.range": "Veuillez saisir une valeur comprise entre {{min}} et {{max}}.",
   "shared.form.error.dateFormat": "Veuillez saisir une date valide",
   "shared.form.error.minDatePast": "La date est trop éloignée dans le passé",
@@ -166,7 +167,8 @@
   "shared.form.eltern.mutter.title": "mère",
   "shared.form.eltern.vater.title": "père",
   "shared.form.eltern.none": "Aucune information requise",
-  "shared.form.eltern.ausweisbFluechtling.label": "Hat Ihr Vater einen Ausweis B oder ist Er Flüchtling?",
+  "shared.form.eltern.ausweisbFluechtling.mutter.label": "Votre mère a-t-elle un permis B ou est-il un réfugié?",
+  "shared.form.eltern.ausweisbFluechtling.vater.label": "Votre père a-t-il un permis B ou est-il réfugié?",
   "shared.form.eltern.ergaenzungsleistungAusbezahlt.label": "Werden Ergänzungsleistungen ausbezahlt?",
   "shared.form.eltern.sozialhilfebeitraegeAusbezahlt.label": "Werden Sozialhilfebeiträge ausbezahlt?",
 

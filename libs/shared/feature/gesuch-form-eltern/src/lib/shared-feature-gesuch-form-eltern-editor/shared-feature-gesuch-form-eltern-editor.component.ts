@@ -9,6 +9,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -37,6 +38,7 @@ import {
   Land,
   ElternUpdate,
   MASK_SOZIALVERSICHERUNGSNUMMER,
+  SharedModelGesuchFormular,
 } from '@dv/shared/model/gesuch';
 import {
   convertTempFormToRealValues,
@@ -52,6 +54,7 @@ import {
   parseStringAndPrintForBackendLocalDate,
 } from '@dv/shared/util/validator-date';
 import { sharedUtilValidatorAhv } from '@dv/shared/util/validator-ahv';
+import { capitalized } from '@dv/shared/util-fn/string-helper';
 import { selectSharedFeatureGesuchFormElternView } from '../shared-feature-gesuch-form-eltern/shared-feature-gesuch-form-eltern.selector';
 
 const MAX_AGE_ADULT = 130;
@@ -91,6 +94,7 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
     'elternTyp'
   > &
     Required<Pick<ElternUpdate, 'elternTyp'>>;
+  @Input({ required: true }) gesuchFormular!: SharedModelGesuchFormular;
   @Output() saveTriggered = new EventEmitter<ElternUpdate>();
   @Output() closeTriggered = new EventEmitter<void>();
   @Output() deleteTriggered = new EventEmitter<string>();
@@ -123,10 +127,7 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
       '',
       [Validators.required, sharedUtilValidatorTelefonNummer()],
     ],
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     geburtsdatum: [
       '',
       [
@@ -192,14 +193,26 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
     );
   }
 
-  ngOnChanges() {
-    this.form.patchValue({
-      ...this.elternteil,
-      geburtsdatum: parseBackendLocalDateAndPrint(
-        this.elternteil.geburtsdatum,
-        this.languageSig()
-      ),
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['elternteil'].currentValue) {
+      this.form.patchValue({
+        ...this.elternteil,
+        geburtsdatum: parseBackendLocalDateAndPrint(
+          this.elternteil.geburtsdatum,
+          this.languageSig()
+        ),
+      });
+
+      const validators = [Validators.required];
+      validators.push(
+        sharedUtilValidatorAhv(
+          `eltern${capitalized(this.elternteil.elternTyp)}`,
+          this.gesuchFormular
+        )
+      );
+      this.form.controls.sozialversicherungsnummer.clearValidators();
+      this.form.controls.sozialversicherungsnummer.addValidators(validators);
+    }
   }
 
   handleSave() {
