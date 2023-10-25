@@ -56,9 +56,10 @@
               </td>
               <td>
                 <button
+                  *ngIf="!view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
-                  (click)="handleEditKinder(kinder)"
+                  (click)="handleSelectKinder(kinder)"
                   [title]="'shared.form.kinder.edit' | translate"
                 >
                   <i class="material-symbols-rounded">edit</i>
@@ -66,12 +67,22 @@
               </td>
               <td>
                 <button
+                  *ngIf="!view$().readonly"
                   type="button"
                   class="btn btn-link p-0 lh-1"
                   (click)="handleDeleteKinder(kinder)"
                   [title]="'shared.form.kinder.delete' | translate"
                 >
                   <i class="material-symbols-rounded">delete</i>
+                </button>
+                <button
+                  *ngIf="view$().readonly"
+                  type="button"
+                  class="btn btn-link p-0 lh-1"
+                  (click)="handleSelectKinder(kinder)"
+                  [title]="'shared.form.kinder.view' | translate"
+                >
+                  <i class="material-symbols-rounded">visibility</i>
                 </button>
               </td>
             </ng-container>
@@ -84,6 +95,7 @@
   <!-- ADD -->
   <div class="d-flex flex-column flex-md-row">
     <button
+      *ngIf="!view$().readonly"
       type="button"
       class="btn btn-outline-primary"
       (click)="handleAddKinder()"

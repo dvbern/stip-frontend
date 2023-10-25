@@ -12,5 +12,9 @@ export const SharedEventGesuchFormEducation = createActionGroup({
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),
+    nextTriggered: props<{
+      id: string;
+      origin: SharedModelGesuchFormStep;
+    }>(),
   },
 });

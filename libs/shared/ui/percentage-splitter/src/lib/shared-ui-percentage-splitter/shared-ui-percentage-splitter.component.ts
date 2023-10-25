@@ -11,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaskitoModule } from '@maskito/angular';
@@ -49,8 +49,6 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
 
   private injector = inject(Injector);
 
-  spliterEnabled = signal(false);
-
   public ngOnInit(): void {
     runInInjectionContext(this.injector, () => {
       const controlAChangedSig = toSignal(this.controlA.valueChanges, {
@@ -59,18 +57,16 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
       const controlBChangedSig = toSignal(this.controlB.valueChanges, {
         initialValue: undefined,
       });
-      const statusAChangedSig = toSignal(this.controlA.statusChanges, {
-        initialValue: this.controlA.status,
-      });
-      const statusBChangedSig = toSignal(this.controlB.statusChanges, {
-        initialValue: this.controlB.status,
-      });
+
+      this.controlA.addValidators(Validators.minLength(2));
+      this.controlB.addValidators(Validators.minLength(2));
 
       effect(
         () => {
           const anteilA = percentStringToNumber(controlAChangedSig());
           if (anteilA !== undefined && anteilA !== null) {
             this.controlB.setValue((100 - anteilA)?.toString());
+            this.controlB.setErrors(null);
           }
         },
         { allowSignalWrites: true }
@@ -81,17 +77,8 @@ export class SharedUiPercentageSplitterComponent implements OnInit {
           const anteilB = percentStringToNumber(controlBChangedSig());
           if (anteilB !== undefined && anteilB !== null) {
             this.controlA.setValue((100 - anteilB)?.toString());
+            this.controlA.setErrors(null);
           }
-        },
-        { allowSignalWrites: true }
-      );
-
-      effect(
-        () => {
-          this.spliterEnabled.set(
-            statusAChangedSig() !== 'DISABLED' &&
-              statusBChangedSig() !== 'DISABLED'
-          );
         },
         { allowSignalWrites: true }
       );

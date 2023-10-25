@@ -6,6 +6,7 @@ import {
   computed,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +16,7 @@ import { sharedUtilValidatorRange } from '@dv/shared/util/validator-range';
 import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import {
+  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -43,6 +45,7 @@ import {
   getDateDifference,
   parseBackendLocalDateAndPrint,
 } from '@dv/shared/util/validator-date';
+import { BehaviorSubject } from 'rxjs';
 import { selectSharedFeatureGesuchFormEinnahmenkostenView } from './shared-feature-gesuch-form-einnahmenkosten.selector';
 
 @Component({
@@ -67,7 +70,7 @@ import { selectSharedFeatureGesuchFormEinnahmenkostenView } from './shared-featu
 export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   private store = inject(Store);
   private formBuilder = inject(NonNullableFormBuilder);
-  private formService = inject(SharedUtilFormService);
+  private formUtils = inject(SharedUtilFormService);
   private elementRef = inject(ElementRef);
   form = this.formBuilder.group({
     nettoerwerbseinkommen: [<string | null>null, [Validators.required]],
@@ -101,6 +104,9 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   languageSig = this.store.selectSignal(selectLanguage);
   maskitoNumber = maskitoNumber;
   maskitoPositiveNumber = maskitoPositiveNumber;
+
+  hiddenFieldsSetSig = signal(new Set());
+
   formStateSig = computed(() => {
     const { gesuchFormular, ausbildungsstaettes } = this.viewSig();
 
@@ -128,7 +134,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     if (!personInAusbildung || !familiensituation || !ausbildung) {
       return { hasData: false, schritte } as const;
     }
-    const hatAlimente = familiensituation.werZahltAlimente !== 'GEMEINSAM';
     const hatElternteilVerloren =
       familiensituation.vaterUnbekanntVerstorben === 'VERSTORBEN' ||
       familiensituation.mutterUnbekanntVerstorben === 'VERSTORBEN';
@@ -151,7 +156,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
 
     return {
       hasData: true,
-      hatAlimente,
       hatElternteilVerloren,
       hatKinder,
       willSekundarstufeZwei,
@@ -169,7 +173,6 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       () => {
         const {
           hasData,
-          hatAlimente,
           hatElternteilVerloren,
           hatKinder,
           willSekundarstufeZwei,
@@ -185,64 +188,38 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
           return;
         }
 
-        this.formService.setDisabledState(
-          this.form.controls.alimente,
-          !hatAlimente,
-          true
-        );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.renten,
-          !hatElternteilVerloren,
-          true
+          !hatElternteilVerloren
         );
-
-        this.formService.setDisabledState(
-          this.form.controls.zulagen,
-          !hatKinder,
-          true
-        );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(this.form.controls.zulagen, !hatKinder);
+        this.setDisabledStateAndHide(
           this.form.controls.ausbildungskostenSekundarstufeZwei,
-          !willSekundarstufeZwei,
-          true
+          !willSekundarstufeZwei
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.ausbildungskostenTertiaerstufe,
-          !willTertiaerstufe,
-          true
+          !willTertiaerstufe
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.willDarlehen,
-          !istErwachsen,
-          true
+          !istErwachsen
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.auswaertigeMittagessenProWoche,
-          !wohnsitzNotEigenerHaushalt,
-          true
+          !wohnsitzNotEigenerHaushalt
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.wohnkosten,
-          wohnsitzNotEigenerHaushalt,
-          true
+          wohnsitzNotEigenerHaushalt
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.personenImHaushalt,
-          wohnsitzNotEigenerHaushalt,
-          true
+          wohnsitzNotEigenerHaushalt
         );
-
-        this.formService.setDisabledState(
+        this.setDisabledStateAndHide(
           this.form.controls.alimente,
-          !existiertGerichtlicheAlimentenregelung,
-          true
+          !existiertGerichtlicheAlimentenregelung
         );
       },
       { allowSignalWrites: true }
@@ -269,11 +246,23 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
             ausbildungskostenTertiaerstufe:
               einnahmenKosten.ausbildungskostenTertiaerstufe?.toString(),
             fahrkosten: einnahmenKosten.fahrkosten.toString(),
-            wohnkosten: einnahmenKosten.wohnkosten.toString(),
-            personenImHaushalt: einnahmenKosten.personenImHaushalt.toString(),
+            wohnkosten: einnahmenKosten.wohnkosten?.toString(),
+            personenImHaushalt: einnahmenKosten.personenImHaushalt?.toString(),
           });
         } else {
           this.form.reset();
+        }
+      },
+      { allowSignalWrites: true }
+    );
+
+    effect(
+      () => {
+        const { readonly } = this.view$();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
         }
       },
       { allowSignalWrites: true }
@@ -290,13 +279,25 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
 
   handleSave(): void {
     this.form.markAllAsTouched();
-    this.formService.focusFirstInvalid(this.elementRef);
+    this.formUtils.focusFirstInvalid(this.elementRef);
     const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
         SharedEventGesuchFormEinnahmenkosten.saveTriggered({
           gesuchId,
           gesuchFormular,
+          origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
+        })
+      );
+    }
+  }
+
+  handleContinue() {
+    const { gesuch } = this.view$();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormEinnahmenkosten.nextTriggered({
+          id: gesuch.id,
           origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
         })
       );
@@ -348,6 +349,21 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         },
       },
     };
+  }
+  private setDisabledStateAndHide(
+    formControl: FormControl,
+    disabled: boolean
+  ): void {
+    this.formUtils.setDisabledState(formControl, disabled, true);
+
+    this.hiddenFieldsSetSig.update((setToUpdate) => {
+      if (disabled) {
+        setToUpdate.add(formControl);
+      } else {
+        setToUpdate.delete(formControl);
+      }
+      return setToUpdate;
+    });
   }
 
   protected readonly GesuchFormSteps = GesuchFormSteps;

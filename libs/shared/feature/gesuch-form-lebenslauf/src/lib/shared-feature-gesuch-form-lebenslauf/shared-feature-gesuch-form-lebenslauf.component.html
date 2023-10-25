@@ -53,6 +53,7 @@
           <div class="row add-buttons">
             <div class="col-6 my-3">
               <button
+                *ngIf="!view$().readonly"
                 type="button"
                 class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center rounded-2 fs-5"
                 (click)="handleAddAusbildung(undefined)"
@@ -64,6 +65,7 @@
             </div>
             <div class="col-6 my-3">
               <button
+                *ngIf="!view$().readonly"
                 type="button"
                 class="btn btn-outline-dark w-100 d-flex flex-column align-items-center rounded-2 fs-5"
                 (click)="handleAddTaetigkeit(undefined)"

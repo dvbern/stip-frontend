@@ -60,7 +60,7 @@
 
   "shared.form.next": "Nächstes",
   "shared.form.previous": "Vorheriges",
-  "shared.form.gonext": "Speichern und weiter",
+  "shared.form.gonext": "Weiter",
   "shared.form.save-and-continue": "Speichern und weiter",
   "shared.form.save-and-back": "Speichern und weiter",
   "shared.form.back": "Abbrechen und zurück",
@@ -184,11 +184,13 @@
   "shared.form.geschwister.ausbildungssituation.select.SCHULPFLICHTIG": "Schulpflichtig",
   "shared.form.geschwister.add": "Weiteres Geschwister hinzufügen",
   "shared.form.geschwister.edit": "Geschwister bearbeiten",
+  "shared.form.geschwister.view": "Geschwister anzeigen",
   "shared.form.geschwister.delete": "Geschwister entfernen",
 
   "shared.kinder.title": "Kinder",
   "shared.form.kinder.add": "Kind hinzufügen",
   "shared.form.kinder.edit": "Kind bearbeiten",
+  "shared.form.kinder.view": "Kind anzeigen",
   "shared.form.kinder.delete": "Kind entfernen",
 
   "shared.lebenslauf.title": "Lebenslauf",

@@ -31,6 +31,7 @@
       [elternteil]="view$().vater"
       [elternTyp]="ElternTyp.VATER"
       [translationkey]="'vater'"
+      [readonly]="view$().readonly"
       (addTriggered)="handleAddElternteil($event)"
       (editTriggered)="handleEdit($event)"
     />
@@ -41,6 +42,7 @@
       [elternteil]="view$().mutter"
       [elternTyp]="ElternTyp.MUTTER"
       [translationkey]="'mutter'"
+      [readonly]="view$().readonly"
       (addTriggered)="handleAddElternteil($event)"
       (editTriggered)="handleEdit($event)"
     />
