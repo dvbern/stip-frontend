@@ -23,7 +23,7 @@ spec:
       containers:
         - name: gesuch-app
           imagePullPolicy: Always
-          image: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app:latest
+          image: stip/gesuch-app
           env:
             - name: APP_NAME
               value: gesuch-app
