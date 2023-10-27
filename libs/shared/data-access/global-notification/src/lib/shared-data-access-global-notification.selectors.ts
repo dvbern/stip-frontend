@@ -7,7 +7,7 @@ export const selectSharedDataAccessGlobalNotificationsView = createSelector(
   (state) => ({
     ...state,
     notificationList: Object.entries(
-      state.globalNotifications
+      state.globalNotificationsById
     ).map<SharedModelGlobalNotification>(([id, error]) => ({
       id: +id,
       autohide: false,

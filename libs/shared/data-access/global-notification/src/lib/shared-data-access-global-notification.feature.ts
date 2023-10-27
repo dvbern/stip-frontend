@@ -6,12 +6,12 @@ import { SharedDataAccessGlobalNotificationEvents } from './shared-data-access-g
 
 export interface State {
   nextErrorId: number;
-  globalNotifications: Record<number, SharedModelError>;
+  globalNotificationsById: Record<number, SharedModelError>;
 }
 
 const initialState: State = {
   nextErrorId: 1,
-  globalNotifications: [],
+  globalNotificationsById: [],
 };
 
 export const sharedDataAccessGlobalNotificationsFeature = createFeature({
@@ -24,10 +24,13 @@ export const sharedDataAccessGlobalNotificationsFeature = createFeature({
       (state, { errors }): State => ({
         ...state,
         nextErrorId: state.nextErrorId + 1 + errors.length,
-        globalNotifications: {
-          ...state.globalNotifications,
+        globalNotificationsById: {
+          ...state.globalNotificationsById,
           ...errors.reduce(
-            (list, error, i) => ({ ...list, [state.nextErrorId + i]: error }),
+            (errorsById, error, i) => ({
+              ...errorsById,
+              [state.nextErrorId + i]: error,
+            }),
             {}
           ),
         },
@@ -37,12 +40,12 @@ export const sharedDataAccessGlobalNotificationsFeature = createFeature({
     on(
       SharedDataAccessGlobalNotificationEvents.hideNotificationTriggered,
       (state, { notificationId }): State => {
-        const globalNotifications = { ...state.globalNotifications };
+        const globalNotifications = { ...state.globalNotificationsById };
         delete globalNotifications[notificationId];
 
         return {
           ...state,
-          globalNotifications,
+          globalNotificationsById: globalNotifications,
         };
       }
     )
@@ -53,5 +56,5 @@ export const {
   name,
   reducer,
   selectGlobalNotificationsState,
-  selectGlobalNotifications,
+  selectGlobalNotificationsById,
 } = sharedDataAccessGlobalNotificationsFeature;
