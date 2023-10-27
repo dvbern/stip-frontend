@@ -49,6 +49,6 @@ export function updateWohnsitzControlsState(
   form: WohnsitzAnteile<FormControl>,
   disabled: boolean
 ) {
-  formUtils.setDisabledState(form.wohnsitzAnteilVater, disabled, true);
-  formUtils.setDisabledState(form.wohnsitzAnteilMutter, disabled, true);
+  formUtils.setDisabledState(form.wohnsitzAnteilVater, disabled, false);
+  formUtils.setDisabledState(form.wohnsitzAnteilMutter, disabled, false);
 }

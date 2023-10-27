@@ -25,6 +25,7 @@ export const selectSharedFeatureGesuchFormAuszahlungenView = createSelector(
       hasNecessaryPreSteps: calculateHasNecessaryPreStepsGesuch(
         gesuchsView.gesuchFormular
       ),
+      readonly: gesuchsView.readonly,
     };
   }
 );

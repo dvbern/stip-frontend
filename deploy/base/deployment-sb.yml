@@ -23,7 +23,7 @@ spec:
       containers:
         - name: sachbearbeitung-app
           imagePullPolicy: Always
-          image: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app:latest
+          image: stip/sachbearbeitung-app
           env:
             - name: APP_NAME
               value: sachbearbeitung-app

@@ -25,6 +25,8 @@ export class ElternteilCardComponent {
   elternTyp!: ElternTyp;
   @Input({ required: true })
   translationkey!: string;
+  @Input({ required: true })
+  readonly!: boolean;
   @Output()
   editTriggered = new EventEmitter<ElternUpdate>();
   @Output()

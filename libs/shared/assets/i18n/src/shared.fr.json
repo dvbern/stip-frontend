@@ -60,7 +60,7 @@
 
   "shared.form.next": "Prochain",
   "shared.form.previous": "Précédent",
-  "shared.form.gonext": "Enregistrer et continuer",
+  "shared.form.gonext": "Continuer",
   "shared.form.save-and-continue": "Enregistrer et continuer",
   "shared.form.save-and-back": "Enregistrer et continuer",
   "shared.form.back": "Annuler et revenir",
@@ -184,11 +184,13 @@
   "shared.form.geschwister.ausbildungssituation.select.SCHULPFLICHTIG": "Scolarité obligatoire",
   "shared.form.geschwister.add": "Ajouter un autre frère ou une autre sœur",
   "shared.form.geschwister.edit": "Modifier les frères et sœurs",
+  "shared.form.geschwister.view": "Afficher les frères et soeurs",
   "shared.form.geschwister.delete": "Supprimer les frères et sœurs",
 
   "shared.kinder.title": "Enfants",
   "shared.form.kinder.add": "Ajouter un enfant",
   "shared.form.kinder.edit": "Modifier l'enfant",
+  "shared.form.kinder.view": "Afficher l'enfant",
   "shared.form.kinder.delete": "Retirer l'enfant",
 
   "shared.lebenslauf.title": "Curriculum vitae",

@@ -36,7 +36,10 @@
           {{ adresse.land }}
           <!-- TODO land translate -->
         </small>
-        <i class="material-symbols-rounded me-2 fs-2">edit</i>
+        <i *ngIf="!readonly" class="material-symbols-rounded me-2 fs-2">edit</i>
+        <i *ngIf="readonly" class="material-symbols-rounded me-2 fs-2"
+          >visibility</i
+        >
       </div>
     </div>
   </div>

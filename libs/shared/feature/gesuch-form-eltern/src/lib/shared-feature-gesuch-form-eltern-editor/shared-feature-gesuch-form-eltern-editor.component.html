@@ -225,7 +225,7 @@
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
     <button
-      *ngIf="elternteil.id"
+      *ngIf="elternteil.id && !view$().readonly"
       type="button"
       class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
@@ -242,7 +242,7 @@
     >
       {{ 'shared.form.back' | translate }}
     </button>
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
       {{ 'shared.form.save-and-back' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>
