@@ -13,7 +13,7 @@ workflow:
         VERSION: $CI_COMMIT_TAG
 
 include:
-  - component: 'gitlab.dvbern.ch/kasi/nx@v0.0.4'
+  - component: 'gitlab.dvbern.ch/components/nx@v0.0.3'
     inputs:
       app-name: '*-app'
       test-app-name: '*-app'
