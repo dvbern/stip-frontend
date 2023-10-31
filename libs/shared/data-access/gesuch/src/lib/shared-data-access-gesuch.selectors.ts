@@ -1,3 +1,4 @@
+import { Gesuchstatus } from '@dv/shared/model/gesuch';
 import { createSelector } from '@ngrx/store';
 import { getRouterSelectors } from '@ngrx/router-store';
 
@@ -9,5 +10,11 @@ export const selectRouteId = selectRouteParam('id');
 
 export const selectSharedDataAccessGesuchsView = createSelector(
   sharedDataAccessGesuchsFeature.selectGesuchsState,
-  (state) => state
+  (state) => {
+    return {
+      ...state,
+      readonly:
+        state.gesuch?.gesuchStatus === Gesuchstatus.NICHT_KOMPLETT_EINGEREICHT,
+    };
+  }
 );

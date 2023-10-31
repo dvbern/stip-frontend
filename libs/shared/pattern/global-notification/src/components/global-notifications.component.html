@@ -1,0 +1,13 @@
+<ng-container
+  *ngIf="globalNotificationsSig().notificationList; let notifications"
+>
+  <ng-container
+    *ngFor="let notification of notifications; trackBy: trackByIndex"
+  >
+    <dv-notification
+      [isToast]="true"
+      [notification]="notification"
+      (closeTriggered)="hideNotification(notification)"
+    ></dv-notification>
+  </ng-container>
+</ng-container>

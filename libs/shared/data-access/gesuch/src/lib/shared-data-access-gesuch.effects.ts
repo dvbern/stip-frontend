@@ -279,7 +279,13 @@ export const redirectToGesuchFormNextStep = createEffect(
         SharedEventGesuchFormEltern.nextTriggered,
         SharedEventGesuchFormGeschwister.nextTriggered,
         SharedEventGesuchFormKinder.nextTriggered,
-        SharedEventGesuchFormLebenslauf.nextTriggered
+        SharedEventGesuchFormLebenslauf.nextTriggered,
+        SharedEventGesuchFormPartner.nextTriggered,
+        SharedEventGesuchFormPerson.nextTriggered,
+        SharedEventGesuchFormEducation.nextTriggered,
+        SharedEventGesuchFormFamiliensituation.nextTriggered,
+        SharedEventGesuchFormAuszahlung.nextTriggered,
+        SharedEventGesuchFormEinnahmenkosten.nextTriggered
       ),
       tap(({ id, origin }) => {
         const target = stepManager.getNext(origin);

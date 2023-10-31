@@ -6,10 +6,10 @@ resources:
 - ingress-config.yml
 
 images:
-- name: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: main
-- name: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
-  newTag: main
+- name: stip/gesuch-app
+  newName: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
+- name: stip/sachbearbeitung-app
+  newName: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
 
 # TODO: OpenShift
 # patches:

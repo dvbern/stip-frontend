@@ -10,14 +10,17 @@
 </div>
 
 <!-- EDITOR -->
-<dv-shared-feature-gesuch-form-eltern-editor
-  *ngIf="editedElternteil"
-  [elternteil]="editedElternteil"
-  [laender]="laenderSig()"
-  (saveTriggered)="handleEditorSave($event)"
-  (closeTriggered)="handleEditorClose()"
-  (deleteTriggered)="handleDeleteElternteil($event)"
-/>
+<ng-container *ngIf="editedElternteil">
+  <dv-shared-feature-gesuch-form-eltern-editor
+    *ngIf="view$().gesuchFormular; let gesuchFormular"
+    [elternteil]="editedElternteil"
+    [gesuchFormular]="gesuchFormular"
+    [laender]="laenderSig()"
+    (saveTriggered)="handleEditorSave($event)"
+    (closeTriggered)="handleEditorClose()"
+    (deleteTriggered)="handleDeleteElternteil($event)"
+  />
+</ng-container>
 
 <!-- OVERVIEW -->
 <ng-container *ngIf="!editedElternteil && !view$().loading">
@@ -28,6 +31,7 @@
       [elternteil]="view$().vater"
       [elternTyp]="ElternTyp.VATER"
       [translationkey]="'vater'"
+      [readonly]="view$().readonly"
       (addTriggered)="handleAddElternteil($event)"
       (editTriggered)="handleEdit($event)"
     />
@@ -38,6 +42,7 @@
       [elternteil]="view$().mutter"
       [elternTyp]="ElternTyp.MUTTER"
       [translationkey]="'mutter'"
+      [readonly]="view$().readonly"
       (addTriggered)="handleAddElternteil($event)"
       (editTriggered)="handleEdit($event)"
     />

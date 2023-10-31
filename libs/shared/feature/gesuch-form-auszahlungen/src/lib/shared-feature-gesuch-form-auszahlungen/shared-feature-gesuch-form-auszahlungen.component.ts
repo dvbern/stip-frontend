@@ -151,6 +151,18 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
+
+    effect(
+      () => {
+        const { readonly } = this.view();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit(): void {
@@ -167,6 +179,18 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
         SharedEventGesuchFormAuszahlung.saveTriggered({
           gesuchId,
           gesuchFormular,
+          origin: AUSZAHLUNGEN,
+        })
+      );
+    }
+  }
+
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormAuszahlung.nextTriggered({
+          id: gesuch.id,
           origin: AUSZAHLUNGEN,
         })
       );

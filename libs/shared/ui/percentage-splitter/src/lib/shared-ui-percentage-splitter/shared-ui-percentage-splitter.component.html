@@ -1,4 +1,4 @@
-<div *ngIf="spliterEnabled()">
+<div>
   <!-- WOHNSITZ AUFTEILUNG -->
 
   <!-- label -->
@@ -16,6 +16,9 @@
         [formControl]="controlA"
         [maskito]="maskitoOptionsPercent"
       />
+      <mat-error *dvSharedUiFormMessageError="'minlength'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
       <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>
@@ -31,6 +34,9 @@
         [formControl]="controlB"
         [maskito]="maskitoOptionsPercent"
       />
+      <mat-error *dvSharedUiFormMessageError="'minlength'">
+        {{ 'shared.form.error.requiredShort' | translate }}
+      </mat-error>
       <mat-error *dvSharedUiFormMessageError="'required'">
         {{ 'shared.form.error.requiredShort' | translate }}
       </mat-error>

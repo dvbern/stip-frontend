@@ -63,7 +63,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
     this.editedGeschwister = {};
   }
 
-  public handleEditGeschwister(ge: GeschwisterUpdate): void {
+  public handleSelectGeschwister(ge: GeschwisterUpdate): void {
     this.editedGeschwister = ge;
   }
 

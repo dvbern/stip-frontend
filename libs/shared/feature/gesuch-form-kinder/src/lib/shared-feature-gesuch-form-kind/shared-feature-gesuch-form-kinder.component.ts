@@ -63,7 +63,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
     this.editedKind = {};
   }
 
-  public handleEditKinder(ge: KindUpdate): void {
+  public handleSelectKinder(ge: KindUpdate): void {
     this.editedKind = ge;
   }
 

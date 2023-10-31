@@ -24,6 +24,9 @@
       <mat-error *dvSharedUiFormMessageError="'ahv'">
         {{ 'shared.form.error.ahv' | translate }}
       </mat-error>
+      <mat-error *dvSharedUiFormMessageError="'notUniqueAhv'">
+        {{ 'shared.form.error.notUniqueAhv' | translate }}
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -160,7 +163,9 @@
       class="col-12 d-flex flex-column"
     >
       <label>{{
-        'shared.form.eltern.ausweisbFluechtling.label' | translate
+        'shared.form.eltern.ausweisbFluechtling.' +
+          (elternteil.elternTyp === ElternTyp.MUTTER ? 'mutter' : 'vater') +
+          '.label' | translate
       }}</label>
       <mat-radio-button [value]="true">{{
         'shared.form.radio.yes' | translate
@@ -220,7 +225,7 @@
   <!-- Buttons -->
   <dv-shared-ui-step-form-buttons>
     <button
-      *ngIf="elternteil.id"
+      *ngIf="elternteil.id && !view$().readonly"
       type="button"
       class="btn btn-outline-primary d-flex align-items-center justify-content-center"
       (click)="handleDelete()"
@@ -237,7 +242,7 @@
     >
       {{ 'shared.form.back' | translate }}
     </button>
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-primary" *ngIf="!view$().readonly">
       {{ 'shared.form.save-and-back' | translate }}
     </button>
   </dv-shared-ui-step-form-buttons>

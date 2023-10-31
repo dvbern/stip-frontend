@@ -7,9 +7,12 @@ import {
   ElementRef,
   inject,
   OnInit,
+  signal,
   Signal,
 } from '@angular/core';
 import {
+  AbstractControl,
+  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -24,7 +27,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { NgbAlert, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { filter, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { subYears } from 'date-fns';
 
@@ -125,19 +128,19 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   readonly wohnsitzValues = Object.values(Wohnsitz);
   readonly niederlassungsStatusValues = Object.values(Niederlassungsstatus);
   languageSig = this.store.selectSignal(selectLanguage);
-  view = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
+  viewSig = this.store.selectSignal(selectSharedFeatureGesuchFormEducationView);
   updateValidity$ = new Subject<unknown>();
-  laenderSig = computed(() => this.view().laender);
+  laenderSig = computed(() => this.viewSig().laender);
   translatedLaender$ = toObservable(this.laenderSig).pipe(
     switchMap((laender) => this.countriesService.getCountryList(laender))
   );
-
+  hiddenFieldsSetSig = signal(new Set());
   isSozialversicherungsnummerInfoShown = false;
   isNiederlassungsstatusInfoShown = false;
   nationalitaetCH = 'CH';
   auslaenderausweisDocumentOptionsSig: Signal<DocumentOptions | null> =
     computed(() => {
-      const gesuch = this.view().gesuch;
+      const gesuch = this.viewSig().gesuch;
       return gesuch
         ? {
             gesuchId: gesuch.id,
@@ -147,10 +150,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     });
 
   form = this.formBuilder.group({
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     anrede: this.formBuilder.control<Anrede>('' as Anrede, {
       validators: Validators.required,
     }),
@@ -230,19 +230,41 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   });
 
   constructor() {
-    // patch form value
     effect(
-      () =>
+      () => {
         updateWohnsitzControlsState(
           this.formUtils,
           this.form.controls,
-          !this.showWohnsitzSplitterSig()
-        ),
+          this.viewSig().readonly
+        );
+        this.updateVisbility(
+          this.form.controls.wohnsitzAnteilMutter,
+          this.showWohnsitzSplitterSig(),
+          { resetOnInvisible: true }
+        );
+        this.updateVisbility(
+          this.form.controls.wohnsitzAnteilVater,
+          this.showWohnsitzSplitterSig(),
+          { resetOnInvisible: true }
+        );
+      },
       { allowSignalWrites: true }
     );
+    // patch form value
     effect(
       () => {
-        const { gesuchFormular } = this.view();
+        const { gesuchFormular } = this.viewSig();
+
+        const svValidators = [Validators.required];
+        if (gesuchFormular) {
+          svValidators.push(
+            sharedUtilValidatorAhv('personInAusbildung', gesuchFormular)
+          );
+        }
+        this.form.controls.sozialversicherungsnummer.clearValidators();
+        this.form.controls.sozialversicherungsnummer.addValidators(
+          svValidators
+        );
         if (gesuchFormular?.personInAusbildung) {
           const person = gesuchFormular.personInAusbildung;
           const personForForm = {
@@ -262,22 +284,22 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-    const zivilrechtlichChanged$ = this.formUtils.signalFromChanges(
+    const zivilrechtlichChangedSig = this.formUtils.signalFromChanges(
       this.form.controls.identischerZivilrechtlicherWohnsitz,
       { useDefault: true }
     );
     effect(
       () => {
-        const zivilrechtlichIdentisch = zivilrechtlichChanged$() === true;
-        this.formUtils.setDisabledState(
+        const zivilrechtlichIdentisch = zivilrechtlichChangedSig() === true;
+        this.updateVisibilityAndDisabledState(
           this.form.controls.identischerZivilrechtlicherWohnsitzPLZ,
-          zivilrechtlichIdentisch,
-          true
+          !zivilrechtlichIdentisch,
+          this.viewSig().readonly
         );
-        this.formUtils.setDisabledState(
+        this.updateVisibilityAndDisabledState(
           this.form.controls.identischerZivilrechtlicherWohnsitzOrt,
-          zivilrechtlichIdentisch,
-          true
+          !zivilrechtlichIdentisch,
+          this.viewSig().readonly
         );
         this.form.controls.identischerZivilrechtlicherWohnsitzPLZ.updateValueAndValidity();
         this.form.controls.identischerZivilrechtlicherWohnsitzOrt.updateValueAndValidity();
@@ -285,52 +307,64 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
       { allowSignalWrites: true }
     );
 
-    const nationalitaetChanged$ = toSignal(
+    const nationalitaetChangedSig = toSignal(
       this.form.controls.nationalitaet.valueChanges
     );
     effect(
       () => {
-        const nationalitaetChanged = nationalitaetChanged$();
+        const nationalitaetChanged = nationalitaetChangedSig();
         // If nationality is Switzerland
         if (this.form.controls.nationalitaet.value === this.nationalitaetCH) {
-          this.form.controls.heimatort.enable();
-          this.form.controls.vormundschaft.enable();
-          this.formUtils.setDisabledState(
-            this.form.controls.niederlassungsstatus,
+          this.updateVisibilityAndDisabledState(
+            this.form.controls.heimatort,
             true,
-            true
+            this.viewSig().readonly
           );
+          this.updateVisibilityAndDisabledState(
+            this.form.controls.vormundschaft,
+            true,
+            this.viewSig().readonly
+          );
+          this.updateVisbility(this.form.controls.niederlassungsstatus, false, {
+            resetOnInvisible: true,
+          });
         }
         // No nationality was selected
         else if (nationalitaetChanged === undefined) {
-          this.formUtils.setDisabledState(
-            this.form.controls.niederlassungsstatus,
-            true,
-            true
-          );
-          this.formUtils.setDisabledState(
-            this.form.controls.heimatort,
-            true,
-            true
-          );
-          this.formUtils.setDisabledState(
-            this.form.controls.vormundschaft,
-            true,
-            true
-          );
+          this.updateVisbility(this.form.controls.niederlassungsstatus, false, {
+            resetOnInvisible: true,
+          });
+          this.updateVisbility(this.form.controls.heimatort, false, {
+            resetOnInvisible: true,
+          });
+          this.updateVisbility(this.form.controls.vormundschaft, false, {
+            resetOnInvisible: true,
+          });
         }
         // Any other nationality was selected
         else {
-          this.form.controls.niederlassungsstatus.enable();
-          this.formUtils.setDisabledState(
-            this.form.controls.heimatort,
+          this.updateVisibilityAndDisabledState(
+            this.form.controls.niederlassungsstatus,
             true,
-            true
+            this.viewSig().readonly
           );
-          this.formUtils.setDisabledState(
-            this.form.controls.vormundschaft,
-            true,
-            true
+          this.updateVisbility(this.form.controls.heimatort, false, {
+            resetOnInvisible: true,
+          });
+          this.updateVisbility(this.form.controls.vormundschaft, false, {
+            resetOnInvisible: true,
+          });
+        }
+      },
+      { allowSignalWrites: true }
+    );
+
+    effect(
+      () => {
+        const { readonly } = this.viewSig();
+        if (readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
           );
         }
       },
@@ -359,6 +393,18 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     }
   }
 
+  handleContinue() {
+    const { gesuch } = this.viewSig();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormPerson.nextTriggered({
+          id: gesuch.id,
+          origin: PERSON,
+        })
+      );
+    }
+  }
+
   trackByIndex(index: number) {
     return index;
   }
@@ -372,7 +418,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
   }
 
   private buildUpdatedGesuchFromForm() {
-    const { gesuch, gesuchFormular } = this.view();
+    const { gesuch, gesuchFormular } = this.viewSig();
     return {
       gesuchId: gesuch?.id,
       gesuchFormular: {
@@ -395,5 +441,34 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
         },
       },
     };
+  }
+
+  private updateVisibilityAndDisabledState(
+    formControl: FormControl,
+    visibile: boolean,
+    disabled: boolean,
+    opts = { resetOnInvisible: true }
+  ): void {
+    this.formUtils.setDisabledState(formControl, disabled);
+    this.updateVisbility(formControl, visibile, opts);
+  }
+
+  private updateVisbility(
+    formControl: FormControl,
+    visible: boolean,
+    opts: { resetOnInvisible: boolean }
+  ): void {
+    this.hiddenFieldsSetSig.update((hiddenFieldsSet) => {
+      if (visible) {
+        hiddenFieldsSet.delete(formControl);
+      } else {
+        hiddenFieldsSet.add(formControl);
+        formControl.disable();
+        if (opts.resetOnInvisible) {
+          formControl.reset();
+        }
+      }
+      return hiddenFieldsSet;
+    });
   }
 }

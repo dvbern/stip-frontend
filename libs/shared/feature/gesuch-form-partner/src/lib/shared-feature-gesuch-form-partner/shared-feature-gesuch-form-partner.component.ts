@@ -104,10 +104,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
   );
 
   form = this.formBuilder.group({
-    sozialversicherungsnummer: [
-      '',
-      [Validators.required, sharedUtilValidatorAhv],
-    ],
+    sozialversicherungsnummer: ['', []],
     nachname: ['', [Validators.required]],
     vorname: ['', [Validators.required]],
     adresse: SharedUiFormAddressComponent.buildAddressFormGroup(
@@ -144,6 +141,15 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.view();
+        const svValidators = [Validators.required];
+        if (gesuchFormular) {
+          svValidators.push(sharedUtilValidatorAhv('partner', gesuchFormular));
+        }
+        this.form.controls.sozialversicherungsnummer.clearValidators();
+        this.form.controls.sozialversicherungsnummer.addValidators(
+          svValidators
+        );
+
         if (gesuchFormular?.partner) {
           const partner = gesuchFormular.partner;
           const partnerForForm = {
@@ -183,26 +189,34 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
       },
       { allowSignalWrites: true }
     );
-    effect(() => {
-      const noAusbildungMitEinkommenOderErwerbstaetigkeit =
-        !this.ausbildungMitEinkommenOderErwerbstaetigSig();
-
-      this.formUtils.setDisabledState(
-        this.form.controls.jahreseinkommen,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
-      this.formUtils.setDisabledState(
-        this.form.controls.fahrkosten,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
-      this.formUtils.setDisabledState(
-        this.form.controls.verpflegungskosten,
-        noAusbildungMitEinkommenOderErwerbstaetigkeit,
-        true
-      );
-    });
+    effect(
+      () => {
+        const noAusbildungMitEinkommenOderErwerbstaetigkeit =
+          !this.ausbildungMitEinkommenOderErwerbstaetigSig();
+        if (this.view().readonly) {
+          Object.values(this.form.controls).forEach((control) =>
+            control.disable()
+          );
+        } else {
+          this.formUtils.setDisabledState(
+            this.form.controls.jahreseinkommen,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.fahrkosten,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
+          );
+          this.formUtils.setDisabledState(
+            this.form.controls.verpflegungskosten,
+            noAusbildungMitEinkommenOderErwerbstaetigkeit,
+            true
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit() {
@@ -220,6 +234,18 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
           origin: PARTNER,
           gesuchId,
           gesuchFormular,
+        })
+      );
+    }
+  }
+
+  handleContinue() {
+    const { gesuch } = this.view();
+    if (gesuch?.id) {
+      this.store.dispatch(
+        SharedEventGesuchFormPartner.nextTriggered({
+          id: gesuch.id,
+          origin: PARTNER,
         })
       );
     }

@@ -2,7 +2,7 @@
   <!-- loading -->
   <div
     data-testid="form-person-loading"
-    *ngIf="view().loading"
+    *ngIf="viewSig().loading"
     class="my-2 p-2 py-4 d-flex rounded shadow-sm border"
   >
     <div class="dv-progress-bar-indeterminate">
@@ -14,7 +14,7 @@
     [formGroup]="form"
     novalidate
     class="mt-4"
-    *ngIf="!view().loading"
+    *ngIf="!viewSig().loading"
     (ngSubmit)="handleSave()"
   >
     <!-- AHV -->
@@ -36,6 +36,9 @@
           </mat-error>
           <mat-error *dvSharedUiFormMessageError="'ahv'">
             {{ 'shared.form.error.ahv' | translate }}
+          </mat-error>
+          <mat-error *dvSharedUiFormMessageError="'notUniqueAhv'">
+            {{ 'shared.form.error.notUniqueAhv' | translate }}
           </mat-error>
         </mat-form-field>
         <button
@@ -295,7 +298,9 @@
 
     <div class="row g-4 mt-1">
       <!-- NIEDERLASSUNGSSTATUS ODER HEIMATORT -->
-      <ng-container *ngIf="form.controls.niederlassungsstatus.enabled">
+      <ng-container
+        *ngIf="!hiddenFieldsSetSig()?.has(form.controls.niederlassungsstatus)"
+      >
         <div class="d-flex align-content-center col-12 col-md-6 col-xl-4">
           <mat-form-field dvSharedUiFormField class="flex-grow-1">
             <mat-label>{{
@@ -337,7 +342,7 @@
           </button>
         </div>
       </ng-container>
-      <ng-container *ngIf="form.controls.heimatort.enabled">
+      <ng-container *ngIf="!hiddenFieldsSetSig()?.has(form.controls.heimatort)">
         <mat-form-field dvSharedUiFormField class="col-12 col-md-6 col-xl-4">
           <mat-label>{{
             'shared.form.person.origin.label' | translate
@@ -530,8 +535,16 @@
 
     <!-- Buttons -->
     <dv-shared-ui-step-form-buttons>
-      <button type="submit" class="btn btn-primary">
+      <button *ngIf="!viewSig().readonly" type="submit" class="btn btn-primary">
         {{ 'shared.form.save-and-continue' | translate }}
+      </button>
+      <button
+        *ngIf="viewSig().readonly"
+        type="button"
+        class="btn btn-primary"
+        (click)="handleContinue()"
+      >
+        {{ 'shared.form.gonext' | translate }}
       </button>
     </dv-shared-ui-step-form-buttons>
   </form>

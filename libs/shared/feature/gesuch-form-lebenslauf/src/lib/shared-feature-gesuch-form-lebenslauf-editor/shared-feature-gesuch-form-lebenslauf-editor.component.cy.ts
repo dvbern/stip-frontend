@@ -213,7 +213,12 @@ function mountWithEmpty(type: SharedModelLebenslauf['type']): void {
       BrowserAnimationsModule,
     ],
     providers: [
-      provideMockStore({ initialState: { language: { language: 'de' } } }),
+      provideMockStore({
+        initialState: {
+          language: { language: 'de' },
+          gesuchs: { gesuchFormular: {} },
+        },
+      }),
     ],
     componentProperties: {
       item: {
