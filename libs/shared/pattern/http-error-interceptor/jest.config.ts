@@ -1,10 +1,10 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-util-fn-error-transformer',
+  displayName: 'shared-pattern-http-error-interceptor',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory:
-    '../../../../coverage/libs/shared/util-fn/error-transformer',
+    '../../../../coverage/libs/shared/pattern/http-error-interceptor',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
