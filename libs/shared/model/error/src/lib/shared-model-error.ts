@@ -5,19 +5,28 @@ import {
   ValidationReport,
 } from '@dv/shared/model/gesuch';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type Extends<T, _U extends T> = T;
+
 export const ValidationError = z.object({
   messageTemplate: z.string(),
   message: z.string(),
-  propertyPath: z.string().optional(),
-}) satisfies z.ZodType<DvValidationError>;
+  propertyPath: z
+    .string()
+    .nullable()
+    .transform((value) => value ?? undefined),
+});
 
-export type ValidationError = z.infer<typeof ValidationError>;
+export type ValidationError = Extends<
+  z.infer<typeof ValidationError>,
+  DvValidationError
+>;
 
 const ErrorTypes = {
   validationError: z.object({
     error: z.object({
       validationErrors: z.array(ValidationError),
-    }) satisfies z.ZodType<ValidationReport>,
+    }),
   }),
   unknownHttpError: z.object({
     error: z.string().or(z.record(z.unknown())),
@@ -25,7 +34,10 @@ const ErrorTypes = {
   unknownError: z.unknown(),
 };
 type ErrorTypes = {
-  [K in keyof typeof ErrorTypes]: z.infer<(typeof ErrorTypes)[K]>;
+  [K in keyof typeof ErrorTypes]: Extends<
+    z.infer<(typeof ErrorTypes)[K]>,
+    ValidationReport
+  >;
 };
 
 export type SharedModelErrorTypes = keyof typeof ErrorTypes;
