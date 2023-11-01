@@ -8,11 +8,13 @@ export const SharedEventGesuchFormKinder = createActionGroup({
     init: emptyProps(),
     saveTriggered: props<{
       gesuchId: string;
+      trancheId: string;
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),
     saveSubformTriggered: props<{
       gesuchId: string;
+      trancheId: string;
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),

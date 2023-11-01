@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GesuchFormular } from './gesuchFormular';
+import { GesuchTranche } from './gesuchTranche';
 import { Gesuchstatus } from './gesuchstatus';
 import { Fall } from './fall';
 import { Gesuchsperiode } from './gesuchsperiode';
@@ -26,13 +26,12 @@ export interface Gesuch {
      */
     gesuchNummer: number;
     id: string;
-    gesuch_formular_freigabe_copy?: GesuchFormular;
-    gesuch_formular_to_work_with?: GesuchFormular;
     aenderungsdatum: string;
     /**
      * Zuständiger Sachbearbeiter des Gesuchs
      */
     bearbeiter?: string;
+    gesuchTrancheToWorkWith: GesuchTranche;
 }
 
 

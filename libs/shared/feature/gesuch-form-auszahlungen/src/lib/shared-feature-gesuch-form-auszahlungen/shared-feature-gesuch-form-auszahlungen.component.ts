@@ -173,11 +173,13 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
   handleSave(): void {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormAuszahlung.saveTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.AUSZAHLUNGEN,
         })
@@ -187,10 +189,11 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   handleContinue() {
     const { gesuch } = this.view();
-    if (gesuch?.id) {
+    if (gesuch?.id && gesuch?.gesuchTrancheToWorkWith.id) {
       this.store.dispatch(
         SharedEventGesuchFormAuszahlung.nextTriggered({
           id: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           origin: GesuchFormSteps.AUSZAHLUNGEN,
         })
       );
@@ -261,6 +264,7 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
     const auszahlung = gesuchFormular?.auszahlung;
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         auszahlung: {

@@ -89,12 +89,13 @@ export class SharedFeatureGesuchFormElternComponent {
   }
 
   handleEditorSave(elternteil: ElternUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithUpdatedElternteil(elternteil);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormEltern.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.ELTERN,
         })
@@ -104,12 +105,13 @@ export class SharedFeatureGesuchFormElternComponent {
   }
 
   public handleDeleteElternteil(id: string) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithDeletedElternteil(id);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormEltern.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.ELTERN,
         })
@@ -144,6 +146,7 @@ export class SharedFeatureGesuchFormElternComponent {
 
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         elterns: updatedElterns,
@@ -172,6 +175,7 @@ export class SharedFeatureGesuchFormElternComponent {
     }
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         elterns: updatedElterns,

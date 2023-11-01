@@ -69,12 +69,13 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
   }
 
   handleEditorSave(kind: KindUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithUpdatedKind(kind);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormKinder.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.KINDER,
         })
@@ -84,12 +85,13 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
   }
 
   public handleDeleteKinder(kind: KindUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithDeletedKinder(kind);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormKinder.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.KINDER,
         })
@@ -121,6 +123,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
 
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         kinds: updatedKinders,
@@ -145,6 +148,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
     }
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         kinds: updatedKinders,

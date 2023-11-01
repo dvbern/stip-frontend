@@ -37,6 +37,8 @@ export * from './gesuch';
 export * from './gesuchCreate';
 export * from './gesuchFormular';
 export * from './gesuchFormularUpdate';
+export * from './gesuchTranche';
+export * from './gesuchTrancheUpdate';
 export * from './gesuchUpdate';
 export * from './gesuchsperiode';
 export * from './gesuchsperiodeCreate';

@@ -180,7 +180,8 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
         ) {
           this.store.dispatch(
             SharedEventGesuchFormPartner.nextStepTriggered({
-              gesuchId: gesuch?.id,
+              gesuchId: gesuch.id,
+              trancheId: gesuch.gesuchTrancheToWorkWith.id,
               gesuchFormular,
               origin: GesuchFormSteps.PARTNER,
             })
@@ -227,12 +228,14 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
   handleSaveAndContinue() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormPartner.nextStepTriggered({
           origin: GesuchFormSteps.PARTNER,
           gesuchId,
+          trancheId,
           gesuchFormular,
         })
       );
@@ -254,11 +257,13 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
   handleSaveAndBack() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormPartner.prevStepTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.PARTNER,
         })
@@ -299,6 +304,7 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     };
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         partner,

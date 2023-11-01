@@ -280,11 +280,13 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
   handleSave(): void {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormEinnahmenkosten.saveTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
         })
@@ -298,6 +300,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormEinnahmenkosten.nextTriggered({
           id: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
         })
       );
@@ -322,6 +325,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
     ]);
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         einnahmenKosten: {

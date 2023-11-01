@@ -165,9 +165,5 @@ export const {
 const getGesuchFormular = (
   gesuch: SharedModelGesuch
 ): SharedModelGesuchFormular | null => {
-  const formular =
-    // TODO: Fix mapping from GET GesuchFormular to PATCH GesuchFormularUpdate
-    (gesuch.gesuch_formular_freigabe_copy ??
-      gesuch.gesuch_formular_to_work_with) as SharedModelGesuchFormular;
-  return formular;
+  return gesuch.gesuchTrancheToWorkWith.gesuchFormular ?? null;
 };
