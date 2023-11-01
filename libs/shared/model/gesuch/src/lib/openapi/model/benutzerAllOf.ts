@@ -9,8 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SachbearbeiterZuordnungStammdaten } from './sachbearbeiterZuordnungStammdaten';
 
 export interface BenutzerAllOf { 
     id: string;
+    sachbearbeiterZuordnungStammdaten?: SachbearbeiterZuordnungStammdaten;
 }
 

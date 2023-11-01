@@ -9,16 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SachbearbeiterZuordnungStammdaten } from './sachbearbeiterZuordnungStammdaten';
 
 /**
  * 
  */
-export interface Benutzer { 
-    id: string;
-    sachbearbeiterZuordnungStammdaten?: SachbearbeiterZuordnungStammdaten;
-    sozialversicherungsnummer: string;
-    vorname: string;
-    nachname: string;
+export interface SachbearbeiterZuordnungStammdaten { 
+    /**
+     * 
+     */
+    buchstabenDe?: string;
+    /**
+     * 
+     */
+    buchstabenFr?: string;
 }
 

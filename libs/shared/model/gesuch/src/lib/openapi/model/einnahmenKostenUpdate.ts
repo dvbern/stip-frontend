@@ -36,8 +36,8 @@ export interface EinnahmenKostenUpdate {
      */
     ausbildungskostenTertiaerstufe?: number;
     fahrkosten: number;
-    wohnkosten: number;
-    personenImHaushalt: number;
+    wohnkosten?: number;
+    personenImHaushalt?: number;
     verdienstRealisiert: boolean;
     /**
      * Required nur wenn volljährig
