@@ -5,8 +5,10 @@ import {
   EventEmitter,
   Output,
   inject,
+  Input,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { SharedModelGesuchFormStep } from '@dv/shared/model/gesuch-form';
 import { SharedUiIconChipComponent } from '@dv/shared/ui/icon-chip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,6 +32,9 @@ import { sharedPatternGesuchStepNavView } from './shared-pattern-gesuch-step-nav
 export class SharedPatternGesuchStepNavComponent {
   private store = inject(Store);
 
+  @Input() steps!: (SharedModelGesuchFormStep & {
+    disabled: boolean;
+  })[];
   @Output() navClicked = new EventEmitter();
 
   route = inject(Router);

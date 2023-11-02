@@ -11,6 +11,6 @@ describe('selectSharedDataAccessGesuchsView', () => {
       error: undefined,
     };
     const result = selectSharedDataAccessGesuchsView.projector(state);
-    expect(result.gesuchFormStepsInfo.length).toBeTruthy();
+    expect(result.loading).toBeFalsy();
   });
 });

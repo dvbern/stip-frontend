@@ -4,11 +4,19 @@ export interface SharedModelDeploymentConfig {
   version?: string;
 }
 
-export class SharedModelCompiletimeConfig {
-  readonly authClientId: `stip-${'gesuch' | 'sachbearbeitung'}-app`;
+export type AppType = `${'gesuch' | 'sachbearbeitung'}-app`;
+export type CompiletimeConfig = Pick<
+  SharedModelCompiletimeConfig,
+  'appType' | 'authClientId'
+>;
 
-  constructor(config: Pick<SharedModelCompiletimeConfig, 'authClientId'>) {
+export class SharedModelCompiletimeConfig {
+  readonly authClientId: `stip-${AppType}`;
+  readonly appType: AppType;
+
+  constructor(config: CompiletimeConfig) {
     this.authClientId = config.authClientId;
+    this.appType = config.appType;
   }
 }
 

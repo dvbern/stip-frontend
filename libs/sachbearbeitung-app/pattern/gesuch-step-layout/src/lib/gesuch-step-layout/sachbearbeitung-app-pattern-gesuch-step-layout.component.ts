@@ -4,8 +4,11 @@ import {
   EventEmitter,
   Input,
   inject,
+  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 
@@ -43,4 +46,9 @@ export class SachbearbeitungAppPatternGesuchStepLayoutComponent {
   navClicked = new EventEmitter();
 
   stepManager = inject(SharedUtilGesuchFormStepManagerService);
+  private store = inject(Store);
+  stepsSig = computed(() =>
+    this.stepManager.getAllSteps(this.viewSig().gesuchFormular)
+  );
+  viewSig = this.store.selectSignal(selectSharedDataAccessGesuchsView);
 }

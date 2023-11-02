@@ -26,6 +26,7 @@
 
   <div class="mobile-nav-content">
     <dv-shared-pattern-gesuch-step-nav
+      [steps]="stepsSig()"
       (navClicked)="navClicked.emit()"
     ></dv-shared-pattern-gesuch-step-nav>
   </div>
@@ -40,7 +41,10 @@
   <div class="d-flex h-100">
     <!-- left step nav (Desktop) -->
     <div class="d-none d-lg-block border-end bg-white">
-      <dv-shared-pattern-gesuch-step-nav class="sidenav p-4" />
+      <dv-shared-pattern-gesuch-step-nav
+        class="sidenav p-4"
+        [steps]="stepsSig()"
+      />
     </div>
     <div class="container mb-5 pt-lg-4 px-lg-4" *ngIf="step">
       <!-- step header (mobile) -->
@@ -49,7 +53,7 @@
       >
         <dv-shared-ui-progress-bar
           [current]="step.currentStepNumber"
-          [total]="stepManager.getTotalSteps()"
+          [total]="stepManager.getTotalSteps(viewSig().gesuchFormular)"
         ></dv-shared-ui-progress-bar>
         <div class="text-end">
           <h5 class="step-title">

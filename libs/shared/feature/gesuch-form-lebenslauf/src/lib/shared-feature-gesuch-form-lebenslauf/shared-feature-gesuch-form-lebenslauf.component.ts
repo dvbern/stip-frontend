@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { addYears, setMonth, subMonths } from 'date-fns';
 
 import { SharedEventGesuchFormLebenslauf } from '@dv/shared/event/gesuch-form-lebenslauf';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { LEBENSLAUF } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import { LebenslaufItemUpdate } from '@dv/shared/model/gesuch';
@@ -83,8 +83,6 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
     return this.view$().lebenslaufItems.filter((l) => l.bildungsart);
   });
 
-  protected readonly GesuchFormSteps = GesuchFormSteps;
-
   editedItem?: SharedModelLebenslauf;
 
   ngOnInit(): void {
@@ -122,7 +120,7 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
         SharedEventGesuchFormLebenslauf.saveSubformTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.LEBENSLAUF,
+          origin: LEBENSLAUF,
         })
       );
       this.editedItem = undefined;
@@ -137,7 +135,7 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
         SharedEventGesuchFormLebenslauf.saveSubformTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.LEBENSLAUF,
+          origin: LEBENSLAUF,
         })
       );
       this.editedItem = undefined;
@@ -149,7 +147,7 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
     this.store.dispatch(
       SharedEventGesuchFormLebenslauf.nextTriggered({
         id: gesuch!.id!,
-        origin: GesuchFormSteps.LEBENSLAUF,
+        origin: LEBENSLAUF,
       })
     );
   }

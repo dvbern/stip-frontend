@@ -63,7 +63,10 @@ import {
   sharedDataAccessBenutzerEffects,
   sharedDataAccessBenutzersFeature,
 } from '@dv/shared/data-access/benutzer';
-import { SharedModelCompiletimeConfig } from '@dv/shared/model/config';
+import {
+  CompiletimeConfig,
+  SharedModelCompiletimeConfig,
+} from '@dv/shared/model/config';
 import { withDvGlobalHttpErrorInterceptorFn } from '@dv/shared/pattern/http-error-interceptor';
 
 export class ExplicitMissingTranslationHandler
@@ -91,7 +94,7 @@ export const metaReducers: MetaReducer<any>[] = [debugReducers];
 
 export function provideSharedPatternCore(
   appRoutes: Route[],
-  compileTimeConfig: SharedModelCompiletimeConfig
+  compileTimeConfig: CompiletimeConfig
 ): ApplicationConfig['providers'] {
   return [
     // providers

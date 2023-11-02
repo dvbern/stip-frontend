@@ -25,7 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 
 import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-education';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { AUSBILDUNG } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { selectLanguage } from '@dv/shared/data-access/language';
 import {
@@ -326,7 +326,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     if (this.form.valid && gesuchId) {
       this.store.dispatch(
         SharedEventGesuchFormEducation.saveTriggered({
-          origin: GesuchFormSteps.AUSBILDUNG,
+          origin: AUSBILDUNG,
           gesuchId,
           gesuchFormular,
         })
@@ -340,7 +340,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormEducation.nextTriggered({
           id: gesuch.id,
-          origin: GesuchFormSteps.AUSBILDUNG,
+          origin: AUSBILDUNG,
         })
       );
     }
@@ -382,8 +382,6 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   onDateBlur(ctrl: FormControl) {
     return onMonthYearInputBlur(ctrl, new Date(), this.languageSig());
   }
-
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 
   private getTranslatedAusbildungsgangName(
     ausbildungsgang: Ausbildungsgang

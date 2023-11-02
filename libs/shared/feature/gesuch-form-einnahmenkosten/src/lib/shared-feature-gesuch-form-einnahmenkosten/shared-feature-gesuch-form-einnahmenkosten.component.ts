@@ -24,7 +24,12 @@ import {
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import {
+  AUSBILDUNG,
+  EINNAHMEN_KOSTEN,
+  FAMILIENSITUATION,
+  PERSON,
+} from '@dv/shared/model/gesuch-form';
 import {
   SharedUiFormFieldDirective,
   SharedUiFormMessageErrorDirective,
@@ -114,9 +119,9 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       return {
         hasData: false as const,
         schritte: [
-          GesuchFormSteps.PERSON.translationKey,
-          GesuchFormSteps.AUSBILDUNG.translationKey,
-          GesuchFormSteps.FAMILIENSITUATION.translationKey,
+          PERSON.translationKey,
+          AUSBILDUNG.translationKey,
+          FAMILIENSITUATION.translationKey,
         ],
       };
     }
@@ -124,11 +129,9 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       gesuchFormular;
 
     const schritte = [
-      ...(!personInAusbildung ? [GesuchFormSteps.PERSON.translationKey] : []),
-      ...(!ausbildung ? [GesuchFormSteps.AUSBILDUNG.translationKey] : []),
-      ...(!familiensituation
-        ? [GesuchFormSteps.FAMILIENSITUATION.translationKey]
-        : []),
+      ...(!personInAusbildung ? [PERSON.translationKey] : []),
+      ...(!ausbildung ? [AUSBILDUNG.translationKey] : []),
+      ...(!familiensituation ? [FAMILIENSITUATION.translationKey] : []),
     ];
 
     if (!personInAusbildung || !familiensituation || !ausbildung) {
@@ -286,7 +289,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         SharedEventGesuchFormEinnahmenkosten.saveTriggered({
           gesuchId,
           gesuchFormular,
-          origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
+          origin: EINNAHMEN_KOSTEN,
         })
       );
     }
@@ -298,7 +301,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormEinnahmenkosten.nextTriggered({
           id: gesuch.id,
-          origin: GesuchFormSteps.EINNAHMEN_KOSTEN,
+          origin: EINNAHMEN_KOSTEN,
         })
       );
     }
@@ -350,6 +353,7 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       },
     };
   }
+
   private setDisabledStateAndHide(
     formControl: FormControl,
     disabled: boolean
@@ -365,6 +369,4 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
       return setToUpdate;
     });
   }
-
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 }

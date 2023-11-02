@@ -297,6 +297,14 @@
   "shared.form.partner.verpflegungskosten.label": "Verpflegungskosten",
   "shared.form.partner.fahrkosten.label": "Fahrkosten",
 
+  "shared.abschluss.title": "Freigabe",
+  "shared.form.abschluss.notReady": "Sie können das Gesuch erst freigeben wenn sie alle Pflichfelder ausgefüllt haben.",
+  "shared.form.abschluss.readyToSend.text": "Wollen Sie das Gesuch wirklich freigeben?",
+  "shared.form.abschluss.readyToSend.warning": "Nachträgliche Änderungen sind nicht mehr möglich.",
+  "shared.form.abschluss.readyToSend.info": "Das Gesuch gilt erst als vollständig eingereicht, wenn alle benötigten Dokumente hochgeladen wurden.<br>Sie haben 30 Tage Zeit dies zu machen.",
+  "shared.form.abschluss.submitted": "Besten Dank für die Übermittlung des Gesuchs<br><br>Falls sie noch nicht alle benötigten Dokumente hochgeladen haben, tun sie dies bitte innerhalb der nächsten 30 Tage<br><br>Drucken sie das Unterschriftenblatt aus und schicken sie es unterschrieben an das BKD",
+  "shared.form.abschluss.abschliessen": "Abschliessen",
+
   "shared.kanton.AG": "Aargau",
   "shared.kanton.AI": "Appenzell Ausserrhoden",
   "shared.kanton.AR": "Appenzell Innerrhoden",

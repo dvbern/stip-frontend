@@ -1,11 +1,23 @@
 import { Route } from '@angular/router';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import {
+  ABSCHLUSS,
+  AUSBILDUNG,
+  AUSZAHLUNGEN,
+  EINNAHMEN_KOSTEN,
+  ELTERN,
+  FAMILIENSITUATION,
+  GESCHWISTER,
+  KINDER,
+  LEBENSLAUF,
+  PARTNER,
+  PERSON,
+} from '@dv/shared/model/gesuch-form';
 
 export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
   {
-    path: GesuchFormSteps.KINDER.route,
+    path: KINDER.route,
     resolve: {
-      step: () => GesuchFormSteps.KINDER,
+      step: () => KINDER,
     },
     title: 'shared.kinder.title',
     loadChildren: () =>
@@ -14,9 +26,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.LEBENSLAUF.route,
+    path: LEBENSLAUF.route,
     resolve: {
-      step: () => GesuchFormSteps.LEBENSLAUF,
+      step: () => LEBENSLAUF,
     },
     title: 'shared.lebenslauf.title',
     loadChildren: () =>
@@ -25,9 +37,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.GESCHWISTER.route,
+    path: GESCHWISTER.route,
     resolve: {
-      step: () => GesuchFormSteps.GESCHWISTER,
+      step: () => GESCHWISTER,
     },
     title: 'shared.geschwister.title',
     loadChildren: () =>
@@ -36,9 +48,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.AUSZAHLUNGEN.route,
+    path: AUSZAHLUNGEN.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSZAHLUNGEN,
+      step: () => AUSZAHLUNGEN,
     },
     title: 'shared.auszahlung.title',
     loadChildren: () =>
@@ -47,9 +59,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.FAMILIENSITUATION.route,
+    path: FAMILIENSITUATION.route,
     resolve: {
-      step: () => GesuchFormSteps.FAMILIENSITUATION,
+      step: () => FAMILIENSITUATION,
     },
     title: 'shared.familiensituation.title',
     loadChildren: () =>
@@ -58,9 +70,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.PARTNER.route,
+    path: PARTNER.route,
     resolve: {
-      step: () => GesuchFormSteps.PARTNER,
+      step: () => PARTNER,
     },
     title: 'shared.partner.title',
     loadChildren: () =>
@@ -69,9 +81,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.ELTERN.route,
+    path: ELTERN.route,
     resolve: {
-      step: () => GesuchFormSteps.ELTERN,
+      step: () => ELTERN,
     },
     title: 'shared.eltern.title',
     loadChildren: () =>
@@ -80,9 +92,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.PERSON.route,
+    path: PERSON.route,
     resolve: {
-      step: () => GesuchFormSteps.PERSON,
+      step: () => PERSON,
     },
     title: 'shared.person.title',
     loadChildren: () =>
@@ -91,9 +103,9 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.AUSBILDUNG.route,
+    path: AUSBILDUNG.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSBILDUNG,
+      step: () => AUSBILDUNG,
     },
     title: 'shared.education.title',
     loadChildren: () =>
@@ -102,14 +114,24 @@ export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
       ),
   },
   {
-    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    path: EINNAHMEN_KOSTEN.route,
     resolve: {
-      step: () => GesuchFormSteps.EINNAHMEN_KOSTEN,
+      step: () => EINNAHMEN_KOSTEN,
     },
     title: 'shared.einnahmenkosten.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-einnahmenkosten').then(
         (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
+  {
+    path: ABSCHLUSS.route,
+    resolve: {
+      step: () => ABSCHLUSS,
+    },
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-abschluss').then(
+        (m) => m.gesuchAppFeatureGesuchFormAbschlussRoutes
       ),
   },
 ];

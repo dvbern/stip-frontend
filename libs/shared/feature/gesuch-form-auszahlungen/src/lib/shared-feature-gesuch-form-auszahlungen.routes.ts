@@ -12,6 +12,7 @@ export const gesuchAppFeatureGesuchFormAuszahlungenRoutes: Route[] = [
     children: [
       {
         path: ':id',
+        title: 'shared.auszahlung.title',
         component: SharedFeatureGesuchFormAuszahlungenComponent,
       },
       // add more routes here (siblings)
