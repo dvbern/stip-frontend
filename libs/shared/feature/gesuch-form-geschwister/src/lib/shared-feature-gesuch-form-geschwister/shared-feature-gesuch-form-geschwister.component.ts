@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { SharedEventGesuchFormGeschwister } from '@dv/shared/event/gesuch-form-geschwister';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { GESCHWISTER } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { GeschwisterUpdate } from '@dv/shared/model/gesuch';
 import { parseBackendLocalDateAndPrint } from '@dv/shared/util/validator-date';
@@ -53,8 +53,6 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
       : undefined;
   });
 
-  protected readonly GesuchFormSteps = GesuchFormSteps;
-
   editedGeschwister?: Partial<GeschwisterUpdate>;
 
   ngOnInit(): void {
@@ -78,7 +76,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
           gesuchId,
           trancheId,
           gesuchFormular,
-          origin: GesuchFormSteps.GESCHWISTER,
+          origin: GESCHWISTER,
         })
       );
       this.editedGeschwister = undefined;
@@ -94,7 +92,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
           gesuchId,
           trancheId,
           gesuchFormular,
-          origin: GesuchFormSteps.GESCHWISTER,
+          origin: GESCHWISTER,
         })
       );
       this.editedGeschwister = undefined;
@@ -107,7 +105,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormGeschwister.nextTriggered({
           id: gesuch.id,
-          origin: GesuchFormSteps.GESCHWISTER,
+          origin: GESCHWISTER,
         })
       );
     }

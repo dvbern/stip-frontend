@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { KeycloakAngularModule } from 'keycloak-angular';
+
+import { provideSharedPatternJestTestSetup } from '@dv/shared/pattern/jest-test-setup';
 
 import { GesuchAppFeatureGesuchFormComponent } from './gesuch-app-feature-gesuch-form.component';
 
@@ -16,13 +15,9 @@ describe('GesuchAppFeatureGesuchFormComponent', () => {
         provideMockStore({
           initialState: { gesuchs: { gesuchFormular: {} } },
         }),
+        provideSharedPatternJestTestSetup(),
       ],
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        KeycloakAngularModule,
-        GesuchAppFeatureGesuchFormComponent,
-      ],
+      imports: [GesuchAppFeatureGesuchFormComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GesuchAppFeatureGesuchFormComponent);

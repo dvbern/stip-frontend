@@ -27,7 +27,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedEventGesuchFormAuszahlung } from '@dv/shared/event/gesuch-form-auszahlung';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { AUSZAHLUNGEN } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { calculateElternSituationGesuch } from '@dv/shared/util-fn/gesuch-util';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -80,7 +80,7 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
 
   MASK_IBAN = MASK_IBAN;
   language = 'de';
-  step = GesuchFormSteps.AUSZAHLUNGEN;
+  step = AUSZAHLUNGEN;
 
   form = this.fb.group({
     kontoinhaber: this.fb.control<Kontoinhaber>('' as Kontoinhaber, {
@@ -181,7 +181,7 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
           gesuchId,
           trancheId,
           gesuchFormular,
-          origin: GesuchFormSteps.AUSZAHLUNGEN,
+          origin: AUSZAHLUNGEN,
         })
       );
     }
@@ -194,7 +194,7 @@ export class SharedFeatureGesuchFormAuszahlungenComponent implements OnInit {
         SharedEventGesuchFormAuszahlung.nextTriggered({
           id: gesuch.id,
           trancheId: gesuch.gesuchTrancheToWorkWith.id,
-          origin: GesuchFormSteps.AUSZAHLUNGEN,
+          origin: AUSZAHLUNGEN,
         })
       );
     }

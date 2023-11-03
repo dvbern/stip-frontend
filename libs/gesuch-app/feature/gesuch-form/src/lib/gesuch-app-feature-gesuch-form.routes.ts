@@ -1,105 +1,137 @@
 import { Route } from '@angular/router';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import {
+  ABSCHLUSS,
+  AUSBILDUNG,
+  AUSZAHLUNGEN,
+  EINNAHMEN_KOSTEN,
+  ELTERN,
+  FAMILIENSITUATION,
+  GESCHWISTER,
+  KINDER,
+  LEBENSLAUF,
+  PARTNER,
+  PERSON,
+} from '@dv/shared/model/gesuch-form';
 
 export const gesuchAppFeatureGesuchFormRoutes: Route[] = [
   {
-    path: GesuchFormSteps.KINDER.route,
+    path: KINDER.route,
     resolve: {
-      step: () => GesuchFormSteps.KINDER,
+      step: () => KINDER,
     },
+    title: 'shared.kinder.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-kinder').then(
         (m) => m.gesuchAppFeatureGesuchFormKinderRoutes
       ),
   },
   {
-    path: GesuchFormSteps.LEBENSLAUF.route,
+    path: LEBENSLAUF.route,
     resolve: {
-      step: () => GesuchFormSteps.LEBENSLAUF,
+      step: () => LEBENSLAUF,
     },
+    title: 'shared.lebenslauf.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-lebenslauf').then(
         (m) => m.gesuchAppFeatureGesuchFormLebenslaufRoutes
       ),
   },
   {
-    path: GesuchFormSteps.GESCHWISTER.route,
+    path: GESCHWISTER.route,
     resolve: {
-      step: () => GesuchFormSteps.GESCHWISTER,
+      step: () => GESCHWISTER,
     },
+    title: 'shared.geschwister.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-geschwister').then(
         (m) => m.gesuchAppFeatureGesuchFormGeschwisterRoutes
       ),
   },
   {
-    path: GesuchFormSteps.AUSZAHLUNGEN.route,
+    path: AUSZAHLUNGEN.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSZAHLUNGEN,
+      step: () => AUSZAHLUNGEN,
     },
+    title: 'shared.auszahlung.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-auszahlungen').then(
         (m) => m.gesuchAppFeatureGesuchFormAuszahlungenRoutes
       ),
   },
   {
-    path: GesuchFormSteps.FAMILIENSITUATION.route,
+    path: FAMILIENSITUATION.route,
     resolve: {
-      step: () => GesuchFormSteps.FAMILIENSITUATION,
+      step: () => FAMILIENSITUATION,
     },
+    title: 'shared.familiensituation.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-familiensituation').then(
         (m) => m.gesuchAppFeatureGesuchFormFamiliensituationRoutes
       ),
   },
   {
-    path: GesuchFormSteps.PARTNER.route,
+    path: PARTNER.route,
     resolve: {
-      step: () => GesuchFormSteps.PARTNER,
+      step: () => PARTNER,
     },
+    title: 'shared.partner.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-partner').then(
         (m) => m.gesuchAppFeatureGesuchFormPartnerRoutes
       ),
   },
   {
-    path: GesuchFormSteps.ELTERN.route,
+    path: ELTERN.route,
     resolve: {
-      step: () => GesuchFormSteps.ELTERN,
+      step: () => ELTERN,
     },
+    title: 'shared.eltern.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-eltern').then(
         (m) => m.gesuchAppFeatureGesuchFormElternRoutes
       ),
   },
   {
-    path: GesuchFormSteps.PERSON.route,
+    path: PERSON.route,
     resolve: {
-      step: () => GesuchFormSteps.PERSON,
+      step: () => PERSON,
     },
+    title: 'shared.person.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-person').then(
         (m) => m.gesuchAppFeatureGesuchFormPersonRoutes
       ),
   },
   {
-    path: GesuchFormSteps.AUSBILDUNG.route,
+    path: AUSBILDUNG.route,
     resolve: {
-      step: () => GesuchFormSteps.AUSBILDUNG,
+      step: () => AUSBILDUNG,
     },
+    title: 'shared.education.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-education').then(
         (m) => m.gesuchAppFeatureGesuchFormEducationRoutes
       ),
   },
   {
-    path: GesuchFormSteps.EINNAHMEN_KOSTEN.route,
+    path: EINNAHMEN_KOSTEN.route,
     resolve: {
-      step: () => GesuchFormSteps.EINNAHMEN_KOSTEN,
+      step: () => EINNAHMEN_KOSTEN,
     },
+    title: 'shared.einnahmenkosten.title',
     loadChildren: () =>
       import('@dv/shared/feature/gesuch-form-einnahmenkosten').then(
         (m) => m.gesuchAppFeatureGesuchFormEinnahmenkostenRoutes
+      ),
+  },
+  {
+    path: ABSCHLUSS.route,
+    resolve: {
+      step: () => ABSCHLUSS,
+    },
+    loadChildren: () =>
+      import('@dv/gesuch-app/feature/gesuch-form-abschluss').then(
+        (m) => m.gesuchAppFeatureGesuchFormAbschlussRoutes
       ),
   },
 ];

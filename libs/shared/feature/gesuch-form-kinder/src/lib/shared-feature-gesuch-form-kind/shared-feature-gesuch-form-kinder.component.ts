@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { SharedEventGesuchFormKinder } from '@dv/shared/event/gesuch-form-kinder';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { KINDER } from '@dv/shared/model/gesuch-form';
 import { GesuchAppUiStepFormButtonsComponent } from '@dv/shared/ui/step-form-buttons';
 import { KindUpdate } from '@dv/shared/model/gesuch';
 import { selectLanguage } from '@dv/shared/data-access/language';
@@ -52,7 +52,6 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
         )
       : undefined;
   });
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 
   editedKind?: Partial<KindUpdate>;
 
@@ -77,7 +76,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
           gesuchId,
           trancheId,
           gesuchFormular,
-          origin: GesuchFormSteps.KINDER,
+          origin: KINDER,
         })
       );
       this.editedKind = undefined;
@@ -93,7 +92,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
           gesuchId,
           trancheId,
           gesuchFormular,
-          origin: GesuchFormSteps.KINDER,
+          origin: KINDER,
         })
       );
       this.editedKind = undefined;
@@ -106,7 +105,7 @@ export class SharedFeatureGesuchFormKinderComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormKinder.nextTriggered({
           id: gesuch.id,
-          origin: GesuchFormSteps.KINDER,
+          origin: KINDER,
         })
       );
   }

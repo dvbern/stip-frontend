@@ -1,6 +1,4 @@
-<ng-container
-  *ngFor="let step of view$().gesuchFormStepsInfo; trackBy: trackByIndex"
->
+<ng-container *ngFor="let step of steps; trackBy: trackByIndex">
   <ng-container
     *ngIf="{ active: route.isActive(step.route, false) } as stepRoute"
   >

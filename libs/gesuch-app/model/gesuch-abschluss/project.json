@@ -1,0 +1,16 @@
+{
+  "name": "gesuch-app-model-gesuch-abschluss",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gesuch-app/model/gesuch-abschluss/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gesuch-app/model/gesuch-abschluss/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["type:model", "scope:gesuch-app"]
+}

@@ -20,11 +20,12 @@ import { SharedEventGesuchFormEducation } from '@dv/shared/event/gesuch-form-edu
 import { SharedEventGesuchFormPerson } from '@dv/shared/event/gesuch-form-person';
 import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
 import { SharedUtilGesuchFormStepManagerService } from '@dv/shared/util/gesuch-form-step-manager';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { PERSON } from '@dv/shared/model/gesuch-form';
 import { SharedEventGesuchFormEltern } from '@dv/shared/event/gesuch-form-eltern';
 import { SharedEventGesuchFormEinnahmenkosten } from '@dv/shared/event/gesuch-form-einnahmenkosten';
 import { sharedUtilFnErrorTransformer } from '@dv/shared/util-fn/error-transformer';
 import { SharedEventGesuchFormPartner } from '@dv/shared/event/gesuch-form-partner';
+import { SharedEventGesuchFormAbschluss } from '@dv/shared/event/gesuch-form-abschluss';
 import { sharedUtilFnTypeGuardsIsDefined } from '@dv/shared/util-fn/type-guards';
 import { GesuchFormularUpdate, GesuchService } from '@dv/shared/model/gesuch';
 import { selectCurrentBenutzer } from '@dv/shared/data-access/benutzer';
@@ -104,7 +105,8 @@ export const loadGesuch = createEffect(
         SharedEventGesuchFormGeschwister.init,
         SharedEventGesuchFormKinder.init,
         SharedEventGesuchFormLebenslauf.init,
-        SharedEventGesuchFormEinnahmenkosten.init
+        SharedEventGesuchFormEinnahmenkosten.init,
+        SharedEventGesuchFormAbschluss.init
       ),
       concatLatestFrom(() => store.select(selectRouteId)),
       switchMap(([, id]) => {
@@ -258,7 +260,7 @@ export const redirectToGesuchForm = createEffect(
     return actions$.pipe(
       ofType(SharedDataAccessGesuchEvents.gesuchCreatedSuccess),
       tap(({ id }) => {
-        router.navigate(['gesuch', GesuchFormSteps.PERSON.route, id]);
+        router.navigate(['gesuch', PERSON.route, id]);
       })
     );
   },

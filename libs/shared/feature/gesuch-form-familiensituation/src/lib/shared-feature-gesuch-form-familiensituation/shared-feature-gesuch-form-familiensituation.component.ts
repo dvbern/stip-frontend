@@ -36,7 +36,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { selectSharedDataAccessGesuchsView } from '@dv/shared/data-access/gesuch';
 import { SharedEventGesuchFormFamiliensituation } from '@dv/shared/event/gesuch-form-familiensituation';
-import { GesuchFormSteps } from '@dv/shared/model/gesuch-form';
+import { FAMILIENSITUATION } from '@dv/shared/model/gesuch-form';
 import {
   numberToPercentString,
   percentStringToNumber,
@@ -460,7 +460,7 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
           gesuchId: gesuch.id,
           trancheId: gesuch.gesuchTrancheToWorkWith.id,
           gesuchFormular,
-          origin: GesuchFormSteps.FAMILIENSITUATION,
+          origin: FAMILIENSITUATION,
         })
       );
     }
@@ -473,7 +473,7 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
         SharedEventGesuchFormFamiliensituation.nextTriggered({
           id: gesuch.id,
           trancheId: gesuch.gesuchTrancheToWorkWith.id,
-          origin: GesuchFormSteps.FAMILIENSITUATION,
+          origin: FAMILIENSITUATION,
         })
       );
     }
@@ -543,6 +543,4 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
       return setToUpdate;
     });
   }
-
-  protected readonly GesuchFormSteps = GesuchFormSteps;
 }
