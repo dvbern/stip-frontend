@@ -44,7 +44,8 @@ export function calculateExpectElternteil(
         'WEDER_NOCH'
       : true;
     const elternteilZahltKeineAlimente =
-      familienSituation.werZahltAlimente !== type;
+      familienSituation.werZahltAlimente !== type &&
+      familienSituation.werZahltAlimente !== 'GEMEINSAM';
     return elternteilLebt && elternteilZahltKeineAlimente;
   }
   return false;
