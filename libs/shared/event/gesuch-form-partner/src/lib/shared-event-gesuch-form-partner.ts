@@ -8,11 +8,13 @@ export const SharedEventGesuchFormPartner = createActionGroup({
     init: emptyProps(),
     prevStepTriggered: props<{
       gesuchId: string;
+      trancheId: string;
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),
     nextStepTriggered: props<{
       gesuchId: string;
+      trancheId: string;
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),

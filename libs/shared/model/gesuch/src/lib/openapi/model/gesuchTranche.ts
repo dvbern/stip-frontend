@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GesuchTrancheUpdate } from './gesuchTrancheUpdate';
+import { GesuchFormular } from './gesuchFormular';
 
 /**
  * 
  */
-export interface GesuchUpdate { 
-    gesuchTrancheToWorkWith: GesuchTrancheUpdate;
+export interface GesuchTranche { 
+    id: string;
+    gueltigAb: string;
+    gueltigBis: string;
+    gesuchFormular?: GesuchFormular;
 }
 

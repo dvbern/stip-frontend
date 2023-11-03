@@ -177,11 +177,11 @@ export const updateGesuch = createEffect(
         SharedEventGesuchFormAuszahlung.saveTriggered,
         SharedEventGesuchFormEinnahmenkosten.saveTriggered
       ),
-      concatMap(({ gesuchId, gesuchFormular, origin }) => {
+      concatMap(({ gesuchId, trancheId, gesuchFormular, origin }) => {
         return gesuchService
           .updateGesuch$({
             gesuchId,
-            gesuchUpdate: prepareFormularData(gesuchFormular),
+            gesuchUpdate: prepareFormularData(trancheId, gesuchFormular),
           })
           .pipe(
             map(() =>
@@ -211,11 +211,11 @@ export const updateGesuchSubform = createEffect(
         SharedEventGesuchFormKinder.saveSubformTriggered,
         SharedEventGesuchFormLebenslauf.saveSubformTriggered
       ),
-      concatMap(({ gesuchId, gesuchFormular, origin }) => {
+      concatMap(({ gesuchId, trancheId, gesuchFormular, origin }) => {
         return gesuchService
           .updateGesuch$({
             gesuchId,
-            gesuchUpdate: prepareFormularData(gesuchFormular),
+            gesuchUpdate: prepareFormularData(trancheId, gesuchFormular),
           })
           .pipe(
             map(() =>
@@ -322,28 +322,34 @@ export const sharedDataAccessGesuchEffects = {
   refreshGesuchFormStep,
 };
 
-const prepareFormularData = (gesuchFormular: GesuchFormularUpdate) => {
+const prepareFormularData = (
+  id: string,
+  gesuchFormular: GesuchFormularUpdate
+) => {
   const { lebenslaufItems, geschwisters, elterns, kinds, ...formular } =
     gesuchFormular;
   return {
-    gesuch_formular_to_work_with: {
-      ...formular,
-      lebenslaufItems: lebenslaufItems?.map((i) => ({
-        ...i,
-        copyOfId: undefined,
-      })),
-      elterns: elterns?.map((i) => ({
-        ...i,
-        copyOfId: undefined,
-      })),
-      kinds: kinds?.map((i) => ({
-        ...i,
-        copyOfId: undefined,
-      })),
-      geschwisters: geschwisters?.map((i) => ({
-        ...i,
-        copyOfId: undefined,
-      })),
+    gesuchTrancheToWorkWith: {
+      id,
+      gesuchFormular: {
+        ...formular,
+        lebenslaufItems: lebenslaufItems?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        elterns: elterns?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        kinds: kinds?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+        geschwisters: geschwisters?.map((i) => ({
+          ...i,
+          copyOfId: undefined,
+        })),
+      },
     },
   };
 };

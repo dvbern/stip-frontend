@@ -458,6 +458,7 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
       this.store.dispatch(
         SharedEventGesuchFormFamiliensituation.saveTriggered({
           gesuchId: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           gesuchFormular,
           origin: FAMILIENSITUATION,
         })
@@ -471,6 +472,7 @@ export class SharedFeatureGesuchFormFamiliensituationComponent
       this.store.dispatch(
         SharedEventGesuchFormFamiliensituation.nextTriggered({
           id: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           origin: FAMILIENSITUATION,
         })
       );

@@ -113,12 +113,13 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
   }
 
   handleEditorSave(item: LebenslaufItemUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithUpdatedItem(item);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormLebenslauf.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: LEBENSLAUF,
         })
@@ -128,12 +129,13 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
   }
 
   public handleDeleteItem(itemId: string) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithDeletedItem(itemId);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormLebenslauf.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: LEBENSLAUF,
         })
@@ -164,6 +166,7 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
 
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         lebenslaufItems: updatedItems,
@@ -188,6 +191,7 @@ export class SharedFeatureGesuchFormLebenslaufComponent implements OnInit {
     }
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         lebenslaufItems: updatedItems,

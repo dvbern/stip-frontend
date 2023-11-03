@@ -68,12 +68,13 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
   }
 
   handleEditorSave(geschwister: GeschwisterUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithUpdatedGeschwister(geschwister);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormGeschwister.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GESCHWISTER,
         })
@@ -83,12 +84,13 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
   }
 
   public handleDeleteGeschwister(geschwister: GeschwisterUpdate) {
-    const { gesuchId, gesuchFormular } =
+    const { gesuchId, trancheId, gesuchFormular } =
       this.buildUpdatedGesuchWithDeletedGeschwister(geschwister);
-    if (gesuchId) {
+    if (gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormGeschwister.saveSubformTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: GESCHWISTER,
         })
@@ -123,6 +125,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
 
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         geschwisters: updatedGeschwisters,
@@ -149,6 +152,7 @@ export class SharedFeatureGesuchFormGeschwisterComponent implements OnInit {
     }
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         geschwisters: updatedGeschwisters,

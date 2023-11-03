@@ -322,12 +322,14 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
   handleSave() {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormEducation.saveTriggered({
           origin: AUSBILDUNG,
           gesuchId,
+          trancheId,
           gesuchFormular,
         })
       );
@@ -340,6 +342,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
       this.store.dispatch(
         SharedEventGesuchFormEducation.nextTriggered({
           id: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           origin: AUSBILDUNG,
         })
       );
@@ -358,6 +361,7 @@ export class SharedFeatureGesuchFormEducationComponent implements OnInit {
     );
     const ret = {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith.id,
       gesuchFormular: {
         ...gesuchFormular,
         ausbildung: {

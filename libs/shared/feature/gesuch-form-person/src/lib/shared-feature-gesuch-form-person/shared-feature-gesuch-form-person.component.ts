@@ -381,11 +381,13 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     this.form.markAllAsTouched();
     this.formUtils.focusFirstInvalid(this.elementRef);
     this.updateValidity$.next({});
-    const { gesuchId, gesuchFormular } = this.buildUpdatedGesuchFromForm();
-    if (this.form.valid && gesuchId) {
+    const { gesuchId, trancheId, gesuchFormular } =
+      this.buildUpdatedGesuchFromForm();
+    if (this.form.valid && gesuchId && trancheId) {
       this.store.dispatch(
         SharedEventGesuchFormPerson.saveTriggered({
           gesuchId,
+          trancheId,
           gesuchFormular,
           origin: PERSON,
         })
@@ -395,10 +397,11 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
 
   handleContinue() {
     const { gesuch } = this.viewSig();
-    if (gesuch?.id) {
+    if (gesuch?.id && gesuch?.gesuchTrancheToWorkWith.id) {
       this.store.dispatch(
         SharedEventGesuchFormPerson.nextTriggered({
           id: gesuch.id,
+          trancheId: gesuch.gesuchTrancheToWorkWith.id,
           origin: PERSON,
         })
       );
@@ -421,6 +424,7 @@ export class SharedFeatureGesuchFormPersonComponent implements OnInit {
     const { gesuch, gesuchFormular } = this.viewSig();
     return {
       gesuchId: gesuch?.id,
+      trancheId: gesuch?.gesuchTrancheToWorkWith?.id,
       gesuchFormular: {
         ...gesuchFormular,
         personInAusbildung: {

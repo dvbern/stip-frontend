@@ -8,11 +8,13 @@ export const SharedEventGesuchFormEinnahmenkosten = createActionGroup({
     init: emptyProps(),
     saveTriggered: props<{
       gesuchId: string;
+      trancheId: string;
       gesuchFormular: Partial<SharedModelGesuchFormular>;
       origin: SharedModelGesuchFormStep;
     }>(),
     nextTriggered: props<{
       id: string;
+      trancheId: string;
       origin: SharedModelGesuchFormStep;
     }>(),
   },
