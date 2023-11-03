@@ -214,11 +214,11 @@ export class SharedFeatureGesuchFormEinnahmenkostenComponent implements OnInit {
         );
         this.setDisabledStateAndHide(
           this.form.controls.wohnkosten,
-          wohnsitzNotEigenerHaushalt
+          !wohnsitzNotEigenerHaushalt
         );
         this.setDisabledStateAndHide(
           this.form.controls.personenImHaushalt,
-          wohnsitzNotEigenerHaushalt
+          !wohnsitzNotEigenerHaushalt
         );
         this.setDisabledStateAndHide(
           this.form.controls.alimente,
