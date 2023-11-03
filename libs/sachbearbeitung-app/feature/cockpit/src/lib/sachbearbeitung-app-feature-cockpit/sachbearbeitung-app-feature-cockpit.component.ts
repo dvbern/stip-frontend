@@ -69,7 +69,7 @@ export class SachbearbeitungAppFeatureCockpitComponent implements OnInit {
 
   @ViewChildren(SharedUiFocusableListItemDirective)
   public items?: QueryList<SharedUiFocusableListItemDirective>;
-  public displayedColumns: string[] = [
+  public displayedColumns = [
     'fall',
     'sv-nummer',
     'nachname',
