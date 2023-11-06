@@ -8,10 +8,10 @@ resources:
 images:
 - name: stip/gesuch-app
   newName: docker-registry.public.dvbern.ch/kibon/stip/gesuch-app
-  newTag: v0-8-0
+  newTag: v0-9-0
 - name: stip/sachbearbeitung-app
   newName: docker-registry.public.dvbern.ch/kibon/stip/sachbearbeitung-app
-  newTag: v0-8-0
+  newTag: v0-9-0
 
 # TODO: OpenShift
 # patches:
