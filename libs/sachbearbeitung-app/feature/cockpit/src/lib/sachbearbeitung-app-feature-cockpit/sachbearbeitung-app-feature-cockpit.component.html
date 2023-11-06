@@ -74,8 +74,8 @@
                   data-testid="cockpit-row-sv"
                 >
                   {{
-                    gesuch.gesuch_formular_to_work_with.personInAusbildung
-                      ?.sozialversicherungsnummer
+                    gesuch.gesuchTrancheToWorkWith.gesuchFormular
+                      .personInAusbildung?.sozialversicherungsnummer
                   }}
                 </td>
               </ng-container>
@@ -86,8 +86,8 @@
                 </th>
                 <td mat-cell *matCellDef="let gesuch">
                   {{
-                    gesuch.gesuch_formular_to_work_with.personInAusbildung
-                      ?.nachname
+                    gesuch.gesuchTrancheToWorkWith.gesuchFormular
+                      .personInAusbildung?.nachname
                   }}
                 </td>
               </ng-container>
@@ -98,8 +98,8 @@
                 </th>
                 <td mat-cell *matCellDef="let gesuch">
                   {{
-                    gesuch.gesuch_formular_to_work_with.personInAusbildung
-                      ?.vorname
+                    gesuch.gesuchTrancheToWorkWith.gesuchFormular
+                      .personInAusbildung?.vorname
                   }}
                 </td>
               </ng-container>
@@ -112,8 +112,8 @@
                 </th>
                 <td mat-cell *matCellDef="let gesuch">
                   {{
-                    gesuch.gesuch_formular_to_work_with.personInAusbildung
-                      ?.geburtsdatum
+                    gesuch.gesuchTrancheToWorkWith.gesuchFormular
+                      .personInAusbildung?.geburtsdatum
                   }}
                 </td>
               </ng-container>
@@ -124,8 +124,8 @@
                 </th>
                 <td mat-cell *matCellDef="let gesuch">
                   {{
-                    gesuch.gesuch_formular_to_work_with.personInAusbildung
-                      ?.adresse.ort
+                    gesuch.gesuchTrancheToWorkWith.gesuchFormular
+                      .personInAusbildung?.adresse.ort
                   }}
                 </td>
               </ng-container>
