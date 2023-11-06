@@ -141,10 +141,10 @@ export class SharedFeatureGesuchFormPartnerComponent implements OnInit {
     effect(
       () => {
         const { gesuchFormular } = this.view();
-        const svValidators = [Validators.required];
-        if (gesuchFormular) {
-          svValidators.push(sharedUtilValidatorAhv('partner', gesuchFormular));
-        }
+        const svValidators = [
+          Validators.required,
+          sharedUtilValidatorAhv('partner', gesuchFormular),
+        ];
         this.form.controls.sozialversicherungsnummer.clearValidators();
         this.form.controls.sozialversicherungsnummer.addValidators(
           svValidators

@@ -203,15 +203,15 @@ export class SharedFeatureGesuchFormElternEditorComponent implements OnChanges {
         ),
       });
 
-      const validators = [Validators.required];
-      validators.push(
+      const svValidators = [
+        Validators.required,
         sharedUtilValidatorAhv(
           `eltern${capitalized(this.elternteil.elternTyp)}`,
           this.gesuchFormular
-        )
-      );
+        ),
+      ];
       this.form.controls.sozialversicherungsnummer.clearValidators();
-      this.form.controls.sozialversicherungsnummer.addValidators(validators);
+      this.form.controls.sozialversicherungsnummer.addValidators(svValidators);
     }
   }
 

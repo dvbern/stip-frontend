@@ -59,22 +59,19 @@ export function sharedUtilIsUniqueAhv(
 
 export function sharedUtilValidatorAhv(
   type: FieldsWithSV,
-  gesuchFormular: SharedModelGesuchFormular
+  gesuchFormular: SharedModelGesuchFormular | null
 ): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control?.value) {
       return null;
     } else {
-      const uniqueCheck = sharedUtilIsUniqueAhv(
-        control.value,
-        type,
-        gesuchFormular
-      )
-        ? null
-        : { notUniqueAhv: true };
-      return sharedUtilIsValidAhv(control.value)
-        ? uniqueCheck
-        : { ahv: true, ...(uniqueCheck ?? {}) };
+      if (
+        gesuchFormular &&
+        !sharedUtilIsUniqueAhv(control.value, type, gesuchFormular)
+      ) {
+        return { notUniqueAhv: true };
+      }
+      return sharedUtilIsValidAhv(control.value) ? null : { ahv: true };
     }
   };
 }
